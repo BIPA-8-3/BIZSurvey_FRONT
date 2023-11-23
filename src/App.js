@@ -1,24 +1,15 @@
 import logo from './logo.svg';
 import './App.css';
+import BizCard from "./components/common/BizCard";
+import BizCard2 from "./components/common/BizCard2";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+
+      <BizCard data={{title: '21년 상반기 어쩌구asfsadfsadfasfsafsa', comment: 15, participant: 20, view : 10, date : '2020-03-13'}}></BizCard>
+        <BizCard2></BizCard2>
+    </>
   );
 }
 
