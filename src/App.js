@@ -8,7 +8,6 @@ import Join from './components/user/Join';
 import CommunityPost from './components/community/CommunityPost';
 
 
-
 function App() {
   return (
     <div className="App">
