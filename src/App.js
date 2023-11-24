@@ -8,6 +8,7 @@ function App() {
     <>
 
       <BizCard data={{title: '21년 상반기 어쩌구asfsadfsadfasfsafsa', comment: 15, participant: 20, view : 10, date : '2020-03-13'}}></BizCard>
+        <BizCard2 first></BizCard2>
         <BizCard2></BizCard2>
     </>
   );

@@ -9,13 +9,15 @@ import { IoPersonOutline } from "react-icons/io5";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { MdDateRange } from "react-icons/md";
 import logo from '../../assets/img/thumbnail.png';
+import Box from '@mui/material/Box';
 
 
 
 
 export default function BizCard({data}) {
     return (
-        <Card sx={{ maxWidth: 345, width: 300 }}>
+
+        <Card sx={{ maxWidth: 345, width: 300}}>
             <CardActionArea>
                 <CardMedia
                     component="img"
@@ -49,5 +51,6 @@ export default function BizCard({data}) {
                 </CardContent>
             </CardActionArea>
         </Card>
+
     );
 }
