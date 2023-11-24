@@ -1,3 +1,5 @@
+
+
 #footerItemWrap{
     padding: 0px 30px;
     align-items: center;
@@ -9,13 +11,12 @@
 .logo{
     padding: 20px 0px;
     width: 220px;
-    height: 100%;
     cursor: pointer;
-    margin-bottom: 20px;
 }
 
 #footerItemWrap ul li {
     padding: 10px 0px;
+    font-size: 14px;
 }
 
 .footerLogoWrap{
@@ -35,7 +36,7 @@
 .coryright{
     margin-top: 20px;
     text-align: center;
-    size: 12px;
+    size: 8px !important;
     color: #777;
     margin-bottom: 50px;
 }
