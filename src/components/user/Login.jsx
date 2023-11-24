@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 function Login() {
   return (
     <div id={style.loginWrap}>
-      <h1 className={`${style.title}`+ ' textCenter textBold'}>LOGIN</h1>
+      <h1 className={`${style.title}`+ ' textCenter textBold'}>로그인</h1>
       <p></p>
       <img src={kakao} alt="카카오 로그인" className={`${style.kakaoLogin}`}/>
       <label>이메일</label>
