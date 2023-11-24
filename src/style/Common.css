@@ -20,13 +20,15 @@ b{
 }
 
 .title{
-    font-size: 32px;
-    padding: 60px 0px 20px 0px;
+    font-size: 40px;
+    color: #243579;
+    padding: 100px 0px 30px 0px;
 }
 
 .subTitle{
     padding-bottom: 60px;
     font-size: 18px;
+    color: #243579;
 }
 
 #menuIcon{
@@ -59,13 +61,20 @@ b{
     #menuIcon{
         display: block;
     }
+    .title{
+        font-size: 26px;
+        padding: 60px 0px 30px 0px;
+    }
+
+    .subTitle{
+        font-size: 16px;
+    }
+    
 }
 
 @media all and (max-width:1200px) { 
     .container{
         width: 90%;
     }
-    .title{
-        font-size: 26px;
-    }
+    
 } 

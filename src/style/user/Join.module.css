@@ -6,7 +6,8 @@
 
 .title{
     font-size: 30px;
-    margin-bottom: 50px;
+    color: #243579;
+    margin-bottom: 60px;
 }
 
 label{
@@ -68,6 +69,16 @@ label{
 
 .MuiButtonBase-root, .MuiButton-root{
     padding: 11.5px 14px !important
+}
+
+.back{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:400px;
+    left: 0px;
+    z-index: -1;
+    opacity: 0.5;
 }
 
 
