@@ -17,6 +17,7 @@ import logo1 from '../../assets/img/1.jpg';
 import logo2 from '../../assets/img/2.jpg';
 import logo3 from '../../assets/img/3.jpeg';
 import logo4 from '../../assets/img/4.jpg';
+import { IoIosSearch } from "react-icons/io";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -31,6 +32,14 @@ function Container(){
         <div className={style.container}>
             <h1 className='textCenter title textBold'>설문조사</h1>
             <p className='textCenter subTitle'>쉽고 파른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
+            <div className={style.searchWrap}>
+                <div>
+                    <input type="text" className={style.searchInput} placeholder="검색어를 입력하세요"/>
+                </div>
+                <div className={style.searchBtn}>
+                    <IoIosSearch size={35} color="#f8f8f8"/>
+                </div>
+            </div>
             <Grid container spacing={4}>
                 <Grid item xs={12} md={6} lg={3}>
                     <Card sx={{ maxWidth: '100%', width: '100%' }}>
