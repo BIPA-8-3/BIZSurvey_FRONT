@@ -4,7 +4,7 @@ import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 import Container from './components/common/Container';
 import Login from './components/user/Login';
-import Join from './components/user/Login';
+import Join from './components/user/Join';
 
 
 
@@ -15,6 +15,7 @@ function App() {
       <Header></Header>
         <Container></Container>
       {/* <Login></Login> */}
+      {/* <Join></Join> */}
       <Footer></Footer>
     </div>
   );
