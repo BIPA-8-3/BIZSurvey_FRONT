@@ -12,6 +12,7 @@
 }
 
 .kakaoLogin{
+    width: 100%;
     margin: 30px 0px;
     cursor: pointer;
 }

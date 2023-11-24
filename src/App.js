@@ -4,7 +4,7 @@ import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 import Container from './components/common/Container';
 import Login from './components/user/Login';
-import Join from './components/user/Join';
+import Join from './components/user/Login';
 
 
 
@@ -13,9 +13,8 @@ function App() {
     <div className="App">
       <Reset />
       <Header></Header>
-      {/* <Container></Container> */}
-      <Login></Login>
-      {/* <Join></Join> */}
+        <Container></Container>
+      {/* <Login></Login> */}
       <Footer></Footer>
     </div>
   );
