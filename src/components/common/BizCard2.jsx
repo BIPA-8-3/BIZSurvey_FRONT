@@ -7,9 +7,11 @@ import MoreMenu from "./MoreMenu";
 import {FaCirclePlus} from "react-icons/fa6";
 
 
+
 export default function BizCard2({first}){
 
-    if (first){
+
+       if (first){
         return (
             <Card sx={{ maxWidth: 345, height: 160, width: 260,borderRadius: 3}}>
                 <CardActionArea style={{height: "100%"}}>
@@ -18,12 +20,14 @@ export default function BizCard2({first}){
                             <MoreMenu></MoreMenu>
                         </div>
                     </div>
+
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             <div style={{fontSize: "17px",whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>
                                 설문지 제목1231232132131231
                             </div>
                         </Typography>
+
                         <Typography variant="body2" color="text.secondary">
                             <div style={{marginTop: "15px"}}>등록일</div>
 
@@ -35,7 +39,9 @@ export default function BizCard2({first}){
 
     }else {
         return (
+
             <Card sx={{ maxWidth: 345, height: 180, width: 260, borderRadius: 3}}>
+
                 <CardActionArea style={{height: "100%", backgroundColor: "#f4f4f4"}}>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">

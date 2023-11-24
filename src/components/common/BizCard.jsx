@@ -10,6 +10,8 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { MdDateRange } from "react-icons/md";
 import logo from '../../assets/img/thumbnail.png';
 import Box from '@mui/material/Box';
+import '../../style/Common.css'
+
 
 
 
@@ -17,15 +19,16 @@ import Box from '@mui/material/Box';
 export default function BizCard({data}) {
     return (
 
-        <Card sx={{ maxWidth: 345, width: 300}}>
+        <Card sx={{ maxWidth: '100%', width: '100%' }}>
             <CardActionArea>
                 <CardMedia
                     component="img"
-                    height="140"
+                    height="220"
                     image={logo}
                     alt="thumbnail"
                 />
-                <CardContent>
+                <CardContent sx={{boxShadow : "box-shadow: 0px 1px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 30px 0px rgba(0,0,0,0.12);"}}>
+
                     <Typography gutterBottom component="div" >
                         <div style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}><b>{data.title}</b></div>
                     </Typography>
@@ -43,7 +46,9 @@ export default function BizCard({data}) {
 
                             <span style={{margin: "0 5px 0 5px"}}>{data.view}</span>
                         </div>
-                        <div style={{ border: "0.5px solid #D6D6D6", margin: "5px 0px 5px 0px"}}></div>
+
+                        <div style={{ borderBottom: "1px solid #D6D6D6", margin: "5px 0px 5px 0px"}}></div>
+
                         <div style={{display : "inline-flex", alignItems: "center", justifyContent:"center", fontSize: "12px"}}>
                         <MdDateRange />
                             <span style={{margin: "0 5px 0 5px"}}>~ {data.date}</span></div>
@@ -51,6 +56,9 @@ export default function BizCard({data}) {
                 </CardContent>
             </CardActionArea>
         </Card>
+
+
+
 
     );
 }
