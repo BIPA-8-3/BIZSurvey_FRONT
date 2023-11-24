@@ -5,6 +5,7 @@ import Footer from './components/common/Footer';
 import Container from './components/common/Container';
 import Login from './components/user/Login';
 import Join from './components/user/Join';
+import CommunityPost from './components/community/CommunityPost';
 
 
 
@@ -13,7 +14,7 @@ function App() {
     <div className="App">
       <Reset />
       <Header></Header>
-        <Container></Container>
+        <CommunityPost></CommunityPost>
       {/* <Login></Login> */}
       {/* <Join></Join> */}
       <Footer></Footer>
