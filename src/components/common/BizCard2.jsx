@@ -20,7 +20,6 @@ export default function BizCard2({first}){
                             <MoreMenu></MoreMenu>
                         </div>
                     </div>
-
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             <div style={{fontSize: "17px",whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>
