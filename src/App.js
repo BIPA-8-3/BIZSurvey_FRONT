@@ -7,6 +7,7 @@ import Login from './components/user/Login';
 import Join from './components/user/Join';
 import CommunityPost from './components/community/CommunityPost';
 import Search from './components/common/Search';
+import PostDetail from './components/community/PostCreateDetail';
 
 
 function App() {
@@ -14,9 +15,7 @@ function App() {
     <div className="App">
       <Reset />
       <Header></Header>
-        <CommunityPost></CommunityPost>
-      {/* <Login></Login> */}
-      {/* <Join></Join> */}
+        <Container></Container>
       <Footer></Footer>
     </div>
   );
