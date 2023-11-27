@@ -1,5 +1,5 @@
 import * as React from 'react';
-import style from"../../style/Container.module.css"
+import style from"../../style/community/CommunityPost.module.css"
 import '../../style/Common.css'
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -21,6 +21,9 @@ import PaginationItem from '@mui/material/PaginationItem';
 import Stack from '@mui/material/Stack';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import useFadeIn from '../../style/useFadeIn';
+import back from '../../assets/img/back.png'
+import CommunityTable from './CommunityTable';
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -46,21 +49,19 @@ export default function CommunityPost() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  const fadeIn = useFadeIn();
  
   return (
 
    
 
-    <>
-    <TableContainer sx={{ marginTop: 20}}>
-    <Search></Search>
-
-    <div className={style.titleWrap}>
-        <h1 className='textCenter title textBold'>게시판</h1>
-        <p className='textCenter subTitle'>비즈서베이 커뮤니티입니다.</p>
-    </div>
-    
+    <div className={`fade-in ${fadeIn ? 'active' : ''}`}>
+      <div className={style.titleWrap}>
+          <h1 className='textCenter title textBold'>COMMUNITY</h1>
+          <p className='textCenter subTitle'>쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
+      </div>
+      <Search></Search>
+    {/* <TableContainer sx={{ marginTop: 20}}>
     <Tabs value={value} onChange={handleChange} centered>
       <Tab
         label="실시간 인기"
@@ -87,10 +88,12 @@ export default function CommunityPost() {
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
+    </TableContainer> */}
 
-    <div style={{width : '1200px', margin : '0 auto'}} >
-    <Stack spacing={1} sx={{margin: 'auto', float : 'right' }}>
+    
+    <CommunityTable />
+    <div style={{width : '1200px', margin : '0 auto', marginTop:'20px'}} >
+    <Stack spacing={1} sx={{margin: '0 auto', float : 'right' }}>
       <Pagination
         count={10}
         renderItem={(item) => (
@@ -102,7 +105,7 @@ export default function CommunityPost() {
       />
     </Stack>
     </div>
-
-    </>
+    <img src={back} alt="배경" className={style.back}/>
+    </div>
   );
 }

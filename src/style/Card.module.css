@@ -23,7 +23,8 @@
     /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
-    border-radius: 20px !important;
+    border-radius: 7px !important;
+    overflow: hidden;
     cursor: pointer;
 }
 
