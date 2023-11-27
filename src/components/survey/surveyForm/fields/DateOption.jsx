@@ -25,12 +25,14 @@ export default function DateOption(){
     return(
 
         <>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <div style={{width: '500px', margin: '0 auto', paddingTop: '15px'}}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
 
                     <DemoItem>
                         <DatePicker
+                            variant="standard"
                             disabled
-                            sx={{ width: 260 }}
+                            sx={{width : 180}}
                             slotProps={{
                                 field: { clearable: true, onClear: () => setCleared(true) },
                             }}
@@ -46,7 +48,10 @@ export default function DateOption(){
                         </Alert>
                     )}
 
-            </LocalizationProvider>
+                </LocalizationProvider>
+
+            </div>
+
         </>
 
     )
