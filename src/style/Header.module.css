@@ -19,8 +19,8 @@
 
 
 .logo{
-    padding: 20px 0px;
-    width: 220px;
+    padding: 10px 0px;
+    width: 180px;
     height: 100%;
     cursor: pointer;
 }
@@ -32,6 +32,8 @@
 .headerMenu ul li{
     padding: 20px 25px;
     cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .hheaderMenu ul li:last-child{
