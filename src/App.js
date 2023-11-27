@@ -4,6 +4,10 @@ import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 import SurveyPostContainer from './components/common/SurveyPostContainer';
 import Login from './components/user/Login';
+
+import QuestionComp from "./components/survey/surveyForm/QuestionComp";
+import CreateSurveyPage from "./pages/survey/CreateSurveyPage";
+
 import Join from './components/user/Join';
 import SurveyCard from './components/common/SurveyCard';
 import { useRoutes } from 'react-router-dom';

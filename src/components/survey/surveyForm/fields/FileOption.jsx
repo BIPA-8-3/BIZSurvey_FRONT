@@ -22,7 +22,7 @@ export default function FileOption(){
 
         <>
 
-            <div style={{width: '500px', margin: '0 auto', paddingTop: '15px'}}>
+            <div style={{width: '600px', margin: '0 auto', paddingTop: '15px'}}>
 
             <Button component="label" disabled variant="contained" startIcon={<CloudUploadIcon />}>
                 파일 업로드
