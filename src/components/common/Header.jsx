@@ -39,8 +39,8 @@ function Header() {
         <div className={style.headerMenu}>
           <ul>
             <Link to={'/surveyPost'}><li>설문참여</li></Link>
-            <Link to={'/login'}><li>플랜</li></Link>
-            <Link to={'/login'}><li>커뮤니티</li></Link>
+            <Link to={'/plan'}><li>플랜</li></Link>
+            <Link to={'/community'}><li>커뮤니티</li></Link>
             <Link to={'/login'}><li>워크스페이스</li></Link>
             <Link to={'/login'}><li>Sign In</li></Link>
           </ul>
@@ -57,9 +57,11 @@ function Header() {
         <div ref={bestRef} className={style.mobileMenuItemWrap}>
           <img src={logo} alt="logo" className={style.logo} style={{height:"auto"}}/>
           <ul>
-            {navItems.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
+            <Link to={'/surveyPost'}><li>설문참여</li></Link>
+            <Link to={'/login'}><li>플랜</li></Link>
+            <Link to={'/login'}><li>커뮤니티</li></Link>
+            <Link to={'/login'}><li>워크스페이스</li></Link>
+            <Link to={'/login'}><li>Sign In</li></Link>
           </ul>
         </div>
       </div>

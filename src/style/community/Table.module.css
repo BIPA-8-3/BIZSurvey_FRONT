@@ -1,0 +1,92 @@
+.communityTable{
+    width: 100%;
+}
+
+.thead{
+    height: 40px;
+    background-color: rgba(209, 232, 248, 0.3);
+    line-height: 40px;
+    border-top: 3px solid #243579;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+
+.tbody tr{
+    border-bottom: 1px solid #ddd;
+}
+
+.tbody tr td{
+    vertical-align: middle;
+    font-size: 14px;
+    width: 100%;
+}
+
+.tbody tr td, .thead tr th{
+    width: 100px !important;
+}
+
+.tbody tr td:nth-child(2){
+    max-width: 650px !important;
+    text-align: left;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    cursor: pointer;
+}
+
+.comment{
+    margin-left: 15px;
+    color: #0171D1;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.profil .photo{
+    width: 25px;
+    height: 25px;
+    background-color: #ddd;
+    border-radius: 50%;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.photo img{
+    width:25px;
+    height:100%;
+    object-fit:cover;
+}
+
+
+.profil .nickname{
+    font-size: 14px;
+    margin-left: 10px;
+    margin-top: 3px;
+} 
+.profil{
+    display : flex;
+    align-items : center;
+    margin-left: 8px;
+    height: 50px;
+}
+
+.vote{
+    margin-left: 10px;
+    background-color: #3949AB;
+    border-radius: 10px;
+    padding: 4px 5px 0px 10px;
+}
+
+.new{
+    margin-left: 10px;
+    color: red;
+}
+
+.best{
+    color: blue;
+    margin-right: 10px;
+}
+
+.a{
+    width: 100%;
+    height: 51px;
+}
