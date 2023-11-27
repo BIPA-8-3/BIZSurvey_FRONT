@@ -18,6 +18,7 @@ import logo2 from '../../assets/img/2.jpg';
 import logo3 from '../../assets/img/3.jpeg';
 import logo4 from '../../assets/img/4.jpg';
 import { IoIosSearch } from "react-icons/io";
+import back from '../../assets/img/back.png'
 
 import Search from './Search'
 
@@ -32,8 +33,10 @@ const Item = styled(Paper)(({ theme }) => ({
 function Container(){
     return(
         <div className={style.container}>
-            <h1 className='textCenter title textBold'>설문조사</h1>
-            <p className='textCenter subTitle'>쉽고 파른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
+            <div className={style.titleWrap}>
+                <h1 className='textCenter title textBold'>설문조사</h1>
+                <p className='textCenter subTitle'>쉽고 파른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
+            </div>
             <Search></Search>
             <Grid container spacing={4}>
                 <Grid item xs={12} md={6} lg={3}>
@@ -326,6 +329,7 @@ function Container(){
                 </Grid>
                 
             </Grid>
+            <img src={back} alt="카카오 로그인" className={style.back}/>
         </div>
     )
 }

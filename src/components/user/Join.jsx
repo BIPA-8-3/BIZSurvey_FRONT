@@ -8,11 +8,12 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import back from '../../assets/img/back.png'
 
 function Join() {
   return (
     <div id={style.joinWrap}>
-      <h1 className={`${style.title}`+ ' textCenter textBold'}>회원가입</h1>
+      <h1 className={`${style.title}`+ ' textCenter textBold'}>JOIN</h1>
       
       <label>이메일</label>
       <div className={style.inputWrap}>
@@ -70,6 +71,7 @@ function Join() {
       <Button variant="contained" href="#contained-buttons" sx={{marginTop:'40px', width:'100%', padding:'11.5px 14px', backgroundColor:'#243579'}}>
         회원가입
       </Button>
+      <img src={back} alt="카카오 로그인" className={style.back}/>
     </div>
   );
 }
