@@ -39,7 +39,7 @@ function Header() {
         <div className={style.headerMenu}>
           <ul>
             <Link to={'/surveyPost'}><li>설문참여</li></Link>
-            <Link to={'/login'}><li>플랜</li></Link>
+            <Link to={'/plan'}><li>플랜</li></Link>
             <Link to={'/login'}><li>커뮤니티</li></Link>
             <Link to={'/login'}><li>워크스페이스</li></Link>
             <Link to={'/login'}><li>Sign In</li></Link>

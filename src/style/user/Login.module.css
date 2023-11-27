@@ -3,14 +3,8 @@
     height: 500px;
     /* background-color: #f8f8f8; */
     margin: 0 auto;
-    margin-top: 150px;
 }
 
-.title{
-    font-size: 30px;
-    color: #243579;
-    margin-bottom: 40px;
-}
 
 .kakaoLogin{
     width: 100%;
@@ -38,7 +32,7 @@
     width: 100%;
     height: 100%;
     position: absolute;
-    top:300px;
+    top:-80px;
     left: 0px;
     z-index: -1;
     opacity: 0.5;
@@ -66,6 +60,22 @@
     padding: 11.5px 14px !important
 }
 
+.joinText{
+    text-align: center;
+    font-size: 10pt;
+    color: #154DCA;
+    cursor: pointer;
+    margin-top: 12px;
+}
+
+.joinText a{
+    color: #154DCA;
+}
+
+.joinText:hover{
+    font-weight: bold;
+}
+
 
 /* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px)*/ 
 @media all and (min-width:1024px) and (max-width:1279px) { 
@@ -81,9 +91,6 @@
         font-size: 22px;
         margin-bottom: 20px;
     }
-    #loginWrap{
-        margin-top: 120px;
-    }
 } 
 
 /* 모바일 세로 (해상도 ~ 479px)*/ 
@@ -94,9 +101,6 @@
     .title{
         font-size: 22px;
         margin-bottom: 20px;
-    }
-    #loginWrap{
-        margin-top: 120px;
     }
     .kakaoLogin{
         width: 100%;

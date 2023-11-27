@@ -13,7 +13,7 @@ const Layout = () => {
             <div className="container">
                 <Outlet />
             </div>
-         <Footer></Footer>ß
+         <Footer></Footer>
      </div>
     )
  }
