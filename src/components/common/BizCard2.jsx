@@ -7,18 +7,19 @@ import MoreMenu from "./MoreMenu";
 import {FaCirclePlus} from "react-icons/fa6";
 
 
-export default function BizCard2({}){
 
-    if (true){
+export default function BizCard2({first}){
+
+
+       if (first){
         return (
-            <Card sx={{ maxWidth: 345, height: 160, width: 260}}>
+            <Card sx={{ maxWidth: 345, height: 160, width: 260,borderRadius: 3}}>
                 <CardActionArea style={{height: "100%"}}>
                     <div style={{textAlign:"right"}}>
                         <div style={{display: "inline-block", transform :"rotate(90deg)", marginRight: "10px"}}>
                             <MoreMenu></MoreMenu>
                         </div>
                     </div>
-
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             <div style={{fontSize: "17px",whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>
@@ -37,7 +38,9 @@ export default function BizCard2({}){
 
     }else {
         return (
-            <Card sx={{ maxWidth: 345, height: 180, width: 260}}>
+
+            <Card sx={{ maxWidth: 345, height: 180, width: 260, borderRadius: 3}}>
+
                 <CardActionArea style={{height: "100%", backgroundColor: "#f4f4f4"}}>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
