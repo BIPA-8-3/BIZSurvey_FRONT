@@ -14,20 +14,18 @@ import Search from './components/common/Search';
 import SurveyCard from './components/common/SurveyCard';
 import { useRoutes } from 'react-router-dom';
 import ThemeRoutes from './routes/Router';
-import CreateVote from './components/common/CreateVote';
+import CreateVote from './components/community/CreateVote';
+import VoteResult from './components/community/VoteResult';
 
 
 const App = () => {
   const routing = useRoutes(ThemeRoutes);
   return (
     <>
-      
-
+      <Reset />
       <Header></Header>
-        <CreateVote />
+       <VoteResult />
       <Footer></Footer>
-
-      
 
     </>
 

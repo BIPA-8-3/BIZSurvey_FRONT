@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import SaveButton from '../common/SaveButton';
 
 const CreateVote = () => {
   const [voteTitle, setVoteTitle] = useState('');
@@ -83,12 +84,11 @@ const CreateVote = () => {
         </IconButton>
 
         {/* 투표 제출 버튼 */}
-        <IconButton onClick={handleVoteSubmit} color="primary">
-          투표 생성
-        </IconButton>
+        
 
         {/* 구분선 */}
         <Divider sx={{ my: 2, width: '100%' }} />
+        <SaveButton></SaveButton>
       </Paper>
     </Container>
   );
