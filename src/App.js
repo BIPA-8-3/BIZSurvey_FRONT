@@ -6,6 +6,7 @@ import Container from './components/common/Container';
 import Login from './components/user/Login';
 import Join from './components/user/Join';
 import CommunityPost from './components/community/CommunityPost';
+import Search from './components/common/Search';
 
 
 function App() {
