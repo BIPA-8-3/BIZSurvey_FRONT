@@ -126,7 +126,7 @@ export default function CreateSurveyPage(){
                              sx={{width: 600}}
                              value={formData.title}
                              onChange={(e)=>changeSurveyTitle(e.target.value)}
-                             inputProps={{style: {fontSize: '20px',fontWeight:'bold', padding: '15px 0 0 0'}}}
+                             inputProps={{style: {fontSize: '25px',fontWeight:'bold', padding: '15px 0 0 0'}}}
                          />
                      </div>
 

@@ -69,15 +69,15 @@ export default function QuestionComp({index, questionInfo, handleOption,changeTi
                                   sx={{width: 600}}
                                   onChange = {(e)=>changeTitle(index, e.target.value)}
                               />
-                              <TextField
-                                  value={content}
-                                  id="standard-basic"
-                                  variant="standard"
-                                  placeholder={'설명'}
-                                  inputProps={{style: {fontSize: '14px', padding: '15px 0 0 0'}}}
-                                  sx={{width: 600}}
-                                  onChange = {(e)=>changeContent(index, e.target.value)}
-                              />
+                              {/*<TextField*/}
+                              {/*    value={content}*/}
+                              {/*    id="standard-basic"*/}
+                              {/*    variant="standard"*/}
+                              {/*    placeholder={'설명'}*/}
+                              {/*    inputProps={{style: {fontSize: '14px', padding: '15px 0 0 0'}}}*/}
+                              {/*    sx={{width: 600}}*/}
+                              {/*    onChange = {(e)=>changeContent(index, e.target.value)}*/}
+                              {/*/>*/}
 
                           </div>
                       </div>
