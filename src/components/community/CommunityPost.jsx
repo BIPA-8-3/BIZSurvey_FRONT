@@ -1,14 +1,26 @@
 import * as React from 'react';
+import style from"../../style/Container.module.css"
+import '../../style/Common.css'
+import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import { Tabs, Tab } from '@mui/material';
-import TableHead from '@mui/material/TableHead';
+import CommentIcon from '@mui/icons-material/Comment';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
+import PersonIcon from '@mui/icons-material/Person';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Search from '../common/Search';
 import { useState } from 'react';
+
+import Pagination from '@mui/material/Pagination';
+import PaginationItem from '@mui/material/PaginationItem';
+import Stack from '@mui/material/Stack';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -37,11 +49,18 @@ export default function CommunityPost() {
 
  
   return (
+
+   
+
     <>
-    
-    <TableContainer component={Paper} sx={{ marginTop: 20}}>
+    <TableContainer sx={{ marginTop: 20}}>
     <Search></Search>
-      
+
+    <div className={style.titleWrap}>
+        <h1 className='textCenter title textBold'>게시판</h1>
+        <p className='textCenter subTitle'>비즈서베이 커뮤니티입니다.</p>
+    </div>
+    
     <Tabs value={value} onChange={handleChange} centered>
       <Tab
         label="실시간 인기"
@@ -60,15 +79,30 @@ export default function CommunityPost() {
               sx={{ '&:last-child td, &:last-child th': { border: 0} }}
             >
               <TableCell align="left">"제목입니다"</TableCell>
-              <TableCell align="center">"제목입니다"</TableCell>
-              <TableCell align="center">"(사람 아이콘)조회수"</TableCell>
-              <TableCell align="right">"(댓글 아이콘)댓글수"</TableCell>
-              <TableCell align="right">"(시계 아이콘) 생성시간"</TableCell>
+              <TableCell align="center"><AlternateEmailIcon />닉네임</TableCell>
+              <TableCell align="center"><PersonIcon /> [120]</TableCell>
+              <TableCell align="right"><CommentIcon />[50]</TableCell>
+              <TableCell align="right"><AccessTimeIcon />12:57</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
+
+    <div style={{width : '1200px', margin : '0 auto'}} >
+    <Stack spacing={1} sx={{margin: 'auto', float : 'right' }}>
+      <Pagination
+        count={10}
+        renderItem={(item) => (
+          <PaginationItem
+            slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+            {...item}
+          />
+        )}
+      />
+    </Stack>
+    </div>
+
     </>
   );
 }
