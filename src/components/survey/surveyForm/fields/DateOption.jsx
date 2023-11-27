@@ -25,7 +25,7 @@ export default function DateOption(){
     return(
 
         <>
-            <div style={{width: '500px', margin: '0 auto', paddingTop: '15px'}}>
+            <div style={{width: '600px', margin: '0 auto', paddingTop: '15px'}}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
 
                     <DemoItem>

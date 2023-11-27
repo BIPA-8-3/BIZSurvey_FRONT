@@ -7,6 +7,10 @@ import Footer from './components/common/Footer';
 
 import SurveyPostContainer from './components/common/SurveyPostContainer';
 import Login from './components/user/Login';
+
+import QuestionComp from "./components/survey/surveyForm/QuestionComp";
+import CreateSurveyPage from "./pages/survey/CreateSurveyPage";
+
 import Join from './components/user/Join';
 import CommunityPost from './components/community/CommunityPost';
 import Search from './components/common/Search';
@@ -20,6 +24,7 @@ const App = () => {
   const routing = useRoutes(ThemeRoutes);
   return (
     <>
+
       <Reset />
 
       <Header></Header>
@@ -27,6 +32,7 @@ const App = () => {
       <Footer></Footer>
 
       <div >{routing}</div>
+
 
     </>
 
