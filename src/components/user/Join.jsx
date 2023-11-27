@@ -9,10 +9,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import back from '../../assets/img/back.png'
+import useFadeIn from '../../style/useFadeIn';
 
 function Join() {
+  const fadeIn = useFadeIn();
   return (
-    <div id={style.joinWrap}>
+    <div id={style.joinWrap} className={`fade-in ${fadeIn ? 'active' : ''}`}>
       <div className={style.titleWrap}>
           <h1 className='textCenter title textBold'>JOIN</h1>
           <p className='textCenter subTitle'>쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>

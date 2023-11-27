@@ -48,10 +48,6 @@ b{
 .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input{
     padding : 0 !important;
 }
-/* 설문 카드 그림자 효과 */
-.css-tvw7vc-MuiPaper-root-MuiCard-root{
-    /* box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 30px 0px rgba(0,0,0,0.12) !important; */
-    /* box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.2), 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 0px 30px 0px rgba(0,0,0,0.12) !important; */
 
 a{
     text-decoration: none;
@@ -59,6 +55,14 @@ a{
 
 }
 
+.fade-in {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+  
+.fade-in.active {
+    opacity: 1;
+}
 
 
 /* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px)*/ 
