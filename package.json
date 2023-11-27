@@ -9,10 +9,16 @@
     "@mui/lab": "^5.0.0-alpha.153",
     "@mui/material": "^5.14.18",
     "@mui/styled-engine-sc": "^6.0.0-alpha.6",
+    "@mui/x-date-pickers": "^6.18.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+
     "@toast-ui/editor-plugin-color-syntax": "^3.1.0",
+
+    "dayjs": "^1.11.10",
+    "lazysizes": "^5.3.2",
+
     "axios": "^1.6.2",
     "draft-js": "^0.11.7",
     "react": "^18.2.0",

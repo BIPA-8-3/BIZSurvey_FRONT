@@ -91,5 +91,7 @@
 }
 
 @media all and (max-width:1200px) { 
-
+    .container{
+        width: 90%;
+    }
 } 
