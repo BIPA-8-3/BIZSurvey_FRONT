@@ -6,7 +6,7 @@ import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 import Login from './components/user/Login';
 import QuestionComp from "./components/survey/surveyForm/QuestionComp";
-import SurveyFormPage from "./pages/survey/SurveyFormPage";
+import CreateSurveyPage from "./pages/survey/CreateSurveyPage";
 
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
         {/*<BizCard2 first></BizCard2>*/}
         {/*<BizCard2></BizCard2>*/}
 
-        <SurveyFormPage/>
+        <CreateSurveyPage/>
 
 
     </>

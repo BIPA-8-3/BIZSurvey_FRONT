@@ -2,9 +2,11 @@ import * as React from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import ToggleButton from '@mui/material/ToggleButton';
 import {useEffect, useState} from "react";
+import Switch from '@mui/material/Switch';
 
 
-export default function RequiredButton(){
+
+export default function RequiredButton({index, changeRequired}){
 
 
     const [selected, setSelected] = React.useState(false);
@@ -18,6 +20,7 @@ export default function RequiredButton(){
         borderRadius: '30px'
     };
 
+    const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
     useEffect(() => {
         if (selected){
@@ -25,18 +28,27 @@ export default function RequiredButton(){
         }else {
             setText('필수 off');
         }
+        changeRequired(index);
     }, [selected]);
 
     return (
-        <ToggleButton
-            value="check"
-            selected={selected}
-            onChange={() => {
-                setSelected(!selected);
-            }}
-            sx={RequiredStyle}
-        >
-            {text}
-        </ToggleButton>
+        // <ToggleButton
+        //     value="check"
+        //     selected={selected}
+        //     onChange={() => {
+        //         setSelected(!selected);
+        //     }}
+        //     sx={RequiredStyle}
+        // >
+        //     {text}
+        // </ToggleButton>
+     <>
+         <span style={{fontSize:'13px'}}>필수</span> <Switch {...label} />
+     </>
+
+
+
+
+
     );
 }
