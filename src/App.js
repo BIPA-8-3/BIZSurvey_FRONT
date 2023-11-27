@@ -4,19 +4,25 @@ import BizCard2 from "./components/common/BizCard2";
 import {Reset} from 'styled-reset'
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
+
+import SurveyPostContainer from './components/common/SurveyPostContainer';
 import Login from './components/user/Login';
+
 import QuestionComp from "./components/survey/surveyForm/QuestionComp";
 import CreateSurveyPage from "./pages/survey/CreateSurveyPage";
 
+import Join from './components/user/Join';
+import SurveyCard from './components/common/SurveyCard';
+import { useRoutes } from 'react-router-dom';
+import ThemeRoutes from './routes/Router';
 
-function App() {
+const App = () => {
+  const routing = useRoutes(ThemeRoutes);
   return (
     <>
-        {/*<BizCard data={{title: '21년 상반기 어쩌구asfsadfsadfasfsafsa', comment: 15, participant: 20, view : 10, date : '2020-03-13'}}></BizCard>*/}
-        {/*<BizCard2 first></BizCard2>*/}
-        {/*<BizCard2></BizCard2>*/}
 
-        <CreateSurveyPage/>
+      <Reset />
+      <div >{routing}</div>
 
 
     </>

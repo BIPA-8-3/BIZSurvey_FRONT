@@ -1,11 +1,3 @@
-.container{
-    width: 1200px;
-    margin: 0 auto;
-    margin-top: 69px;
-    /* background-color: #fff; */
-    padding: 0px 20px 40px 20px;
-    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
-}
 .searchInput{
     width: 500px;
     margin: 0;
@@ -40,27 +32,9 @@
     box-shadow: rgba(1, 64, 153, 0.2) 18px 30px 50px;
     margin-bottom: 100px;
     text-align: center;
+    cursor: pointer;
 }
 
-.dot{
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background-image: linear-gradient(135deg, #109cda 9%,#065eae 34%,#014099 57%);
-    margin-bottom: 25px;
-    border-radius: 50%;
-    margin-left: -3px;
-}
-
-.back{
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top:-80px;
-    left: 0px;
-    z-index: -1;
-    opacity: 0.5;
-}
 
 
 
@@ -74,16 +48,11 @@
   
 /* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px)*/ 
 @media all and (min-width:480px) and (max-width:767px) {
-    .headerMenu ul li{
-        display: none;
-    }
+  
 } 
 
 /* 모바일 세로 (해상도 ~ 479px)*/ 
 @media all and (max-width:479px) {
-    .headerMenu ul li{
-        display: none;
-    }
     .searchInput{
         width: 95%;
         margin: 0;
@@ -125,5 +94,4 @@
     .container{
         width: 90%;
     }
-
 } 
