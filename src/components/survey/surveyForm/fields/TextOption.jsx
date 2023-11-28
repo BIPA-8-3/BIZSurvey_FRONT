@@ -6,7 +6,7 @@ export default function TextOption(){
     return(
         <>
 
-<div style={{width: '500px', margin: '0 auto', paddingTop: '15px'}}>
+<div style={{width: '600px', margin: '0 auto', paddingTop: '15px'}}>
     <TextField
         disabled
         id="standard-disabled"

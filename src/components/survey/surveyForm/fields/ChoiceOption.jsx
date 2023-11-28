@@ -7,21 +7,22 @@ import {FaCirclePlus} from "react-icons/fa6";
 import Button from '@mui/material/Button';
 
 
-export default function ChoiceOption({single}){
+export default function ChoiceOption({single, handleOption, index}){
 
-    const [options, setOptions] = useState([{id : 1, text : ''}]);
+    const [options, setOptions] = useState([{step : 1, surveyAnswer : ''}]);
 
     const addOption = () => {
         setOptions(pre => {
-            const lastId = pre.length > 0 ? pre[pre.length -1 ].id : 0;
-            return [...pre, {id: lastId + 1, text: ''}]
+            const lastId = pre.length > 0 ? pre[pre.length -1 ].step : 0;
+            return [...pre, {step: lastId + 1, surveyAnswer: ''}]
             });
+
     }
 
     const deleteOption = (id) => {
         setOptions(pre => {
-            const deleteOptions = pre.filter(option => option.id !== id)
-                .map((option, index) => ({ ...option, id: index + 1 })
+            const deleteOptions = pre.filter(option => option.step !== id)
+                .map((option, index) => ({ ...option, step: index + 1 })
             );
             return deleteOptions;
         });
@@ -31,7 +32,7 @@ export default function ChoiceOption({single}){
         setOptions(pre => {
             // id에 해당하는 옵션을 찾아 업데이트
             const updatedOptions = pre.map((option, index) =>
-                option.id === id ? { ...option, text: text, id: index + 1 } : option
+                option.step === id ? { ...option, surveyAnswer: text, step: index + 1 } : option
             );
             return updatedOptions;
         });
@@ -39,6 +40,7 @@ export default function ChoiceOption({single}){
 
     useEffect(() => {
         console.log(options)
+        handleOption(index, options);
     }, [options]);
 
 
@@ -47,8 +49,8 @@ export default function ChoiceOption({single}){
         <>
 
             <div style={{marginTop : '15px'}}>
-                {options.map(({id, text}) => (
-                    <Option key={id} index={id} onDelete={deleteOption} changeText={changeText} single={single} text={text}></Option>
+                {options.map(({step, surveyAnswer}) => (
+                    <Option key={step} index={step} onDelete={deleteOption} changeText={changeText} single={single} text={surveyAnswer}></Option>
                 ))}
             </div>
 
@@ -81,7 +83,7 @@ function Option({onDelete, index, changeText, single, text}){
 
       <>
 
-          <div style={{margin: '0 auto', width: '500px'}}>
+          <div style={{margin: '0 auto', width: '600px'}}>
               <Stack direction="row" alignItems="center" spacing={1}>
                     <span style={{
                         width: '16px',
@@ -96,7 +98,7 @@ function Option({onDelete, index, changeText, single, text}){
                       variant="standard"
                       placeholder={'옵션을 입력하세요'}
                       inputProps={{style: {fontSize: 15}}}
-                      sx={{width: 450}}
+                      sx={{width: 550}}
                   />
                   <IconButton aria-label="fingerprint" onClick={()=>onDelete(index)}>
                       <IoCloseOutline />
