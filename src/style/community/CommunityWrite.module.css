@@ -1,0 +1,143 @@
+.writeWrap{
+    width: 100%;
+    margin-top: 20px;
+}
+
+.back{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:-80px;
+    left: 0px;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+.writeWrap .title{
+    width: 1000px;
+    margin: 0 auto;
+    border-radius: 0px;
+    border: 0px;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    font-size: 28px;
+    background-color: rgba(255, 255, 255, 0.0);
+    font-weight: bold;
+    
+}
+.writeWrap .title::placeholder{
+    color: #ddd;
+}
+
+.writeWrap .title:focus{
+    outline:none;
+}
+
+.editorWrap{
+    width: 100%;
+    margin-top: 50px;
+}
+
+.voteWrap{
+    width: 1000px;
+    margin: 0 auto;
+    margin-top: 50px;
+    background-color: #f7f8fa;
+    padding: 30px 0px;
+    text-align: center;
+    line-height: 22px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #2f3438;
+}
+
+.voteWrap button{
+    padding: 10px 20px;
+    border: 0px;
+    margin-top: 20px;
+    background-color: #212629CC;
+    color: #fff;
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+}
+
+.modalWrap {
+    opacity: 0; /* 초기 상태: 모달을 투명하게 숨김 */
+    visibility: hidden; /* 초기 상태: 모달을 화면에서 숨김 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s 1s;
+  }
+  
+.fadeIn {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease-in-out, visibility 0s; 
+}
+.modal{
+    width: 700px;
+    padding: 30px;
+    background-color: #fff;
+    margin: 0 auto;
+    margin-top: 100px;
+    border-radius: 10px;
+    max-height: 549px;
+    overflow-y: scroll;
+}
+
+.modal .title{
+    font-weight: bold;
+    font-size: 18px;
+    color: #111;
+}
+
+.btnWrap button{
+    padding: 13px 35px;
+    margin: 4px;
+    border: 0px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btnWrap button:hover{
+    opacity: 0.8;
+}
+
+.btnRight{
+    background-color: #243579;
+    color: #fff;
+}
+
+
+
+
+/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px)*/ 
+@media all and (min-width:1024px) and (max-width:1279px) { 
+} 
+  
+/* 테블릿 가로 (해상도 768px ~ 1023px)*/ 
+@media all and (min-width:768px) and (max-width:1023px) { 
+} 
+  
+/* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px)*/ 
+@media all and (min-width:480px) and (max-width:767px) {
+    
+} 
+
+/* 모바일 세로 (해상도 ~ 479px)*/ 
+@media all and (max-width:479px) {
+    
+}
+
+@media all and (max-width:1200px) { 
+    .container{
+        width: 90%;
+    }
+
+} 
