@@ -1,14 +1,8 @@
 #joinWrap{
     width: 500px;
     margin: 0 auto;
-    margin-top: 150px;
 }
 
-.title{
-    font-size: 30px;
-    color: #243579;
-    margin-bottom: 60px;
-}
 
 label{
     font-size: 10pt !important;
@@ -75,7 +69,7 @@ label{
     width: 100%;
     height: 100%;
     position: absolute;
-    top:400px;
+    top:-80px;
     left: 0px;
     z-index: -1;
     opacity: 0.5;
@@ -100,7 +94,6 @@ label{
     #joinWrap{
         width: 90%;
         margin: 0 auto;
-        margin-top: 150px;
     }
     .input{
         width: 90%;
@@ -113,9 +106,6 @@ label{
     }
     .inputDiv{
         width: 90%;
-    }
-    #loginWrap{
-        margin-top: 120px;
     }
     .kakaoLogin{
         width: 100%;
@@ -138,8 +128,5 @@ label{
         right: -2px;
         border-radius: 0px 5px 5px 0px;
         cursor: pointer;
-    }
-    #joinWrap{
-        margin-top: 120px;
     }
 }
