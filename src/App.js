@@ -5,6 +5,7 @@ import Footer from './components/common/Footer';
 import Container from './components/common/Container';
 import Login from './components/user/Login';
 import Join from './components/user/Login';
+import NavBar from './components/workspace/NavBar';
 
 
 
@@ -13,9 +14,10 @@ function App() {
     <div className="App">
       <Reset />
       <Header></Header>
-        <Container></Container>
+      {/* <Container></Container> */}
+      <NavBar></NavBar>
       {/* <Login></Login> */}
-      <Footer></Footer>
+      {/* <Footer></Footer> */}
     </div>
   );
 }
