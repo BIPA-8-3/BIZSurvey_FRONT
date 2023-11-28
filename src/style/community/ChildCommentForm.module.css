@@ -1,0 +1,74 @@
+.commentWrap{
+    width: 100%;
+    padding: 20px;
+    padding-top: 0px;
+    margin-top: 35px;
+}
+
+.writeWrap{
+    display: flex;
+    margin-top: -10px;
+}
+
+.writer{
+    padding: 10px;
+    padding-left: 0px;
+}
+
+.commentFormWrap{
+    flex: auto;
+}
+
+.writer div{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+    
+}
+
+.writer div img{
+    width: 100%;
+}
+
+.childCommentWrap{
+    width: 100%;
+}
+
+.commentFormWrap{
+    display: flex;
+    width: 100%;
+    position: relative;
+    padding-right: 30px;
+    padding-left: 10px;
+}
+.commentFormWrap input{
+    flex: 1;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding-left: 20px;
+    font-size: 18px;
+}
+
+.writeBtn{
+    position: absolute;
+    top: 50%;
+    right: 3%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    font-weight: bold;
+    margin-right: 10px;
+    margin-top: 1px;
+    color: #ddd;
+    transition: all 0.5s;
+}
+.writeBtn:hover{
+    color: #0171D1;
+
+}
+
+.commentFormWrap input::placeholder{
+    color: #ddd;
+}

@@ -10,7 +10,8 @@ const Login = lazy(() => import("../components/user/Login"));
 const Join = lazy(() => import("../components/user/Join"));
 const Plan = lazy(() => import("../components/common/Plan"))
 const CommunityPost = lazy(() => import('../components/community/CommunityPost'))
-const CommunityDetail = lazy(() => import('../components/community/PostDetail'))
+const CommunityDetail = lazy(() => import('../components/community/CommunityDetail'))
+const PostDetail = lazy(() => import('../components/community/PostDetail'))
 
 const ThemeRoutes = [
     {
@@ -23,7 +24,7 @@ const ThemeRoutes = [
             {path: "/join", exact: true, element: <Join />},
             {path: "/plan", exact: true, element: <Plan />},
             {path: "/community", exact: true, element: <CommunityPost />},
-            {path: "/CommunityDetail", exact: true, element: <CommunityDetail />}
+            {path: "/communityDetail", exact: true, element: <CommunityDetail />}
         ]
     }
 ];
