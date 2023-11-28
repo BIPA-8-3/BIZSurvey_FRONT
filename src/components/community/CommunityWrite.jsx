@@ -7,11 +7,11 @@ import back from '../../assets/img/back.png';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { Editor } from '@toast-ui/react-editor';
-import '@toast-ui/editor/dist/toastui-editor.css';
+// import '@toast-ui/editor/dist/toastui-editor.css';
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
-import 'tui-color-picker/dist/tui-color-picker.css';
-import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
-import '@toast-ui/editor/dist/i18n/ko-kr';
+// import 'tui-color-picker/dist/tui-color-picker.css';
+// import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
+// import '@toast-ui/editor/dist/i18n/ko-kr';
 import CreateVote from './CreateVote';
 
 export default function CommunityWrite() {
@@ -39,7 +39,7 @@ export default function CommunityWrite() {
         </div>
         <div className={style.editorWrap}>
           <div style={{ width: '1000px', margin: '0 auto' }}>
-            <Editor
+            {/* <Editor
               previewStyle="vertical"
               height="300px"
               initialEditType="wysiwyg"
@@ -48,7 +48,7 @@ export default function CommunityWrite() {
               language="ko-KR"
               onChange={onChange}
               ref={editorRef}
-            />
+            /> */}
           </div>
         </div>
         <div className={style.voteWrap}>

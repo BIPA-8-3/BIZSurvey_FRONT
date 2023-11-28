@@ -1,29 +1,8 @@
 import * as React from 'react';
 import style from"../../style/community/CommunityDetail.module.css"
 import '../../style/Common.css'
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import { Tabs, Tab } from '@mui/material';
-import CommentIcon from '@mui/icons-material/Comment';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
-import PersonIcon from '@mui/icons-material/Person';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Search from '../common/Search';
-import { useState } from 'react';
-
-import Pagination from '@mui/material/Pagination';
-import PaginationItem from '@mui/material/PaginationItem';
-import Stack from '@mui/material/Stack';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import useFadeIn from '../../style/useFadeIn';
 import back from '../../assets/img/back.png'
-import CommunityTable from './CommunityTable';
 import Button from '@mui/material/Button';
 import logo from "../../assets/img/avatar.png"
 import { Link } from 'react-router-dom';
