@@ -108,8 +108,10 @@ export default function CreateSurveyPage(){
         <>
 
 
+
+
          <div style={{width: '900px', paddingTop: '40px', paddingBottom: '40px',
-             boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px'}}>
+             boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px', margin:'0 auto', marginTop:'80px'}}>
 
              <div style={{ width: '700px', margin: '0 auto'}}>
 
