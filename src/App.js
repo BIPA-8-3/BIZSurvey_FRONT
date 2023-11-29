@@ -3,6 +3,7 @@ import { Reset } from "styled-reset";
 
 import { useRoutes } from "react-router-dom";
 import ThemeRoutes from "./routes/Router";
+import VoteResult from "./components/community/VoteResult";
 
 const App = () => {
   const routing = useRoutes(ThemeRoutes);
@@ -10,6 +11,7 @@ const App = () => {
     <>
       <Reset />
       <div>{routing}</div>
+      <VoteResult></VoteResult>
     </>
   );
 };
