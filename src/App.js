@@ -21,7 +21,7 @@ const App = () => {
   return (
     <>
       {/* <Reset />
-      <div >{routing}</div> */}
+      <div>{routing}</div> */}
 
       {/* <CreateSurveyPage /> */}
       {/* <SurveyInfo /> */}

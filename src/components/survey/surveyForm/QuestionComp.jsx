@@ -10,6 +10,7 @@ import DateOption from "./fields/DateOption";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import * as React from "react";
+import style from "../../../style/survey/QuestionComp.module.css";
 
 export default function QuestionComp({
   index,
@@ -38,35 +39,11 @@ export default function QuestionComp({
 
   return (
     <>
-      <div
-        style={{
-          width: "700px",
-          backgroundColor: "white",
-          borderRadius: "10px",
-          minHeight: "150px",
-          border: "1px solid #D6D6D6",
-          borderTop: "10px solid #0171D1",
-          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-        }}
-      >
+      <div className={style.container}>
         {/*ㅇㅕ긴 선택 버튼들*/}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            borderRadius: "10px 10px 0 0",
-          }}
-        >
+        <div className={style.wrapTopButton}>
           <Stack direction="row" alignItems="center" spacing={1}>
-            <span
-              style={{
-                display: "inline-block",
-                width: "50px",
-                textAlign: "center",
-              }}
-            >
-              {step}
-            </span>
+            <span className={style.stepText}>{step}</span>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <span>
@@ -89,9 +66,9 @@ export default function QuestionComp({
           </Stack>
         </div>
 
-        {/*질문답변들*/}
-        <div style={{ marginTop: "20px" }}>
-          <div style={{ margin: "0 auto", width: "600px" }}>
+        {/*질문*/}
+        <div>
+          <div className={style.wrapQuestion}>
             <TextField
               value={surveyQuestion}
               id="filled-basic"
@@ -103,15 +80,6 @@ export default function QuestionComp({
               sx={{ width: 600 }}
               onChange={(e) => changeTitle(index, e.target.value)}
             />
-            {/*<TextField*/}
-            {/*    value={content}*/}
-            {/*    id="standard-basic"*/}
-            {/*    variant="standard"*/}
-            {/*    placeholder={'설명'}*/}
-            {/*    inputProps={{style: {fontSize: '14px', padding: '15px 0 0 0'}}}*/}
-            {/*    sx={{width: 600}}*/}
-            {/*    onChange = {(e)=>changeContent(index, e.target.value)}*/}
-            {/*/>*/}
           </div>
         </div>
 
@@ -143,21 +111,8 @@ export default function QuestionComp({
 
         {/*푸터*/}
 
-        <div
-          style={{
-            width: "700px",
-            height: "40px",
-            backgroundColor: "white",
-            marginBottom: "0",
-            marginTop: "20px",
-            borderRadius: "0 0 10px 10px",
-            borderTop: "1px solid #D6D6D6",
-            paddingTop: "5px",
-            paddingBottom: "5px",
-            textAlign: "right",
-          }}
-        >
-          <span style={{ margin: "20px 30px 0 0" }}>
+        <div className={style.footer}>
+          <span className={style.requiredButton}>
             <RequiredButton index={index} changeRequired={changeRequired} />
           </span>
         </div>

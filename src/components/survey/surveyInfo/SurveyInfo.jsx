@@ -4,6 +4,7 @@ import { useState } from "react";
 import QuestionInfo from "./QuestionInfo";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import style from "../../../style/survey/SurveyInfo.module.css";
 
 export default function SurveyInfo() {
   const [formData, setFormData] = useState({
@@ -56,18 +57,10 @@ export default function SurveyInfo() {
 
   return (
     <>
-      <div style={{ width: "700px", margin: "0 auto" }}>
+      <div className={style.container}>
         {/* 버튼들  */}
 
-        <div
-          style={{
-            display: "flex",
-            borderRadius: "10px 10px 0 0",
-            justifyContent: "space-between",
-            textAlign: "right",
-            margin: "30px 0 30px 0",
-          }}
-        >
+        <div className={style.wrapButton}>
           <div></div>
           <Stack direction="row" alignItems="center" spacing={2}>
             <Button variant="text">삭제</Button>
@@ -77,41 +70,9 @@ export default function SurveyInfo() {
         </div>
 
         {/* 설문지 제목  */}
-        <div
-          style={{
-            width: "700px",
-            borderRadius: "10px",
-            minHeight: "120px",
-            border: "1px solid #D6D6D6",
-            paddingTop: "20px",
-            borderTop: "10px solid #243579",
-            margin: "0 auto",
-            boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-            paddingBottom: "25px",
-            marginBottom: "25px",
-          }}
-        >
-          <p
-            style={{
-              width: "600px",
-              fontSize: "25px",
-              fontWeight: "bold",
-              margin: "0 auto",
-              paddingTop: "30px",
-            }}
-          >
-            {formData.title}
-          </p>
-          <p
-            style={{
-              width: "600px",
-              fontSize: "14px",
-              margin: "0 auto",
-              paddingTop: "15px",
-            }}
-          >
-            {formData.content}
-          </p>
+        <div className={style.wrapSurveyInfo}>
+          <p className={style.wrapTitle}>{formData.title}</p>
+          <p className={style.wrapContent}>{formData.content}</p>
         </div>
 
         <div>

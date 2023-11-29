@@ -5,6 +5,7 @@ import DateOption from "../surveyForm/fields/DateOption";
 import FileOption from "../surveyForm/fields/FileOption";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import style from "../../../style/survey/QuestionInfo.module.css";
 
 export default function QuestionInfo({ info }) {
   const {
@@ -19,31 +20,11 @@ export default function QuestionInfo({ info }) {
 
   return (
     <>
-      <div
-        style={{
-          width: "700px",
-          backgroundColor: "white",
-          borderRadius: "10px",
-          minHeight: "150px",
-          border: "1px solid #D6D6D6",
-          borderTop: "10px solid #0171D1",
-          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-          margin: "0 auto",
-          marginBottom: "25px",
-        }}
-      >
+      <div className={style.container}>
         {/* 제목 */}
-        <div style={{ marginTop: "20px" }}>
-          <div style={{ margin: "0 auto", width: "600px" }}>
-            <p
-              style={{
-                fontWeight: "bold",
-                width: "600px",
-                paddingTop: "15px",
-              }}
-            >
-              {surveyQuestion}
-            </p>
+        <div>
+          <div className={style.wrapQuestion}>
+            <p className={style.questionText}>{surveyQuestion}</p>
           </div>
         </div>
 
@@ -78,16 +59,12 @@ export default function QuestionInfo({ info }) {
 function Choice({ single, text }) {
   return (
     <>
-      <div style={{ margin: "0 auto", width: "600px" }}>
+      <div className={style.wrapChoice}>
         <Stack direction="row" alignItems="center" spacing={1}>
           <span
-            style={{
-              width: "16px",
-              height: "16px",
-              border: "2px solid #D6D6D6",
-              textAlign: "center",
-              borderRadius: single ? "50%" : "3px",
-            }}
+            className={`${style.rounded} ${
+              single ? style.circle : style.square
+            }`}
           ></span>
           <TextField
             value={text}

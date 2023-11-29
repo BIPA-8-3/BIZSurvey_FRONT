@@ -11,6 +11,7 @@ import IconWithText from "../../common/IconWithText";
 import { GrTextAlignFull } from "react-icons/gr";
 import { MdDateRange } from "react-icons/md";
 import { IoMdCloudUpload } from "react-icons/io";
+import style from "../../../style/survey/OptionSelect.module.css";
 
 export default function OptionSelect({ option, setOption, idx }) {
   const handleChange = (event) => {
@@ -38,15 +39,7 @@ export default function OptionSelect({ option, setOption, idx }) {
           <p style={{ fontSize: "13px" }}>옵션</p>
         </MenuItem>
         <MenuItem value={"객관식(택1)"} sx={{ width: 150, padding: 1.5 }}>
-          <div
-            style={{
-              borderRadius: "40px",
-              backgroundColor: "#dfebff",
-              width: "50px",
-              padding: "1px 4px 1px 6px",
-              textAlign: "center",
-            }}
-          >
+          <div className={style.singleChoiceIcon}>
             <IconWithText
               text={"객관식"}
               fontsize={"10.5px"}
@@ -58,15 +51,7 @@ export default function OptionSelect({ option, setOption, idx }) {
           </div>
         </MenuItem>
         <MenuItem value={"객관식(복수선택)"} sx={{ width: 150, padding: 1.5 }}>
-          <div
-            style={{
-              borderRadius: "40px",
-              backgroundColor: "#dfebff",
-              width: "90px",
-              padding: "1px 4px 1px 6px",
-              textAlign: "center",
-            }}
-          >
+          <div className={style.multipleChoiceIcon}>
             <IconWithText
               text={"객관식(다중선택)"}
               fontsize={"10.5px"}
@@ -78,15 +63,7 @@ export default function OptionSelect({ option, setOption, idx }) {
           </div>
         </MenuItem>
         <MenuItem value={"주관식"} sx={{ width: 150, padding: 1.5 }}>
-          <div
-            style={{
-              borderRadius: "40px",
-              backgroundColor: "#f1fde6",
-              width: "50px",
-              padding: "1px 4px 1px 6px",
-              textAlign: "center",
-            }}
-          >
+          <div className={style.textIcon}>
             <IconWithText
               text={"주관식"}
               fontsize={"10.5px"}
@@ -98,15 +75,7 @@ export default function OptionSelect({ option, setOption, idx }) {
           </div>
         </MenuItem>
         <MenuItem value={"날짜"} sx={{ width: 150, padding: 1.5 }}>
-          <div
-            style={{
-              borderRadius: "40px",
-              backgroundColor: "#f3e3ff",
-              width: "50px",
-              padding: "1px 4px 1px 6px",
-              textAlign: "center",
-            }}
-          >
+          <div className={style.dateIcon}>
             <IconWithText
               text={"날짜"}
               fontsize={"10.5px"}
@@ -118,15 +87,7 @@ export default function OptionSelect({ option, setOption, idx }) {
           </div>
         </MenuItem>
         <MenuItem value={"파일"} sx={{ width: 150, padding: 1.5 }}>
-          <div
-            style={{
-              borderRadius: "40px",
-              backgroundColor: "#ffedee",
-              width: "50px",
-              padding: "1px 4px 1px 6px",
-              textAlign: "center",
-            }}
-          >
+          <div className={style.fileIcon}>
             <IconWithText
               text={"파일"}
               fontsize={"10.5px"}
