@@ -11,7 +11,7 @@ import { FixedSizeList } from "react-window";
 import * as React from "react";
 import DraftsIcon from "@mui/icons-material/Drafts";
 import { useState } from "react";
-import Chart from "./fields/Chart";
+import Chart from "../../common/Chart";
 import Text from "./fields/Text";
 import TextResult from "./fields/Text";
 
