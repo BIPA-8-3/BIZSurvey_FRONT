@@ -1,100 +1,100 @@
-body{
-    /* background-color: #EBEDF5; */
-    /* background-color: #F6F8FF; */
+body {
+  /* background-color: #EBEDF5; */
+  /* background-color: #F6F8FF; */
 }
 
-.container{
-    width: 1200px;
-    margin: 0 auto;
-    margin-top: 69px;
-    /* background-color: #fff; */
-    padding: 0px 20px 40px 20px;
-    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+.container {
+  width: 1200px;
+  margin: 0 auto;
+  margin-top: 69px;
+  /* background-color: #fff; */
+  padding: 0px 20px 40px 20px;
+  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
 }
 
-b{
-    font-weight: bold !important;
+b {
+  font-weight: bold !important;
 }
 
-.textCenter{
-    text-align: center;
+.textCenter {
+  text-align: center;
 }
 
-.textBold{
-    font-weight: 900;
+.textBold {
+  font-weight: 900;
 }
 
-.pointer{
-    cursor: pointer;
+.pointer {
+  cursor: pointer;
 }
 
-.title{
-    font-size: 40px;
-    color: #243579;
-    padding: 60px 0px 30px 0px;
+.title {
+  font-size: 40px;
+  color: #243579;
+  padding: 60px 0px 30px 0px;
 }
 
-.subTitle{
-    padding-bottom: 60px;
-    font-size: 18px;
-    color: #243579;
+.subTitle {
+  padding-bottom: 60px;
+  font-size: 18px;
+  color: #243579;
 }
 
-#menuIcon{
-    display: none;
+#menuIcon {
+  display: none;
 }
 
-
-a{
-    text-decoration: none;
-    color: #111;
-
+a {
+  text-decoration: none;
+  color: #111;
 }
 
 .fade-in {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
 }
-  
+
 .fade-in.active {
-    opacity: 1;
+  opacity: 1;
 }
 
-
-/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px)*/ 
-@media all and (min-width:1024px) and (max-width:1279px) { 
-} 
-  
-/* 테블릿 가로 (해상도 768px ~ 1023px)*/ 
-@media all and (min-width:801px) and (max-width:1023px) { 
-} 
-  
-/* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px)*/ 
-@media all and (min-width:480px) and (max-width:800px) {
-    #menuIcon{
-        display: block;
-    }
-} 
-
-/* 모바일 세로 (해상도 ~ 479px)*/ 
-@media all and (max-width:479px) {
-    #menuIcon{
-        display: block;
-    }
-    .title{
-        font-size: 26px;
-        padding: 60px 0px 30px 0px;
-    }
-
-    .subTitle{
-        font-size: 16px;
-    }
-    
+a {
+  text-decoration: none;
+  color: #111;
 }
 
-@media all and (max-width:1200px) { 
-    .container{
-        width: 90%;
-    }
-    
-} 
+/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px)*/
+@media all and (min-width: 1024px) and (max-width: 1279px) {
+}
+
+/* 테블릿 가로 (해상도 768px ~ 1023px)*/
+@media all and (min-width: 801px) and (max-width: 1023px) {
+}
+
+/* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px)*/
+@media all and (min-width: 480px) and (max-width: 800px) {
+  #menuIcon {
+    display: block;
+  }
+}
+
+/* 모바일 세로 (해상도 ~ 479px)*/
+@media all and (max-width: 479px) {
+  #menuIcon {
+    display: block;
+  }
+  .title {
+    font-size: 26px;
+    padding: 60px 0px 30px 0px;
+  }
+
+  .subTitle {
+    font-size: 16px;
+  }
+}
+
+@media all and (max-width: 1200px) {
+  .container {
+    width: 90%;
+  }
+}

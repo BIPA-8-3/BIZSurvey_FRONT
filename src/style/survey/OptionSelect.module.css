@@ -1,0 +1,39 @@
+.singleChoiceIcon {
+  border-radius: 40px;
+  background-color: #dfebff;
+  width: 50px;
+  padding: 1px 4px 1px 6px;
+  text-align: center;
+}
+
+.multipleChoiceIcon {
+  border-radius: 40px;
+  background-color: #dfebff;
+  width: 90px;
+  padding: 1px 4px 1px 6px;
+  text-align: center;
+}
+
+.textIcon {
+  border-radius: 40px;
+  background-color: #f1fde6;
+  width: 50px;
+  padding: 1px 4px 1px 6px;
+  text-align: center;
+}
+
+.dateIcon {
+  border-radius: 40px;
+  background-color: #f3e3ff;
+  width: 50px;
+  padding: 1px 4px 1px 6px;
+  text-align: center;
+}
+
+.fileIcon {
+  border-radius: 40px;
+  background-color: #ffedee;
+  width: 50px;
+  padding: 1px 4px 1px 6px;
+  text-align: center;
+}
