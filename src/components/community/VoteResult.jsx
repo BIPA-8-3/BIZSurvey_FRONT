@@ -7,7 +7,7 @@ const VoteResult = () => {
   const chartData = [
     { value: 15, name: '산책하자' },
     { value: 40, name: '하지말자' },
-    { value: 20, name: '하자자자' },
+    { value: 20, name: '집에가자' },
     { value: 20, name: '미쳤다' },
   ];
 
@@ -23,9 +23,9 @@ const VoteResult = () => {
         </Typography>
         <Divider sx={{ my: 2, width: '100%' }} />
 
-        <div style={{ display: 'flex'}}>
-          <div><Chart chartData={chartData} /></div>
-          <div>
+          <div style={{display: 'flex'}}>
+          <div ><Chart chartData={chartData} /></div>
+          <div style={{marginTop: '30px'}}>
             {rankData.map((item, index) => (
             <div key={index} style={{ textAlign: 'center', marginTop: '20px' }}>
               <h2 style={{ fontSize: '1rem', fontWeight: item.rank === 1 ? 'bold' : 'normal' }}>
@@ -35,7 +35,7 @@ const VoteResult = () => {
             
             ))}
           </div>
-        </div>
+          </div>
         {/* 구분선 */}
         <Divider sx={{ my: 2, width: '100%' }} />
         <SaveButton></SaveButton>

@@ -6,6 +6,8 @@ import ECharts, { EChartsReactProps } from "echarts-for-react";
 export default function Chart({ chartData }) {
   // chartData : [{value : '개수', name: '옵션명'},{value : '개수', name: '옵션명'},... ]
 
+  const data = processData(chartData);
+
   const [options, setOptions] = useState({
     tooltip: {
       trigger: "item",
@@ -13,9 +15,10 @@ export default function Chart({ chartData }) {
     legend: {
       type: "scroll",
       orient: "vertical",
-      
+      right: "50px",
       top: 40,
       bottom: 20,
+      data: data.legendData,
     },
     series: [
       {
@@ -42,7 +45,7 @@ export default function Chart({ chartData }) {
         labelLine: {
           show: false,
         },
-        data: chartData,
+        data: data.seriesData,
       },
     ],
   });
@@ -51,8 +54,24 @@ export default function Chart({ chartData }) {
     <>
       <ECharts
         option={options}
-        opts={{ renderer: "svg", width: "600px", height: "240px" }}
+        opts={{ renderer: "svg", width: "550px", height: "240px" }}
       />
     </>
   );
+}
+
+function processData(data) {
+  const legendData = data.map((item) => {
+    return {
+      name: item.name.length > 20 ? item.name.slice(0, 20) + "..." : item.name,
+    };
+  });
+
+  const seriesData = data.map((item) => {
+    return {
+      ...item,
+      name: item.name.length > 20 ? item.name.slice(0, 20) + "..." : item.name,
+    };
+  });
+  return { legendData, seriesData };
 }

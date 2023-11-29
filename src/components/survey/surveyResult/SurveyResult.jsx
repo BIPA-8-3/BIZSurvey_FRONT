@@ -31,6 +31,7 @@ export default function SurveyResult() {
 
   return (
     <>
+      {/* 게시물 선택 select  */}
       <div style={{ width: "700px", margin: "0 auto", textAlign: "center" }}>
         <FormControl sx={{ minWidth: 700 }}>
           <Select

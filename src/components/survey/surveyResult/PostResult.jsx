@@ -19,15 +19,21 @@ export default function PostResult() {
   const chartData = [
     {
       value: 1048,
-      name: "Search Engiasdfasdsadffffffffdfdsafsafsadfdsfsdfsfdsafdsafasdnasdfe",
+      name: "Seafe",
     },
     { value: 735, name: "Direct" },
-    { value: 580, name: "Email" },
+    {
+      value: 580,
+      name: "Emㅇl",
+    },
 
-    { value: 735, name: "Diredt" },
-    { value: 580, name: "Emagil" },
-    { value: 484, name: "Union sfAds" },
-    { value: 300, name: "Video dfAds" },
+    {
+      value: 735,
+      name: "dfs니",
+    },
+    { value: 580, name: "이건 글자가 많이 안길어서 괜찮습니다.!!!!!!" },
+    { value: 484, name: "Unios" },
+    { value: 300, name: "Vides" },
   ];
 
   const [userInfo, serUserInfo] = useState([
