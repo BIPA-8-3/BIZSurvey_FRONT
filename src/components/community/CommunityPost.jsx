@@ -24,6 +24,8 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import useFadeIn from '../../style/useFadeIn';
 import back from '../../assets/img/back.png'
 import CommunityTable from './CommunityTable';
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -90,7 +92,19 @@ export default function CommunityPost() {
       </Table>
     </TableContainer> */}
 
-    
+    <div style={{textAlign:'right'}}>
+        <Link to={'/communityWrite'}>
+            <Button variant="contained" href="#contained-buttons" 
+            sx={{
+              padding:'11px 30px', 
+              backgroundColor:'#243579', 
+              fontWeight:'bold',
+              marginBottom:'10px',
+              boxShadow:0,}}>
+                글쓰기
+            </Button>
+        </Link>
+    </div>
     <CommunityTable />
     <div style={{width : '1200px', margin : '0 auto', marginTop:'20px'}} >
     <Stack spacing={1} sx={{margin: '0 auto', float : 'right' }}>
