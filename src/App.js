@@ -13,19 +13,27 @@ import Login from "./components/user/Login";
 
 import QuestionComp from "./components/survey/surveyForm/QuestionComp";
 
+
 import CreateSurveyPage from "./pages/survey/CreateSurveyPage";
 import SurveyInfoPage from "./pages/survey/SurveyInfoPage";
 
+import Join from './components/user/Join';
+import CommunityPost from './components/community/CommunityPost';
+import Search from './components/common/Search';
+import SurveyCard from './components/common/SurveyCard';
+import { useRoutes } from 'react-router-dom';
+import ThemeRoutes from './routes/Router';
+
+
+
 const App = () => {
-  // const routing = useRoutes(ThemeRoutes);
+  const routing = useRoutes(ThemeRoutes);
   return (
     <>
-      {/* <Reset />
-      <div>{routing}</div> */}
+      <Reset />
+      <div>{routing}</div>
 
-      {/* <CreateSurveyPage /> */}
-      {/* <SurveyInfo /> */}
-      <SurveyInfoPage />
+     
     </>
   );
 };
