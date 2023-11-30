@@ -5,7 +5,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import { useEffect } from "react";
-import SurveyResult from "../../components/survey/surveyResult/SurveyResult";
+import SurveyResult from "../../components/survey/surveyResult/SurvePostSelect";
 
 export default function SurveyInfoPage() {
   const [page, setPage] = useState(0);
