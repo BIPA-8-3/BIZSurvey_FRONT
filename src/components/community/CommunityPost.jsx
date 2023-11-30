@@ -59,7 +59,7 @@ export default function CommunityPost() {
 
     <div className={`fade-in ${fadeIn ? 'active' : ''}`}>
       <div className={style.titleWrap}>
-          <h1 className='textCenter title textBold'>COMMUNITY</h1>
+          <h1 className='textCenter title textBold'>커뮤니티</h1>
           <p className='textCenter subTitle'>쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
       </div>
       <Search></Search>
