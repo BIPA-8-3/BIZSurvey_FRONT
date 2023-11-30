@@ -6,6 +6,8 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import style from "../../../style/survey/SurveyInfo.module.css";
 
+import BizModal from "../../common/BizModal";
+
 export default function SurveyInfo() {
   const [formData, setFormData] = useState({
     surveyId: 0,
@@ -55,6 +57,10 @@ export default function SurveyInfo() {
     },
   ]);
 
+  const [openmodal, setOpenmodal] = useState(false);
+  const handleOpenModal = () => setOpenmodal(true);
+  const handleCloseModal = () => setOpenmodal(false);
+
   return (
     <>
       <div className={style.container}>
@@ -63,11 +69,23 @@ export default function SurveyInfo() {
         <div className={style.wrapButton}>
           <div></div>
           <Stack direction="row" alignItems="center" spacing={2}>
-            <Button variant="text">삭제</Button>
+            <Button variant="text" onClick={handleOpenModal}>
+              삭제
+            </Button>
             <Button variant="contained">업로드</Button>
             <Button variant="outlined">수정</Button>
           </Stack>
         </div>
+
+        <BizModal
+          isOpen={openmodal}
+          handleClose={handleCloseModal}
+          title={"wpahfalsf"}
+        >
+          <p style={{ width: "500px", height: "400px" }}>
+            as;fljaksldfjasdfdsa
+          </p>
+        </BizModal>
 
         {/* 설문지 제목  */}
         <div className={style.wrapSurveyInfo}>
