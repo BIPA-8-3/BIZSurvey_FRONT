@@ -1,7 +1,5 @@
 import { lazy } from "react";
 import { Navigate } from "react-router-dom";
-
-
 const FullLayout = lazy(() => import("../pages/Layout"));
 
 /****** Pages *******/
@@ -12,8 +10,12 @@ const Plan = lazy(() => import("../components/common/Plan"))
 const CommunityPost = lazy(() => import('../components/community/CommunityPost'))
 const CommunityDetail = lazy(() => import('../components/community/CommunityDetail'))
 const CommunityWrite = lazy(() => import('../components/community/CommunityWrite'))
-const PostDetail = lazy(() => import('../components/community/PostDetail'))
+const SurveyCommunityDetail = lazy(() => import('../components/surveyCommunity/SurveyCommunityDetail'))
+const CommunitySurveyWrite = lazy(() => import('../components/surveyCommunity/CommunitySurveyWrite'))
+const FindPassword = lazy(() => import('../components/user/FindPassword'))
+const Mypage = lazy(() => import('../components/user/Mypage'))
 
+const PostDetail = lazy(() => import('../components/community/PostDetail'))
 const ThemeRoutes = [
     {
         path : "/",
@@ -26,7 +28,11 @@ const ThemeRoutes = [
             {path: "/plan", exact: true, element: <Plan />},
             {path: "/community", exact: true, element: <CommunityPost />},
             {path: "/communityDetail", exact: true, element: <CommunityDetail />},
-            {path: "/CommunityWrite", exact: true, element: <CommunityWrite />},
+            {path: "/communityWrite", exact: true, element: <CommunityWrite />},
+            {path: "/surveyCommunityDetail", exact: true, element: <SurveyCommunityDetail />},
+            {path: "/communitySurveyWrite", exact: true, element: <CommunitySurveyWrite />},
+            {path: "/FindPassword", exact: true, element: <FindPassword />},
+            {path: "/mypage", exact: true, element: <Mypage />},
         ]
     }
 ];
