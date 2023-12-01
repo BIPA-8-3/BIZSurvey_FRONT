@@ -9,13 +9,14 @@ const Layout = () => {
     const location = useLocation();
     // 현재 경로가 '/mypage'인 경우 Header를 숨깁니다.
 
-    const shouldRenderCustomContainer = location.pathname === '/mypage' || location.pathname === '/workspace';;
+    const shouldRenderCustomContainer = location.pathname === '/workspace';
+    const shouldRenderCustomHeader = location.pathname === '/mypage';
     
 
     return(
      <div>
-          <Header />
-             {shouldRenderCustomContainer ? (
+        {!shouldRenderCustomHeader && <Header />}
+            {shouldRenderCustomContainer ? (
                 <div className="custom-container">
                     <Outlet />
                 </div>
@@ -24,7 +25,7 @@ const Layout = () => {
                     <Outlet />
                 </div>
             )}
-         <Footer />
+        {!shouldRenderCustomHeader && <Footer />}
      </div>
     )
  }

@@ -10,7 +10,10 @@ function Mypage() {
   const fadeIn = useFadeIn();
   return (
     <div id={style.joinWrap} className={`fade-in ${fadeIn ? 'active' : ''}`}>
-        <MypageHeader />
+        <div style={{display:'flex'}}>
+          <MypageHeader />
+          <div style={{background:'red', flex: '1', marginTop:'-54px'}}></div>
+        </div>
       <img src={back} alt="배경" className={style.back}/>
     </div>
   );
