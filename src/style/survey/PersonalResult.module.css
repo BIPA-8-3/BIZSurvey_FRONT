@@ -1,0 +1,25 @@
+.userContainer {
+  width: 700px;
+  background-color: white;
+  border-radius: 10px;
+  min-height: 100px;
+  border: 1px solid #d6d6d6;
+  border-top: 10px solid #119fb3;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin: 0 auto;
+  margin-bottom: 25px;
+}
+
+.userTitle {
+  padding: 16px 0 16px 30px;
+  font-size: 18px;
+  font-weight: 500;
+  border-bottom: 1px solid #d6d6d6;
+}
+
+.userList {
+  width: 680px;
+  margin: 0 auto;
+  min-height: 150px;
+  margin-top: 10px;
+}

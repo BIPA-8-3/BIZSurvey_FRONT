@@ -1,12 +1,10 @@
-import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 import * as React from "react";
 import { useState } from "react";
+import style from "../../../../style/survey/SurveyInfo.module.css";
 import QuestionInfo from "./QuestionInfo";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import style from "../../../style/survey/SurveyInfo.module.css";
-
-import BizModal from "../../common/BizModal";
+import SurveyTitle from "../SurveyTitle";
 
 export default function SurveyInfo() {
   const [formData, setFormData] = useState({
@@ -57,10 +55,6 @@ export default function SurveyInfo() {
     },
   ]);
 
-  const [openmodal, setOpenmodal] = useState(false);
-  const handleOpenModal = () => setOpenmodal(true);
-  const handleCloseModal = () => setOpenmodal(false);
-
   return (
     <>
       <div className={style.container}>
@@ -69,29 +63,14 @@ export default function SurveyInfo() {
         <div className={style.wrapButton}>
           <div></div>
           <Stack direction="row" alignItems="center" spacing={2}>
-            <Button variant="text" onClick={handleOpenModal}>
-              삭제
-            </Button>
+            <Button variant="text">삭제</Button>
             <Button variant="contained">업로드</Button>
             <Button variant="outlined">수정</Button>
           </Stack>
         </div>
 
-        <BizModal
-          isOpen={openmodal}
-          handleClose={handleCloseModal}
-          title={"wpahfalsf"}
-        >
-          <p style={{ width: "500px", height: "400px" }}>
-            as;fljaksldfjasdfdsa
-          </p>
-        </BizModal>
-
         {/* 설문지 제목  */}
-        <div className={style.wrapSurveyInfo}>
-          <p className={style.wrapTitle}>{formData.title}</p>
-          <p className={style.wrapContent}>{formData.content}</p>
-        </div>
+        <SurveyTitle title={formData.title} content={formData.content} />
 
         <div>
           {questions.map((question) => (

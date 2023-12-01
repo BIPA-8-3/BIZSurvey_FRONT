@@ -1,0 +1,11 @@
+.wrap {
+  height: 40px;
+  background-color: transparent;
+  width: 350px;
+  border: 0;
+}
+
+button:hover {
+  transition: all 0.5s;
+  background-color: rgba(21, 77, 202, 0.1);
+}
