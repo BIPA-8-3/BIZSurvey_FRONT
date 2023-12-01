@@ -1,0 +1,41 @@
+#Container {
+  width: 275px;
+  height: 150px;
+  background-color: #fff;
+  box-sizing: border-box;
+  box-shadow: rgba(0, 0, 0, 0.1) 2px 4px 10px;
+  border-radius: 15px;
+  padding: 5px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  cursor: pointer;
+}
+
+.cardHeader {
+  font-size: 24px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cardBody {
+  font-size: 18px;
+}
+
+.cardFooter {
+  font-size: 12px;
+}
+
+.optionBtn {
+  color: grey;
+  border-radius: 35px;
+}
+
+/* 이벤트 */
+#Container:hover {
+  background-color: #f9f9f9;
+}
+
+.optionBtn:hover {
+  background-color: #efefef;
+}

@@ -9,11 +9,11 @@ import Loader from './pages/loader/Loader';
 function Root() {
 
   return (
-        <Suspense fallback={<Loader />}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </Suspense>
+    <Suspense fallback={<Loader />}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Suspense>
   );
 }
 

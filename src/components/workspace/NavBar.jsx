@@ -1,85 +1,55 @@
 import AddIcon from "@mui/icons-material/Add";
 import Item from "./Item";
+import ButtonItem from "./ButtonItem";
+import style from "../../style/workspace/Navbar.module.css";
 
-function NavBar() {
+function Navbar() {
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: "68px",
-        width: "256px",
-        height: "1000px",
-        border: "1px solid rgb(246, 246, 246)",
-      }}
-    >
-      <div style={{ padding: "20px 12px 10px" }}>
-        <div>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <img src="https://via.placeholder.com/45X45" style={{ borderRadius: "45px" }}></img>
-            <div style={{ display: "inline-block", marginLeft: "10px" }}>
-              <span style={{ fontWeight: "bold", fontSize: "14px", display: "block" }}>
-                비즈서베이
-              </span>
-              <span style={{ fontSize: "10px", color: "rgb(107, 119, 140)" }}>
-                hws6745@naver.com
-              </span>
-            </div>
-          </div>
-          <div
-            style={{
-              padding: "0 5px",
-              alignContent: "center",
-              verticalAlign: "center",
-              justifyContent: "space-between",
-              display: "flex",
-              marginTop: "5px",
-            }}
-          >
-            <span
-              style={{
-                color: "rgb(107, 119, 140)",
-                fontSize: "11px",
-                fontWeight: "bold",
-                marginTop: "10px",
-              }}
-            >
-              워크스페이스
+    <div id={style.Navbar}>
+      {/* header start */}
+      <div className={style.NavbarHeader}>
+        <div className={style.HeaderProfile}>
+          <img src="https://via.placeholder.com/45X45" className={style.profileRadius}></img>
+          <div className={style.profileInfo}>
+            <span className={style.profileName}>
+              <span style={{ marginRight: "3px" }}>🎖️</span>비즈서베이
             </span>
-            <button
-              style={{
-                background: "#ffffff",
-                border: "0",
-                cursor: "pointer",
-                transition: "background-color 0.3s",
-              }}
-            >
-              <AddIcon
-                style={{
-                  fontSize: "23px",
-                  color: "grey",
-                  borderRadius: "15px",
-                }}
-                className="add-icon"
-              ></AddIcon>
-            </button>
+            <span className={style.profileEmail}>hws6745@naver.com</span>
           </div>
         </div>
+
+        <div className={style.headerWorkspace}>
+          <span className={style.headerWorkspaceFont}>워크스페이스</span>
+          <span>
+            <AddIcon className={style.addIcon}></AddIcon>
+          </span>
+        </div>
       </div>
-      <div>
+      {/* header end */}
+
+      {/* body start */}
+      <div className={style.NavbarBody}>
         <Item></Item>
         <Item></Item>
         <Item></Item>
         <Item></Item>
-        <Item></Item>
-        <Item></Item>
+        <div>
+          <ButtonItem></ButtonItem>
+        </div>
       </div>
-      <style>{`
-        .add-icon:hover {
-          background-color: rgb(245, 245, 245); /* Change this to the desired hover background color */
-        }
-      `}</style>
+      {/* body end */}
+
+      {/* footer */}
+      <div className={style.NavbarFooter}>
+        {/* <div className={style.planBox}>
+          <p>😁 일반 플랜</p>
+        </div> */}
+        <div className={style.planText}>
+          <span>플랜 변경하기</span>
+        </div>
+      </div>
     </div>
   );
 }
 
-export default NavBar;
+export default Navbar;

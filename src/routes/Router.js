@@ -26,6 +26,8 @@ const CommunityWrite = lazy(() =>
 );
 const PostDetail = lazy(() => import("../components/community/PostDetail"));
 
+const Main = lazy(() => import("../pages/workspace/Main"));
+
 const ThemeRoutes = [
   {
     path: "/",
@@ -41,6 +43,7 @@ const ThemeRoutes = [
       { path: "/createSurvey", exact: true, element: <CreateSurvey /> },
       { path: "/CommunityWrite", exact: true, element: <CommunityWrite /> },
       { path: "/surveyInfo", exact: true, element: <SurveyInfoPage /> },
+      { path: "/workspace", exact: true, element: <Main /> },
     ],
   },
 ];
