@@ -1,0 +1,126 @@
+#Navbar {
+  /* Main에서 Top 조절 안하려면 해당 주석 해제 */
+  margin-top: 50px;
+  width: 254px;
+  height: 100vh;
+  border: 2px solid rgb(238, 238, 238);
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  /* flex-wrap: wrap; */
+}
+
+/* header */
+.NavbarHeader {
+  padding: 15px 12px 0;
+}
+
+.HeaderProfile {
+  display: flex;
+  align-items: center;
+  padding-left: 5px;
+  padding: 10px 5px;
+}
+
+.profileInfo {
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+.profileRadius {
+  border-radius: 45px;
+}
+
+.profileName {
+  font-weight: bold;
+  font-size: 14px;
+  display: block;
+}
+
+.profileEmail {
+  font-size: 10px;
+  margin-top: 5px;
+  color: #6b778c;
+}
+
+.headerWorkspace {
+  padding: 0 10px;
+  justify-content: space-between;
+  display: flex;
+  margin-top: 15px;
+}
+
+.headerWorkspaceFont {
+  color: #6b778c;
+  font-size: 11px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.addIcon {
+  font-size: 23px;
+  color: grey;
+  border-radius: 15px;
+}
+
+/* body */
+.NavbarBody {
+  overflow: auto;
+  /* Main에서 Top 조절 안하려면 해당 주석 해제 */
+  height: calc(100vh - 225px);
+  /* height: calc(100vh - 285px); */
+  padding: 0 12px 10px;
+}
+
+/* footer */
+.NavbarFooter {
+  height: 35px;
+  width: 254px;
+  border-top: 1px solid #eeeeee;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* flex-direction: column; */
+}
+
+/* event */
+.addIcon:hover {
+  cursor: pointer;
+}
+.addIcon:hover {
+  background-color: rgb(245, 245, 245);
+}
+.planBox {
+  color: #111;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 15px 20px;
+  border-radius: 15px;
+  margin-top: 10px;
+  margin-bottom: 3px;
+}
+.planText {
+  font-size: 11px;
+  /* margin-top: 5px; */
+  color: #6b778c;
+}
+
+.NavbarBody::-webkit-scrollbar {
+  width: 5px;
+}
+
+.NavbarBody::-webkit-scrollbar-thumb {
+  background-color: #d8d8d8;
+  border-radius: 30px;
+  width: 5px;
+}
+
+.NavbarBody::-webkit-scrollbar-track {
+  background-color: #ffffff;
+  /* background-color: #f7f9fa; */
+  border-radius: 10px;
+}
