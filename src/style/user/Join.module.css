@@ -1,0 +1,132 @@
+#joinWrap{
+    width: 500px;
+    margin: 0 auto;
+}
+
+
+label{
+    font-size: 10pt !important;
+    margin-bottom: 5px;
+    color: gray;
+}
+
+.inputDiv{
+    width: 500px;
+}
+
+.input{
+    width: 500px;
+    border-style: solid;
+    border-width: 1px;
+    height: 1.4375em;
+    border-radius: 4px;
+    border-color: rgba(0, 0, 0, 0.23);
+    padding: 11.5px 0px !important
+}
+.inputWrap{
+    width: 100%;
+    height: 44.16px;
+    position: relative;
+    margin-bottom: 16px;
+    
+}
+
+.inputBtn{
+    width: 100px;
+    height: 100%;
+    line-height: 45px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    background-color: #243579;
+    z-index: 9998;
+    position: absolute;
+    top: 0px;
+    right: -2px;
+    border-radius: 0px 5px 5px 0px;
+    cursor: pointer;
+}
+
+.searchPw{
+    margin-top: 3px;
+}
+
+.searchPw a{
+    font-size: 10pt;
+    color: #154DCA;
+    cursor: pointer;
+}
+
+.searchPw a:hover{
+    font-weight: bold;
+}
+
+.MuiButtonBase-root, .MuiButton-root{
+    padding: 11.5px 14px !important
+}
+
+.back{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:-80px;
+    left: 0px;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+
+/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px)*/ 
+@media all and (min-width:1024px) and (max-width:1279px) { 
+} 
+  
+/* 테블릿 가로 (해상도 768px ~ 1023px)*/ 
+@media all and (min-width:801px) and (max-width:1023px) { 
+   
+} 
+
+/* 모바일 세로 (해상도 ~ 479px)*/ 
+@media all and (max-width:479px) {
+    .title{
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+    #joinWrap{
+        width: 90%;
+        margin: 0 auto;
+    }
+    .input{
+        width: 90%;
+        border-style: solid;
+        border-width: 1px;
+        height: 1.4375em;
+        border-radius: 4px;
+        border-color: rgba(0, 0, 0, 0.23);
+        padding: 11.5px 0px !important
+    }
+    .inputDiv{
+        width: 90%;
+    }
+    .kakaoLogin{
+        width: 100%;
+        height: auto;
+    }
+    .input100{
+        width: 110%;
+    }
+    .inputBtn{
+        width: 80px;
+        height: 100%;
+        line-height: 45px;
+        font-size: 10px;
+        color: #fff;
+        text-align: center;
+        background-color: #243579;
+        z-index: 9998;
+        position: absolute;
+        top: 0px;
+        right: -2px;
+        border-radius: 0px 5px 5px 0px;
+        cursor: pointer;
+    }
+}

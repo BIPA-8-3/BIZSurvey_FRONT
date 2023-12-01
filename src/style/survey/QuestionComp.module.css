@@ -1,0 +1,44 @@
+.container {
+  width: 700px;
+  background-color: white;
+  border-radius: 10px;
+  min-height: 150px;
+  border: 1px solid #d6d6d6;
+  border-top: 10px solid #0171d1;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.wrapTopButton {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 10px 10px 0 0;
+}
+
+.stepText {
+  display: inline-block;
+  width: 50px;
+  text-align: center;
+}
+
+.wrapQuestion {
+  margin: 0 auto;
+  width: 600px;
+  margin-top: 20px;
+}
+
+.footer {
+  width: 700px;
+  height: 40px;
+  background-color: white;
+  margin-bottom: 0;
+  margin-top: 20px;
+  border-radius: 0 0 10px 10px;
+  border-top: 1px solid #d6d6d6;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: right;
+}
+
+.requiredButton {
+  margin: 20px 30px 0 0;
+}

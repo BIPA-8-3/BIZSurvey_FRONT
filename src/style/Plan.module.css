@@ -1,0 +1,107 @@
+
+.back{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:-80px;
+    left: 0px;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+.planWrap{
+    width: 900px;
+    margin: 0 auto;
+}
+
+.plan{
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    height: 342px;
+    transition: all 0.2s linear;
+    cursor: pointer;
+}
+
+.plan:hover{
+    transform: scale(1.02);
+}
+
+.planHead{
+    padding: 15px 0px;
+}
+
+.planHead p{
+    font-size: 20px;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+}
+
+.planBody{
+    padding: 20px;
+    background-color: #fff;
+}
+.subTitle{
+    padding: 20px;
+    padding-top: 0px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.subText{
+    width: 80%;
+    background-color: rgba(207, 217, 255, 0.3);
+    padding: 14px;
+    margin: 0 auto;
+    border-radius: 5px;
+}
+
+.subText p{
+    text-align: center;
+    font-size: 12px;
+    line-height: 17px;
+}
+
+.itemList{
+    padding: 28px;
+    margin-top: 10px;
+}
+
+.itemList div div{
+    padding-top: 5px !important;
+}
+.point1{
+    color: #0171D1;
+    font-weight: bold;
+}
+
+.point2{
+    color: #0171D1;
+    font-weight: bold;
+}
+
+.itemList div div div svg{
+    color: #0171D1 !important;
+}
+
+/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px)*/ 
+@media all and (min-width:1024px) and (max-width:1279px) { 
+} 
+  
+/* 테블릿 가로 (해상도 768px ~ 1023px)*/ 
+@media all and (min-width:801px) and (max-width:1023px) { 
+} 
+
+/* 모바일 세로 (해상도 ~ 479px)*/ 
+@media all and (max-width:479px) {
+    .itemList{
+        padding: 22px 5px;
+    }
+}
+
+@media all and (max-width:1200px) { 
+    .planWrap{
+        width: 100%;
+    }
+}

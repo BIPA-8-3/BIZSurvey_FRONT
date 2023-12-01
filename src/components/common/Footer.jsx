@@ -7,11 +7,11 @@ function Footer(){
         <div id={style.mainFooter}>
             <div id={style.footerItemWrap}>
                 <div className={style.footerLogoWrap}>
-                    <img src={logo} alt="logo" className={style.logo} />
-                    <div>
+                    <a className="pointer"><img src={logo} alt="logo" className={style.logo} /></a>
+                    {/* <div>
                         <span></span>
                         <span></span>
-                    </div>
+                    </div> */}
                 </div>
                 <ul>
                     <li>비즈서베이</li>

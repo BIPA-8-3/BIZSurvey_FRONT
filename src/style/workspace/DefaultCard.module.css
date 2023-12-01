@@ -1,0 +1,23 @@
+#DefaultCard {
+  background-color: #f6f6f6;
+  box-sizing: border-box;
+  width: 275px;
+  height: 150px;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 2px 4px 10px;
+  padding: 24px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+#DefaultCard:hover,
+#DefaultCard:hover .addBtn {
+  background-color: #f0f2f5;
+  color: #2461ef;
+}
+.addBtn {
+  font-size: 65px;
+  color: lightgray;
+}

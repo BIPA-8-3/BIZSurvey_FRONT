@@ -1,0 +1,23 @@
+.container {
+  width: 700px;
+  background-color: white;
+  border-radius: 10px;
+  min-height: 150px;
+  border: 1px solid #d6d6d6;
+  border-top: 10px solid #0171d1;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin: 0 auto;
+  margin-bottom: 25px;
+}
+
+.wrapQuestion {
+  margin: 0 auto;
+  width: 600px;
+  margin-top: 20px;
+}
+
+.questionText {
+  font-weight: bold;
+  width: 600px;
+  padding-top: 15px;
+}
