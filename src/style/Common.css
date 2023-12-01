@@ -68,6 +68,10 @@ a{
     background-color: rgba(209, 232, 248, 0.3);
 }
 
+/* mui 모달 수정 */
+.MuiModal-root{
+    z-index: 9999 !important;
+}
 
 /* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px)*/ 
 @media all and (min-width:1024px) and (max-width:1279px) { 

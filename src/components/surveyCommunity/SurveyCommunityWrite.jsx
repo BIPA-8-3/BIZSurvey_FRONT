@@ -1,6 +1,6 @@
 
 import React, { useMemo, useRef, useState } from 'react';
-import style from "../../style/community/CommunityWrite.module.css";
+import style from "../../style/surveyCommunity/SurveyCommunityWrite.module.css";
 import '../../style/Common.css';
 import useFadeIn from '../../style/useFadeIn';
 import back from '../../assets/img/back.png';
@@ -8,10 +8,9 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import "react-quill/dist/quill.snow.css"
 import ReactQuill from "react-quill";
-import { IoIosCloseCircle } from "react-icons/io";
-
-import CreateVote from './CreateVote';
-import RegisterVote from './RegisterVote'
+import SurveyListModal from './SurveyListModal';
+// import CreateVote from './CreateVote';
+// import RegisterVote from './RegisterVote'
 
 export default function CommunityWrite() {
   const quillRef = useRef()
@@ -43,7 +42,7 @@ export default function CommunityWrite() {
   return (
     <div className={`fade-in ${fadeIn ? 'active' : ''}`}>
       <div className={style.titleWrap}>
-        <h1 className='textCenter title textBold'>커뮤니티</h1>
+        <h1 className='textCenter title textBold'>설문 등록</h1>
         <p className='textCenter subTitle'>쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
       </div>
       <div className={style.writeWrap}>
@@ -64,19 +63,15 @@ export default function CommunityWrite() {
           </div>
         </div>
         <div className={style.voteWrap}>
-          <p>비즈서베이의 투표 기능을 이용해보세요!</p>
-          <p>원하는 투표 내용을 직접 만들어 회원들의 의견을 확인할 수 있습니다</p>
-          {/* 투표가 만들어 졌을때 컴포넌트 */}
-          <IoIosCloseCircle className={style.voteCloseBtn}/>
-          <RegisterVote />
-          {/* 투표가 만들어 졌을때 컴포넌트 */}
-          <button onClick={handleOpen} style={{cursor:"pointer"}}>투표 만들기</button>
+          <p>비즈서베이의 설문 기능을 이용해보세요!</p>
+          <p>워크스페이스에서 생성한 설문지를 추가해 설문지를 공유할 수 있습니다.</p>
+          <SurveyListModal />
         </div>
       </div>
       <div className={`${style.modalWrap} ${open ? style.fadeIn : ''}`} onClick={handleClose}>
         <div className={style.modal}  onClick={(e) => e.stopPropagation()} >
           <p className={style.title}>투표 추가하기</p>
-          <CreateVote handleClose={handleClose} />
+          
         </div>
         
       </div>
