@@ -20,6 +20,8 @@ const Mypage = lazy(() => import('../components/user/Mypage'))
 const CreateSurvey = lazy(() => import("../pages/survey/CreateSurveyPage"));
 const SurveyInfo = lazy(() => import("../pages/survey/SurveyInfoPage"));
 const PostDetail = lazy(() => import('../components/community/PostDetail'))
+const SurveyCommunityWrite = lazy(() => import('../components/surveyCommunity/SurveyCommunityWrite'))
+
 const ThemeRoutes = [
     {
         path : "/",
@@ -39,6 +41,7 @@ const ThemeRoutes = [
             {path: "/mypage", exact: true, element: <Mypage />},
             {path: "/createSurvey", exact: true, element: <CreateSurvey /> },
             {path: "/surveyInfo", exact: true, element: <SurveyInfoPage /> },
+            {path: "/surveyCommunityWrite", exact: true, element: <SurveyCommunityWrite /> },
     ],
   },
 ];

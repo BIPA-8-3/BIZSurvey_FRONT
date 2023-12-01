@@ -4,17 +4,20 @@ import { Divider, Paper, Checkbox, Button, Box } from "@mui/material";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import style from "../../style/surveyCommunity/SurveyListModal.module.css";
 
 
 const SurveyListModal = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [surveyList, setSurveyList] = useState([
-      { id: 1, title: "설문지 1ssssssssssssssssssss" },
-      { id: 2, title: "설문지 2ssssssssssssss" },
-      { id: 3, title: "설문지 3" },
-      { id: 4, title: "설문지 4" },
-      { id: 5, title: "설문지 5" },
-      { id: 6, title: "설문지 6" },
+      { id: 1, title: "설문지 1ssssssssssssssssssss설문지 1ssssssssssssssssssss설문지 1ssssssssssssssssssss", workspaceName: '개인 워크스페이스' },
+      { id: 2, title: "설문지 2ssssssssssssss", workspaceName: 'oo 워크스페이스' },
+      { id: 3, title: "설문지 3", workspaceName: 'oo 워크스페이스' },
+      { id: 4, title: "설문지 4", workspaceName: 'oo 워크스페이스'  },
+      { id: 5, title: "설문지 5", workspaceName: 'oo 워크스페이스'  },
+      { id: 6, title: "설문지 6", workspaceName: 'oo 워크스페이스' },
+      { id: 7, title: "설문지 7", workspaceName: 'oo 워크스페이스'  },
+      { id: 8, title: "설문지 8", workspaceName: 'oo 워크스페이스'  }
       // 다른 설문지들...
     ]);
     const [selectedSurvey, setSelectedSurvey] = useState(null);
@@ -55,26 +58,33 @@ const SurveyListModal = () => {
     return (
       <div>
         
-        <button onClick={handleOpenModal}>모달 열기</button>
+        <button onClick={handleOpenModal}>설문지 추가</button>
   
         
         <BizModal isOpen={modalOpen} handleClose={handleCloseModal} title="내가 만든 설문">
           
-          <Paper style={{ maxHeight: "200px", overflow: "auto"}}>
-            <List sx={{width : "500px"}}>
+          <div className={style.surveyModalWrap} style={{ maxHeight: "350px", overflow: "auto", borderBottom:'0px'}}>
+            <List sx={{width : "600px"}}>
               {surveyList.map((survey) => (
-                <ListItem key={survey.id} divider>
-                  <ListItemText primary={survey.title} />
+                <ListItem key={survey.id} divider 
+                sx={[{
+                  },{':hover':{
+                    backgroundColor:'#f7f7f7'
+                  }}]}
+                >
+                  <span className={style.workspaceName}>{survey.workspaceName}</span>
+                  <span className={style.modalSurveyName}>{survey.title} </span>
                   <Checkbox
                     checked={selectedSurvey === survey.id}
-                    onChange={() => handleCheckboxChange(survey.id)}
+                    onChange={() => handleCheckboxChange(survey.id)} 
+                    id={survey.id}
                   />
                 </ListItem>
               ))}
             </List>
-          </Paper>
+          </div>
           {/* 오류 메시지 표시 */}
-          {error && <p style={{ color: "red", fontSize: "0.8rem", marginTop: "10px" }}>{error}</p>}
+          {error && <p className={style.errorMsg} style={{ color: "red", fontSize: "0.8rem", marginTop: "10px" }}>{error}</p>}
       
           {/* 적용 버튼 */}
           <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
