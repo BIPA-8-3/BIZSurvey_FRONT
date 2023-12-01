@@ -11,6 +11,7 @@ import logo1 from '../../assets/img/1.jpg';
 import logo from '../../assets/img/avatar.png'
 import Search from './Search';
 import Grid from '@mui/material/Grid';
+import { Link } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -32,7 +33,9 @@ function SurveyCard({ data }) {
   };
 
   const renderCard = (cardData) => (
+    
     <Grid item xs={12} md={6} lg={3} key={cardData.id}>
+      <Link to={'/surveyCommunityDetail'}>
         <div
         key={cardData.id}
         className={`${style.cardWrap}`}
@@ -40,7 +43,7 @@ function SurveyCard({ data }) {
         onMouseOut={handleMouseOut}
         >
         <div className={style.cardThumnail}>
-            <img src={logo1} alt="logo" 
+            <img src='http://localhost:3000/static/media/1.85b24f5bdde08e1546d7.jpg' alt="logo" 
             className={`${style.img} ${hoveredCard === cardData.id ? `${style.scaleUp}` : ''}`}
             />
         </div>
@@ -76,7 +79,9 @@ function SurveyCard({ data }) {
             </div>
         </div>
         </div>
+        </Link>
         </Grid>
+       
   );
   return (
     <Grid container spacing={4}>

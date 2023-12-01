@@ -1,0 +1,44 @@
+.workspaceName{
+    font-size: 12px;
+    background-color: #f2f9ff;
+    padding: 5px 0px;
+    text-align: center;
+    border-radius: 20px;
+    margin-right: 10px;
+    color: #007ae5;
+    font-weight: bold;
+    display: inline-block;      
+    width: 100px; 
+    cursor: default;
+                                                                                                                                ;
+}
+
+.modalSurveyName{
+    display: inline-block; 
+    width: 407px; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+    cursor: default;
+}
+
+
+
+.surverName{
+    width: 100%;
+}
+
+
+/* 스크롤바의 폭 너비 */
+.surveyModalWrap::-webkit-scrollbar {
+    width: 7px;  
+}
+
+.surveyModalWrap::-webkit-scrollbar-thumb {
+    background: #ddd; /* 스크롤바 색상 */
+    border-radius: 0px; /* 스크롤바 둥근 테두리 */
+}
+
+.surveyModalWrap::-webkit-scrollbar-track {
+    background: #fff;  /*스크롤바 뒷 배경 색상*/
+}
