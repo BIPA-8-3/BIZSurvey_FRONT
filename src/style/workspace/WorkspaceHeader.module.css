@@ -1,0 +1,146 @@
+#mainHeader {
+  position: fixed;
+  z-index: 9999;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  background-color: #3c4048;
+  border-bottom: 1px solid #ddd;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+}
+
+#headerItemWrap {
+  padding: 0px 22px 0px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  padding: 10px 0px;
+  width: 30.3px;
+  height: 100%;
+  cursor: pointer;
+}
+
+.headerMenu ul {
+  display: flex;
+}
+
+.headerMenu ul li {
+  padding: 0px 0px 0px 35px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.hheaderMenu ul li:last-child {
+  padding-right: -40px;
+  cursor: pointer;
+}
+
+/* custom */
+.navIconBox {
+  border-radius: 45px;
+  padding: 7px 8px 5px;
+  margin-top: 2px;
+}
+.navIconBox:hover {
+  background-color: #f5f5f5;
+  background-color: #33363c;
+}
+
+.navIcon {
+  font-size: 24px;
+  /* color: #666666; */
+  color: #fff;
+  cursor: pointer;
+}
+
+.navTextBox {
+  border-radius: 45px;
+  padding: 5px 8px;
+  margin-top: 10px;
+}
+/* .navTextBox:hover {
+  background-color: #f5f5f5;
+} */
+
+.navText {
+  font-size: 14px;
+  /* color: #666666; */
+  color: #fff;
+  cursor: pointer;
+  font-weight: 500;
+}
+#menuIcon {
+  cursor: pointer;
+}
+
+.back {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  opacity: 0.5;
+}
+
+.mobileMenuItemWrap {
+  background-color: #fff;
+  position: fixed;
+  left: -290px;
+  top: 0px;
+  width: 250px;
+  height: 100%;
+  padding: 20px;
+}
+
+.slideIn {
+  transition: transform 0.3s ease-in-out; /* 지속 시간과 이징을 조절할 수 있습니다. */
+  transform: translateX(290px);
+}
+
+.slideOut {
+  transition: transform 0.3s ease-in-out; /* 지속 시간과 이징을 조절할 수 있습니다. */
+  transform: translateX(0);
+}
+.mobileMenuItemWrap ul {
+  margin-top: 20px;
+}
+
+.mobileMenuItemWrap ul li {
+  padding-bottom: 30px;
+}
+
+/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px)*/
+@media all and (min-width: 1024px) and (max-width: 1279px) {
+}
+
+/* 테블릿 가로 (해상도 768px ~ 1023px)*/
+@media all and (min-width: 801px) and (max-width: 1023px) {
+}
+
+/* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px)*/
+@media all and (min-width: 480px) and (max-width: 800px) {
+  .headerMenu ul li {
+    display: none;
+  }
+  #headerItemWrap {
+    padding: 0px 15px;
+  }
+}
+
+/* 모바일 세로 (해상도 ~ 479px)*/
+@media all and (max-width: 479px) {
+  .headerMenu ul li {
+    display: none;
+  }
+  #headerItemWrap {
+    padding: 0px 15px;
+  }
+  .logo {
+    width: 180px;
+  }
+}
