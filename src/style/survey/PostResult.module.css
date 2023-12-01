@@ -1,5 +1,5 @@
-.container {
-  width: 700px;
+.wrapQuestion {
+  width: 700;
   background-color: white;
   border-radius: 10px;
   min-height: 150px;
@@ -10,14 +10,22 @@
   margin-bottom: 25px;
 }
 
-.wrapQuestion {
+.wrapTitle {
   margin: 0 auto;
   width: 600px;
   margin-top: 20px;
 }
 
-.questionText {
+.titleText {
   font-weight: bold;
   width: 600px;
-  padding-top: 15px;
+}
+
+.wrapOption {
+  margin-bottom: 30px;
+  background-color: white;
+  width: 600px;
+  height: 240px;
+  margin: 0 auto;
+  margin-bottom: 30px;
 }
