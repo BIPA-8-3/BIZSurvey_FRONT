@@ -1,0 +1,33 @@
+#Item {
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.textFont {
+  width: 230px;
+  height: 48px;
+  font-size: 15px;
+  font-weight: 500px;
+  display: flex;
+  align-items: center;
+}
+
+.labelBox {
+  background-color: #f2f9ff;
+  /* color: #007ae5; */
+  color: #007ae5;
+  font-weight: bold;
+  font-size: 10px;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+/* event */
+.workspaces:hover {
+  background-color: #deebff;
+  transition: all ease 0.2s 0s;
+  color: #0052cc;
+}
