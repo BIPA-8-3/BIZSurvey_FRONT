@@ -98,3 +98,13 @@ a {
     width: 90%;
   }
 }
+
+.surveyContainer {
+  width: 700px;
+  margin: 0 auto;
+}
+
+.echarts-for-react {
+  height: 240 !important;
+  width: 550 !important;
+}

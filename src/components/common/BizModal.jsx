@@ -1,8 +1,5 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { IoClose } from "react-icons/io5";
-import Grid from "@mui/material/Grid";
 import style from "../../style/BizModal.module.css";
 import IconButton from "@mui/material/IconButton";
 

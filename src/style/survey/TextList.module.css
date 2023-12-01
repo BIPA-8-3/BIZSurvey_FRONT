@@ -1,0 +1,22 @@
+.textContainer {
+  width: 580px;
+  height: 40px;
+  margin: 5px 0 5px 0;
+  border-radius: 3px;
+  background-color: rgb(248, 249, 250);
+}
+
+.text {
+  padding: 13px 0 0 10px;
+}
+
+.textDisabled {
+  padding: 13px 0 0 10px;
+  color: grey;
+}
+
+.textList {
+  height: 200px;
+  width: 600px;
+  overflow-y: scroll;
+}

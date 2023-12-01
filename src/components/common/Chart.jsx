@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import * as echarts from "echarts";
+import React, { useState } from "react";
 
-import ECharts, { EChartsReactProps } from "echarts-for-react";
+import ECharts from "echarts-for-react";
 
 export default function Chart({ chartData }) {
   // chartData : [{value : '개수', name: '옵션명'},{value : '개수', name: '옵션명'},... ]
@@ -16,7 +15,7 @@ export default function Chart({ chartData }) {
       type: "scroll",
       orient: "vertical",
       right: "50px",
-      top: 40,
+      top: 65,
       bottom: 20,
       data: data.legendData,
     },
@@ -54,7 +53,7 @@ export default function Chart({ chartData }) {
     <>
       <ECharts
         option={options}
-        opts={{ renderer: "svg", width: "550px", height: "240px" }}
+        opts={{ renderer: "svg", width: "600px", height: "300px" }}
       />
     </>
   );

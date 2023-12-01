@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import { Navigate } from "react-router-dom";
 import SurveyInfoPage from "../pages/survey/SurveyInfoPage";
+import SurveyResultPage from "../pages/survey/SurveyResultPage";
 
 const FullLayout = lazy(() => import("../pages/Layout"));
 
@@ -17,6 +18,7 @@ const CommunityPost = lazy(() =>
 
 const CreateSurvey = lazy(() => import("../pages/survey/CreateSurveyPage"));
 const SurveyInfo = lazy(() => import("../pages/survey/SurveyInfoPage"));
+const SurveyTest = lazy(() => import("../pages/survey/SurveyResultPage"));
 
 const CommunityDetail = lazy(() =>
   import("../components/community/CommunityDetail")
@@ -41,6 +43,7 @@ const ThemeRoutes = [
       { path: "/createSurvey", exact: true, element: <CreateSurvey /> },
       { path: "/CommunityWrite", exact: true, element: <CommunityWrite /> },
       { path: "/surveyInfo", exact: true, element: <SurveyInfoPage /> },
+      { path: "/surveyResult", exact: true, element: <SurveyResultPage /> },
     ],
   },
 ];

@@ -1,15 +1,11 @@
-import * as React from "react";
-import MenuItem from "@mui/material/MenuItem";
-import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import { useEffect, useState } from "react";
-import PostResult from "./PostResult";
+import * as React from "react";
+import { useState } from "react";
 
-export default function SurveyResult() {
+export default function SurveyPostSelect() {
   const [postId, setPostId] = useState("");
-
   const [postInfo, setPostInfo] = useState([
     {
       postId: 1,
@@ -32,7 +28,15 @@ export default function SurveyResult() {
   return (
     <>
       {/* 게시물 선택 select  */}
-      <div style={{ width: "700px", margin: "0 auto", textAlign: "center" }}>
+      <div
+        style={{
+          width: "700px",
+          margin: "0 auto",
+          textAlign: "center",
+          marginTop: "30px",
+          marginBottom: "30px",
+        }}
+      >
         <FormControl sx={{ minWidth: 700 }}>
           <Select
             value={postId}
@@ -53,13 +57,6 @@ export default function SurveyResult() {
           </Select>
         </FormControl>
       </div>
-
-      {/* 통계영역 */}
-      {/* 전체 Or 개별  */}
-
-      <PostResult />
-
-      <div></div>
     </>
   );
 }

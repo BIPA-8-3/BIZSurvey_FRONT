@@ -1,11 +1,9 @@
 import * as React from "react";
-import CreateSurveyPage from "./CreateSurveyPage";
-import SurveyInfo from "../../components/survey/surveyInfo/SurveyInfo";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Button from "@mui/material/Button";
-import { useState } from "react";
-import { useEffect } from "react";
-import SurveyResult from "../../components/survey/surveyResult/SurvePostSelect";
+import { useEffect, useState } from "react";
+import SurveyInfo from "../../components/survey/surveyInfo/infoTab/SurveyInfo";
+
+import ButtonTab from "../../components/survey/surveyInfo/ButtonTab";
+import ResultView from "../../components/survey/surveyInfo/resultTab/ResultView";
 
 export default function SurveyInfoPage() {
   const [page, setPage] = useState(0);
@@ -14,13 +12,14 @@ export default function SurveyInfoPage() {
 
   useEffect(() => {
     if (page) {
-      setElement(<SurveyResult />);
+      setElement(<ResultView />);
     } else {
       setElement(<SurveyInfo />);
     }
     console.log(page);
   }, [page]);
-  const handleChangePage = (e, num) => {
+
+  const handleChangeTab = (e, num) => {
     e.preventDefault();
     console.log("num" + num);
     setPage(num);
@@ -30,38 +29,12 @@ export default function SurveyInfoPage() {
     <>
       <div>
         <div style={{ width: "700px", margin: "0 auto" }}>
-          <ButtonGroup variant="text" aria-label="text button group">
-            <Button
-              sx={{
-                width: 350,
-                borderRadius: 0,
-                backgroundColor: page === 0 ? "#154DCA" : "white",
-                color: page === 0 ? "white" : "#154DCA",
-                ":hover": {
-                  backgroundColor:
-                    page === 0 ? "rgba(21,77,202,0.8)" : "rgba(21,77,202,0.1)",
-                },
-              }}
-              onClick={(e) => handleChangePage(e, 0)}
-            >
-              설문지 폼
-            </Button>
-            <Button
-              onClick={(e) => handleChangePage(e, 1)}
-              sx={{
-                width: 350,
-                borderRadius: 0,
-                backgroundColor: page === 1 ? "#154DCA" : "white",
-                color: page === 1 ? "white" : "#154DCA",
-                ":hover": {
-                  backgroundColor:
-                    page === 1 ? "rgba(21,77,202,0.8)" : "rgba(21,77,202,0.1)",
-                },
-              }}
-            >
-              응답 결과
-            </Button>
-          </ButtonGroup>
+          <ButtonTab
+            handleChangeTab={handleChangeTab}
+            page={page}
+            first={"설문지 폼"}
+            second={"응답 결과"}
+          ></ButtonTab>
         </div>
 
         <div>{element}</div>
