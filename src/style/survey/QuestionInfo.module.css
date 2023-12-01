@@ -21,23 +21,3 @@
   width: 600px;
   padding-top: 15px;
 }
-
-.wrapChoice {
-  margin: 0 auto;
-  width: 600px;
-}
-
-.rounded {
-  width: 16px;
-  height: 16px;
-  border: 2px solid #d6d6d6;
-  text-align: center;
-}
-
-.circle {
-  border-radius: 50%;
-}
-
-.square {
-  border-radius: 3px;
-}

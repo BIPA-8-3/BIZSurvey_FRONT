@@ -17,7 +17,7 @@ function Plan() {
   return (
     <div className={`fade-in ${fadeIn ? 'active' : ''}`} >
       <div className={style.titleWrap}>
-          <h1 className='textCenter title textBold'>PLAN</h1>
+          <h1 className='textCenter title textBold'>플랜 소개</h1>
           <p className='textCenter subTitle'>플랜 가입하고 비즈서베이의 워크스페이스 기능을 사용해보세요!</p>
       </div>
       <div className={style.planWrap} >

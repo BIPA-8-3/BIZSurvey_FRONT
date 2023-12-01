@@ -1,10 +1,10 @@
-import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 import * as React from "react";
 import { useState } from "react";
+import style from "../../../../style/survey/SurveyInfo.module.css";
 import QuestionInfo from "./QuestionInfo";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import style from "../../../style/survey/SurveyInfo.module.css";
+import SurveyTitle from "../SurveyTitle";
 
 export default function SurveyInfo() {
   const [formData, setFormData] = useState({
@@ -70,10 +70,7 @@ export default function SurveyInfo() {
         </div>
 
         {/* 설문지 제목  */}
-        <div className={style.wrapSurveyInfo}>
-          <p className={style.wrapTitle}>{formData.title}</p>
-          <p className={style.wrapContent}>{formData.content}</p>
-        </div>
+        <SurveyTitle title={formData.title} content={formData.content} />
 
         <div>
           {questions.map((question) => (

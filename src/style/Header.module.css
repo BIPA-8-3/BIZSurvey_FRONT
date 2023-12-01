@@ -67,12 +67,12 @@
 }
 
 .slideIn {
-    transition: transform 0.3s ease-in-out; /* 지속 시간과 이징을 조절할 수 있습니다. */
+    transition: transform 0.3s ease-in-out; 
     transform: translateX(290px);
   }
   
 .slideOut {
-    transition: transform 0.3s ease-in-out; /* 지속 시간과 이징을 조절할 수 있습니다. */
+    transition: transform 0.3s ease-in-out;
     transform: translateX(0);
 }
 .mobileMenuItemWrap ul{
