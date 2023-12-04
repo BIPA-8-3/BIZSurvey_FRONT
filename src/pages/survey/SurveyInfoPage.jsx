@@ -19,7 +19,7 @@ export default function SurveyInfoPage() {
   });
 
   useEffect(() => {
-    handleGetSurvey(7);
+    handleGetSurvey(10);
   }, []);
 
   useEffect(() => {

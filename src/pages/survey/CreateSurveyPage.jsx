@@ -7,6 +7,8 @@ import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle"
 import QuestionComp from "../../components/survey/surveyForm/QuestionComp";
 import style from "../../style/survey/CreatePage.module.css";
 import axios from "axios";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useEffect } from "react";
 
 export default function CreateSurveyPage() {
   const [formData, setFormData] = useState({
@@ -27,9 +29,26 @@ export default function CreateSurveyPage() {
     },
   ]);
 
+  useEffect(() => {
+    console.log(questions);
+  }, [questions]);
+
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const items = [...questions];
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setQuestions(items);
+  };
+
   const handleSaveSubmit = async (e) => {
     e.preventDefault();
-    const questionData = [...questions];
+    const questionData = questions.map((question, index) => ({
+      ...question,
+      step: index + 1,
+    }));
     const surveyData = { ...formData };
     surveyData.questions = questionData;
     console.log(surveyData);
@@ -66,7 +85,6 @@ export default function CreateSurveyPage() {
   };
 
   const changeOption = (id, type) => {
-    console.log("type바뀜" + type);
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
         question.step === id
@@ -135,6 +153,7 @@ export default function CreateSurveyPage() {
     <>
       <div className={style.container}>
         <div className={style.wrapContent}>
+          {/* 설문지 제목  */}
           <EditSurveyTitle
             title={formData.title}
             content={formData.content}
@@ -142,28 +161,56 @@ export default function CreateSurveyPage() {
             changeSurveyContent={changeSurveyContent}
           />
 
-          <div className={style.questionList}>
-            {questions.map((questionData) => (
-              <div className={style.question}>
-                <QuestionComp
-                  key={questionData.step}
-                  index={questionData.step}
-                  questionInfo={questionData}
-                  changeTitle={changeQuestionTitle}
-                  changeContent={changeQuestionContent}
-                  changeOption={changeOption}
-                  deleteQuestion={deleteQuestion}
-                  changeRequired={changeRequired}
-                  handleOption={handleOption}
-                />
-              </div>
-            ))}
-          </div>
+          {/* 질문들  */}
+          <DragDropContext onDragEnd={handleOnDragEnd}>
+            <Droppable droppableId="createQuestions">
+              {(provided) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className={style.questionList}
+                >
+                  {questions.map((questionData, index) => (
+                    <Draggable
+                      key={questionData.step}
+                      draggableId={`question-${questionData.step}`}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <div className={style.question}>
+                            <QuestionComp
+                              key={questionData.step}
+                              index={questionData.step}
+                              questionInfo={questionData}
+                              changeTitle={changeQuestionTitle}
+                              changeContent={changeQuestionContent}
+                              changeOption={changeOption}
+                              deleteQuestion={deleteQuestion}
+                              changeRequired={changeRequired}
+                              handleOption={handleOption}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
 
+          {/* 추가 버튼  */}
           <IconButton aria-label="delete" size="medium" onClick={addQuestion}>
             <FaPlus />
           </IconButton>
 
+          {/* 저장 및 취소 버튼  */}
           <div className={style.wrapButton}>
             <Button variant="outlined">취소</Button>
             <Button variant="contained" onClick={(e) => handleSaveSubmit(e)}>
