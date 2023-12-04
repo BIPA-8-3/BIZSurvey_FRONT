@@ -1,28 +1,36 @@
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import * as React from "react";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle";
 import QuestionComp from "../../components/survey/surveyForm/QuestionComp";
-import style from "../../style/survey/CreatePage.module.css";
+import style from "../../style/survey/EditSurveyPage.module.css";
 
-export default function CreateSurveyPage() {
+export default function EditSurveyPage() {
   const [formData, setFormData] = useState({
-    title: "",
-    content: "",
+    title: "설문지 제목",
+    content: "설문지 내용",
     surveyType: "기본",
     questions: [],
   });
 
   const [questions, setQuestions] = useState([
     {
-      surveyQuestion: "",
-      answerType: "",
+      surveyQuestion: "질문1",
+      answerType: "객관식(택1)",
       score: 0,
       step: 1,
       isRequired: false,
-      answers: [],
+      answers: [
+        {
+          surveyAnswer: "옵션1",
+          step: 1,
+        },
+        {
+          surveyAnswer: "옵션2",
+          step: 2,
+        },
+      ],
     },
   ]);
 

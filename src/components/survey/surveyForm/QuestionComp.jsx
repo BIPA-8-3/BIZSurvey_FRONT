@@ -33,10 +33,6 @@ export default function QuestionComp({
     content,
   } = questionInfo;
 
-  useEffect(() => {
-    console.log("changeOPtion!!!!");
-  }, [option]);
-
   return (
     <>
       <div className={style.container}>
