@@ -21,17 +21,19 @@
 }
 
 .inputWrap {
-  padding: 10px 12px;
+  padding: 10px 60px 36px 12px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .inputTitle {
   border: 0;
+  width: calc(100% - 230px);
   /* background-color: #f9fafb; */
   /* background-color: #f8f9fd; */
 
   font-size: 28px;
   font-weight: bold;
-  width: 80%;
 }
 
 .cardContainer {
@@ -46,4 +48,9 @@
   flex-basis: 400px;
   height: 100px;
   /* flex: 0 0 calc(33.33% - 20px); */
+}
+
+.groupBox {
+  display: flex;
+  padding-bottom: 10px;
 }
