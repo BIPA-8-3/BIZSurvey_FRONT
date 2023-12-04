@@ -5,18 +5,21 @@ import WorkspaceHeader from "../components/workspace/WorkspaceHeader";
 import "../style/Common.css";
 
 const Layout = () => {
+
+  // 현재 경로 정보를 가져옵니다.
   const location = useLocation();
+  // 현재 경로가 '/mypage'인 경우 Header를 숨깁니다.
 
-  const isWorkspace = location.pathname === '/workspace';
-  const isMyPage = location.pathname === '/mypage';
-
+  const shouldRenderCustomContainer = location.pathname === '/workspace' || location.pathname === '/mypage';
+    
   return (
     <div>
-      {isWorkspace || isMyPage ? (
+      {shouldRenderCustomContainer ? (
         <>
-          {isWorkspace && <WorkspaceHeader />}
-          {isWorkspace && <div className="custom-container"><Outlet /></div>}
-          {isMyPage && <div className="container"><Outlet /></div>}
+          <WorkspaceHeader></WorkspaceHeader>
+          <div className="custom-container">
+            <Outlet />
+          </div>
         </>
       ) : (
         <>
@@ -24,7 +27,7 @@ const Layout = () => {
           <div className="container">
             <Outlet />
           </div>
-          <Footer />
+          <Footer></Footer>
         </>
       )}
     </div>
