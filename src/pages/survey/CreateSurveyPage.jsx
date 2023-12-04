@@ -180,7 +180,6 @@ export default function CreateSurveyPage() {
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
-                          {...provided.dragHandleProps}
                         >
                           <div className={style.question}>
                             <QuestionComp
@@ -193,6 +192,7 @@ export default function CreateSurveyPage() {
                               deleteQuestion={deleteQuestion}
                               changeRequired={changeRequired}
                               handleOption={handleOption}
+                              provided={provided}
                             />
                           </div>
                         </div>

@@ -11,6 +11,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import * as React from "react";
 import style from "../../../style/survey/QuestionComp.module.css";
+import { MdDragIndicator } from "react-icons/md";
 
 export default function QuestionComp({
   index,
@@ -21,6 +22,7 @@ export default function QuestionComp({
   changeContent,
   deleteQuestion,
   changeRequired,
+  provided,
 }) {
   const [option, setOption] = useState("");
   const {
@@ -39,7 +41,9 @@ export default function QuestionComp({
         {/*ㅇㅕ긴 선택 버튼들*/}
         <div className={style.wrapTopButton}>
           <Stack direction="row" alignItems="center" spacing={1}>
-            <span className={style.stepText}>{step}</span>
+            <span className={style.dragButton} {...provided.dragHandleProps}>
+              <MdDragIndicator />
+            </span>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <span>

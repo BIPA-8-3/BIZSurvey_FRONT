@@ -5,10 +5,21 @@ import { FaPlus } from "react-icons/fa6";
 import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle";
 import QuestionComp from "../../components/survey/surveyForm/QuestionComp";
 import style from "../../style/survey/EditSurveyPage.module.css";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
 
 export default function EditSurveyPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  let surveyId = location.state.surveyId || 0;
+
+  useEffect(() => {
+    console.log(surveyId);
+    handleGetSurvey(surveyId);
+  }, []);
+
   const [formData, setFormData] = useState({
     surveyId: 0,
     title: "설문지 제목",
@@ -19,6 +30,7 @@ export default function EditSurveyPage() {
 
   const [questions, setQuestions] = useState([
     {
+      questionId: 0,
       surveyQuestion: "",
       answerType: "",
       score: 0,
@@ -28,9 +40,19 @@ export default function EditSurveyPage() {
     },
   ]);
 
-  useEffect(() => {
-    handleGetSurvey(7);
-  }, []);
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const items = [...questions];
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setQuestions(items);
+  };
 
   const handleGetSurvey = async (surveyId) => {
     try {
@@ -45,8 +67,30 @@ export default function EditSurveyPage() {
   };
 
   const handleUpdateSurvey = async (surveyId) => {
+    const { createQuestion, updateQuestion } = questions.reduce(
+      (acc, question, index) => {
+        const { questionId, ...rest } = { ...question, step: index + 1 };
+
+        if (questionId === 0) {
+          acc.createQuestion.push(rest);
+        } else {
+          acc.updateQuestion.push({ ...question, step: index + 1 });
+        }
+
+        return acc;
+      },
+      { createQuestion: [], updateQuestion: [] }
+    );
+
+    const surveyData = {
+      ...formData,
+      questions: undefined, // questions 필드 없애기
+      updateQuestions: updateQuestion,
+      createQuestions: createQuestion,
+    };
+
     await axios
-      .patch("/survey/" + surveyId)
+      .patch("/survey/" + surveyId, surveyData)
       .then((response) => {
         console.log(response);
       })
@@ -101,6 +145,7 @@ export default function EditSurveyPage() {
       return [
         ...pre,
         {
+          questionId: 0,
           surveyQuestion: "",
           answerType: "",
           score: 0,
@@ -151,30 +196,57 @@ export default function EditSurveyPage() {
             changeSurveyContent={changeSurveyContent}
           />
 
-          <div className={style.questionList}>
-            {questions.map((questionData) => (
-              <div className={style.question}>
-                <QuestionComp
-                  key={questionData.step}
-                  index={questionData.step}
-                  questionInfo={questionData}
-                  changeTitle={changeQuestionTitle}
-                  changeContent={changeQuestionContent}
-                  changeOption={changeOption}
-                  deleteQuestion={deleteQuestion}
-                  changeRequired={changeRequired}
-                  handleOption={handleOption}
-                />
-              </div>
-            ))}
-          </div>
+          <DragDropContext onDragEnd={handleOnDragEnd}>
+            <Droppable droppableId="createQuestions">
+              {(provided) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className={style.questionList}
+                >
+                  {questions.map((questionData, index) => (
+                    <Draggable
+                      key={questionData.step}
+                      draggableId={`question-${questionData.step}`}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                        >
+                          <div className={style.question}>
+                            <QuestionComp
+                              key={questionData.step}
+                              index={questionData.step}
+                              questionInfo={questionData}
+                              changeTitle={changeQuestionTitle}
+                              changeContent={changeQuestionContent}
+                              changeOption={changeOption}
+                              deleteQuestion={deleteQuestion}
+                              changeRequired={changeRequired}
+                              handleOption={handleOption}
+                              provided={provided}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
 
           <IconButton aria-label="delete" size="medium" onClick={addQuestion}>
             <FaPlus />
           </IconButton>
 
           <div className={style.wrapButton}>
-            <Button variant="outlined">취소</Button>
+            <Button variant="outlined" onClick={handleGoBack}>
+              취소
+            </Button>
             <Button variant="contained" onClick={() => handleUpdateSurvey(7)}>
               완료
             </Button>
