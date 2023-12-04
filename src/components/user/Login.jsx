@@ -1,19 +1,13 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import style from '../../style/user/Login.module.css'
 import kakao from '../../assets/img/user/kakaoLogin.png'
+import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import back from '../../assets/img/back.png'
 import { Link } from "react-router-dom";
 import useFadeIn from '../../style/useFadeIn';
-import Axios from "axios";
 
 function Login() {
-  useEffect(() => {
-      Axios.get(`/admin/users`).then((response) => {
-          console.log(response.data)
-      })
-  },[])
-
   const fadeIn = useFadeIn();
   return (
     <div id={style.loginWrap} className={`fade-in ${fadeIn ? 'active' : ''}`}>
