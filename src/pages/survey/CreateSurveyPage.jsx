@@ -6,6 +6,7 @@ import { FaPlus } from "react-icons/fa6";
 import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle";
 import QuestionComp from "../../components/survey/surveyForm/QuestionComp";
 import style from "../../style/survey/CreatePage.module.css";
+import axios from "axios";
 
 export default function CreateSurveyPage() {
   const [formData, setFormData] = useState({
@@ -25,6 +26,22 @@ export default function CreateSurveyPage() {
       answers: [],
     },
   ]);
+
+  const handleSaveSubmit = async (e) => {
+    e.preventDefault();
+    const questionData = [...questions];
+    const surveyData = { ...formData };
+    surveyData.questions = questionData;
+    console.log(surveyData);
+    await axios
+      .post("/survey/1", surveyData)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const changeQuestionTitle = (id, text) => {
     setQuestions((pre) => {
@@ -49,6 +66,7 @@ export default function CreateSurveyPage() {
   };
 
   const changeOption = (id, type) => {
+    console.log("type바뀜" + type);
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
         question.step === id
@@ -148,7 +166,9 @@ export default function CreateSurveyPage() {
 
           <div className={style.wrapButton}>
             <Button variant="outlined">취소</Button>
-            <Button variant="contained">완료</Button>
+            <Button variant="contained" onClick={(e) => handleSaveSubmit(e)}>
+              완료
+            </Button>
           </div>
         </div>
       </div>

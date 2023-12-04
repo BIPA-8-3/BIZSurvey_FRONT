@@ -5,9 +5,12 @@ import { FaPlus } from "react-icons/fa6";
 import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle";
 import QuestionComp from "../../components/survey/surveyForm/QuestionComp";
 import style from "../../style/survey/EditSurveyPage.module.css";
+import axios from "axios";
+import { useEffect } from "react";
 
 export default function EditSurveyPage() {
   const [formData, setFormData] = useState({
+    surveyId: 0,
     title: "설문지 제목",
     content: "설문지 내용",
     surveyType: "기본",
@@ -16,23 +19,39 @@ export default function EditSurveyPage() {
 
   const [questions, setQuestions] = useState([
     {
-      surveyQuestion: "질문1",
-      answerType: "객관식(택1)",
+      surveyQuestion: "",
+      answerType: "",
       score: 0,
-      step: 1,
+      step: 0,
       isRequired: false,
-      answers: [
-        {
-          surveyAnswer: "옵션1",
-          step: 1,
-        },
-        {
-          surveyAnswer: "옵션2",
-          step: 2,
-        },
-      ],
+      answers: [],
     },
   ]);
+
+  useEffect(() => {
+    handleGetSurvey(7);
+  }, []);
+
+  const handleGetSurvey = async (surveyId) => {
+    try {
+      const response = await axios.get("/survey/" + surveyId);
+      setFormData(response.data);
+      setQuestions(response.data.questions);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
+  };
+
+  const handleUpdateSurvey = async (surveyId) => {
+    await axios
+      .patch("/survey/" + surveyId)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => console.log(error));
+  };
 
   const changeQuestionTitle = (id, text) => {
     setQuestions((pre) => {
@@ -60,7 +79,7 @@ export default function EditSurveyPage() {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
         question.step === id
-          ? { ...question, answerType: type, step: index + 1 }
+          ? { ...question, answerType: type, step: index + 1, answers: [] }
           : question
       );
       return result;
@@ -156,7 +175,9 @@ export default function EditSurveyPage() {
 
           <div className={style.wrapButton}>
             <Button variant="outlined">취소</Button>
-            <Button variant="contained">완료</Button>
+            <Button variant="contained" onClick={() => handleUpdateSurvey(7)}>
+              완료
+            </Button>
           </div>
         </div>
       </div>

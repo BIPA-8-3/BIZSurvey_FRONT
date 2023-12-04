@@ -90,10 +90,15 @@ export default function QuestionComp({
                     single
                     handleOption={handleOption}
                     index={index}
+                    answers={answers}
                   />
                 )}
-                {answerType === "객관식(복수선택)" && (
-                  <ChoiceOption handleOption={handleOption} index={index} />
+                {answerType === "객관식(복수형)" && (
+                  <ChoiceOption
+                    handleOption={handleOption}
+                    index={index}
+                    answers={answers}
+                  />
                 )}
                 {answerType === "주관식" && <TextOption />}
                 {answerType === "날짜" && <DateOption />}
