@@ -49,7 +49,6 @@ function Join() {
             <input type='text' className={style.input}/>
         </div>
       </div>
-
       <label>이름</label>
       <div className={style.inputWrap}>
         <div className={`${style.inputDiv} ${style.input100}`}>
