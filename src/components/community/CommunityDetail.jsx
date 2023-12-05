@@ -29,7 +29,7 @@ import logo from "../../assets/img/avatar.png"
 import { Link } from 'react-router-dom';
 import Comment from './Comment';
 import ParentsComment from './ParentsComment';
-
+import VoteWrite from './VoteWrite';
 import ChildCommentForm from './ChildCommentForm';
 import ChildComment from './ChildComment';
 
@@ -47,12 +47,11 @@ export default function CommunityPost() {
    
 
     <div className={`fade-in ${fadeIn ? 'active' : ''}`}>
-        <div className={style.titleWrap}>
+        {/* <div className={style.titleWrap}>
             <h1 className='textCenter title textBold'>COMMUNITY</h1>
             <p className='textCenter subTitle'>쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
-        </div>
-        <div className={style.contentWrap}>
-             
+        </div> */}
+        <div className={style.contentWrap} style={{marginTop:"170px"}}>
             <div style={{backgroundColor: 'rgba(209, 232, 248, 0.1)'}}>
                 <div className={style.title}>
                     <h1>비즈서베이 커뮤니티 게시글:)</h1>
@@ -78,6 +77,8 @@ export default function CommunityPost() {
             <div className={style.content}>
                 <p>국무총리·국무위원 또는 정부위원은 국회나 그 위원회에 출석하여 국정처리상황을 보고하거나 의견을 진술하고 질문에 응답할 수 있다. 대통령은 법률이 정하는 바에 의하여 훈장 기타의 영전을 수여한다.
                     형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 국회의원은 그 지위를 남용하여 국가·공공단체 또는 기업체와의 계약이나 그 처분에 의하여 재산상의 권리·이익 또는 직위를 취득하거나 타인을 위하여 그 취득을 알선할 수 없다.</p>
+               
+                <VoteWrite />
                 <p style={{marginTop:'100px', display:'flex', justifyContent:'space-between'}}>
                     <div>
                         조회수 <span style={{fontWeight:'bold'}}>128</span>

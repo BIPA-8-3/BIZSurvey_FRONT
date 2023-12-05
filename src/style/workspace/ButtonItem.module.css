@@ -1,0 +1,26 @@
+#ButtonItem {
+  border-radius: 10px;
+  border: 0;
+  padding: 10px 5px;
+  width: 100%;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: #ffffff;
+  margin-top: 15px;
+}
+
+.btnFont {
+  margin-left: 10px;
+}
+
+/* event */
+#ButtonItem:hover {
+  background-color: rgb(235, 235, 235);
+}
+#ButtonItem:active {
+  /* background-color: #b0c4f2; */
+  background-color: #93b4ff;
+  transition: all ease 0.2s 0s;
+}

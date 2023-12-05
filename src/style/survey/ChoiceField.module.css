@@ -1,0 +1,41 @@
+.wrapChoice {
+  margin: 0 auto;
+  width: 600px;
+  margin: "10px 0 10px 0";
+  height: 40px;
+}
+
+.rounded {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #d6d6d6;
+  text-align: center;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.square {
+  border-radius: 3px;
+}
+
+.select {
+  border-color: #0171d1;
+}
+
+.text {
+  font-size: 15px;
+  width: 550px;
+  height: 20px;
+  padding-top: 7px;
+}
+
+.boldText {
+  font-weight: bold;
+  font-size: 15px;
+  width: 550px;
+  color: #0171d1;
+  height: 20px;
+  padding-top: 7px;
+}

@@ -1,0 +1,31 @@
+.wrapQuestion {
+  width: 700;
+  background-color: white;
+  border-radius: 10px;
+  min-height: 150px;
+  border: 1px solid #d6d6d6;
+  border-top: 10px solid #0171d1;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin: 0 auto;
+  margin-bottom: 25px;
+}
+
+.wrapTitle {
+  margin: 0 auto;
+  width: 600px;
+  margin-top: 20px;
+}
+
+.titleText {
+  font-weight: bold;
+  width: 600px;
+}
+
+.wrapOption {
+  margin-bottom: 30px;
+  background-color: white;
+  width: 600px;
+  height: 240px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
