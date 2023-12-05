@@ -6,6 +6,8 @@ import ThemeRoutes from "./routes/Router";
 import VoteResult from "./components/community/VoteResult";
 import BizModal from "./components/common/BizModal";
 import SurveyListModal from "./components/community/SurveyListModal";
+import { ReportedClaimList } from "./components/admin/ReportedClaimList";
+
 
 const App = () => {
   const routing = useRoutes(ThemeRoutes);
@@ -13,7 +15,7 @@ const App = () => {
     <>
       <Reset />
       <div>{routing}</div>
-      <SurveyListModal />
+    
     </>
   );
 };
