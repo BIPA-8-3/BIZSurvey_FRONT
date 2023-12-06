@@ -14,36 +14,49 @@ export default function SurveyTitle({
   if (!tab) {
     return (
       <>
-        <div className={style.wrapSurveyInfo}>
-          <p className={style.wrapTitle}>{title}</p>
-          <p className={style.wrapContent}>{content}</p>
-        </div>
+        <InfoTitle title={title} content={content} />
       </>
     );
   } else {
     return (
       <>
-        <div
-          className={style.wrapSurveyInfo}
-          style={{
-            paddingBottom: "0",
-            height: "150px",
-            paddingBottom: "4px",
-            overflow: "hidden",
-          }}
-        >
-          <p className={style.wrapTitle}>제목</p>
-          <p className={style.wrapContent} style={{ marginBottom: "30px" }}>
-            설명
-          </p>
-          <ButtonTab
-            handleChangeTab={handlechangeTab}
-            page={page}
-            first={"전체 통계"}
-            second={"개별 응답"}
-          />
-        </div>
+        <InfoTitleWithTab
+          title={title}
+          content={content}
+          page={page}
+          handleChangeTab={handlechangeTab}
+        />
       </>
     );
   }
+}
+
+function InfoTitle({ title, content }) {
+  return (
+    <>
+      <div className={style.wrapSurveyInfo}>
+        <p className={style.wrapTitle}>{title}</p>
+        <p className={style.wrapContent}>{content}</p>
+      </div>
+    </>
+  );
+}
+
+function InfoTitleWithTab({ title, content, page, handleChangeTab }) {
+  return (
+    <>
+      <div className={style.wrapSurveyInfoWithTab}>
+        <p className={style.wrapTitle}>{title}</p>
+        <p className={style.wrapContent} style={{ marginBottom: "30px" }}>
+          {content}
+        </p>
+        <ButtonTab
+          handleChangeTab={handleChangeTab}
+          page={page}
+          first={"전체 통계"}
+          second={"개별 응답"}
+        />
+      </div>
+    </>
+  );
 }

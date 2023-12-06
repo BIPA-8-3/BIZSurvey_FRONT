@@ -106,12 +106,12 @@ a{
 }
 
 
-
 @media all and (max-width: 1200px) {
   .container {
     width: 90%;
   }
 }
+
 
 .surveyContainer {
   width: 700px;
