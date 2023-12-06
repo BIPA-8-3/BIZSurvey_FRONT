@@ -7,6 +7,7 @@ import ChoiceField from "../../fields/ChoiceField";
 import TextOption from "../../surveyForm/options/TextOption";
 import DateOption from "../../surveyForm/options/DateOption";
 import FileOption from "../../surveyForm/options/FileOption";
+import { TextField } from "@mui/material";
 
 export default function QuestionInfo({ info }) {
   const {
@@ -22,31 +23,17 @@ export default function QuestionInfo({ info }) {
   return (
     <>
       <QuestionBox>
-        <QuestionTitle title={"제목"} />
+        <QuestionTitle title={surveyQuestion} />
         <OptionBox>
-          <ChoiceField single text={"옵션1"} />
-          <ChoiceField single text={"옵션1"} />
-        </OptionBox>
-      </QuestionBox>
-
-      <QuestionBox>
-        <QuestionTitle title={"제목"} />
-        <OptionBox>
-          <TextOption />
-        </OptionBox>
-      </QuestionBox>
-
-      <QuestionBox>
-        <QuestionTitle title={"제목"} />
-        <OptionBox>
-          <DateOption />
-        </OptionBox>
-      </QuestionBox>
-
-      <QuestionBox>
-        <QuestionTitle title={"제목"} />
-        <OptionBox>
-          <FileOption />
+          {answerType === "객관식(택1)" &&
+            answers.map((answer) => (
+              <ChoiceField single text={answer.surveyAnswer} />
+            ))}
+          {answerType === "객관식(복수형)" &&
+            answers.map((answer) => <ChoiceField text={answer.surveyAnswer} />)}
+          {answerType === "주관식" && <TextOption />}
+          {answerType === "날짜" && <DateOption />}
+          {answerType === "파일" && <FileOption />}
         </OptionBox>
       </QuestionBox>
     </>

@@ -11,6 +11,22 @@
   margin-bottom: 25px;
 }
 
+.wrapSurveyInfoWithTab {
+  width: 700px;
+  border-radius: 10px;
+  min-height: 120px;
+  border: 1px solid #d6d6d6;
+  padding-top: 20px;
+  border-top: 10px solid #243579;
+  margin: 0 auto;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin-bottom: 25px;
+  padding-bottom: 0;
+  height: 150px;
+  padding-bottom: 4px;
+  overflow: hidden;
+}
+
 .wrapTitle {
   width: 600px;
   font-size: 25px;
