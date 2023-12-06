@@ -4,6 +4,7 @@ import SurveyInfo from "../../components/survey/surveyInfo/infoTab/SurveyInfo";
 import axios from "axios";
 import ButtonTab from "../../components/survey/surveyInfo/ButtonTab";
 import ResultView from "../../components/survey/surveyInfo/resultTab/ResultView";
+import Loader from "../loader/Loader";
 
 export default function SurveyInfoPage() {
   const [page, setPage] = useState(0);
@@ -26,7 +27,15 @@ export default function SurveyInfoPage() {
     if (page) {
       setElement(<ResultView />);
     } else {
-      setElement(loading ? <></> : <SurveyInfo survey={survey} />);
+      setElement(
+        loading ? (
+          <>
+            <Loader />
+          </>
+        ) : (
+          <SurveyInfo survey={survey} />
+        )
+      );
     }
   }, [page, survey, loading]);
 

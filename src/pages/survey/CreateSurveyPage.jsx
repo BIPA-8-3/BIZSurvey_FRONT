@@ -9,6 +9,7 @@ import style from "../../style/survey/CreatePage.module.css";
 import axios from "axios";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect } from "react";
+import { login, call } from "./Login";
 
 export default function CreateSurveyPage() {
   const [formData, setFormData] = useState({
@@ -30,8 +31,8 @@ export default function CreateSurveyPage() {
   ]);
 
   useEffect(() => {
-    console.log(questions);
-  }, [questions]);
+    login();
+  }, []);
 
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
@@ -43,7 +44,7 @@ export default function CreateSurveyPage() {
     setQuestions(items);
   };
 
-  const handleSaveSubmit = async (e) => {
+  const handleSubmitSurvey = async (e) => {
     e.preventDefault();
     const questionData = questions.map((question, index) => ({
       ...question,
@@ -52,14 +53,16 @@ export default function CreateSurveyPage() {
     const surveyData = { ...formData };
     surveyData.questions = questionData;
     console.log(surveyData);
-    await axios
-      .post("/survey/1", surveyData)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+    call("/survey/1", "POST", surveyData);
+    // await axios
+    //   .post("/survey/1", surveyData)
+    //   .then((response) => {
+    //     console.log(response);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   };
 
   const changeQuestionTitle = (id, text) => {
@@ -213,7 +216,7 @@ export default function CreateSurveyPage() {
           {/* 저장 및 취소 버튼  */}
           <div className={style.wrapButton}>
             <Button variant="outlined">취소</Button>
-            <Button variant="contained" onClick={(e) => handleSaveSubmit(e)}>
+            <Button variant="contained" onClick={(e) => handleSubmitSurvey(e)}>
               완료
             </Button>
           </div>
