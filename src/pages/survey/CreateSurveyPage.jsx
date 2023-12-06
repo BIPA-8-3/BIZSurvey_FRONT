@@ -52,17 +52,8 @@ export default function CreateSurveyPage() {
     }));
     const surveyData = { ...formData };
     surveyData.questions = questionData;
-    console.log(surveyData);
 
     call("/survey/1", "POST", surveyData);
-    // await axios
-    //   .post("/survey/1", surveyData)
-    //   .then((response) => {
-    //     console.log(response);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
   };
 
   const changeQuestionTitle = (id, text) => {
