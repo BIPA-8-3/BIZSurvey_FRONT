@@ -1,5 +1,8 @@
+import React from 'react';
 import style from"../../style/community/Table.module.css"
+import IconWithText from '../common/IconWithText';
 import logo from "../../assets/img/avatar.png"
+import { CiMemoPad } from "react-icons/ci";
 import { Link } from 'react-router-dom';
 
 function CommunityTable({props}) {
@@ -8,13 +11,33 @@ function CommunityTable({props}) {
   console.log(data)
 
   function renderIsBest(isBest){
-    if(isBest === null){
-      return null; 
+    if(isBest !== null){
+      return (
+        <span className={style.best}>best</span>
+      );
     }
-
-    return [isBest];
   }
 
+  function renderIsNew(isNew){
+      if(isNew==="new"){
+        return "new";
+      }else{
+        return null;
+      }
+  }
+
+  function renderVote(isVote){
+      if(isVote !== null){
+        return(
+          <span className={style.vote}>
+              <IconWithText className='item1' text={'투표'} fontsize={'12px'} fontweight={'700'} fontcolor={'#fff'}>
+                  <CiMemoPad />
+              </IconWithText>
+          </span>
+
+        );
+      }
+  }
 
 
 
@@ -34,11 +57,12 @@ function CommunityTable({props}) {
           {data.map(item => (
             <tr key={item.postId}>
               <td style={{width:'10%'}}>{item.postId}</td>
-              <td>
-                <span className={style.best}>{renderIsBest(item.isBest)}</span>
+              <td >
+                {renderIsBest(item.isBest)}
                 <Link to={'/communityDetail'}>{item.title}</Link>
+                {renderVote(item.voteId)}
                 <span className={style.comment}>[{item.commentSize}]</span>
-                <span className={style.new}>{item.createType}</span>
+                <span className={style.new}>{renderIsNew(item.createType)}</span>
               </td>
               <td style={{width:'10%'}}>
                 <div className={style.profil}>
