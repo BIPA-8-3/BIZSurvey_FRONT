@@ -8,6 +8,11 @@ import Search from './Search'
 import useFadeIn from "../../style/useFadeIn";
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
+import axios from 'axios'
+import Loader from "../../pages/loader/Loader"
+
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',

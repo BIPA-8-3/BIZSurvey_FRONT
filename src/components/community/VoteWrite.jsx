@@ -7,42 +7,105 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
+import Loader from "../../pages/loader/Loader"
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { FormGroup } from '@mui/material';
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
 
+export default function VoteWrite({postId, voteId}) {
 
-export default function CommunityPost() {
-    const [value, setValue] = React.useState('female');
+    let vId = voteId;
+    let pId = postId;
 
+    console.log("(투표)postId : " + pId + " (투표)voteId" + vId)
+    
+    const [value, setValue] = React.useState({selectedKey: 0});
     const handleChange = (event) => {
-        setValue(event.target.value);
+        // const selectedValue = event.target.value;
+        
+        const selectKey = event.target.value;
+        
+        console.log("(확인)selectKey" + selectKey);
+        
+
+        setValue({selectedKey: selectKey});  // 선택된 값을 변수에 설정 ;      
     };
+
+    const boxOnClick = async () => {
+
+        try {
+          console.log("(value.selectedKey ): " + value.selectedKey)
+          const response = await axios.get('http://localhost:8080/community/'+pId+'/'+vId+'/'+'choseAnswer/'+value.selectedKey);
+          
+          console.log("(투표)리스폰스 : " + response);
+        } catch (error) {
+          console.error('투표 중 오류 발생:', error);
+        }
+      };
+
+
+
+
     const fadeIn = useFadeIn();
- 
+
+    const [voteData, setVoteData] = useState({
+        voteTitle: '',
+        answerList: []
+    });
+    const [loading, setLoading] = useState(true);
+
+    //localhost:8080/community/30/showVoteAnswer/2
+    
+
+    useEffect(() => {
+        // 데이터를 가져오는 함수
+        const fetchData = async () => {
+          try {
+            const response = await axios.get('http://localhost:8080/community/'+pId+'/showVoteAnswer/'+vId);
+            console.log(response.data);
+            
+            setVoteData(response.data);
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          } finally {
+            setLoading(false); // 데이터 로딩이 끝났음을 표시
+          }
+        };
+    
+        fetchData(); // 함수 호출
+      }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
+    
+      if (loading) {
+        return <>
+          <Loader />
+        </>; // 데이터 로딩 중에는 로딩 표시
+
+        }
+
     return (
         <div className={style.voteWriteWrap}>
             <div className={style.voteTitleWrap}>
-                <h2><span className={style.voteSpan}>투표</span> 여러분들은 무슨 커피를 좋아하시나요?</h2>
+                <h2><span className={style.voteSpan}>투표</span>{voteData.voteTitle}</h2>
             </div>
+            
             <div className={style.voteContentWrap}>
                 <FormControl>
                     <RadioGroup
                         aria-labelledby="demo-controlled-radio-buttons-group"
                         name="controlled-radio-buttons-group"
-                        value={value}
-                        onChange={handleChange}>
-                        <FormControlLabel value="아이스 아메리카노" control={<Radio />} label="아이스 아메리카노" />
-                        <FormControlLabel value="따듯한 아메리카노" control={<Radio />} label="따듯한 아메리카노" />
-                        <FormControlLabel value="카페 라떼" control={<Radio />} label="카페 라떼" />
-                        <FormControlLabel value="카푸치노" control={<Radio />} label="카푸치노" />
-                        <FormControlLabel value="맥심 믹스 커피" control={<Radio />} label="맥심 믹스 커피" />
+                        >
+                            {
+                                voteData.answerList.map( item => ( 
+                                    <FormControlLabel value={item.voteAnswerId} control={<Radio onChange={handleChange}/>} label={item.answer} key={item.voteAnswerId}/>
+                                    )
+                                )
+                            }
                     </RadioGroup>
                 </FormControl>
             </div>
-            <div className={style.btnWrap}>
-                <Button variant="contained" href="#contained-buttons" 
+            <div className={style.btnWrap}> 
+                <Button variant="contained" type='submit' onClick={boxOnClick}
                 sx={[{
                 padding:'8px 20px', 
                 backgroundColor:'#243579', 
@@ -57,6 +120,7 @@ export default function CommunityPost() {
                     투표하기
                 </Button>
             </div>
+            
         </div>
     );
 }
