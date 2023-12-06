@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 11;
+  z-index: 9999;
 }
 .ModalWrap {
   box-sizing: border-box;
@@ -17,7 +17,6 @@
   box-shadow: rgba(0, 0, 0, 0.1) -2px 4px 10px;
   border-radius: 10px;
   background-color: #fff;
-  z-index: 12;
 }
 /* modalHeader */
 .modalHeader {
@@ -51,14 +50,15 @@
 }
 
 .inputContactBox {
-  margin-bottom: 5px;
-  padding: 10px 10px 0px 12px;
+  margin-bottom: 0px;
+  padding: 5px 10px 0px 12px;
+  border-bottom: 1px solid #eee;
 }
 
 .inputWrap {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 }
 
 .inputEmail {
@@ -116,7 +116,7 @@
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 400px;
+  max-height: 409px;
   padding: 0px 13px 0px 8px;
 }
 
@@ -126,9 +126,19 @@
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 355px;
+  max-height: 380px;
   padding: 0px 13px 0px 8px;
 }
+
+.contactBox > div:first-child {
+  /* border-top: 1px solid #eee; */
+  border-top: 0;
+}
+
+.contactBox > div:last-child {
+  border-bottom: 1px solid #eee;
+}
+
 /*  */
 
 /* 이벤트 */
@@ -205,6 +215,6 @@
 .tabContent {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 0px;
   overflow: auto;
 }

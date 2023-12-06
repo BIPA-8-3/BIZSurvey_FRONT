@@ -6,7 +6,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import ContactItem from "./ContactItem";
 
 export default function Modal({ isOpen, onClose, tab }) {
-  // 이메일용
+  // 관리자 초대 및 검색 input
   const [email, setEmail] = useState("");
   const handleChange = (e) => {
     setEmail(e.target.value);
@@ -104,7 +104,8 @@ export default function Modal({ isOpen, onClose, tab }) {
                   />
                   <button className={style.button}>저장</button>
                 </div>
-                <div className={style.inputWrap} style={{ borderBottom: "1px solid #eee" }}>
+                {/* <div className={style.inputWrap} style={{ borderBottom: "1px solid #eee" }}> */}
+                <div className={style.inputWrap}>
                   <input
                     className={style.inputEmail}
                     type="email"

@@ -1,13 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import style from "../../style/workspace/SurveyCard.module.css";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
+import { removeSurvey } from "../../pages/workspace/api";
 
-export default function SurveyCard({ info, surveyId, onOpenModal, onClose }) {
+export default function SurveyCard({
+  type,
+  surveyId,
+  title,
+  onOpenModal,
+  onClose,
+  handleRemoveBtnClick,
+}) {
   const cotainerRef = useRef(null);
 
   // 더보기 상태
   let [moreMenu, setMoreMenu] = useState(false);
 
+  // 메뉴 종류
+  let [menu, setMenu] = useState(null);
   const toggleMenu = () => {
     setMoreMenu(!moreMenu);
   };
@@ -26,15 +36,12 @@ export default function SurveyCard({ info, surveyId, onOpenModal, onClose }) {
     };
   }, [moreMenu]);
 
-  // 메뉴 종류
-  let [menu, setMenu] = useState(null);
-
   // 모달
   // let [modal, setModal] = useState(null);
   return (
     <div id={style.Container} ref={cotainerRef}>
       <div className={style.cardHeader}>
-        {info}
+        {type}
         <div className={style.menuContainer}>
           <span>
             <BiDotsHorizontalRounded
@@ -57,14 +64,21 @@ export default function SurveyCard({ info, surveyId, onOpenModal, onClose }) {
                   공유
                 </li>
                 <li>이름 바꾸기</li>
-                <li>삭제</li>
+                <li
+                  onClick={() => {
+                    toggleMenu();
+                    handleRemoveBtnClick(surveyId);
+                  }}
+                >
+                  삭제
+                </li>
               </ul>
             </div>
           </span>
         </div>
       </div>
-      <div className={style.cardBody}>안녕하세요 설문지</div>
-      <div className={style.cardFooter}>안녕하세요 설문지</div>
+      <div className={style.cardBody}>{title}</div>
+      <div className={style.cardFooter}>2023-12-05 16:14</div>
     </div>
   );
 }

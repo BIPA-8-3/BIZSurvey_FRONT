@@ -4,7 +4,8 @@
   align-items: center;
   width: 100%;
   padding-right: 10px;
-  padding: 10px 5px 10px 5px;
+  padding: 7px 5px;
+  border-top: 1px solid #eee;
 }
 
 .contactText {
@@ -15,7 +16,7 @@
   /* color: #6b778c; */
   font-weight: 500;
 
-  padding-top: 5px;
+  padding-top: 4px;
   padding-left: 3px;
 }
 

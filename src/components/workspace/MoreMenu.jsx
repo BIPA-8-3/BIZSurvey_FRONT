@@ -1,16 +1,27 @@
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import style from "../../style/workspace/MoreMenu.module.css";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useContext } from "react";
 import Modal from "./Modal";
+import { WorkspaceContext } from "../../pages/workspace/Main";
+import { removeWorkspace } from "../../pages/workspace/api.js";
 
-const MoreMenu = () => {
+const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum }) => {
   // 더보기 메뉴
-
   const cotainerRef = useRef(null);
 
-  // MoreMenu
+  // active workspace
+  let { selectedWorkspaceId, setSelectedWorkspaceId } = useContext(WorkspaceContext);
+  let { workspaceList, setWorkspaceList } = useContext(WorkspaceContext);
   let [moreMenu, setMoreMenu] = useState(false);
 
+  // open Workspace Modal
+  const openWorkspaceModal = () => {
+    toggleMenu();
+    setWorkspaceModalNum(1);
+    setWorkspaceModalState(true);
+  };
+
+  // MoreMenu
   const toggleMenu = () => {
     setMoreMenu(!moreMenu);
   };
@@ -41,13 +52,24 @@ const MoreMenu = () => {
   // menu
   let [menu, setMenu] = useState("tab1");
 
+  // 삭제 메소드
+  const handleRemoveClick = () => {
+    removeWorkspace(selectedWorkspaceId)
+      .then((data) => {
+        let copy = workspaceList.filter((workspace) => workspace.id !== selectedWorkspaceId);
+        setWorkspaceList(copy);
+        setSelectedWorkspaceId(null);
+        toggleMenu();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <div ref={cotainerRef} className={style.menuContainer}>
       <Modal isOpen={modal} onClose={closeModal} tab={menu} />
-
       <BiDotsHorizontalRounded
         onClick={() => {
-          // setModal(!modal);
           toggleMenu();
         }}
         className={style.callMoreMenuBtn}
@@ -73,8 +95,20 @@ const MoreMenu = () => {
           >
             연락처 관리
           </li>
-          <li>이름 바꾸기</li>
-          <li>삭제</li>
+          <li
+            onClick={() => {
+              openWorkspaceModal();
+            }}
+          >
+            이름 바꾸기
+          </li>
+          <li
+            onClick={() => {
+              handleRemoveClick();
+            }}
+          >
+            삭제
+          </li>
         </ul>
       </div>
     </div>
