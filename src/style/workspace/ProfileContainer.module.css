@@ -1,0 +1,10 @@
+.ProfileContainer {
+  position: relative;
+}
+
+.profilePicture {
+  width: 45px;
+  height: 45px;
+  object-fit: conver;
+  border-radius: 50%;
+}

@@ -1,0 +1,210 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 11;
+}
+.ModalWrap {
+  box-sizing: border-box;
+  width: 600px;
+  height: 500px;
+  box-shadow: rgba(0, 0, 0, 0.1) -2px 4px 10px;
+  border-radius: 10px;
+  background-color: #fff;
+  z-index: 12;
+}
+/* modalHeader */
+.modalHeader {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  padding: 15px 20px 0px 20px;
+  justify-content: space-between;
+}
+
+/* .modalTitle {
+  font-size: 14px;
+  color: #37352f;
+  font-weight: 500;
+  padding-bottom: 7px;
+  border-bottom: 2px solid black;
+} */
+
+.modalExitBtn {
+  margin-bottom: 5px;
+}
+
+/* modalBody */
+.modalBody {
+}
+
+.inputBox {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  padding: 10px 10px 0px 12px;
+}
+
+.inputContactBox {
+  margin-bottom: 5px;
+  padding: 10px 10px 0px 12px;
+}
+
+.inputWrap {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+
+.inputEmail {
+  box-sizing: border-box;
+  width: 510px;
+  height: 28px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding-left: 5px;
+  outline: none;
+  margin-right: 10px;
+}
+.inputContact {
+  box-sizing: border-box;
+  width: 250px;
+  height: 28px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding-left: 5px;
+  margin-right: 8px;
+
+  outline: none;
+}
+
+.button {
+  box-sizing: border-box;
+  background-color: #2383e2;
+  border: 0;
+  border-radius: 3px;
+  color: #fff;
+  padding: 0 14.5px;
+  height: 28px;
+  transition: background-color 20ms ease-in 0s;
+  border-radius: 4px;
+  box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px inset, rgba(15, 15, 15, 0.1) 0px 1px 2px;
+  font-size: 14px;
+  font-weight: 500;
+  /* margin-left: 8px; */
+  cursor: pointer;
+}
+
+.bodyTitle {
+  font-size: 12px;
+  color: #37352fa6;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+/*  */
+.itemBox {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 400px;
+  padding: 0px 13px 0px 8px;
+}
+
+.contactBox {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 355px;
+  padding: 0px 13px 0px 8px;
+}
+/*  */
+
+/* 이벤트 */
+.button:hover {
+  background-color: #0078d4;
+}
+
+.inputEmail:focus {
+  box-shadow: rgba(35, 131, 226, 0.57) 0px 0px 0px 1px inset,
+    rgba(35, 131, 226, 0.35) 0px 0px 0px 2px;
+}
+
+.itemBox::-webkit-scrollbar {
+  width: 5px;
+}
+
+.itemBox::-webkit-scrollbar-thumb {
+  background-color: #d8d8d8;
+  border-radius: 30px;
+  /* width: 5px; */
+}
+
+.itemBox::-webkit-scrollbar-track {
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+/* scroll  */
+
+.contactBox::-webkit-scrollbar {
+  width: 5px;
+}
+
+.contactBox::-webkit-scrollbar-thumb {
+  background-color: #d8d8d8;
+  border-radius: 30px;
+  /* width: 5px; */
+}
+
+.contactBox::-webkit-scrollbar-track {
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+/*  tab */
+
+.tabContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.tab {
+  font-size: 16px;
+  color: #37352f;
+  /* font-weight: 400; */
+  padding-bottom: 7px;
+  margin-right: 20px;
+  /* border-bottom: 2px solid black; */
+}
+
+.activeTab {
+  border-bottom: 2px solid black;
+  font-weight: 500;
+}
+
+.tabContentWrap {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+.tabContent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  overflow: auto;
+}
