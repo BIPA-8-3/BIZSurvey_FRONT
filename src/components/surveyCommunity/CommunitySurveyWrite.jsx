@@ -100,7 +100,7 @@ export default function CommunityPost() {
     });
   };
 
-  const handleSubmitAnswer = () => {
+  const handleSubmitAnswer = async () => {
     const result = answers.filter(
       (answer) =>
         answer.questionId !== 0 &&
@@ -108,8 +108,14 @@ export default function CommunityPost() {
         !answer.answer.includes("")
     );
 
-    const response = call("/s-community/survey/1", "POST", result);
-    console.log(response);
+    try {
+      const response = await call("/s-community/survey/1", "POST", result);
+      console.log(response);
+      alert(response);
+      navigate("/surveyCommunityDetail");
+    } catch (error) {
+      console.error("답변 제출 중 오류 발생:", error);
+    }
   };
 
   return (

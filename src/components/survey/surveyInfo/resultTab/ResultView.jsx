@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import SurveyTitle from "../SurveyTitle";
 import SurveyPostSelect from "./SurvePostSelect";
 
 import { useEffect } from "react";
 import PersonalResult from "./PersonalResult";
 import PostResult from "./PostResult";
+import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 
 export default function ResultView() {
   // 게시물 통계 , 사용자 응답 구별
   const [isPersonal, setIsPersonal] = useState(0);
+  const { survey } = useContext(SurveyContext);
 
   const handleChangeTab = (e, num) => {
     e.preventDefault();
@@ -36,8 +38,8 @@ export default function ResultView() {
         tab
         handlechangeTab={handleChangeTab}
         page={isPersonal}
-        title={"제목"}
-        content={"내용"}
+        title={survey.title}
+        content={survey.content}
       />
 
       {/* 질문과 옵션들  */}

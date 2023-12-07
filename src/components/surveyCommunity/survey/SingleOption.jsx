@@ -18,7 +18,7 @@ export default function SingleOption({ answers, setUserAnswer }) {
             name="radio-buttons-group"
           >
             {answers.map((answer, index) => (
-              <div style={{ marginBottom: "5px" }}>
+              <div style={{ marginBottom: "5px" }} key={index}>
                 <FormControlLabel
                   value={answer.surveyAnswer}
                   control={<Radio onChange={handleChangeAnswer} />}

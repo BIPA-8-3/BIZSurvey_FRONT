@@ -69,12 +69,28 @@ export default function EditSurveyPage() {
   const handleUpdateSurvey = async (surveyId) => {
     const { createQuestion, updateQuestion } = questions.reduce(
       (acc, question, index) => {
-        const { questionId, ...rest } = { ...question, step: index + 1 };
+        const { questionId, ...rest } = {
+          ...question,
+          step: index + 1,
+          answers:
+            question.answerType === "객관식(택1)" ||
+            question.answerType === "객관식(복수형)"
+              ? question.answers
+              : [],
+        };
 
         if (questionId === 0) {
           acc.createQuestion.push(rest);
         } else {
-          acc.updateQuestion.push({ ...question, step: index + 1 });
+          acc.updateQuestion.push({
+            ...question,
+            step: index + 1,
+            answers:
+              question.answerType === "객관식(택1)" ||
+              question.answerType === "객관식(복수형)"
+                ? question.answers
+                : [],
+          });
         }
 
         return acc;
@@ -93,6 +109,8 @@ export default function EditSurveyPage() {
       .patch("/survey/" + surveyId, surveyData)
       .then((response) => {
         console.log(response);
+        alert(response.data);
+        navigate("/surveyInfo");
       })
       .catch((error) => console.log(error));
   };

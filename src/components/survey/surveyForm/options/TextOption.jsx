@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 export default function TextOption() {
   return (
     <>
-      <div style={{ width: "600px", margin: "0 auto", paddingTop: "15px" }}>
+      <div style={{ width: "600px", margin: "0 auto", paddingTop: "10px" }}>
         <TextField
           disabled
           id="standard-disabled"
