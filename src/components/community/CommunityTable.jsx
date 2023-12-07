@@ -59,7 +59,7 @@ function CommunityTable({props}) {
               <td style={{width:'10%'}}>{item.postId}</td>
               <td >
                 {renderIsBest(item.isBest)}
-                <Link to={'/communityDetail'}>{item.title}</Link>
+                <Link to={'/communityDetail'} state={{postId : item.postId}}>{item.title}</Link>
                 {renderVote(item.voteId)}
                 <span className={style.comment}>[{item.commentSize}]</span>
                 <span className={style.new}>{renderIsNew(item.createType)}</span>
