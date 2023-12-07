@@ -5,70 +5,78 @@ import useFadeIn from "../../style/useFadeIn";
 import back from "../../assets/img/back.png";
 import Button from "@mui/material/Button";
 import logo from "../../assets/img/avatar.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Comment from "../community/Comment";
 import ParentsComment from "../community/ParentsComment";
 import { useState, useEffect } from "react";
 import ChildCommentForm from "../community/ChildCommentForm";
 import ChildComment from "../community/ChildComment";
-import { login, call } from "../../pages/survey/Login";
+import Loader from "../../pages/loader/Loader"
+import axios from 'axios'
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
 
 export default function CommunityPost() {
   const fadeIn = useFadeIn();
   const [isAvailable, setIsAvailable] = useState(false);
+  const location = useLocation();
+  let postId = location.state.postId;
+
+  console.log('넘어오는지 확인 : ' + postId)
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    login();
-    call("/s-community/survey/check/1", "GET")
-      .then((data) => {
-        if (data) {
-          setIsAvailable(false);
-        } else {
-          setIsAvailable(true);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    // 데이터를 가져오는 함수
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/s-community/showPost/'+postId);
+        console.log("리스폰스 : "+response);
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false); // 데이터 로딩이 끝났음을 표시
+      }
+    };
+
+    fetchData(); // 함수 호출
+  }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
+
+  if (loading) {
+    return <>
+      <Loader />
+    </>; // 데이터 로딩 중에는 로딩 표시
+  }
+  
 
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.contentWrap}>
         <div style={{ backgroundColor: "rgba(209, 232, 248, 0.1)" }}>
           <div className={style.title}>
-            <h1>21년도 상반기 설문조사</h1>
+            <h1>{data.title}</h1>
             <p style={{ display: "flex" }}>
               <p style={{ textAlign: "center" }}>
                 <div className={style.profil} style={{ textAlign: "center" }}>
                   <span className={style.photo}>
                     <img className="" src={logo} />
                   </span>
-                  <span className={style.nickname}>철수예오</span>
+                  <span className={style.nickname}>{data.nickname}</span>
                 </div>
               </p>
               <div style={{ marginTop: "16px" }}>
                 <span className={style.bar}> | </span>
-                <span>COMMUNITY</span>
+                <span>S-COMMUNITY</span>
                 <span className={style.bar}> | </span>
-                <span>2023-09-29</span>
+                <span>{data.startDateTime}</span>
               </div>
             </p>
           </div>
         </div>
         <div className={style.content}>
           <p>
-            국무총리·국무위원 또는 정부위원은 국회나 그 위원회에 출석하여
-            국정처리상황을 보고하거나 의견을 진술하고 질문에 응답할 수 있다.
-            대통령은 법률이 정하는 바에 의하여 훈장 기타의 영전을 수여한다.
-            형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서
-            진술할 수 있다. 국회의원은 그 지위를 남용하여 국가·공공단체 또는
-            기업체와의 계약이나 그 처분에 의하여 재산상의 권리·이익 또는 직위를
-            취득하거나 타인을 위하여 그 취득을 알선할 수 없다.
+            {data.content}
           </p>
           <div className={style.surveyBtnWrap}>
             <Link to={"/communitySurveyWrite"}>
@@ -126,7 +134,7 @@ export default function CommunityPost() {
             }}
           >
             <div>
-              조회수 <span style={{ fontWeight: "bold" }}>128</span>
+              조회수 <span style={{ fontWeight: "bold" }}>{data.count}</span>
               <span style={{ color: "#ddd" }}> | </span>
               댓글 <span style={{ fontWeight: "bold" }}>13</span>
             </div>
@@ -134,17 +142,7 @@ export default function CommunityPost() {
           </p>
         </div>
         <Comment />
-        <ParentsComment />
-        <ChildCommentForm />
-        <ChildComment />
-        <ChildComment />
-        <ParentsComment />
-        <ChildComment />
-        <ParentsComment />
-        <ChildComment />
-        <ParentsComment />
-        <ParentsComment />
-        <ChildCommentForm />
+        <ParentsComment props={data.commentList} />
       </div>
       <div style={{ textAlign: "center" }}>
         <Link to={"/community"}>
