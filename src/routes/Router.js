@@ -40,6 +40,7 @@ const EmailValidation = lazy(() => import('../components/user/EmailValidation'))
 const ChangPassword = lazy(() => import('../components/user/ChangePassword'))
 const AdditionalJoin = lazy(() => import('../components/user/AdditionalJoin'))
 
+
 const Main = lazy(() => import("../pages/workspace/Main"));
 
 const ThemeRoutes = [
@@ -63,6 +64,10 @@ const ThemeRoutes = [
             {path: "/surveyInfo", exact: true, element: <SurveyInfoPage /> },
             {path: "/surveyCommunityWrite", exact: true, element: <SurveyCommunityWrite /> },
             {path: "/workspace", exact: true, element: <Main /> },
+            {path: "/login/oauth2/kakao", exact: true, element: <OAuth2RedirectHandler /> },
+            {path: "/emailValidation/:key", exact: true , element:<EmailValidation />},
+            {path: "/changePassword", exact : true, element : <ChangPassword />},
+            {path: "/additionalJoin", exact : true, element : <AdditionalJoin />}
     ],
   },
 ];
