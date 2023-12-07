@@ -236,25 +236,6 @@ export default function PostResult() {
           </QuestionBox>
         );
       })}
-
-      {/* {processed.map((question, index) => (
-        <QuestionBox key={index}>
-          <QuestionTitle title={question.title} />
-          <OptionBox>
-            {question.type === "SINGLE_CHOICE" && (
-              <Chart chartData={question.data} />
-            )}
-            {question.type === "MULTIPLE_CHOICE" && (
-              <Chart chartData={question.data} />
-            )}
-            {question.type === "TEXT" && <TextList values={question.data} />}
-            {question.type === "CALENDAR" && (
-              <TextList values={question.data} />
-            )}
-            {question.type === "FILE" && <FileList files={question.data} />}
-          </OptionBox>
-        </QuestionBox>
-      ))} */}
     </>
   );
 }

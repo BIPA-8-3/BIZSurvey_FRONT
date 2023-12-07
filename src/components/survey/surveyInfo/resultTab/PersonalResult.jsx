@@ -41,6 +41,7 @@ export default function PersonalResult() {
     call("/result/{surveyId}/{postId}/{nickname}", "GET")
       .then((data) => {
         setAnswer(data);
+      })
       .catch((error) => console.log(error));
   });
 
