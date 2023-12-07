@@ -5,8 +5,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 
-export default function DateOption(){
+export default function DateOption({value}){
 
     const [cleared, setCleared] = useState(false);
 
@@ -32,6 +33,7 @@ export default function DateOption(){
                         <DatePicker
                             variant="standard"
                             disabled
+                            value = {isDisabled ? null : value}
                             sx={{width : 180}}
                             slotProps={{
                                 field: { clearable: true, onClear: () => setCleared(true) },

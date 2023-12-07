@@ -32,7 +32,13 @@ export default function ResultView({ surveyInfo }) {
       <SurveyPostSelect />
 
       {/* 전체 / 개별 선택 탭  */}
-      <SurveyTitle tab handlechangeTab={handleChangeTab} page={isPersonal} />
+      <SurveyTitle
+        tab
+        handlechangeTab={handleChangeTab}
+        page={isPersonal}
+        title={"제목"}
+        content={"내용"}
+      />
 
       {/* 질문과 옵션들  */}
 
@@ -40,37 +46,3 @@ export default function ResultView({ surveyInfo }) {
     </>
   );
 }
-
-// 게시물 통계
-//         [
-
-// {questionId:1,
-
-// questionType : ‘객관식’,
-
-// answers : [
-
-// { answer : ‘asdfas’,
-
-// count : 3}
-
-// ]}
-
-// ]
-
-// 개인 통계
-// [
-
-//     {questionId : 1,
-
-//     answer : ‘asdf’,
-
-//     url: ‘fdasfasf’,
-
-//     questionType : ‘객관식’,
-
-//     answerType : ‘파일’
-
-//     }
-
-//     ]

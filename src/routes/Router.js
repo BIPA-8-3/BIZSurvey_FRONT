@@ -1,30 +1,39 @@
 import { lazy } from "react";
 import { Navigate } from "react-router-dom";
 import SurveyInfoPage from "../pages/survey/SurveyInfoPage";
-
 import SurveyResultPage from "../pages/survey/SurveyResultPage";
-
+import EditSurveyPage from "../pages/survey/EditSurveyPage";
 
 const FullLayout = lazy(() => import("../pages/Layout"));
-
 
 const SurveyPostContainer = lazy(() =>
   import("../components/common/SurveyPostContainer")
 );
 const Login = lazy(() => import("../components/user/Login"));
 const Join = lazy(() => import("../components/user/Join"));
-const Plan = lazy(() => import("../components/common/Plan"))
-const CommunityPost = lazy(() => import('../components/community/CommunityPost'))
-const CommunityDetail = lazy(() => import('../components/community/CommunityDetail'))
-const CommunityWrite = lazy(() => import('../components/community/CommunityWrite'))
-const SurveyCommunityDetail = lazy(() => import('../components/surveyCommunity/SurveyCommunityDetail'))
-const CommunitySurveyWrite = lazy(() => import('../components/surveyCommunity/CommunitySurveyWrite'))
-const FindPassword = lazy(() => import('../components/user/FindPassword'))
-const Mypage = lazy(() => import('../components/user/Mypage'))
+const Plan = lazy(() => import("../components/common/Plan"));
+const CommunityPost = lazy(() =>
+  import("../components/community/CommunityPost")
+);
+const CommunityDetail = lazy(() =>
+  import("../components/community/CommunityDetail")
+);
+const CommunityWrite = lazy(() =>
+  import("../components/community/CommunityWrite")
+);
+const SurveyCommunityDetail = lazy(() =>
+  import("../components/surveyCommunity/SurveyCommunityDetail")
+);
+const CommunitySurveyWrite = lazy(() =>
+  import("../components/surveyCommunity/CommunitySurveyWrite")
+);
+const FindPassword = lazy(() => import("../components/user/FindPassword"));
+const Mypage = lazy(() => import("../components/user/Mypage"));
 const CreateSurvey = lazy(() => import("../pages/survey/CreateSurveyPage"));
 const SurveyInfo = lazy(() => import("../pages/survey/SurveyInfoPage"));
-const SurveyTest = lazy(() => import("../pages/survey/SurveyResultPage"));
+const EditSurvey = lazy(() => import("../pages/survey/EditSurveyPage"));
 const PostDetail = lazy(() => import("../components/community/PostDetail"));
+
 const SurveyCommunityWrite = lazy(() => import('../components/surveyCommunity/SurveyCommunityWrite'))
 const OAuth2RedirectHandler = lazy(() => import('../components/common/OAuth2RedirectHandler'))
 const EmailValidation = lazy(() => import('../components/user/EmailValidation'))
@@ -54,10 +63,6 @@ const ThemeRoutes = [
             {path: "/surveyInfo", exact: true, element: <SurveyInfoPage /> },
             {path: "/surveyCommunityWrite", exact: true, element: <SurveyCommunityWrite /> },
             {path: "/workspace", exact: true, element: <Main /> },
-            {path: "/login/oauth2/kakao", exact: true, element: <OAuth2RedirectHandler /> },
-            {path: "/emailValidation/:key", exact: true , element:<EmailValidation />},
-            {path: "/changePassword", exact : true, element : <ChangPassword />},
-            {path: "/additionalJoin", exact : true, element : <AdditionalJoin />}
     ],
   },
 ];
