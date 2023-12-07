@@ -36,7 +36,7 @@ export default function FileOption({ setFileAnswer, questionId, fileAnswer }) {
     // url 받아오기
     const data = new FormData();
     data.append("file", file);
-    data.append("surveyId", 7);
+    data.append("surveyId", 11);
     data.append("shareId", 1);
     data.append("shareType", "INTERNAL");
     data.append("questionId", questionId);

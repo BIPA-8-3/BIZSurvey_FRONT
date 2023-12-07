@@ -19,21 +19,22 @@ function createData(name, calories, fat, carbs, protein) {
 
 export default function CommunityPost() {
   const fadeIn = useFadeIn();
-  const [isAvailable, setIsAvailable] = useState(false);
+  // const [isAvailable, setIsAvailable] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(true);
 
   useEffect(() => {
-    login();
-    call("/s-community/survey/check/1", "GET")
-      .then((data) => {
-        if (data) {
-          setIsAvailable(false);
-        } else {
-          setIsAvailable(true);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // login();
+    // // call("/s-community/survey/check/1", "GET")
+    // //   .then((data) => {
+    // //     if (data) {
+    // //       setIsAvailable(false);
+    // //     } else {
+    // //       setIsAvailable(true);
+    // //     }
+    // //   })
+    // //   .catch((error) => {
+    // //     console.log(error);
+    // //   });
   }, []);
 
   return (

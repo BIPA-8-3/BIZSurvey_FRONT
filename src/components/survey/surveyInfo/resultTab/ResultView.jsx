@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import PersonalResult from "./PersonalResult";
 import PostResult from "./PostResult";
 
-export default function ResultView({ surveyInfo }) {
+export default function ResultView() {
   // 게시물 통계 , 사용자 응답 구별
   const [isPersonal, setIsPersonal] = useState(0);
 

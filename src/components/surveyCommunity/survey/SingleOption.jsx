@@ -12,11 +12,6 @@ export default function SingleOption({ answers, setUserAnswer }) {
   return (
     <>
       <div>
-        {/* <FormControlLabel
-          value={surveyAnswer}
-          control={<Radio onChange={handleChangeAnswer}/>}
-          label={surveyAnswer}
-        /> */}
         <FormControl>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"

@@ -8,7 +8,7 @@ export default function FileList({ files }) {
     <>
       <div className={style.fileList}>
         {files.map((file, index) => (
-          <File filename={file.name} url={file.url} key={index}></File>
+          <File filename={file.filename} url={file.url} key={index}></File>
         ))}
       </div>
     </>

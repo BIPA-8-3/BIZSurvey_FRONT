@@ -6,8 +6,12 @@ import style from "../../../../style/survey/SurveyInfo.module.css";
 import QuestionInfo from "./QuestionInfo";
 import SurveyTitle from "../SurveyTitle";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 
-export default function SurveyInfo({ survey }) {
+export default function SurveyInfo() {
+  const { survey } = useContext(SurveyContext);
+
   const { surveyId, title, content, surveyType, questions } = survey;
 
   return (
@@ -30,8 +34,8 @@ export default function SurveyInfo({ survey }) {
         <SurveyTitle title={title} content={content} />
 
         <div>
-          {questions.map((question) => (
-            <QuestionInfo key={question.questionId} info={question} />
+          {questions.map((question, index) => (
+            <QuestionInfo key={index} info={question} />
           ))}
         </div>
       </div>

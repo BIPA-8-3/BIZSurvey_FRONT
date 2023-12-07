@@ -16,7 +16,7 @@
 }
 
 .textList {
-  height: 200px;
+  max-height: 500px;
   width: 600px;
   overflow-y: scroll;
 }

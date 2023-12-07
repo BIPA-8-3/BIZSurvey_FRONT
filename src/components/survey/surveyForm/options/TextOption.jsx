@@ -9,7 +9,7 @@ export default function TextOption() {
           id="standard-disabled"
           defaultValue="주관식 텍스트"
           variant="standard"
-          fullWidth={"true"}
+          fullWidth={true}
         />
       </div>
     </>

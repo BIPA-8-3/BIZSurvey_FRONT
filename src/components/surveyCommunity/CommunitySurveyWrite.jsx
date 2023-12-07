@@ -72,6 +72,10 @@ export default function CommunityPost() {
       });
   }, []);
 
+  useEffect(() => {
+    console.log(answers);
+  }, [answers]);
+
   const handleSetAnswer = (questionId, userAnswer, answerType, url) => {
     setAnswers((pre) => {
       const existingAnswer = pre.find((ans) => ans.questionId === questionId);
