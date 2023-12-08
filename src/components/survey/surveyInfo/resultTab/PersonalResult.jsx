@@ -10,56 +10,173 @@ import { useContext, useEffect, useState } from "react";
 import { call } from "../../../../pages/survey/Login";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 
-export default function PersonalResult() {
+export default function PersonalResult({ postId }) {
   const { survey } = useContext(SurveyContext);
+  const { surveyId, questions, ...other } = survey;
 
-  const [user, setUser] = useState(0);
-  const [userList, setUserList] = useState([]);
-  const [answer, setAnswer] = useState([
+  const [nickname, setNickname] = useState(0);
+  const [userList, setUserList] = useState([
     {
-      questionId: 0,
-      answer: "",
-      url: "",
-      questionType: "",
-      answerType: "",
+      userId: 0,
+      nickname: "",
     },
+  ]);
+  const [answers, setAnswers] = useState([
+    // {
+    //   questionId: 0,
+    //   answer: [],
+    //   url: "",
+    //   questionType: "",
+    //   answerType: "",
+    // },
   ]);
 
   useEffect(() => {
-    // 설문 게시물 참가자 목록
-    call("/result/userList/{surveyId}/{postId}", "GET")
-      .then((data) => {
-        setUserList(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    console.log("여긴 answers");
+    console.log(answers);
+    console.log("여긴 실제 questions");
+    console.log(questions);
+  }, [answers]);
 
   useEffect(() => {
-    // 응답 결과
-    call("/result/{surveyId}/{postId}/{nickname}", "GET")
-      .then((data) => {
-        setAnswer(data);
-      })
-      .catch((error) => console.log(error));
-  });
+    // 설문 게시물 참가자 목록
+    if (nickname !== 0) {
+      call(`/survey/result/${surveyId}/${postId}/${nickname}`, "GET")
+        .then((data) => {
+          console.log("여기");
+          handleMergeAnswers(data, (newData) => {
+            setAnswers(newData);
+          });
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [nickname]);
+
+  useEffect(() => {
+    if (postId !== "0") {
+      call(`/survey/result/userList/${surveyId}/${postId}`, "GET")
+        .then((data) => {
+          setUserList(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+    }
+  }, [postId]);
+
+  const handleSetUser = (nick) => {
+    setNickname(nick);
+  };
+
+  const handleMergeAnswers = (answers, callback) => {
+    const resultMap = new Map();
+
+    answers.forEach((answer) => {
+      console.log("데이터처리" + answer.answer);
+      const { questionId, answer: answerValue } = answer;
+
+      if (!resultMap.has(questionId)) {
+        resultMap.set(questionId, { ...answer, answer: [answerValue] });
+      } else {
+        resultMap.get(questionId).answer.push(answerValue);
+      }
+    });
+
+    const mergedAnswers = Array.from(resultMap.values());
+    console.log("mergeData");
+    console.log(mergedAnswers);
+
+    callback(mergedAnswers);
+  };
+
+  if (postId === "0") {
+    return (
+      <>
+        <p>게시물을 선택해주세요.</p>
+      </>
+    );
+  }
+
+  if (nickname === 0) {
+    return (
+      <>
+        <UserList userList={userList} setUser={handleSetUser} />
+
+        <p>응답자를 선택해주세요.</p>
+      </>
+    );
+  }
 
   return (
     <>
-      <UserList />
+      <UserList userList={userList} setUser={handleSetUser} />
 
-      {survey.questions.map((question) => (
-        <QuestionBox>
-          <QuestionTitle title={"객관식"} />
-          <OptionBox>
-            <ChoiceField single text={"옵션111"} />
-            <ChoiceField single text={"옵션222"} />
-            <ChoiceField single text={"옵션333"} select />
-          </OptionBox>
-        </QuestionBox>
-      ))}
-      <QuestionBox>
+      {questions.map((question, index) => {
+        const matchingQuestion = answers.find(
+          (ans) => ans.questionId === question.questionId
+        );
+
+        return (
+          <>
+            <QuestionBox key={index}>
+              <QuestionTitle title={question.surveyQuestion} />
+              <OptionBox>
+                {matchingQuestion ? (
+                  <>
+                    {question.answerType === "객관식(택1)" &&
+                      matchingQuestion.answerType !== "FILE" &&
+                      question.answers.map((answer, index) => (
+                        <ChoiceField
+                          key={index}
+                          single
+                          text={answer.surveyAnswer}
+                          select={matchingQuestion.answer.includes(
+                            answer.surveyAnswer
+                          )}
+                        />
+                      ))}
+
+                    {question.answerType === "객관식(복수형)" &&
+                      matchingQuestion.answerType !== "FILE" &&
+                      question.answers.map((answer, index) => (
+                        <ChoiceField
+                          key={index}
+                          text={answer.surveyAnswer}
+                          select={matchingQuestion.answer.includes(
+                            answer.surveyAnswer
+                          )}
+                        />
+                      ))}
+
+                    {(question.answerType === "주관식" ||
+                      question.answerType === "날짜") &&
+                      matchingQuestion.answerType !== "FILE" &&
+                      matchingQuestion.answer.map((answer, index) => (
+                        <Text key={index} value={answer} personal />
+                      ))}
+
+                    {question.answerType === "파일" &&
+                      matchingQuestion.answerType === "FILE" && (
+                        <File
+                          filename={matchingQuestion.answer[0]}
+                          url={matchingQuestion.answer.url}
+                        />
+                      )}
+                  </>
+                ) : (
+                  <>
+                    <p style={{ fontSize: "14px", paddingTop: "10px" }}>
+                      사용자 응답이 없습니다.
+                    </p>
+                  </>
+                )}
+              </OptionBox>
+            </QuestionBox>
+          </>
+        );
+      })}
+      {/* <QuestionBox>
         <QuestionTitle title={"객관식"} />
         <OptionBox>
           <ChoiceField single text={"옵션111"} />
@@ -87,7 +204,7 @@ export default function PersonalResult() {
         <OptionBox>
           <DateInfo value={"2029-03-34"} />
         </OptionBox>
-      </QuestionBox>
+      </QuestionBox> */}
     </>
   );
 }

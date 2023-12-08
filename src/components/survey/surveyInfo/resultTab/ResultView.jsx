@@ -6,17 +6,25 @@ import { useEffect } from "react";
 import PersonalResult from "./PersonalResult";
 import PostResult from "./PostResult";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
+import { call } from "../../../../pages/survey/Login";
 
 export default function ResultView() {
+  const { survey } = useContext(SurveyContext);
   // 게시물 통계 , 사용자 응답 구별
   const [isPersonal, setIsPersonal] = useState(0);
-  const { survey } = useContext(SurveyContext);
+  const [postId, setPostId] = useState("0");
+  const [post, setPost] = useState([
+    // {
+    //   postId: 0,
+    //   title: "",
+    // },
+  ]);
 
-  const handleChangeTab = (e, num) => {
-    e.preventDefault();
-    console.log("num" + num);
-    setIsPersonal(num);
-  };
+  useEffect(() => {
+    call("/survey/result/postList/" + survey.surveyId, "GET")
+      .then((data) => setPost(data))
+      .catch((error) => console.log(error));
+  }, []);
 
   useEffect(() => {
     if (isPersonal) {
@@ -26,12 +34,17 @@ export default function ResultView() {
     }
   }, [isPersonal]);
 
+  const handleChangeTab = (e, num) => {
+    e.preventDefault();
+    setIsPersonal(num);
+  };
+
   return (
     <>
       {/* 응답 결과 탭의 모든 컴포넌트 집합  */}
 
       {/* 게시물 선택  */}
-      <SurveyPostSelect />
+      <SurveyPostSelect postInfo={post} postId={postId} setPostId={setPostId} />
 
       {/* 전체 / 개별 선택 탭  */}
       <SurveyTitle
@@ -44,7 +57,11 @@ export default function ResultView() {
 
       {/* 질문과 옵션들  */}
 
-      {isPersonal ? <PersonalResult /> : <PostResult />}
+      {isPersonal ? (
+        <PersonalResult postId={postId} />
+      ) : (
+        <PostResult postId={postId} />
+      )}
     </>
   );
 }

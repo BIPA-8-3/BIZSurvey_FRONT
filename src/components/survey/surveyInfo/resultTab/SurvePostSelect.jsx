@@ -4,22 +4,13 @@ import Select from "@mui/material/Select";
 import * as React from "react";
 import { useState } from "react";
 
-export default function SurveyPostSelect() {
-  const [postId, setPostId] = useState("");
-  const [postInfo, setPostInfo] = useState([
-    {
-      postId: 1,
-      title: "123",
-    },
-    {
-      postId: 2,
-      title: "1234",
-    },
-    {
-      postId: 3,
-      title: "12345",
-    },
-  ]);
+export default function SurveyPostSelect({ postInfo, postId, setPostId }) {
+  // const [postInfo, setPostInfo] = useState([
+  //   {
+  //     postId: 1,
+  //     title: "123",
+  //   },
+  // ]);
 
   const handleChange = (event) => {
     setPostId(event.target.value);
@@ -46,7 +37,7 @@ export default function SurveyPostSelect() {
               "aria-label": "Without label",
             }}
           >
-            <MenuItem value="">
+            <MenuItem value="0">
               <em style={{ color: "grey" }}>== 게시물 선택 ==</em>
             </MenuItem>
             {postInfo.map((post) => (

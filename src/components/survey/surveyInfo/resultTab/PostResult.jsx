@@ -13,7 +13,7 @@ import { useContext } from "react";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import SurveyQuestion from "../../../surveyCommunity/survey/SurveyQuestion";
 
-export default function PostResult() {
+export default function PostResult({ postId }) {
   const { survey } = useContext(SurveyContext);
   // 객관식 데이터
   // const chartData = [
@@ -75,8 +75,10 @@ export default function PostResult() {
   const [processed, setProcessed] = useState([]);
 
   useEffect(() => {
-    handleGetData();
-  }, []);
+    if (postId !== "0") {
+      handleGetData();
+    }
+  }, [postId]);
 
   useEffect(() => {
     handleProcessData();
@@ -89,7 +91,7 @@ export default function PostResult() {
 
   const handleGetData = async () => {
     // 데이터 받아오는 곳
-    call("/survey/result/1", "GET")
+    call("/survey/result/" + postId, "GET")
       .then((data) => {
         setResult(data);
       })
