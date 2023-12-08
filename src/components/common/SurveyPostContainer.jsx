@@ -26,7 +26,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function SurveyPostContainer(){
 
-  const navigate = useNavigate();
   const [page, setPage] = useState(0); // 현재 페이지 번호 (페이지네이션)
   const [ref, inView] = useInView();
   const [data, setData] = useState({
