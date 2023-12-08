@@ -7,10 +7,12 @@ import SearchResult from "./SearchResult";
 import { useNavigate } from "react-router-dom";
 
 function Search() {
-  const [title, setTitle] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [title, setTitle] = useState(""); // 검색할 데이터
+  const [findTitles, setFindTitles] = useState([]); // 검색 자동 완성
+  const [searchResults, setSearchResults] = useState({}); // 검색 결과 
   const navigate = useNavigate();
 
+  // 
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
 
@@ -20,7 +22,7 @@ function Search() {
       })
       .then((response) => {
         console.log("Search Result:", response.data);
-        setSearchResults(response.data); // Update the search results state
+        setFindTitles(response.data); // Update the search results state
       })
       .catch((error) => {
         console.error("Error searching posts:", error);
@@ -34,13 +36,18 @@ function Search() {
       .get(`http://localhost:8080/community/search?keyword=${title}`)
       .then((response) => {
         console.log("검색 결과!!!!(<Search />):", response.data);
-        setSearchResults(response.data); 
+        
+        console.log(response.data);
+        alert(JSON.stringify(response.data))
+        let data = {result:response.data}
+        navigate('/communitySearchResult', {state: data}) 
       })
       .catch((error) => {
         console.error("Error searching posts:", error);
       });
-
-      navigate('/communitySearchResult', {state: searchResults})
+      console.log('--------------------------------------------------')
+      console.log(searchResults.data)
+      
   };
 
 
@@ -72,7 +79,7 @@ function Search() {
       </div>
     </div>
     
-        <SearchResult props={searchResults} />
+        <SearchResult props={findTitles} />
     </div>
   );
 }
