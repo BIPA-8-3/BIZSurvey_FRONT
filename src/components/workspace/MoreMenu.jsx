@@ -1,7 +1,7 @@
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import style from "../../style/workspace/MoreMenu.module.css";
 import { useRef, useEffect, useState, useContext } from "react";
-import Modal from "./Modal";
+import ManagementModal from "./ManagementModal";
 import { WorkspaceContext } from "../../pages/workspace/Main";
 import { removeWorkspace } from "../../pages/workspace/api.js";
 
@@ -42,11 +42,11 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum }) => {
     };
   }, [moreMenu]);
 
-  // 모달
-  let [modal, setModal] = useState(false);
+  // 관리 모달
+  let [managementModal, setManagementModal] = useState(false);
 
-  const closeModal = () => {
-    setModal(false);
+  const closeManagementModal = () => {
+    setManagementModal(false);
   };
 
   // menu
@@ -67,7 +67,7 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum }) => {
   };
   return (
     <div ref={cotainerRef} className={style.menuContainer}>
-      <Modal isOpen={modal} onClose={closeModal} tab={menu} />
+      <ManagementModal isOpen={managementModal} onClose={closeManagementModal} tab={menu} />
       <BiDotsHorizontalRounded
         onClick={() => {
           toggleMenu();
@@ -81,7 +81,7 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum }) => {
             onClick={() => {
               setMenu("tab1");
               toggleMenu();
-              setModal(true);
+              setManagementModal(true);
             }}
           >
             관리자 관리
@@ -90,7 +90,7 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum }) => {
             onClick={() => {
               setMenu("tab2");
               toggleMenu();
-              setModal(true);
+              setManagementModal(true);
             }}
           >
             연락처 관리

@@ -48,17 +48,19 @@
   margin-bottom: 5px;
   padding: 10px 10px 0px 12px;
 }
-
+/* 
 .inputContactBox {
   margin-bottom: 0px;
   padding: 5px 10px 0px 12px;
   border-bottom: 1px solid #eee;
-}
+  padding: 10px 10px 0px 12px; 
+} */
 
 .inputWrap {
   display: flex;
   justify-content: space-between;
   padding-bottom: 5px;
+  padding: 10px 10px 5px 12px;
 }
 
 .inputEmail {
@@ -74,7 +76,7 @@
 }
 .inputContact {
   box-sizing: border-box;
-  width: 250px;
+  width: 251px;
   height: 28px;
   font-size: 14px;
   border: 1px solid #ddd;
@@ -126,7 +128,7 @@
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 380px;
+  max-height: 410px;
   padding: 0px 13px 0px 8px;
 }
 

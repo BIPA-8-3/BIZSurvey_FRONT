@@ -12,6 +12,11 @@ import { WorkspaceModal } from "../../components/workspace/WorkspaceModal";
 export let WorkspaceContext = createContext();
 
 export default function Main() {
+  // 전역으로 사용하는 state
+
+  // 연락처 목록
+  let [contactList, setContactList] = useState([]);
+
   // 공유 모달
   let [shareModal, setShareModal] = useState(false);
 
@@ -34,6 +39,9 @@ export default function Main() {
   // 유저 정보
   const [userInfo, setUserInfo] = useState({});
 
+  // 관리자 목록 (캐싱)
+  const [adminList, setAdminList] = useState({});
+
   // 워크스페이스 모달
   const closeWorkspaceModal = () => {
     setWorkspaceModalState(false);
@@ -50,7 +58,7 @@ export default function Main() {
   };
 
   // 워크스페이스 포커스 잃었을때 핸들러
-  const handleChaneWorkspaceName = (event, changeName) => {
+  const handleChangeWorkspaceName = (event, changeName) => {
     let newName = "";
     if (event) {
       newName = event.target.value;
@@ -90,8 +98,9 @@ export default function Main() {
     document.getElementById("workspaceName").value = originWorkspaceName;
   }, [originWorkspaceName]);
 
-  // 로딩 시 자동 로그인
+  // 폼 최초 로딩 시
   useEffect(() => {
+    // 로그인 이후 계정정보 불러옴
     login()
       .then((data) => {
         getUserInfo()
@@ -118,6 +127,8 @@ export default function Main() {
           });
       })
       .catch((error) => console.error(error));
+
+    // 관리자 목록 조회 및 저장
   }, []);
 
   // 선택한 워크스페이스가 변경되면
@@ -165,7 +176,7 @@ export default function Main() {
         workspaceList={workspaceList}
         setWorkspaceList={setWorkspaceList}
         pageNum={workspaceModalNum}
-        handleChaneWorkspaceName={handleChaneWorkspaceName}
+        handleChangeWorkspaceName={handleChangeWorkspaceName}
       />
       {/* Navbar */}
       <WorkspaceContext.Provider
@@ -189,7 +200,7 @@ export default function Main() {
           <div className={style.inputWrap}>
             <input
               className={style.inputTitle}
-              onBlur={(e) => handleChaneWorkspaceName(e)}
+              onBlur={(e) => handleChangeWorkspaceName(e)}
               onKeyDown={handleInputKeyDown}
               id="workspaceName"
             />
@@ -204,6 +215,8 @@ export default function Main() {
                   setSelectedWorkspaceId,
                   workspaceList,
                   setWorkspaceList,
+                  contactList,
+                  setContactList,
                 }}
               >
                 <MoreMenu

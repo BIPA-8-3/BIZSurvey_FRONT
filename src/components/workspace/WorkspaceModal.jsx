@@ -9,14 +9,12 @@ export const WorkspaceModal = ({
   workspaceList,
   setWorkspaceList,
   pageNum,
-  handleChaneWorkspaceName,
-  // selectedWorkspaceId,
+  handleChangeWorkspaceName,
 }) => {
   let title = ["워크스페이스 생성", "워크스페이스 수정"];
   let explanation = ["워크스페이스 이름을 입력하세요", "새로운 이름을 입력하세요"];
   let buttonName = ["생성", "수정"];
 
-  console.log("pageNum: " + pageNum);
   if (!isOpen) {
     return null;
   }
@@ -37,7 +35,7 @@ export const WorkspaceModal = ({
 
   const handleModifyBtnClick = () => {
     const workspaceName = document.getElementById("workspace_name").value;
-    handleChaneWorkspaceName(null, workspaceName);
+    handleChangeWorkspaceName(null, workspaceName);
   };
 
   return ReactDOM.createPortal(

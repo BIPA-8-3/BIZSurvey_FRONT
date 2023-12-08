@@ -1,5 +1,37 @@
 import axios from 'axios';
 
+// sse
+const instanceOfSse = axios.create({
+    headers: {
+        "Accept": "text/event-stream",
+        "Cache-Control": "no-cache",
+    }
+})
+
+// 이벤트 이름을 설정해 클라이언트에서 해당 이름으로 이벤트를 수신함
+const connectWorkspace = () => {
+    const sse = new EventSource("/connect");
+
+    sse.addEventListener('connect', e => {
+        const { data: receivedConnectData } = e;
+        console.log('connect event data: ', receivedConnectData); // "connected!"
+    })
+}
+
+const acceptInvite = (workspaceId) => {
+    const sse = new EventSource(`/acceptInvite/${workspaceId}`);
+
+    sse.addEventListener('acceptInvite', e => {
+        const { data: receivedConnectData } = e;
+        console.log('acceptAdmin event data: ', receivedConnectData); // "connected!"
+        return receivedConnectData;
+    })
+}
+
+
+
+
+// 일반 api
 const instance = axios.create({
     headers: {
         "Content-Type": "application/json",
@@ -32,6 +64,7 @@ async function call(api, method, request) {
     } catch (error) {
         throw error;
     }
+}
 
 export const login = async () => {
     const loginData = {
@@ -85,4 +118,23 @@ export const getUserInfo = () => {
 // 설문지 삭제
 export const removeSurvey = (surveyId) => {
     return call(`/survey/${surveyId}`, "DELETE");
+}
+
+// 연락처 API
+const contactURI = '/workspace/contact';
+
+
+// 연락처 등록
+export const createContact = (createRequest) => {
+    return call(contactURI, "POST", createRequest);
+}
+
+// 연락처 조회
+export const getContactList = (workspaceId) => {
+    return call(`${contactURI}/list`, "GET", workspaceId);
+}
+
+// 연락처 삭제
+export const removeContact = (id) => {
+    return call(`${contactURI}/${id}`, "DELETE");
 }
