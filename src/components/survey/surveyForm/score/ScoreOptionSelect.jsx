@@ -6,9 +6,9 @@ import { FaListOl } from "react-icons/fa";
 import { GrTextAlignFull } from "react-icons/gr";
 import { IoMdCloudUpload } from "react-icons/io";
 import { MdDateRange } from "react-icons/md";
-import "../../../style/Common.css";
-import style from "../../../style/survey/OptionSelect.module.css";
-import IconWithText from "../../common/IconWithText";
+import "../../../../style/Common.css";
+import style from "../../../../style/survey/OptionSelect.module.css";
+import IconWithText from "../../../common/IconWithText";
 
 export default function ScoreOptionSelect({ option, setOption, idx }) {
   const handleChange = (event, type) => {

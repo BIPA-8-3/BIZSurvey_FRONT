@@ -185,7 +185,7 @@ export default function CreateScoreSurveyPage() {
                               changeRequired={changeRequired}
                               handleOption={handleOption}
                               provided={provided}
-                              score
+                              isScore
                             />
                           </div>
                         </div>
