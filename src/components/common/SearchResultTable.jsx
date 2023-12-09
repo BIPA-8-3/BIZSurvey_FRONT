@@ -20,16 +20,24 @@ export default function SearchResultTable(){
     // let location = useLocation(); // 넘어온 결과 
     // let result = location.state.result;
     const location = useLocation();
-    const result = location.state.result;
+    let keyword = location.state.keyword;
+    let result = location.state.result;
+
+    console.log("키워드드ㅡ드드드드드"+JSON.stringify(keyword));
+    console.log(JSON.stringify(result));
     
     
     const fadeIn = useFadeIn();
-    const [data, setData] = useState([]);
+    const [data, setData] = useState({});
+
+    useEffect(()=> {
+      setData(result)
+    }, [result])
 
     const handlePage = (event) => {
         const nowPageInt = parseInt(event.target.outerText)
         // page에 해당하는 페이지로 GET 요청을 보냄
-        axios.get(`http://localhost:8080/community/search?page=${nowPageInt-1}`)
+        axios.get(`http://localhost:8080/community/search?keyword=${keyword}&page=${nowPageInt-1}`)
           .then(response => {
             setData(response.data);
           })
@@ -43,7 +51,7 @@ export default function SearchResultTable(){
   
         <div className={`fade-in ${fadeIn ? 'active' : ''}`}>
           <div className={style.titleWrap}>
-              <h1 className='textCenter title textBold'>커뮤니티 검색 결과</h1>
+              <h1 className='textCenter title textBold'>'{keyword}' 검색 결과</h1>
               <p className='textCenter subTitle'>쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
           </div>
           <Search></Search>
@@ -61,12 +69,12 @@ export default function SearchResultTable(){
                 </Button>
             </Link>
         </div>
-        <CommunityTable props={result.content} />
+        <CommunityTable props={data.content} />
         <div style={{width : '1200px', margin : '0 auto', marginTop:'20px'}} >
         
         <Stack spacing={1} sx={{margin: '0 auto', float : 'right' }}>
         <Pagination
-              count={result.totalpages}
+              count={data.totalPages}
               renderItem={(item) => (
           <PaginationItem
               slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}

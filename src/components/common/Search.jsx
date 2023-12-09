@@ -38,8 +38,11 @@ function Search() {
         console.log("검색 결과!!!!(<Search />):", response.data);
         
         console.log(response.data);
-        alert(JSON.stringify(response.data))
-        let data = {result:response.data}
+        
+        let data = {keyword:title, result:response.data}
+
+        console.log( "보내는 데이터 : "+JSON.stringify(data))
+        
         navigate('/communitySearchResult', {state: data}) 
       })
       .catch((error) => {
