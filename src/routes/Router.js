@@ -65,8 +65,8 @@ const ThemeRoutes = [
       { path: "/FindPassword", exact: true, element: <FindPassword /> },
       { path: "/mypage", exact: true, element: <Mypage /> },
       { path: "/createSurvey", exact: true, element: <CreateSurvey /> },
-      { path: "/surveyInfo", exact: true, element: <SurveyInfoPage /> },
-      { path: "/editSurvey", exact: true, element: <EditSurveyPage /> },
+      { path: "/surveyInfo", exact: true, element: <SurveyInfo /> },
+      { path: "/editSurvey", exact: true, element: <EditSurvey /> },
       {
         path: "/surveyCommunityWrite",
         exact: true,

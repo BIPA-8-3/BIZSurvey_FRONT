@@ -24,7 +24,7 @@ export default function QuestionComp({
   deleteQuestion,
   changeRequired,
   provided,
-  score,
+  isScore,
 }) {
   const [option, setOption] = useState("");
   const {
@@ -49,7 +49,7 @@ export default function QuestionComp({
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <span>
-              {score ? (
+              {isScore ? (
                 <ScoreOptionSelect
                   option={answerType}
                   setOption={changeOption}
