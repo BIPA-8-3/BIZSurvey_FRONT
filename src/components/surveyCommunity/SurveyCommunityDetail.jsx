@@ -17,7 +17,7 @@ import axios from 'axios'
 
 export default function CommunityPost() {
   const fadeIn = useFadeIn();
-  const [isAvailable, setIsAvailable] = useState(false);
+  // const [isAvailable, setIsAvailable] = useState(false);
   const location = useLocation();
   let postId = location.state.postId;
 
@@ -25,30 +25,22 @@ export default function CommunityPost() {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isAvailable, setIsAvailable] = useState(true);
 
   useEffect(() => {
-    // 데이터를 가져오는 함수
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/s-community/showPost/'+postId);
-        console.log("리스폰스 : "+response);
-        setData(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false); // 데이터 로딩이 끝났음을 표시
-      }
-    };
-
-    fetchData(); // 함수 호출
-  }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
-
-  if (loading) {
-    return <>
-      <Loader />
-    </>; // 데이터 로딩 중에는 로딩 표시
-  }
-  
+    // login();
+    // // call("/s-community/survey/check/1", "GET")
+    // //   .then((data) => {
+    // //     if (data) {
+    // //       setIsAvailable(false);
+    // //     } else {
+    // //       setIsAvailable(true);
+    // //     }
+    // //   })
+    // //   .catch((error) => {
+    // //     console.log(error);
+    // //   });
+  }, []);
 
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>

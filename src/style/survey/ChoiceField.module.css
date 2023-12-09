@@ -3,6 +3,7 @@
   width: 600px;
   margin: "10px 0 10px 0";
   height: 40px;
+  padding-top: 5px;
 }
 
 .rounded {
@@ -22,6 +23,7 @@
 
 .select {
   border-color: #0171d1;
+  background-color: #0171d1;
 }
 
 .text {

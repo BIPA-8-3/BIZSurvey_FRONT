@@ -55,9 +55,8 @@ export default function SurveyQuestion({ question, handleSetAnswer }) {
           )}
           {answerType === "객관식(복수형)" &&
             answers.map((answer, index) => (
-              <div style={{ marginBottom: "5px" }}>
+              <div style={{ marginBottom: "5px" }} key={index}>
                 <MultipleOption
-                  key={index}
                   answer={answer}
                   userAnswer={userAnswer}
                   setUserAnswer={setUserAnswer}
