@@ -49,28 +49,22 @@ export default function CreateSurveyPage() {
     const questionData = questions.map((question, index) => ({
       ...question,
       step: index + 1,
+      answers:
+        question.answerType === "객관식(택1)" ||
+        question.answerType === "객관식(복수형)"
+          ? question.answers
+          : [],
     }));
     const surveyData = { ...formData };
     surveyData.questions = questionData;
-    console.log(surveyData);
 
     call("/survey/1", "POST", surveyData);
-    // await axios
-    //   .post("/survey/1", surveyData)
-    //   .then((response) => {
-    //     console.log(response);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
   };
 
   const changeQuestionTitle = (id, text) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        question.step === id
-          ? { ...question, surveyQuestion: text, step: index + 1 }
-          : question
+        index === id ? { ...question, surveyQuestion: text } : question
       );
       return result;
     });
@@ -79,9 +73,7 @@ export default function CreateSurveyPage() {
   const changeQuestionContent = (id, text) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        question.step === id
-          ? { ...question, content: text, step: index + 1 }
-          : question
+        index === id ? { ...question, content: text } : question
       );
       return result;
     });
@@ -90,9 +82,7 @@ export default function CreateSurveyPage() {
   const changeOption = (id, type) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        question.step === id
-          ? { ...question, answerType: type, step: index + 1 }
-          : question
+        index === id ? { ...question, answerType: type } : question
       );
       return result;
     });
@@ -101,22 +91,21 @@ export default function CreateSurveyPage() {
   const deleteQuestion = (id) => {
     setQuestions((pre) => {
       const result = pre
-        .filter((question) => question.step !== id)
-        .map((question, index) => ({ ...question, step: index + 1 }));
+        .filter((question, index) => index !== id)
+        .map((question, index) => ({ ...question }));
       return result;
     });
   };
 
   const addQuestion = () => {
     setQuestions((pre) => {
-      const lastId = pre.length > 0 ? pre[pre.length - 1].step : 0;
       return [
         ...pre,
         {
           surveyQuestion: "",
           answerType: "",
           score: 0,
-          step: lastId + 1,
+          step: 0,
           isRequired: false,
           answers: [],
         },
@@ -127,8 +116,8 @@ export default function CreateSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        question.step === id
-          ? { ...question, isRequired: !question.isRequired, step: index + 1 }
+        index === id
+          ? { ...question, isRequired: !question.isRequired }
           : question
       );
       return result;
@@ -138,7 +127,7 @@ export default function CreateSurveyPage() {
   const handleOption = (id, options) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        question.step === id ? { ...question, answers: options } : question
+        index === id ? { ...question, answers: options } : question
       );
       return result;
     });
@@ -175,8 +164,8 @@ export default function CreateSurveyPage() {
                 >
                   {questions.map((questionData, index) => (
                     <Draggable
-                      key={questionData.step}
-                      draggableId={`question-${questionData.step}`}
+                      key={index}
+                      draggableId={`question-${index}`}
                       index={index}
                     >
                       {(provided) => (
@@ -186,8 +175,8 @@ export default function CreateSurveyPage() {
                         >
                           <div className={style.question}>
                             <QuestionComp
-                              key={questionData.step}
-                              index={questionData.step}
+                              key={index}
+                              index={index}
                               questionInfo={questionData}
                               changeTitle={changeQuestionTitle}
                               changeContent={changeQuestionContent}

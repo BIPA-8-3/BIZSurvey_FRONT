@@ -13,6 +13,7 @@ export default function TextOption({ setUserAnswer }) {
         variant="standard"
         multiline
         fullWidth
+        defaultValue={""}
         onChange={handleChangeAnswer}
       />
     </>

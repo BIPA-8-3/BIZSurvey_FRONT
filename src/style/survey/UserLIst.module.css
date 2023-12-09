@@ -18,8 +18,29 @@
 }
 
 .userList {
-  width: 680px;
+  width: 650px;
   margin: 0 auto;
-  min-height: 150px;
+  min-height: 80px;
   margin-top: 10px;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+  max-height: 400px;
+}
+
+.userButton {
+  width: 630px;
+  height: 45px;
+  margin: 5px 0 5px 0;
+  border-radius: 3px;
+  background-color: rgb(248, 249, 250);
+  border: 0;
+  text-align: left;
+  border: 1px solid #d6d6d6;
+  padding-left: 10px;
+}
+
+button:hover {
+  transition: all 0.3s;
+  background-color: rgba(214, 214, 214, 0.5);
+  cursor: pointer;
 }

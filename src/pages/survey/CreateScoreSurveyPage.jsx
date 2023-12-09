@@ -1,48 +1,38 @@
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import * as React from "react";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle";
 import QuestionComp from "../../components/survey/surveyForm/QuestionComp";
-import style from "../../style/survey/EditSurveyPage.module.css";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useLocation, useNavigate } from "react-router-dom";
+import style from "../../style/survey/CreatePage.module.css";
 import axios from "axios";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect } from "react";
+import { login, call } from "./Login";
 
-export default function EditSurveyPage() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  let surveyId = location.state.surveyId || 0;
-
-  useEffect(() => {
-    console.log(surveyId);
-    handleGetSurvey(surveyId);
-  }, []);
-
+export default function CreateScoreSurveyPage() {
   const [formData, setFormData] = useState({
-    surveyId: 0,
-    title: "설문지 제목",
-    content: "설문지 내용",
+    title: "",
+    content: "",
     surveyType: "기본",
     questions: [],
   });
 
   const [questions, setQuestions] = useState([
     {
-      questionId: 0,
       surveyQuestion: "",
       answerType: "",
       score: 0,
-      step: 0,
+      step: 1,
       isRequired: false,
       answers: [],
     },
   ]);
 
-  const handleGoBack = () => {
-    navigate(-1);
-  };
+  useEffect(() => {
+    login();
+  }, []);
 
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
@@ -54,65 +44,21 @@ export default function EditSurveyPage() {
     setQuestions(items);
   };
 
-  const handleGetSurvey = async (surveyId) => {
-    try {
-      const response = await axios.get("/survey/" + surveyId);
-      setFormData(response.data);
-      setQuestions(response.data.questions);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    } finally {
-    }
-  };
+  const handleSubmitSurvey = async (e) => {
+    e.preventDefault();
+    const questionData = questions.map((question, index) => ({
+      ...question,
+      step: index + 1,
+      //   answers:
+      //     question.answerType === "객관식(택1)" ||
+      //     question.answerType === "객관식(복수형)"
+      //       ? question.answers
+      //       : [],
+    }));
+    const surveyData = { ...formData };
+    surveyData.questions = questionData;
 
-  const handleUpdateSurvey = async (surveyId) => {
-    const { createQuestion, updateQuestion } = questions.reduce(
-      (acc, question, index) => {
-        const { questionId, ...rest } = {
-          ...question,
-          step: index + 1,
-          answers:
-            question.answerType === "객관식(택1)" ||
-            question.answerType === "객관식(복수형)"
-              ? question.answers
-              : [],
-        };
-
-        if (questionId === 0) {
-          acc.createQuestion.push(rest);
-        } else {
-          acc.updateQuestion.push({
-            ...question,
-            step: index + 1,
-            answers:
-              question.answerType === "객관식(택1)" ||
-              question.answerType === "객관식(복수형)"
-                ? question.answers
-                : [],
-          });
-        }
-
-        return acc;
-      },
-      { createQuestion: [], updateQuestion: [] }
-    );
-
-    const surveyData = {
-      ...formData,
-      questions: undefined, // questions 필드 없애기
-      updateQuestions: updateQuestion,
-      createQuestions: createQuestion,
-    };
-
-    await axios
-      .patch("/survey/" + surveyId, surveyData)
-      .then((response) => {
-        console.log(response);
-        alert(response.data);
-        navigate("/surveyInfo");
-      })
-      .catch((error) => console.log(error));
+    call("/survey/1", "POST", surveyData);
   };
 
   const changeQuestionTitle = (id, text) => {
@@ -156,7 +102,6 @@ export default function EditSurveyPage() {
       return [
         ...pre,
         {
-          questionId: 0,
           surveyQuestion: "",
           answerType: "",
           score: 0,
@@ -200,6 +145,7 @@ export default function EditSurveyPage() {
     <>
       <div className={style.container}>
         <div className={style.wrapContent}>
+          {/* 설문지 제목  */}
           <EditSurveyTitle
             title={formData.title}
             content={formData.content}
@@ -207,6 +153,7 @@ export default function EditSurveyPage() {
             changeSurveyContent={changeSurveyContent}
           />
 
+          {/* 질문들  */}
           <DragDropContext onDragEnd={handleOnDragEnd}>
             <Droppable droppableId="createQuestions">
               {(provided) => (
@@ -238,6 +185,7 @@ export default function EditSurveyPage() {
                               changeRequired={changeRequired}
                               handleOption={handleOption}
                               provided={provided}
+                              score
                             />
                           </div>
                         </div>
@@ -250,18 +198,15 @@ export default function EditSurveyPage() {
             </Droppable>
           </DragDropContext>
 
+          {/* 추가 버튼  */}
           <IconButton aria-label="delete" size="medium" onClick={addQuestion}>
             <FaPlus />
           </IconButton>
 
+          {/* 저장 및 취소 버튼  */}
           <div className={style.wrapButton}>
-            <Button variant="outlined" onClick={handleGoBack}>
-              취소
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => handleUpdateSurvey(surveyId)}
-            >
+            <Button variant="outlined">취소</Button>
+            <Button variant="contained" onClick={(e) => handleSubmitSurvey(e)}>
               완료
             </Button>
           </div>
