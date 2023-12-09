@@ -201,6 +201,14 @@ export default function PostResult({ postId }) {
     return textArr;
   };
 
+  if (postId === "0") {
+    return (
+      <>
+        <p>게시물을 선택해주세요</p>
+      </>
+    );
+  }
+
   return (
     <>
       {survey.questions.map((question, index) => {

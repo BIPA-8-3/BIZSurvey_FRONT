@@ -12,6 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import * as React from "react";
 import style from "../../../style/survey/QuestionComp.module.css";
 import { MdDragIndicator } from "react-icons/md";
+import ScoreOptionSelect from "./score/ScoreOptionSelect";
 
 export default function QuestionComp({
   index,
@@ -23,6 +24,7 @@ export default function QuestionComp({
   deleteQuestion,
   changeRequired,
   provided,
+  score,
 }) {
   const [option, setOption] = useState("");
   const {
@@ -47,11 +49,19 @@ export default function QuestionComp({
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <span>
-              <OptionSelect
-                option={answerType}
-                setOption={changeOption}
-                idx={index}
-              />
+              {score ? (
+                <ScoreOptionSelect
+                  option={answerType}
+                  setOption={changeOption}
+                  idx={index}
+                />
+              ) : (
+                <OptionSelect
+                  option={answerType}
+                  setOption={changeOption}
+                  idx={index}
+                />
+              )}
             </span>
 
             <span style={{ marginRight: "10px" }}>
@@ -114,11 +124,15 @@ export default function QuestionComp({
           </div>
         </div>
 
-        {/*푸터*/}
+        {/*필수체크 버튼*/}
 
         <div className={style.footer}>
           <span className={style.requiredButton}>
-            <RequiredButton index={index} changeRequired={changeRequired} />
+            <RequiredButton
+              required={isRequired}
+              index={index}
+              changeRequired={changeRequired}
+            />
           </span>
         </div>
       </div>
