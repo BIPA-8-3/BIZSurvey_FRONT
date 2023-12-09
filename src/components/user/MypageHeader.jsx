@@ -1,4 +1,3 @@
-// Header.jsx
 import React from 'react';
 import style from '../../style/user/MypageHeader.module.css'
 import logo from '../../assets/img/logo.png'
