@@ -4,7 +4,6 @@ import style from "../../style/Header.module.css";
 import logo from '../../assets/img/logo.png'
 import { IoMenu } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { RiSurveyLine } from "react-icons/ri";
 
 const navItems = ['설문 참여', '플랜', '커뮤니티', '워크스페이스', 'Sign In'];
 

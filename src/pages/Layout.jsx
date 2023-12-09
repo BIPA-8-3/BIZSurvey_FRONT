@@ -8,7 +8,9 @@ const Layout = () => {
   const location = useLocation();
 
   const isWorkspace = location.pathname === '/workspace';
-  const isMyPage = location.pathname === '/mypage';
+  const isMyPage = location.pathname === '/mypage' || 
+      location.pathname === "/login/oauth2/kakao" || 
+      location.pathname.startsWith("/emailValidation/");
 
   return (
     <div>
