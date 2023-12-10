@@ -14,10 +14,20 @@
   border-radius: 10px 10px 0 0;
 }
 
-.stepText {
-  display: inline-block;
-  width: 50px;
+.dragButton {
+  display: flex;
+  width: 40px;
   text-align: center;
+  color: #d6d6d6;
+  margin: "0 10px 0 10px";
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  font-size: 18pt;
+}
+
+.dragButton:hover {
+  color: #0171d1;
 }
 
 .wrapQuestion {

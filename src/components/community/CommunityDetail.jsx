@@ -1,47 +1,76 @@
 import * as React from 'react';
 import style from"../../style/community/CommunityDetail.module.css"
 import '../../style/Common.css'
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import { Tabs, Tab } from '@mui/material';
-import CommentIcon from '@mui/icons-material/Comment';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
-import PersonIcon from '@mui/icons-material/Person';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Search from '../common/Search';
-import { useState } from 'react';
-
-import Pagination from '@mui/material/Pagination';
-import PaginationItem from '@mui/material/PaginationItem';
-import Stack from '@mui/material/Stack';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useState, useEffect } from 'react';
+import Loader from "../../pages/loader/Loader"
 import useFadeIn from '../../style/useFadeIn';
 import back from '../../assets/img/back.png'
-import CommunityTable from './CommunityTable';
 import Button from '@mui/material/Button';
 import logo from "../../assets/img/avatar.png"
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import Comment from './Comment';
 import ParentsComment from './ParentsComment';
-import VoteWrite from './VoteWrite';
+import VoteWrite from './VoteWrite'
 import ChildCommentForm from './ChildCommentForm';
 import ChildComment from './ChildComment';
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
+import axios from 'axios'
 
 
 export default function CommunityPost() {
   
   const fadeIn = useFadeIn();
+  const location = useLocation();
+  let postId = location.state.postId;
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // 데이터를 가져오는 함수
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/community/showPost/'+postId);
+        console.log("리스폰스 : "+response);
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false); // 데이터 로딩이 끝났음을 표시
+      }
+    };
+
+    fetchData(); // 함수 호출
+  }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
+
+  if (loading) {
+    return <>
+      <Loader />
+    </>; // 데이터 로딩 중에는 로딩 표시
+  }
+  console.log("데이타"+data)
+  console.log(postId);
+  console.log("댓글 리스트" + data.commentList)
+
+  let votePostId = data.postId;
  
+  function renderVote(isVote){
+
+    console.log("isVOTE?" + isVote)
+    console.log("isPOST?" + votePostId)
+
+    if(isVote !== null){
+      return(
+        <VoteWrite voteId={isVote} postId={votePostId} />
+        
+      );
+    }
+  }
+
+
+
+
+
+
   return (
 
    
@@ -54,36 +83,36 @@ export default function CommunityPost() {
         <div className={style.contentWrap} style={{marginTop:"170px"}}>
             <div style={{backgroundColor: 'rgba(209, 232, 248, 0.1)'}}>
                 <div className={style.title}>
-                    <h1>비즈서베이 커뮤니티 게시글:)</h1>
+                    <h1>{data.title}</h1>
                     <p style={{display:'flex'}}>
                         <p style={{textAlign:'center'}}>
                             <div className={style.profil} style={{textAlign:'center'}}>
                                 <span className={style.photo}>
                                     <img className='' src={logo}/>
                                 </span>
-                                <span className={style.nickname}>철수예오</span>
+                                <span className={style.nickname}>{data.nickname}</span>
                             </div>
                         </p>
                         <div style={{marginTop:'16px'}}>
                             <span className={style.bar}> | </span> 
                             <span>COMMUNITY</span>
                             <span className={style.bar}> | </span> 
-                            <span>2023-09-29</span> 
+                            <span>{data.createTime}</span> 
                         </div>
                         
                     </p>
                 </div>
             </div>
             <div className={style.content}>
-                <p>국무총리·국무위원 또는 정부위원은 국회나 그 위원회에 출석하여 국정처리상황을 보고하거나 의견을 진술하고 질문에 응답할 수 있다. 대통령은 법률이 정하는 바에 의하여 훈장 기타의 영전을 수여한다.
-                    형사피해자는 법률이 정하는 바에 의하여 당해 사건의 재판절차에서 진술할 수 있다. 국회의원은 그 지위를 남용하여 국가·공공단체 또는 기업체와의 계약이나 그 처분에 의하여 재산상의 권리·이익 또는 직위를 취득하거나 타인을 위하여 그 취득을 알선할 수 없다.</p>
+                <p>{data.content}</p>
                
-                <VoteWrite />
+                {renderVote(data.voteId)}
+
                 <p style={{marginTop:'100px', display:'flex', justifyContent:'space-between'}}>
                     <div>
-                        조회수 <span style={{fontWeight:'bold'}}>128</span>
+                        조회수 <span style={{fontWeight:'bold'}}>{data.count}</span>
                         <span style={{color:'#ddd'}}> | </span> 
-                        댓글 <span style={{fontWeight:'bold'}}>13</span>
+                        댓글 <span style={{fontWeight:'bold'}}>{data.commentSize}</span>
                     </div>
                     <div style={{cursor:'pointer', fontSize:'14px'}}>
                         신고
@@ -92,8 +121,11 @@ export default function CommunityPost() {
                 
             </div>
             <Comment />
-            <ParentsComment />
-            <ChildCommentForm />
+            <ParentsComment props={data.commentList} />
+            <ChildComment />
+
+            
+            {/* <ChildCommentForm />
             <ChildComment />
             <ChildComment />
             <ParentsComment />
@@ -102,7 +134,7 @@ export default function CommunityPost() {
             <ChildComment />
             <ParentsComment />
             <ParentsComment />
-            <ChildCommentForm />
+            <ChildCommentForm /> */}
         </div>
         <div style={{textAlign:'center'}}>
             <Link to={'/community'}>

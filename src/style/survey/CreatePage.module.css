@@ -12,22 +12,6 @@
   margin: 0 auto;
 }
 
-.wrapSurveyInfo {
-  width: 700px;
-  border-radius: 10px;
-  min-height: 150px;
-  border: 1px solid #d6d6d6;
-  padding-top: 30px;
-  border-top: 10px solid #243579;
-  margin: 0 auto;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-
-.surveyText {
-  margin: 0 auto;
-  width: 600px;
-}
-
 .questionList {
   width: 700px;
   margin: 0 auto;

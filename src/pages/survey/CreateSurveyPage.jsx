@@ -1,11 +1,15 @@
-import QuestionComp from "../../components/survey/surveyForm/QuestionComp";
-import * as React from "react";
-import { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa6";
-import IconButton from "@mui/material/IconButton";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import * as React from "react";
+import { useState } from "react";
+import { FaPlus } from "react-icons/fa6";
+import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle";
+import QuestionComp from "../../components/survey/surveyForm/QuestionComp";
 import style from "../../style/survey/CreatePage.module.css";
+import axios from "axios";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useEffect } from "react";
+import { login, call } from "./Login";
 
 export default function CreateSurveyPage() {
   const [formData, setFormData] = useState({
@@ -26,12 +30,41 @@ export default function CreateSurveyPage() {
     },
   ]);
 
+  useEffect(() => {
+    login();
+  }, []);
+
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const items = [...questions];
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setQuestions(items);
+  };
+
+  const handleSubmitSurvey = async (e) => {
+    e.preventDefault();
+    const questionData = questions.map((question, index) => ({
+      ...question,
+      step: index + 1,
+      answers:
+        question.answerType === "객관식(택1)" ||
+        question.answerType === "객관식(복수형)"
+          ? question.answers
+          : [],
+    }));
+    const surveyData = { ...formData };
+    surveyData.questions = questionData;
+
+    call("/survey/1", "POST", surveyData);
+  };
+
   const changeQuestionTitle = (id, text) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        question.step === id
-          ? { ...question, surveyQuestion: text, step: index + 1 }
-          : question
+        index === id ? { ...question, surveyQuestion: text } : question
       );
       return result;
     });
@@ -40,9 +73,7 @@ export default function CreateSurveyPage() {
   const changeQuestionContent = (id, text) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        question.step === id
-          ? { ...question, content: text, step: index + 1 }
-          : question
+        index === id ? { ...question, content: text } : question
       );
       return result;
     });
@@ -51,9 +82,7 @@ export default function CreateSurveyPage() {
   const changeOption = (id, type) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        question.step === id
-          ? { ...question, answerType: type, step: index + 1 }
-          : question
+        index === id ? { ...question, answerType: type } : question
       );
       return result;
     });
@@ -62,22 +91,21 @@ export default function CreateSurveyPage() {
   const deleteQuestion = (id) => {
     setQuestions((pre) => {
       const result = pre
-        .filter((question) => question.step !== id)
-        .map((question, index) => ({ ...question, step: index + 1 }));
+        .filter((question, index) => index !== id)
+        .map((question, index) => ({ ...question }));
       return result;
     });
   };
 
   const addQuestion = () => {
     setQuestions((pre) => {
-      const lastId = pre.length > 0 ? pre[pre.length - 1].step : 0;
       return [
         ...pre,
         {
           surveyQuestion: "",
           answerType: "",
           score: 0,
-          step: lastId + 1,
+          step: 0,
           isRequired: false,
           answers: [],
         },
@@ -88,8 +116,8 @@ export default function CreateSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        question.step === id
-          ? { ...question, isRequired: !question.isRequired, step: index + 1 }
+        index === id
+          ? { ...question, isRequired: !question.isRequired }
           : question
       );
       return result;
@@ -99,7 +127,7 @@ export default function CreateSurveyPage() {
   const handleOption = (id, options) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        question.step === id ? { ...question, answers: options } : question
+        index === id ? { ...question, answers: options } : question
       );
       return result;
     });
@@ -117,69 +145,69 @@ export default function CreateSurveyPage() {
     <>
       <div className={style.container}>
         <div className={style.wrapContent}>
-          <div className={style.wrapSurveyInfo}>
-            <div className={style.surveyText}>
-              <TextField
-                id="standard-basic"
-                variant="standard"
-                placeholder={"설문지 제목"}
-                sx={{ width: 600 }}
-                value={formData.title}
-                onChange={(e) => changeSurveyTitle(e.target.value)}
-                inputProps={{
-                  style: {
-                    fontSize: "25px",
-                    fontWeight: "bold",
-                    padding: "15px 0 0 0",
-                  },
-                }}
-              />
-            </div>
+          {/* 설문지 제목  */}
+          <EditSurveyTitle
+            title={formData.title}
+            content={formData.content}
+            changeSurveyTitle={changeSurveyTitle}
+            changeSurveyContent={changeSurveyContent}
+          />
 
-            <div className={style.surveyText}>
-              <TextField
-                id="standard-basic"
-                placeholder={"설문지 설명"}
-                inputProps={{
-                  style: {
-                    fontSize: "14px",
-                    padding: "15px 0 0 0",
-                    marginTop: "10px",
-                  },
-                }}
-                sx={{ width: 600 }}
-                value={formData.content}
-                onChange={(e) => changeSurveyContent(e.target.value)}
-                variant="standard"
-              />
-            </div>
-          </div>
+          {/* 질문들  */}
+          <DragDropContext onDragEnd={handleOnDragEnd}>
+            <Droppable droppableId="createQuestions">
+              {(provided) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className={style.questionList}
+                >
+                  {questions.map((questionData, index) => (
+                    <Draggable
+                      key={index}
+                      draggableId={`question-${index}`}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                        >
+                          <div className={style.question}>
+                            <QuestionComp
+                              key={index}
+                              index={index}
+                              questionInfo={questionData}
+                              changeTitle={changeQuestionTitle}
+                              changeContent={changeQuestionContent}
+                              changeOption={changeOption}
+                              deleteQuestion={deleteQuestion}
+                              changeRequired={changeRequired}
+                              handleOption={handleOption}
+                              provided={provided}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
 
-          <div className={style.questionList}>
-            {questions.map((questionData) => (
-              <div className={style.question}>
-                <QuestionComp
-                  key={questionData.step}
-                  index={questionData.step}
-                  questionInfo={questionData}
-                  changeTitle={changeQuestionTitle}
-                  changeContent={changeQuestionContent}
-                  changeOption={changeOption}
-                  deleteQuestion={deleteQuestion}
-                  changeRequired={changeRequired}
-                  handleOption={handleOption}
-                />
-              </div>
-            ))}
-          </div>
-
+          {/* 추가 버튼  */}
           <IconButton aria-label="delete" size="medium" onClick={addQuestion}>
             <FaPlus />
           </IconButton>
 
+          {/* 저장 및 취소 버튼  */}
           <div className={style.wrapButton}>
             <Button variant="outlined">취소</Button>
-            <Button variant="contained">완료</Button>
+            <Button variant="contained" onClick={(e) => handleSubmitSurvey(e)}>
+              완료
+            </Button>
           </div>
         </div>
       </div>

@@ -7,8 +7,24 @@
   border-top: 10px solid #243579;
   margin: 0 auto;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  padding-bottom: 25px;
+  padding-bottom: 15px;
   margin-bottom: 25px;
+}
+
+.wrapSurveyInfoWithTab {
+  width: 700px;
+  border-radius: 10px;
+  min-height: 120px;
+  border: 1px solid #d6d6d6;
+  padding-top: 20px;
+  border-top: 10px solid #243579;
+  margin: 0 auto;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin-bottom: 25px;
+  padding-bottom: 0;
+  /* height: 165px; */
+  /* padding-bottom: 4px; */
+  overflow: hidden;
 }
 
 .wrapTitle {
@@ -23,5 +39,8 @@
   width: 600px;
   font-size: 14px;
   margin: 0 auto;
-  padding-top: 15px;
+  margin-top: 20px;
+
+  word-wrap: break-word;
+  word-break: keep-all;
 }

@@ -9,7 +9,7 @@ function createData(name, calories, fat, carbs, protein) {
 }
 
 
-export default function Comment() {
+export default function Comment({props}) {
   return (
     <div>
         <div className={style.commentWrap}>

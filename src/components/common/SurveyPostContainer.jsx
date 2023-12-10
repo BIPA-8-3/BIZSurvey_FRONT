@@ -4,10 +4,17 @@ import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import back from '../../assets/img/back.png'
 import SurveyCard from "./SurveyCard";
-import Search from './Search'
 import useFadeIn from "../../style/useFadeIn";
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
+import axios from 'axios'
+import Loader from "../../pages/loader/Loader"
+import { useNavigate } from "react-router-dom";
+import SCommunitySearch from "./SCommunitySearch";
+
+
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -18,6 +25,52 @@ const Item = styled(Paper)(({ theme }) => ({
   }))
 
 function SurveyPostContainer(){
+
+  const [page, setPage] = useState(0); // 현재 페이지 번호 (페이지네이션)
+  const [ref, inView] = useInView();
+  const [data, setData] = useState({
+    content:[]
+  }); 
+
+
+  const dataFetch = () => {
+
+      console.log('데이터 라스트'+ data.last)
+
+      let plag = true;
+
+      if(data.last){
+        plag = false;
+      }
+      
+      if(plag){
+      axios
+      .get(`http://localhost:8080/s-community?page=${page}`)
+      .then((res) => {
+        setData((prevData) => {
+          return {
+            ...res.data,
+            content: [...prevData.content, ...res.data.content],
+          };
+        });
+         setPage((prevPage) => prevPage + 1);
+     })
+      .catch((err) => {
+        console.log(err);
+     });
+
+    }
+  
+  };
+
+  useEffect(() => {
+    // inView가 true 일때만 실행한다.
+    if (inView) {
+      console.log(inView, '무한 스크롤 요청 🎃')
+      dataFetch();
+    }
+    }, [inView]);
+
     const fadeIn = useFadeIn();
     return(
         <div className={`fade-in ${fadeIn ? 'active' : ''}`}>
@@ -25,7 +78,7 @@ function SurveyPostContainer(){
                 <h1 className='textCenter title textBold'>설문 참여</h1>
                 <p className='textCenter subTitle'>쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
             </div>
-            <Search></Search>
+            <SCommunitySearch />
             <div style={{textAlign:'right'}}>
                 <Link to={'/surveyCommunityWrite'}>
                     <Button variant="contained" href="#contained-buttons" 
@@ -39,18 +92,10 @@ function SurveyPostContainer(){
                     </Button>
                 </Link>
             </div>
-            <SurveyCard data={[
-                {id: 1, title: '21년 상반기 설문조사', nickname: '닉네임', comment: 15, participant: 20, view : 10, date : '2020-03-13' }, 
-                {id: 2, title: '21년 상반기 설문조사', nickname: '닉네임', comment: 15, participant: 20, view : 10, date : '2020-03-13' },
-                {id: 3, title: '21년 상반기 설문조사', nickname: '닉네임', comment: 15, participant: 20, view : 10, date : '2020-03-13' }, 
-                {id: 4, title: '21년 상반기 설문조사', nickname: '닉네임', comment: 15, participant: 20, view : 10, date : '2020-03-13' },
-                {id: 5, title: '21년 상반기 설문조사', nickname: '닉네임', comment: 15, participant: 20, view : 10, date : '2020-03-13' }, 
-                {id: 6, title: '21년 상반기 설문조사', nickname: '닉네임', comment: 15, participant: 20, view : 10, date : '2020-03-13' },
-                {id: 7, title: '21년 상반기 설문조사', nickname: '닉네임', comment: 15, participant: 20, view : 10, date : '2020-03-13' }, 
-                {id: 8, title: '21년 상반기 설문조사', nickname: '닉네임', comment: 15, participant: 20, view : 10, date : '2020-03-13' }
-            ]} />
+            <SurveyCard data={data.content} />
             
             <img src={back} alt="배경" className={style.back}/>
+            <div ref={ref}></div>
         </div>
     )
 }
