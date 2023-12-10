@@ -6,7 +6,14 @@ import MoreMenu from "../../components/workspace/MoreMenu";
 import { useEffect, useState, createContext } from "react";
 import ProfileContainer from "../../components/workspace/ProfileContainer";
 import ShareModal from "../../components/workspace/ShareModal";
-import { login, getSurveyList, modifyWorkspace, getUserInfo, removeSurvey } from "./api.js";
+import {
+  login,
+  getSurveyList,
+  modifyWorkspace,
+  getUserInfo,
+  removeSurvey,
+  getAdminList,
+} from "./api.js";
 import { WorkspaceModal } from "../../components/workspace/WorkspaceModal";
 
 export let WorkspaceContext = createContext();
@@ -40,7 +47,9 @@ export default function Main() {
   const [userInfo, setUserInfo] = useState({});
 
   // 관리자 목록 (캐싱)
-  const [adminList, setAdminList] = useState({});
+  const [owner, setOwner] = useState({});
+  const [adminList, setAdminList] = useState([]);
+  const [adminWaitList, setAdminWaitList] = useState([]);
 
   // 워크스페이스 모달
   const closeWorkspaceModal = () => {
@@ -150,6 +159,31 @@ export default function Main() {
       .catch((error) => {
         console.error(error);
       });
+
+    getAdminList(selectedWorkspaceId)
+      .then((data) => {
+        console.log("여기여기", data);
+        if (!data.owner) {
+          setOwner({});
+        } else {
+          setOwner(data.owner);
+        }
+        if (!data.adminList) {
+          setAdminList([]);
+        } else {
+          setAdminList([...data.adminList]);
+        }
+
+        if (!data.waitList) {
+          setAdminWaitList([]);
+        } else {
+          setAdminWaitList([...data.waitList]);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log(error.response);
+      });
   }, [selectedWorkspaceId]);
 
   // 설문지 목록
@@ -217,6 +251,12 @@ export default function Main() {
                   setWorkspaceList,
                   contactList,
                   setContactList,
+                  adminList,
+                  setAdminList,
+                  adminWaitList,
+                  setAdminWaitList,
+                  owner,
+                  setOwner,
                 }}
               >
                 <MoreMenu

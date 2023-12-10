@@ -1,10 +1,16 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import style from "../../style/workspace/Modal.module.css";
 import AdminItem from "./AdminItem";
 import ReactDOM from "react-dom";
 import { IoCloseSharp } from "react-icons/io5";
 import ContactItem from "./ContactItem";
-import { createContact, getContactList, removeContact } from "../../pages/workspace/api";
+import {
+  createContact,
+  getContactList,
+  removeContact,
+  inviteAdmin,
+  removeAdmin,
+} from "../../pages/workspace/api";
 import { WorkspaceContext } from "../../pages/workspace/Main";
 
 export default function ManagementModal({ isOpen, onClose, tab }) {
@@ -14,29 +20,48 @@ export default function ManagementModal({ isOpen, onClose, tab }) {
   // context에서 contactList 추출
   const { contactList, setContactList } = useContext(WorkspaceContext);
 
+  // context에서 adminList 추출
+  const { owner, setOwner } = useContext(WorkspaceContext);
+  const { adminList, setAdminList } = useContext(WorkspaceContext);
+  const { adminWaitList, setAdminWaitList } = useContext(WorkspaceContext);
+
   // 최초 로딩 useEffect
   useEffect(() => {
-    if (isOpen) {
-      let listRequest = {
-        workspaceId: selectedWorkspaceId,
-        keyword: "",
-      };
-
-      getContactList(listRequest)
-        .then((data) => {
-          setContactList(data);
-        })
-        .catch((error) => {
-          console.error(error);
-          console.log(error.response);
-        });
-    } else {
+    if (!isOpen) {
       setContactForm({
         name: "",
         email: "",
       });
     }
+    chageTab(tab);
+
+    if (owner && adminList && adminWaitList) {
+      let copy = [];
+
+      copy.push({ ...owner });
+      copy.push(...adminList);
+      copy.push(...adminWaitList);
+
+      console.log("copy임 :", copy);
+      setAdminSearchList(copy);
+    }
   }, [isOpen]);
+
+  useMemo(() => {
+    let listRequest = {
+      workspaceId: selectedWorkspaceId,
+      keyword: "",
+    };
+
+    getContactList(listRequest)
+      .then((data) => {
+        setContactList(data);
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log(error.response);
+      });
+  }, [selectedWorkspaceId]);
 
   // 관리자 초대 및 검색 input
   const [email, setEmail] = useState("");
@@ -72,6 +97,20 @@ export default function ManagementModal({ isOpen, onClose, tab }) {
     };
   }, [contactForm.email, contactForm.name]);
 
+  // 관리자 검색
+  const [adminSearchKeyword, setAdminSearchKeyword] = useState("");
+
+  // 디바운싱 적용 [관리자]
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setAdminSearchKeyword(email);
+    }, 300);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [email]);
+
   // contact save handler
   const handleChangeInput = (e, inputType) => {
     setContactForm((prevInput) => {
@@ -83,17 +122,86 @@ export default function ManagementModal({ isOpen, onClose, tab }) {
   };
 
   // [admin] input state
-  const [adminSearch, setAdminSearch] = useState("");
+  const [adminSearchList, setAdminSearchList] = useState([]);
+
+  useEffect(() => {
+    let temp = [];
+
+    if (
+      !adminSearchKeyword ||
+      owner.nickName.includes(adminSearchKeyword) ||
+      owner.email.includes(adminSearchKeyword)
+    ) {
+      temp.push(owner);
+    }
+
+    adminList.map((admin) => {
+      if (
+        !adminSearchKeyword ||
+        admin.nickName.includes(adminSearchKeyword) ||
+        admin.email.includes(adminSearchKeyword)
+      ) {
+        temp.push(admin);
+      }
+    });
+    adminWaitList.map((admin) => {
+      if (
+        !adminSearchKeyword ||
+        admin.nickName.includes(adminSearchKeyword) ||
+        admin.email.includes(adminSearchKeyword)
+      ) {
+        temp.push(admin);
+      }
+    });
+    setAdminSearchList(temp);
+  }, [adminSearchKeyword, owner, adminList, adminWaitList]);
 
   useEffect(() => {
     if (isOpen) {
       chageTab(tab);
     }
   }, [tab]);
+  console.log("tab: ", tab);
 
   if (!isOpen) {
     return null;
   }
+
+  // 관리자 초대 메소드
+  const handleClickInviteBtn = (e) => {
+    e.preventDefault();
+
+    if (adminSearchList.length > 0) {
+      alert("이미 초대된 회원입니다.");
+      return null;
+    }
+
+    let inviteRequest = {
+      workspaceId: selectedWorkspaceId,
+      email: email,
+      adminType: "INVITED",
+    };
+    setEmail("");
+    setAdminSearchKeyword("");
+
+    const temp = {
+      nickName: email,
+      id: -1,
+      email: email,
+    };
+
+    adminWaitList.push(temp);
+
+    inviteAdmin(inviteRequest)
+      .then((data) => {
+        console.log(data);
+        // alert("초대가 완료되었습니다.");
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("이미 초대된 회원입니다.");
+      });
+  };
 
   // 연락처 저장 요청 메소드
   const handleSaveContactSubmit = (e) => {
@@ -121,6 +229,24 @@ export default function ManagementModal({ isOpen, onClose, tab }) {
       })
       .catch((error) => {
         console.error(error);
+      });
+  };
+
+  // 관리자 삭제 메소드
+  const handleClickRemoveAdminBtn = (id, inviteFlag) => {
+    removeAdmin(id)
+      .then((data) => {
+        console.log(data);
+        if (!inviteFlag) {
+          let copy = adminWaitList.filter((admin) => admin.id !== id);
+          setAdminWaitList(copy);
+        } else {
+          let copy = adminList.filter((admin) => admin.id !== id);
+          setAdminList(copy);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -153,30 +279,74 @@ export default function ManagementModal({ isOpen, onClose, tab }) {
           <div className={`${style.tabContentWrap} ${activeTab === "tab1" ? style.active : ""}`}>
             <div className={style.tabContent}>
               <div className={style.inputBox}>
-                <input
-                  className={style.inputEmail}
-                  type="email"
-                  id="email"
-                  placeholder="사용자, 그룹, 이메일 추가"
-                  value={email}
-                  onChange={handleChangeEmail}
-                  required
-                />
-                <button className={style.button}>초대</button>
+                <form style={{ margin: "0", padding: "0", display: "flex", alignItems: "center" }}>
+                  <input
+                    className={style.inputEmail}
+                    type="email"
+                    id="email"
+                    placeholder="사용자, 이메일 추가"
+                    value={email}
+                    onChange={handleChangeEmail}
+                    required
+                  />
+                  <button className={style.button} onClick={(e) => handleClickInviteBtn(e)}>
+                    초대
+                  </button>
+                </form>
               </div>
               <div className={style.itemBox}>
                 {/* admin Component */}
-                <AdminItem />
-                <AdminItem />
-                <AdminItem />
-                <AdminItem />
-                <AdminItem />
-                <AdminItem />
-                <AdminItem />
-                <AdminItem />
-                <AdminItem />
-                <AdminItem />
-                <AdminItem />
+
+                {adminSearchList.map((admin) => {
+                  return (
+                    <AdminItem
+                      key={admin.id}
+                      info={admin}
+                      handleClickRemoveAdminBtn={handleClickRemoveAdminBtn}
+                    />
+                  );
+                })}
+                {/* {(() => {
+                  if (
+                    !adminSearchKeyword ||
+                    owner.nickName.includes(adminSearchKeyword) ||
+                    owner.email.includes(adminSearchKeyword)
+                  ) {
+                    return <AdminItem key={0} info={owner} />;
+                  }
+                  return null;
+                })()}
+
+                {adminList.map((admin) => {
+                  if (
+                    !adminSearchKeyword ||
+                    admin.nickName.includes(adminSearchKeyword) ||
+                    admin.email.includes(adminSearchKeyword)
+                  ) {
+                    return (
+                      <AdminItem
+                        key={admin.id}
+                        info={admin}
+                        handleClickRemoveAdminBtn={handleClickRemoveAdminBtn}
+                      />
+                    );
+                  }
+                })}
+                {adminWaitList.map((admin) => {
+                  if (
+                    !adminSearchKeyword ||
+                    admin.nickName.includes(adminSearchKeyword) ||
+                    admin.email.includes(adminSearchKeyword)
+                  ) {
+                    return (
+                      <AdminItem
+                        key={admin.id}
+                        info={admin}
+                        handleClickRemoveAdminBtn={handleClickRemoveAdminBtn}
+                      />
+                    );
+                  }
+                })} */}
               </div>
             </div>
           </div>

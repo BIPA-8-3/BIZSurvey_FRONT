@@ -78,8 +78,8 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum }) => {
       <div className={`${style.menu} ${moreMenu ? style.visible : ""}`}>
         <ul>
           <li
-            onClick={() => {
-              setMenu("tab1");
+            onClick={async () => {
+              await setMenu("tab1");
               toggleMenu();
               setManagementModal(true);
             }}
@@ -87,8 +87,8 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum }) => {
             관리자 관리
           </li>
           <li
-            onClick={() => {
-              setMenu("tab2");
+            onClick={async () => {
+              await setMenu("tab2");
               toggleMenu();
               setManagementModal(true);
             }}

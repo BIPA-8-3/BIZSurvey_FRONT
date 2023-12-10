@@ -138,3 +138,22 @@ export const getContactList = (workspaceId) => {
 export const removeContact = (id) => {
     return call(`${contactURI}/${id}`, "DELETE");
 }
+
+// 관리자 API
+const adminURI = '/workspace/admin';
+
+// 관리자 조회
+export const getAdminList = (workspaceId) => {
+    return call(`${adminURI}/list/${workspaceId}`, "GET");
+}
+
+// 관리자 초대
+export const inviteAdmin = (inviteRequest) => {
+    return call(`${adminURI}/invite`, "POST", inviteRequest);
+}
+
+// 관리자 삭제
+
+export const removeAdmin = (id) => {
+    return call(`${adminURI}/${id}`, "DELETE");
+}
