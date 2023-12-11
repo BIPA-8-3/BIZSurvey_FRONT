@@ -35,7 +35,7 @@ function SurveyCard({ data }) {
   const renderCard = (cardData) => (
     
     <Grid item xs={12} md={6} lg={3} key={cardData.postId}>
-      <Link to={'/surveyCommunityDetail'} state={{postId : cardData.postId}}>
+      <Link to={'/survejyCommunityDetail'} state={{postId : cardData.postId}}>
         <div
         key={cardData.postId}
         className={`${style.cardWrap}`}
