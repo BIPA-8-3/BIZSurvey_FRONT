@@ -35,23 +35,42 @@ export default function SurveyInfo() {
 
         <div className={style.wrapButton}>
           <div></div>
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <Button variant="text" onClick={handleDeleteSurvey}>
-              삭제
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#243579",
+                height: "36.99px",
+              }}
+            >
+              업로드
             </Button>
-            <Button variant="contained">업로드</Button>
-            {/* <Link to={"/editSurvey"} state={{ surveyId: surveyId }}>
-              <Button variant="outlined">수정</Button>
-            </Link> */}
-            {surveyType === "기본" ? (
+            {surveyType === "NORMAL" ? (
               <Link to={"/editSurvey"} state={{ surveyId: surveyId }}>
-                <Button variant="outlined">수정</Button>
+                <Button
+                  variant="outlined"
+                  sx={{ color: "#243579", borderColor: "#243579" }}
+                >
+                  수정
+                </Button>
               </Link>
             ) : (
               <Link to={"/editScoreSurvey"} state={{ surveyId: surveyId }}>
-                <Button variant="outlined">수정</Button>
+                <Button
+                  variant="outlined"
+                  sx={{ color: "#243579", borderColor: "#243579" }}
+                >
+                  수정
+                </Button>
               </Link>
             )}
+            <Button
+              variant="outlined"
+              onClick={handleDeleteSurvey}
+              sx={{ color: "#243579", borderColor: "#243579" }}
+            >
+              삭제
+            </Button>
           </Stack>
         </div>
 

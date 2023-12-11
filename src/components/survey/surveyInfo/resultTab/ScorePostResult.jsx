@@ -74,7 +74,22 @@ export default function ScorePostResult({ postId }) {
   if (postId === "0") {
     return (
       <>
-        <p>게시물을 선택해주세요</p>
+        <div
+          style={{
+            width: "700px",
+            margin: "0 auto",
+            textAlign: "center",
+            height: "300px",
+            justifyContent: "center",
+            alignItems: "center",
+            lineHeight: "300px",
+            fontSize: "15pt",
+            fontStyle: "italic",
+            color: "#d6d6d6",
+          }}
+        >
+          <p>게시물을 선택해주세요.</p>
+        </div>
       </>
     );
   }

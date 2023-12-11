@@ -8,6 +8,7 @@ import PostResult from "./PostResult";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import { call } from "../../../../pages/survey/Login";
 import ScorePostResult from "./ScorePostResult";
+import ScorePersonalResult from "./ScorePersonalResult";
 
 export default function ResultView() {
   const { survey } = useContext(SurveyContext);
@@ -68,11 +69,16 @@ export default function ResultView() {
 
       {/* 질문과 옵션들  */}
 
-      {isPersonal ? (
+      {isScore ? (
+        isPersonal ? (
+          <ScorePersonalResult postId={postId} />
+        ) : (
+          <ScorePostResult postId={postId} />
+        )
+      ) : isPersonal ? (
         <PersonalResult postId={postId} />
       ) : (
-        // <PostResult postId={postId} />
-        <ScorePostResult postId={postId} />
+        <PostResult postId={postId} />
       )}
     </>
   );

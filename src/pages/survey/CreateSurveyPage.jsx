@@ -267,10 +267,26 @@ export default function CreateSurveyPage() {
 
           {/* 저장 및 취소 버튼  */}
           <div className={style.wrapButton}>
-            <Button variant="outlined">취소</Button>
-            <Button variant="contained" onClick={(e) => handleSubmitSurvey(e)}>
-              완료
-            </Button>
+            <span style={{ marginRight: "8px" }}>
+              <Button
+                variant="outlined"
+                sx={{ color: "#243579", borderColor: "#243579" }}
+              >
+                취소
+              </Button>
+            </span>
+            <span>
+              <Button
+                sx={{
+                  backgroundColor: "#243579",
+                  height: "36.99px",
+                }}
+                variant="contained"
+                onClick={(e) => handleSubmitSurvey(e)}
+              >
+                완료
+              </Button>
+            </span>
           </div>
         </div>
       </div>
