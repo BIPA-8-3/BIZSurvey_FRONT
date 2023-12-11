@@ -4,7 +4,7 @@ import * as React from "react";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle";
-import QuestionComp from "../../components/survey/surveyForm/QuestionComp";
+import ScoreQuestion from "../../components/survey/surveyForm/ScoreQuestion";
 import style from "../../style/survey/CreatePage.module.css";
 import axios from "axios";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -15,18 +15,24 @@ export default function CreateScoreSurveyPage() {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
-    surveyType: "기본",
+    surveyType: "SCORE",
     questions: [],
   });
 
   const [questions, setQuestions] = useState([
     {
       surveyQuestion: "",
-      answerType: "",
+      answerType: "MULTIPLE_CHOICE",
       score: 0,
       step: 1,
       isRequired: false,
-      answers: [],
+      answers: [
+        {
+          step: 0,
+          surveyAnswer: "",
+          correct: "NO",
+        },
+      ],
     },
   ]);
 
@@ -34,14 +40,17 @@ export default function CreateScoreSurveyPage() {
     login();
   }, []);
 
+  useEffect(() => {
+    console.log(questions);
+  }, [questions]);
+
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
+    const updatedQuestions = Array.from(questions);
+    const [reorderedQuestion] = updatedQuestions.splice(result.source.index, 1);
+    updatedQuestions.splice(result.destination.index, 0, reorderedQuestion);
 
-    const items = [...questions];
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-
-    setQuestions(items);
+    setQuestions(updatedQuestions);
   };
 
   const handleSubmitSurvey = async (e) => {
@@ -49,14 +58,15 @@ export default function CreateScoreSurveyPage() {
     const questionData = questions.map((question, index) => ({
       ...question,
       step: index + 1,
-      //   answers:
-      //     question.answerType === "객관식(택1)" ||
-      //     question.answerType === "객관식(복수형)"
-      //       ? question.answers
-      //       : [],
+      answers: question.answers.map((answer, answerIndex) => ({
+        ...answer,
+        step: answerIndex + 1,
+      })),
     }));
     const surveyData = { ...formData };
     surveyData.questions = questionData;
+
+    console.log(surveyData);
 
     call("/survey/1", "POST", surveyData);
   };
@@ -103,11 +113,17 @@ export default function CreateScoreSurveyPage() {
         ...pre,
         {
           surveyQuestion: "",
-          answerType: "",
+          answerType: "MULTIPLE_CHOICE",
           score: 0,
           step: 0,
           isRequired: false,
-          answers: [],
+          answers: [
+            {
+              step: 0,
+              surveyAnswer: "",
+              correct: "NO",
+            },
+          ],
         },
       ];
     });
@@ -139,6 +155,91 @@ export default function CreateScoreSurveyPage() {
 
   const changeSurveyContent = (text) => {
     setFormData((pre) => ({ ...pre, content: text }));
+  };
+
+  const handleAddOption = (qid) => {
+    setQuestions((prevQuestions) => {
+      return prevQuestions.map((question, index) => {
+        if (index === qid) {
+          const updatedQuestion = {
+            ...question,
+            answers: [
+              ...question.answers,
+              { step: 0, surveyAnswer: "", correct: "NO" },
+            ],
+          };
+          return updatedQuestion;
+        }
+        return question;
+      });
+    });
+  };
+
+  const handleDeleteOption = (qid, aid) => {
+    setQuestions((prevQuestions) => {
+      return prevQuestions.map((question, index) => {
+        if (index === qid) {
+          const updatedAnswers = question.answers.filter(
+            (answer, answerIndex) => answerIndex !== aid
+          );
+          const updatedQuestion = { ...question, answers: updatedAnswers };
+          return updatedQuestion;
+        }
+        return question;
+      });
+    });
+  };
+
+  const handleChangeOptionText = (qid, aid, text) => {
+    setQuestions((prevQuestions) => {
+      return prevQuestions.map((question, index) => {
+        if (index === qid) {
+          const updatedAnswers = question.answers.map((answer, answerIndex) => {
+            if (answerIndex === aid) {
+              return { ...answer, surveyAnswer: text };
+            }
+            return answer;
+          });
+          const updatedQuestion = { ...question, answers: updatedAnswers };
+          return updatedQuestion;
+        }
+        return question;
+      });
+    });
+  };
+
+  const handleChangeScore = (qid, score) => {
+    if (typeof score !== "number") {
+      return;
+    }
+
+    setQuestions((pre) => {
+      const result = pre.map((question, index) =>
+        index === qid ? { ...question, score: score } : question
+      );
+      return result;
+    });
+  };
+
+  const handleChangeCorrect = (qid, aid) => {
+    setQuestions((pre) => {
+      return pre.map((question, index) => {
+        if (index === qid) {
+          const updatedAnswers = question.answers.map((answer, answerIndex) => {
+            if (answerIndex === aid) {
+              return {
+                ...answer,
+                correct: answer.correct === "NO" ? "YES" : "NO",
+              };
+            }
+            return answer;
+          });
+          const updatedQuestion = { ...question, answers: updatedAnswers };
+          return updatedQuestion;
+        }
+        return question;
+      });
+    });
   };
 
   return (
@@ -174,7 +275,7 @@ export default function CreateScoreSurveyPage() {
                           {...provided.draggableProps}
                         >
                           <div className={style.question}>
-                            <QuestionComp
+                            <ScoreQuestion
                               key={index}
                               index={index}
                               questionInfo={questionData}
@@ -183,9 +284,12 @@ export default function CreateScoreSurveyPage() {
                               changeOption={changeOption}
                               deleteQuestion={deleteQuestion}
                               changeRequired={changeRequired}
-                              handleOption={handleOption}
                               provided={provided}
-                              isScore
+                              addAnswer={handleAddOption}
+                              deleteAnswer={handleDeleteOption}
+                              changeAnswerText={handleChangeOptionText}
+                              changeScore={handleChangeScore}
+                              changeCorrect={handleChangeCorrect}
                             />
                           </div>
                         </div>

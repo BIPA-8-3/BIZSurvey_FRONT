@@ -5,14 +5,18 @@ import Stack from "@mui/material/Stack";
 import { useEffect, useState } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
 import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
 
-export default function ChoiceOption({
+const label = { inputProps: { "aria-label": "Checkbox demo" } };
+
+export default function ScoreChoiceOption({
   single,
-  qid,
-  answers,
   addAnswer,
   deleteAnswer,
   changeAnswerText,
+  qid,
+  answers,
+  changeCorrect,
 }) {
   const addOption = () => {
     addAnswer(qid);
@@ -22,14 +26,18 @@ export default function ChoiceOption({
     deleteAnswer(qid, aid);
   };
 
-  const changeText = (aid, text) => {
-    changeAnswerText(qid, aid, text);
+  const changeText = (id, text) => {
+    changeAnswerText(qid, id, text);
+  };
+
+  const changeOptionCorrect = (aid) => {
+    changeCorrect(qid, aid);
   };
 
   return (
     <>
       <div style={{ marginTop: "15px" }}>
-        {answers.map(({ step, surveyAnswer }, index) => (
+        {answers.map(({ correct, surveyAnswer }, index) => (
           <Option
             key={index}
             index={index}
@@ -37,6 +45,8 @@ export default function ChoiceOption({
             changeText={changeText}
             single={single}
             text={surveyAnswer}
+            changeOptionCorrect={changeOptionCorrect}
+            correct={correct}
           ></Option>
         ))}
       </div>
@@ -45,7 +55,7 @@ export default function ChoiceOption({
         <Button
           variant="text"
           startIcon={<FaCirclePlus />}
-          sx={{ fontSize: 13 }}
+          sx={{ fontSize: 13, color: "#119fb3" }}
           onClick={addOption}
         >
           옵션 추가
@@ -55,20 +65,42 @@ export default function ChoiceOption({
   );
 }
 
-function Option({ onDelete, index, changeText, single, text }) {
+function Option({
+  onDelete,
+  index,
+  changeText,
+  single,
+  text,
+  changeOptionCorrect,
+  correct,
+}) {
   return (
     <>
       <div style={{ margin: "0 auto", width: "600px" }}>
         <Stack direction="row" alignItems="center" spacing={1}>
           <span
-            style={{
-              width: "16px",
-              height: "16px",
-              border: "2px solid #D6D6D6",
-              textAlign: "center",
-              borderRadius: single ? "50%" : "3px",
-            }}
-          ></span>
+          // style={{
+          //   width: "16px",
+          //   height: "16px",
+          //   border: "2px solid #D6D6D6",
+          //   textAlign: "center",
+          //   borderRadius: single ? "50%" : "3px",
+          // }}
+          >
+            <Checkbox
+              {...label}
+              sx={{
+                color: "#119fb3",
+                "&.Mui-checked": {
+                  color: "#119fb3",
+                },
+              }}
+              checked={correct === "YES"}
+              // color="success"
+              onChange={() => changeOptionCorrect(index)}
+            />
+          </span>
+
           <TextField
             value={text}
             onChange={(e) => changeText(index, e.target.value)}

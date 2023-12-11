@@ -32,6 +32,12 @@ const Mypage = lazy(() => import("../components/user/Mypage"));
 const CreateSurvey = lazy(() => import("../pages/survey/CreateSurveyPage"));
 const SurveyInfo = lazy(() => import("../pages/survey/SurveyInfoPage"));
 const EditSurvey = lazy(() => import("../pages/survey/EditSurveyPage"));
+const CreateScoreSurvey = lazy(() =>
+  import("../pages/survey/CreateScoreSurveyPage")
+);
+const EditScoreSurvey = lazy(() =>
+  import("../pages/survey/EditScoreSurveyPage")
+);
 const PostDetail = lazy(() => import("../components/community/PostDetail"));
 
 const SurveyCommunityWrite = lazy(() =>
@@ -76,6 +82,16 @@ const ThemeRoutes = [
       { path: "/createSurvey", exact: true, element: <CreateSurvey /> },
       { path: "/surveyInfo", exact: true, element: <SurveyInfo /> },
       { path: "/editSurvey", exact: true, element: <EditSurvey /> },
+      {
+        path: "/createScoreSurvey",
+        exact: true,
+        element: <CreateScoreSurvey />,
+      },
+      {
+        path: "/editScoreSurvey",
+        exact: true,
+        element: <EditScoreSurvey />,
+      },
       {
         path: "/surveyCommunityWrite",
         exact: true,

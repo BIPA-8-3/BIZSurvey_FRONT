@@ -4,6 +4,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import style from "../../../../style/survey/SurveyInfo.module.css";
 import QuestionInfo from "./QuestionInfo";
+import ScoreQuestionInfo from "./ScoreQuestionInfo";
 import SurveyTitle from "../SurveyTitle";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
@@ -39,20 +40,45 @@ export default function SurveyInfo() {
               삭제
             </Button>
             <Button variant="contained">업로드</Button>
-            <Link to={"/editSurvey"} state={{ surveyId: surveyId }}>
+            {/* <Link to={"/editSurvey"} state={{ surveyId: surveyId }}>
               <Button variant="outlined">수정</Button>
-            </Link>
+            </Link> */}
+            {surveyType === "기본" ? (
+              <Link to={"/editSurvey"} state={{ surveyId: surveyId }}>
+                <Button variant="outlined">수정</Button>
+              </Link>
+            ) : (
+              <Link to={"/editScoreSurvey"} state={{ surveyId: surveyId }}>
+                <Button variant="outlined">수정</Button>
+              </Link>
+            )}
           </Stack>
         </div>
 
         {/* 설문지 제목  */}
         <SurveyTitle title={title} content={content} />
 
-        <div>
+        {/* <div>
           {questions.map((question, index) => (
             <QuestionInfo key={index} info={question} />
           ))}
-        </div>
+        </div> */}
+
+        {surveyType === "SCORE" ? (
+          <div>
+            {/* ScoreQuestionInfo 렌더링 */}
+            {questions.map((question, index) => (
+              <ScoreQuestionInfo key={index} info={question} />
+            ))}
+          </div>
+        ) : (
+          <div>
+            {/* QuestionInfo 렌더링 */}
+            {questions.map((question, index) => (
+              <QuestionInfo key={index} info={question} />
+            ))}
+          </div>
+        )}
       </div>
     </>
   );

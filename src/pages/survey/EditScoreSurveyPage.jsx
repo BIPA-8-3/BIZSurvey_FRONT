@@ -1,43 +1,59 @@
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import * as React from "react";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle";
 import QuestionComp from "../../components/survey/surveyForm/QuestionComp";
-import style from "../../style/survey/CreatePage.module.css";
-import axios from "axios";
+import style from "../../style/survey/EditSurveyPage.module.css";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { useEffect } from "react";
-import { login, call } from "./Login";
+import ScoreQuestion from "../../components/survey/surveyForm/ScoreQuestion";
 
-export default function CreateSurveyPage() {
+export default function EditScoreSurveyPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  let surveyId = location.state.surveyId || 0;
+
+  useEffect(() => {
+    console.log(surveyId);
+    handleGetSurvey(surveyId);
+  }, []);
+
   const [formData, setFormData] = useState({
-    title: "",
-    content: "",
-    surveyType: "NORMAL",
+    surveyId: 0,
+    title: "설문지 제목",
+    content: "설문지 내용",
+    surveyType: "점수",
     questions: [],
   });
 
   const [questions, setQuestions] = useState([
     {
+      questionId: 0,
       surveyQuestion: "",
-      answerType: "",
+      answerType: "MULTIPLE_CHOICE",
       score: 0,
-      step: 1,
+      step: 0,
       isRequired: false,
       answers: [
         {
           step: 0,
           surveyAnswer: "",
+          correct: "오답",
         },
       ],
     },
   ]);
 
   useEffect(() => {
-    login();
-  }, []);
+    console.log(questions);
+  }, [questions]);
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
 
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
@@ -49,24 +65,56 @@ export default function CreateSurveyPage() {
     setQuestions(items);
   };
 
-  const handleSubmitSurvey = async (e) => {
-    e.preventDefault();
-    const questionData = questions.map((question, index) => ({
-      ...question,
-      step: index + 1,
-      answers:
-        question.answerType === "SINGLE_CHOICE" ||
-        question.answerType === "MULTIPLE_CHOICE"
-          ? question.answers.map((answer, answerIndex) => ({
-              ...answer,
-              step: answerIndex + 1,
-            }))
-          : [],
-    }));
-    const surveyData = { ...formData };
-    surveyData.questions = questionData;
-    console.log(surveyData);
-    // call("/survey/1", "POST", surveyData);
+  const handleGetSurvey = async (surveyId) => {
+    try {
+      const response = await axios.get("/survey/" + surveyId);
+      setFormData(response.data);
+      setQuestions(response.data.questions);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
+  };
+
+  const handleUpdateSurvey = async (surveyId) => {
+    const { createQuestion, updateQuestion } = questions.reduce(
+      (acc, question, index) => {
+        const { questionId, ...rest } = {
+          ...question,
+          step: index + 1,
+        };
+
+        if (questionId === 0) {
+          acc.createQuestion.push(rest);
+        } else {
+          acc.updateQuestion.push({
+            ...question,
+            step: index + 1,
+          });
+        }
+
+        return acc;
+      },
+      { createQuestion: [], updateQuestion: [] }
+    );
+
+    const surveyData = {
+      ...formData,
+      surveyType: "점수",
+      questions: undefined, // questions 필드 없애기
+      updateQuestions: updateQuestion,
+      createQuestions: createQuestion,
+    };
+
+    await axios
+      .patch("/survey/" + surveyId, surveyData)
+      .then((response) => {
+        console.log(response);
+        alert(response.data);
+        navigate("/surveyInfo");
+      })
+      .catch((error) => console.log(error));
   };
 
   const changeQuestionTitle = (id, text) => {
@@ -110,6 +158,7 @@ export default function CreateSurveyPage() {
       return [
         ...pre,
         {
+          questionId: 0,
           surveyQuestion: "",
           answerType: "",
           score: 0,
@@ -119,6 +168,7 @@ export default function CreateSurveyPage() {
             {
               step: 0,
               surveyAnswer: "",
+              correct: "오답",
             },
           ],
         },
@@ -160,7 +210,10 @@ export default function CreateSurveyPage() {
         if (index === qid) {
           const updatedQuestion = {
             ...question,
-            answers: [...question.answers, { step: 0, surveyAnswer: "" }],
+            answers: [
+              ...question.answers,
+              { step: 0, surveyAnswer: "", correct: "오답" },
+            ],
           };
           return updatedQuestion;
         }
@@ -202,11 +255,44 @@ export default function CreateSurveyPage() {
     });
   };
 
+  const handleChangeScore = (qid, score) => {
+    if (typeof score !== "number") {
+      return;
+    }
+
+    setQuestions((pre) => {
+      const result = pre.map((question, index) =>
+        index === qid ? { ...question, score: score } : question
+      );
+      return result;
+    });
+  };
+
+  const handleChangeCorrect = (qid, aid) => {
+    setQuestions((pre) => {
+      return pre.map((question, index) => {
+        if (index === qid) {
+          const updatedAnswers = question.answers.map((answer, answerIndex) => {
+            if (answerIndex === aid) {
+              return {
+                ...answer,
+                correct: answer.correct === "NO" ? "YES" : "NO",
+              };
+            }
+            return answer;
+          });
+          const updatedQuestion = { ...question, answers: updatedAnswers };
+          return updatedQuestion;
+        }
+        return question;
+      });
+    });
+  };
+
   return (
     <>
       <div className={style.container}>
         <div className={style.wrapContent}>
-          {/* 설문지 제목  */}
           <EditSurveyTitle
             title={formData.title}
             content={formData.content}
@@ -214,7 +300,6 @@ export default function CreateSurveyPage() {
             changeSurveyContent={changeSurveyContent}
           />
 
-          {/* 질문들  */}
           <DragDropContext onDragEnd={handleOnDragEnd}>
             <Droppable droppableId="createQuestions">
               {(provided) => (
@@ -235,7 +320,7 @@ export default function CreateSurveyPage() {
                           {...provided.draggableProps}
                         >
                           <div className={style.question}>
-                            <QuestionComp
+                            <ScoreQuestion
                               key={index}
                               index={index}
                               questionInfo={questionData}
@@ -248,6 +333,8 @@ export default function CreateSurveyPage() {
                               addAnswer={handleAddOption}
                               deleteAnswer={handleDeleteOption}
                               changeAnswerText={handleChangeOptionText}
+                              changeScore={handleChangeScore}
+                              changeCorrect={handleChangeCorrect}
                             />
                           </div>
                         </div>
@@ -260,15 +347,18 @@ export default function CreateSurveyPage() {
             </Droppable>
           </DragDropContext>
 
-          {/* 추가 버튼  */}
           <IconButton aria-label="delete" size="medium" onClick={addQuestion}>
             <FaPlus />
           </IconButton>
 
-          {/* 저장 및 취소 버튼  */}
           <div className={style.wrapButton}>
-            <Button variant="outlined">취소</Button>
-            <Button variant="contained" onClick={(e) => handleSubmitSurvey(e)}>
+            <Button variant="outlined" onClick={handleGoBack}>
+              취소
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => handleUpdateSurvey(surveyId)}
+            >
               완료
             </Button>
           </div>

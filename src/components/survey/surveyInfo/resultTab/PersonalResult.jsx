@@ -124,7 +124,7 @@ export default function PersonalResult({ postId }) {
               <OptionBox>
                 {matchingQuestion ? (
                   <>
-                    {question.answerType === "객관식(택1)" &&
+                    {question.answerType === "SINGLE_CHOICE" &&
                       matchingQuestion.answerType !== "FILE" &&
                       question.answers.map((answer, index) => (
                         <ChoiceField
@@ -137,7 +137,7 @@ export default function PersonalResult({ postId }) {
                         />
                       ))}
 
-                    {question.answerType === "객관식(복수형)" &&
+                    {question.answerType === "MULTIPLE_CHOICE" &&
                       matchingQuestion.answerType !== "FILE" &&
                       question.answers.map((answer, index) => (
                         <ChoiceField
@@ -149,14 +149,14 @@ export default function PersonalResult({ postId }) {
                         />
                       ))}
 
-                    {(question.answerType === "주관식" ||
-                      question.answerType === "날짜") &&
+                    {(question.answerType === "TEXT" ||
+                      question.answerType === "CALENDAR") &&
                       matchingQuestion.answerType !== "FILE" &&
                       matchingQuestion.answer.map((answer, index) => (
                         <Text key={index} value={answer} personal />
                       ))}
 
-                    {question.answerType === "파일" &&
+                    {question.answerType === "FILE" &&
                       matchingQuestion.answerType === "FILE" && (
                         <File
                           filename={matchingQuestion.answer[0]}
