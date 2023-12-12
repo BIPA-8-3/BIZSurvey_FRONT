@@ -82,7 +82,7 @@ export default function SurveyInfoPage() {
   return (
     <>
       <SurveyContext.Provider value={contextValue}>
-        <div>
+        <div style={{ marginTop: "20px" }}>
           <div style={{ width: "700px", margin: "0 auto" }}>
             <ButtonTab
               handleChangeTab={handleChangeTab}

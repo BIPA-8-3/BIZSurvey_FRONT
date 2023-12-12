@@ -3,16 +3,23 @@
   background-color: white;
   border-radius: 10px;
   min-height: 120px;
-  border: 1px solid #d6d6d6;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border: 1px solid #eaeaea;
+  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+   */
+  /* box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px; */
+  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px; */
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
   margin: 0 auto;
   margin-bottom: 35px;
   padding-bottom: 10px;
+  /* padding-top: 10px; */
 }
 
 .title {
-  margin-top: 15px;
-  padding-left: 15px;
+  margin-top: 17px;
+  padding-left: 25px;
   margin-bottom: 10px;
 }
 
