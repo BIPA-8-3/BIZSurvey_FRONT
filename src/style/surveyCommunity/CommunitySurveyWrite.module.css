@@ -90,13 +90,16 @@
 .surveyWrap {
   width: 90%;
 
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; */
+
   margin: 0 auto;
   margin-top: 80px;
-  border: 1px solid #d6d6d6;
-  border-top: 10px solid #0171d1;
-
+  /* border: 1px solid #d6d6d6; */
+  border-top: 15px solid #92a8fe;
+  /* box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px; */
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 10px;
+  padding-bottom: 20px;
   padding-top: 30px;
 }
 

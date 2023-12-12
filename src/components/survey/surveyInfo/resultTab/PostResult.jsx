@@ -15,32 +15,6 @@ import SurveyQuestion from "../../../surveyCommunity/survey/SurveyQuestion";
 
 export default function PostResult({ postId }) {
   const { survey } = useContext(SurveyContext);
-  // 객관식 데이터
-  // const chartData = [
-  //   {
-  //     value: "43",
-  //     name: "옵션1",
-  //   },
-  //   {
-  //     value: "53",
-  //     name: "옵션12",
-  //   },
-  // ];
-
-  // // 주관식 데이터
-  // const texts = ["data1", "data2", "data3", "data4", "data5"];
-
-  // // 파일 데이터
-  // const files = [
-  //   {
-  //     name: "파일명1",
-  //     url: "http://.............",
-  //   },
-  //   {
-  //     name: "파일명1",
-  //     url: "http://.............",
-  //   },
-  // ];
 
   // get data
   const [result, setResult] = useState({
@@ -102,19 +76,6 @@ export default function PostResult({ postId }) {
 
   const handleProcessData = () => {
     const processedData = [];
-    // get 데이터 가공
-
-    // {
-    //   questionId : 0,
-    //   title :'',
-    //   questionType : '',
-    //   answers : [
-    //     {
-    //       answer: '',
-    //       count: 0
-    //     }
-    //   ]
-    // }
 
     // 차트, 텍스트 가공
     result.chartAndTextResults.forEach((data) => {
@@ -135,19 +96,6 @@ export default function PostResult({ postId }) {
       processedData.push(chartResult);
     });
 
-    //파일 데이터 가공
-    // {
-    //   questionId: 0,
-    //   title: "",
-    //   questionType: "",
-    //   fileInfos: [
-    //     {
-    //       filename: "",
-    //       url: "",
-    //     },
-    //   ],
-    // },
-
     result.fileResults.forEach((data) => {
       const fileResult = {
         questionId: data.questionId,
@@ -166,18 +114,7 @@ export default function PostResult({ postId }) {
 
   const handleChartData = (answers) => {
     const chartArr = [];
-    //차트 데이터 가공
-    //   answers : [
-    //     {
-    //       answer: '',
-    //       count: 0
-    //     }
-    //   ]
-    // 이렇게 변경
-    // {
-    //   value: "43",
-    //   name: "옵션1",
-    // },
+
     answers.forEach((answer) => {
       const data = {
         value: answer.count,
@@ -204,7 +141,22 @@ export default function PostResult({ postId }) {
   if (postId === "0") {
     return (
       <>
-        <p>게시물을 선택해주세요</p>
+        <div
+          style={{
+            width: "700px",
+            margin: "0 auto",
+            textAlign: "center",
+            height: "300px",
+            justifyContent: "center",
+            alignItems: "center",
+            lineHeight: "300px",
+            fontSize: "15pt",
+            fontStyle: "italic",
+            color: "#d6d6d6",
+          }}
+        >
+          <p>게시물을 선택해주세요.</p>
+        </div>
       </>
     );
   }
@@ -222,7 +174,6 @@ export default function PostResult({ postId }) {
             <OptionBox>
               {matchingQuestion ? (
                 <>
-                  {/* matchingQuestion이 존재할 때 수행할 내용 */}
                   {(matchingQuestion.type === "SINGLE_CHOICE" ||
                     matchingQuestion.type === "MULTIPLE_CHOICE") && (
                     <Chart chartData={matchingQuestion.data} />
@@ -232,7 +183,11 @@ export default function PostResult({ postId }) {
                     <TextList values={matchingQuestion.data} />
                   )}
                   {matchingQuestion.type === "FILE" && (
-                    <FileList files={matchingQuestion.data} />
+                    <FileList
+                      files={matchingQuestion.data}
+                      surveyId={survey.surveyId}
+                      questionId={question.questionId}
+                    />
                   )}
                 </>
               ) : (

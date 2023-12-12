@@ -15,7 +15,7 @@ export default function CreateSurveyPage() {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
-    surveyType: "기본",
+    surveyType: "NORMAL",
     questions: [],
   });
 
@@ -26,7 +26,12 @@ export default function CreateSurveyPage() {
       score: 0,
       step: 1,
       isRequired: false,
-      answers: [],
+      answers: [
+        {
+          step: 0,
+          surveyAnswer: "",
+        },
+      ],
     },
   ]);
 
@@ -50,15 +55,18 @@ export default function CreateSurveyPage() {
       ...question,
       step: index + 1,
       answers:
-        question.answerType === "객관식(택1)" ||
-        question.answerType === "객관식(복수형)"
-          ? question.answers
+        question.answerType === "SINGLE_CHOICE" ||
+        question.answerType === "MULTIPLE_CHOICE"
+          ? question.answers.map((answer, answerIndex) => ({
+              ...answer,
+              step: answerIndex + 1,
+            }))
           : [],
     }));
     const surveyData = { ...formData };
     surveyData.questions = questionData;
-
-    call("/survey/1", "POST", surveyData);
+    console.log(surveyData);
+    // call("/survey/1", "POST", surveyData);
   };
 
   const changeQuestionTitle = (id, text) => {
@@ -107,7 +115,12 @@ export default function CreateSurveyPage() {
           score: 0,
           step: 0,
           isRequired: false,
-          answers: [],
+          answers: [
+            {
+              step: 0,
+              surveyAnswer: "",
+            },
+          ],
         },
       ];
     });
@@ -139,6 +152,54 @@ export default function CreateSurveyPage() {
 
   const changeSurveyContent = (text) => {
     setFormData((pre) => ({ ...pre, content: text }));
+  };
+
+  const handleAddOption = (qid) => {
+    setQuestions((prevQuestions) => {
+      return prevQuestions.map((question, index) => {
+        if (index === qid) {
+          const updatedQuestion = {
+            ...question,
+            answers: [...question.answers, { step: 0, surveyAnswer: "" }],
+          };
+          return updatedQuestion;
+        }
+        return question;
+      });
+    });
+  };
+
+  const handleDeleteOption = (qid, aid) => {
+    setQuestions((prevQuestions) => {
+      return prevQuestions.map((question, index) => {
+        if (index === qid) {
+          const updatedAnswers = question.answers.filter(
+            (answer, answerIndex) => answerIndex !== aid
+          );
+          const updatedQuestion = { ...question, answers: updatedAnswers };
+          return updatedQuestion;
+        }
+        return question;
+      });
+    });
+  };
+
+  const handleChangeOptionText = (qid, aid, text) => {
+    setQuestions((prevQuestions) => {
+      return prevQuestions.map((question, index) => {
+        if (index === qid) {
+          const updatedAnswers = question.answers.map((answer, answerIndex) => {
+            if (answerIndex === aid) {
+              return { ...answer, surveyAnswer: text };
+            }
+            return answer;
+          });
+          const updatedQuestion = { ...question, answers: updatedAnswers };
+          return updatedQuestion;
+        }
+        return question;
+      });
+    });
   };
 
   return (
@@ -183,8 +244,10 @@ export default function CreateSurveyPage() {
                               changeOption={changeOption}
                               deleteQuestion={deleteQuestion}
                               changeRequired={changeRequired}
-                              handleOption={handleOption}
                               provided={provided}
+                              addAnswer={handleAddOption}
+                              deleteAnswer={handleDeleteOption}
+                              changeAnswerText={handleChangeOptionText}
                             />
                           </div>
                         </div>
@@ -204,10 +267,26 @@ export default function CreateSurveyPage() {
 
           {/* 저장 및 취소 버튼  */}
           <div className={style.wrapButton}>
-            <Button variant="outlined">취소</Button>
-            <Button variant="contained" onClick={(e) => handleSubmitSurvey(e)}>
-              완료
-            </Button>
+            <span style={{ marginRight: "8px" }}>
+              <Button
+                variant="outlined"
+                sx={{ color: "#243579", borderColor: "#243579" }}
+              >
+                취소
+              </Button>
+            </span>
+            <span>
+              <Button
+                sx={{
+                  backgroundColor: "#243579",
+                  height: "36.99px",
+                }}
+                variant="contained"
+                onClick={(e) => handleSubmitSurvey(e)}
+              >
+                완료
+              </Button>
+            </span>
           </div>
         </div>
       </div>

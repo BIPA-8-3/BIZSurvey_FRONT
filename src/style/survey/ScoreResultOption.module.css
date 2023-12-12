@@ -1,0 +1,32 @@
+.yes {
+  margin: 0 auto;
+  width: 600px;
+  margin: "10px 0 10px 0";
+  height: 40px;
+  margin-top: 5px;
+  background-color: #e6f4ea;
+  z-index: 9998;
+  border-radius: 5px;
+}
+
+.no {
+  margin: 0 auto;
+  width: 600px;
+  margin: "10px 0 10px 0";
+  height: 40px;
+  margin-top: 5px;
+  background-color: #fce8e6;
+  z-index: 9998;
+  border-radius: 5px;
+}
+
+.wrapChoice {
+  margin: 0 auto;
+  width: 600px;
+  margin: "10px 0 10px 0";
+  height: 40px;
+  margin-top: 5px;
+  z-index: 9998;
+  border-radius: 5px;
+}
+/* #fce8e6 */

@@ -35,10 +35,7 @@ export default function OptionSelect({ option, setOption, idx }) {
         <MenuItem value="" sx={{ fontSize: 12 }}>
           <p style={{ fontSize: "13px" }}>옵션</p>
         </MenuItem>
-        <MenuItem
-          value={"객관식(택1)" || "SINGLE_CHOICE"}
-          sx={{ width: 150, padding: 1.5 }}
-        >
+        <MenuItem value={"SINGLE_CHOICE"} sx={{ width: 150, padding: 1.5 }}>
           <div className={style.singleChoiceIcon}>
             <IconWithText
               text={"객관식"}
@@ -50,7 +47,7 @@ export default function OptionSelect({ option, setOption, idx }) {
             </IconWithText>
           </div>
         </MenuItem>
-        <MenuItem value={"객관식(복수형)"} sx={{ width: 150, padding: 1.5 }}>
+        <MenuItem value={"MULTIPLE_CHOICE"} sx={{ width: 150, padding: 1.5 }}>
           <div className={style.multipleChoiceIcon}>
             <IconWithText
               text={"객관식(다중선택)"}
@@ -62,7 +59,7 @@ export default function OptionSelect({ option, setOption, idx }) {
             </IconWithText>
           </div>
         </MenuItem>
-        <MenuItem value={"주관식"} sx={{ width: 150, padding: 1.5 }}>
+        <MenuItem value={"TEXT"} sx={{ width: 150, padding: 1.5 }}>
           <div className={style.textIcon}>
             <IconWithText
               text={"주관식"}
@@ -74,7 +71,7 @@ export default function OptionSelect({ option, setOption, idx }) {
             </IconWithText>
           </div>
         </MenuItem>
-        <MenuItem value={"날짜"} sx={{ width: 150, padding: 1.5 }}>
+        <MenuItem value={"CALENDAR"} sx={{ width: 150, padding: 1.5 }}>
           <div className={style.dateIcon}>
             <IconWithText
               text={"날짜"}
@@ -86,7 +83,7 @@ export default function OptionSelect({ option, setOption, idx }) {
             </IconWithText>
           </div>
         </MenuItem>
-        <MenuItem value={"파일"} sx={{ width: 150, padding: 1.5 }}>
+        <MenuItem value={"FILE"} sx={{ width: 150, padding: 1.5 }}>
           <div className={style.fileIcon}>
             <IconWithText
               text={"파일"}

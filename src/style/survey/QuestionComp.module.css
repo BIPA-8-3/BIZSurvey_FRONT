@@ -8,6 +8,16 @@
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
+.scoreContainer {
+  width: 700px;
+  background-color: white;
+  border-radius: 10px;
+  min-height: 150px;
+  border: 1px solid #d6d6d6;
+  border-top: 10px solid #119fb3;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
 .wrapTopButton {
   display: flex;
   justify-content: space-between;
@@ -30,6 +40,22 @@
   color: #0171d1;
 }
 
+.scoreDrag {
+  display: flex;
+  width: 40px;
+  text-align: center;
+  color: #d6d6d6;
+  margin: "0 10px 0 10px";
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  font-size: 18pt;
+}
+
+.scoreDrag:hover {
+  color: #119fb3;
+}
+
 .wrapQuestion {
   margin: 0 auto;
   width: 600px;
@@ -49,6 +75,38 @@
   text-align: right;
 }
 
+.scoreFooter {
+  width: 700px;
+  height: 40px;
+  background-color: white;
+  margin-bottom: 0;
+  margin-top: 20px;
+  border-radius: 0 0 10px 10px;
+  border-top: 1px solid #d6d6d6;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  /* text-align: right; */
+  justify-content: space-between;
+  display: flex;
+}
+
 .requiredButton {
-  margin: 20px 30px 0 0;
+  /* margin: 20px 30px 0 0 ; */
+  margin: 0 30px 0 0;
+}
+
+.scoreInput {
+  border: 0;
+  background-color: white;
+  border-bottom: 1px solid grey;
+  height: 20px;
+  width: 40px;
+  margin-left: 5px;
+}
+
+input:focus {
+  border: 0;
+  border-color: white;
+  outline: none;
+  border-bottom: 2px solid #0171d1;
 }

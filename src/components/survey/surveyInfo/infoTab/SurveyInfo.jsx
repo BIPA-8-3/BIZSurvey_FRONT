@@ -4,6 +4,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import style from "../../../../style/survey/SurveyInfo.module.css";
 import QuestionInfo from "./QuestionInfo";
+import ScoreQuestionInfo from "./ScoreQuestionInfo";
 import SurveyTitle from "../SurveyTitle";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
@@ -34,25 +35,69 @@ export default function SurveyInfo() {
 
         <div className={style.wrapButton}>
           <div></div>
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <Button variant="text" onClick={handleDeleteSurvey}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#243579",
+                height: "36.99px",
+              }}
+            >
+              업로드
+            </Button>
+            {surveyType === "NORMAL" ? (
+              <Link to={"/editSurvey"} state={{ surveyId: surveyId }}>
+                <Button
+                  variant="outlined"
+                  sx={{ color: "#243579", borderColor: "#243579" }}
+                >
+                  수정
+                </Button>
+              </Link>
+            ) : (
+              <Link to={"/editScoreSurvey"} state={{ surveyId: surveyId }}>
+                <Button
+                  variant="outlined"
+                  sx={{ color: "#243579", borderColor: "#243579" }}
+                >
+                  수정
+                </Button>
+              </Link>
+            )}
+            <Button
+              variant="outlined"
+              onClick={handleDeleteSurvey}
+              sx={{ color: "#243579", borderColor: "#243579" }}
+            >
               삭제
             </Button>
-            <Button variant="contained">업로드</Button>
-            <Link to={"/editSurvey"} state={{ surveyId: surveyId }}>
-              <Button variant="outlined">수정</Button>
-            </Link>
           </Stack>
         </div>
 
         {/* 설문지 제목  */}
         <SurveyTitle title={title} content={content} />
 
-        <div>
+        {/* <div>
           {questions.map((question, index) => (
             <QuestionInfo key={index} info={question} />
           ))}
-        </div>
+        </div> */}
+
+        {surveyType === "SCORE" ? (
+          <div>
+            {/* ScoreQuestionInfo 렌더링 */}
+            {questions.map((question, index) => (
+              <ScoreQuestionInfo key={index} info={question} />
+            ))}
+          </div>
+        ) : (
+          <div>
+            {/* QuestionInfo 렌더링 */}
+            {questions.map((question, index) => (
+              <QuestionInfo key={index} info={question} />
+            ))}
+          </div>
+        )}
       </div>
     </>
   );

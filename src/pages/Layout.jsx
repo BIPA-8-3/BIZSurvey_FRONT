@@ -13,6 +13,7 @@ const Layout = () => {
     location.pathname === "/login/oauth2/kakao" ||
     location.pathname.startsWith("/emailValidation/");
   const isAuthorization = location.pathname.startsWith("/authorization/");
+
   return (
     <div>
       {isWorkspace || isMyPage || isAuthorization ? (

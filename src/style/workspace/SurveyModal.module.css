@@ -1,0 +1,156 @@
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  box-shadow: 24;
+  min-width: 300px;
+  min-height: 180px;
+  border-radius: 10px;
+}
+
+.header {
+  width: 100%;
+  background-color: white;
+  height: 40px;
+  border-radius: 10px 10px 0 0;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.title {
+  line-height: 50px;
+  margin-left: 20px;
+  color: black;
+  font-size: 18px;
+}
+
+.close {
+  line-height: 45px;
+  margin-right: 15px;
+  font-size: 20px;
+}
+
+.content {
+  padding: 20px;
+}
+
+.buttonWrap {
+  width: 560px;
+
+  background-color: white;
+  display: flex;
+}
+
+.first {
+  width: 270px;
+  margin: 0 auto;
+
+  height: 190px;
+  position: relative;
+  border-radius: 10px;
+  z-index: 1;
+  border: 1px solid rgb(244, 244, 244);
+  padding-top: 18px;
+  cursor: pointer;
+}
+
+.second {
+  width: 270px;
+  margin: 0 auto;
+
+  height: 190px;
+  position: relative;
+  border-radius: 10px;
+  z-index: 1;
+  border: 1px solid rgb(244, 244, 244);
+  padding-top: 18px;
+  cursor: pointer;
+}
+
+.firstIconWrap {
+  background-color: #f3f9ff;
+  width: 164px;
+  height: 92px;
+  text-align: center;
+  padding-top: 10px;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.secondIconWrap {
+  background-color: #f1fbf8;
+  width: 164px;
+  height: 92px;
+  text-align: center;
+  padding-top: 10px;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.firstTextWrap {
+  width: 240px;
+  height: 60px;
+  background-color: white;
+  margin: 0 auto;
+  margin-top: 20px;
+  gap: 7px;
+  display: flex;
+  flex-direction: column;
+
+  padding: 0px;
+  gap: 7px;
+}
+
+.secondTextWrap {
+  width: 240px;
+  height: 60px;
+  background-color: white;
+  margin: 0 auto;
+  margin-top: 20px;
+  gap: 7px;
+  display: flex;
+  flex-direction: column;
+
+  padding: 0px;
+  gap: 7px;
+}
+
+.scoreIcon {
+  color: #d3ece3;
+  font-size: 60pt;
+
+  font-weight: bold;
+}
+
+.scoreText {
+  font-size: 14px;
+  text-align: center;
+}
+
+.basicIcon {
+  color: #d8e5f3;
+  font-size: 60pt;
+  /* position: absolute; */
+
+  font-weight: bold;
+}
+
+.basicText {
+  font-size: 14px;
+  text-align: center;
+}
+
+.basicText2 {
+  font-size: 12px;
+  color: rgb(122, 134, 154);
+  text-align: center;
+}
+
+.scoreText2 {
+  font-size: 12px;
+  color: rgb(122, 134, 154);
+  text-align: center;
+}
