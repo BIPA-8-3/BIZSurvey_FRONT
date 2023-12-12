@@ -14,6 +14,8 @@ const ParentsComment = ({props}) => {
 
   const [showChildCommentForm, setShowChildCommentForm] = useState({});
 
+
+  // 수정해야 함 
   const renderChildComment = (childCommentList) => {
     if (childCommentList !== null) {
       return (
