@@ -14,10 +14,20 @@ export default function ParentsComment({props}) {
 
 
   console.log("댓글리스트 props: " + data)
+
+  function renderChildComment(childCommentList){
+      if(childCommentList !== null){
+         return (
+            <ChildComment props={childCommentList}/> 
+          );
+      }
+  }
+
+
   
   return (
     <>
-      {data.map(item => (
+      {data.map(item => ( <>
           <div className={style.commentWrap}>
           <div className={style.writeWrap}>
               <div className={style.writer}>
@@ -32,6 +42,9 @@ export default function ParentsComment({props}) {
               </div>
           </div>
       </div>
+      {renderChildComment(item.childCommentResponses)}
+      </>
+      
       ))}
     </>
   );

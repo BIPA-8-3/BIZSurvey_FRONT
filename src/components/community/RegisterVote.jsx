@@ -27,7 +27,7 @@ export default function CommunityPost() {
 
         <div className={style.registerVoteWrap}>
             <div className={style.voteTitleWrap}>
-                <h2><span className={style.voteSpan}>투표</span> 여러분들은 무슨 커피를 좋아하시나요?</h2>
+                <h2><span className={style.voteSpan}>투표</span> "ex : 여러분들은 무슨 커피를 좋아하시나요?"</h2>
             </div>
             <div className={style.voteContentWrap}>
                 <FormControl>

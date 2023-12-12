@@ -1,23 +1,82 @@
-
 import React, { useMemo, useRef, useState } from 'react';
 import style from "../../style/community/CommunityWrite.module.css";
 import '../../style/Common.css';
 import useFadeIn from '../../style/useFadeIn';
 import back from '../../assets/img/back.png';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { Link, json } from 'react-router-dom';
 import "react-quill/dist/quill.snow.css"
 import ReactQuill from "react-quill";
 import { IoIosCloseCircle } from "react-icons/io";
-
+import axios from "axios";
 import CreateVote from './CreateVote';
 import RegisterVote from './RegisterVote'
 
+// 가상의 서버 통신 함수 (실제로는 서버와의 통신을 구현해야 함)
+
 export default function CommunityWrite() {
-  const quillRef = useRef()
-  const [content, setContent] = useState("")
+  const quillRef = useRef();
+  const [content, setContent] = useState("");
   const fadeIn = useFadeIn();
+
+  const imageSrcArray = []; 
+  const [title, setTitle] = useState('');
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
+
+
+
+  const imageHandler = () => {
+    console.log('에디터에서 이미지 버튼을 클릭하면 이 핸들러가 시작됩니다!');
   
+    // 1. 이미지를 저장할 input type=file DOM을 만든다.
+    const input = document.createElement('input');
+    // 속성 써주기
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click(); // 에디터 이미지버튼을 클릭하면 이 input이 클릭된다.
+    // input이 클릭되면 파일 선택창이 나타난다.
+  
+    // input에 변화가 생긴다면 = 이미지를 선택
+    input.addEventListener('change', async () => {
+      console.log('온체인지');
+      const file = input.files[0];
+      // multer에 맞는 형식으로 데이터 만들어준다.
+      const formData = new FormData();
+      formData.append('file', file); // formData는 키-밸류 구조
+      formData.append('domain', 'COMMUNITY');
+      // 백엔드 multer라우터에 이미지를 보낸다.
+      try {
+        const result = await axios.post('http://localhost:8080/storage/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+        });
+        console.log('성공 시, 백엔드가 보내주는 데이터', result.data.url);
+        const IMG_URL = result.data;
+        alert(JSON.stringify(result.data))
+        // 이 URL을 img 태그의 src에 넣은 요소를 현재 에디터의 커서에 넣어주면 에디터 내에서 이미지가 나타난다
+        // src가 base64가 아닌 짧은 URL이기 때문에 데이터베이스에 에디터의 전체 글 내용을 저장할 수있게된다
+        // 이미지는 꼭 로컬 백엔드 uploads 폴더가 아닌 다른 곳에 저장해 URL로 사용하면된다.
+  
+        // 이미지 태그를 에디터에 써주기 - 여러 방법이 있다.
+        const editor = quillRef.current.getEditor(); // 에디터 객체 가져오기
+        // 1. 에디터 root의 innerHTML을 수정해주기
+    
+  
+        // 2. 현재 에디터 커서 위치값을 가져온다
+        const range = editor.getSelection();
+        // 가져온 위치에 이미지를 삽입한다
+        editor.insertEmbed(range.index, 'image', IMG_URL);
+      } catch (error) {
+        console.log('실패했어요ㅠ');
+      }
+    });
+  };
+
+
   const modules = useMemo(() => {
     return {
       toolbar: {
@@ -29,16 +88,73 @@ export default function CommunityWrite() {
           [{ color: [] }, { background: [] }],
           [{ align: [] }, "link", "image"],
         ],
+        handlers: {
+          // 이미지 처리는 우리가 직접 imageHandler라는 함수로 처리할 것이다.
+          image: imageHandler,
+        },
       },
-    }
-  }, [])
-  // const onChange = () => {
-  //   const data = editorRef.current.getInstance().getHTML();
-  //   console.log(data); // 에디터에 입력한 데이터
-  // };
+    };
+  }, []);
+
+
+
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+
+
+  const handleSaveClick = () => {
+    alert(JSON.stringify(content));
+    
+    const parser = new DOMParser(); 
+    const doc = parser.parseFromString(content, 'text/html');
+
+    const imgElements = doc.querySelectorAll('img');
+    imgElements.forEach((imgElement) => {
+      const src = imgElement.getAttribute('src');
+
+      if(src) {
+        imageSrcArray.push(src);
+      }
+
+      alert("배열 확인"+JSON.stringify(imageSrcArray))
+
+    })
+
+      alert(JSON.stringify(title))
+      alert(JSON.stringify(content))
+
+    axios
+      .post("http://localhost:8080/community/createPost", {
+        title : title,
+        content : content,
+        imageUrlList : imageSrcArray
+      }).then((response) => {
+        console.log(response.data)
+      }).catch((error) => {
+        console.error("생성 실패", error)
+      })
+
+
+
+  };
+
+
+
+  const formats = [
+    'header',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'image',
+  ];
+
+
+
 
   return (
     <div className={`fade-in ${fadeIn ? 'active' : ''}`}>
@@ -48,7 +164,7 @@ export default function CommunityWrite() {
       </div>
       <div className={style.writeWrap}>
         <div style={{ textAlign: 'center' }}>
-          <input type='text' className={style.title} placeholder='제목을 입력해주세요.' />
+          <input type='text' className={style.title} placeholder='제목을 입력해주세요.' onChange={handleTitleChange} />
         </div>
         <div className={style.editorWrap}>
           <div style={{ width: '1000px', margin: '0 auto', marginBottom:'100px' }}>
@@ -60,6 +176,7 @@ export default function CommunityWrite() {
               value={content}
               onChange={setContent}
               modules={modules}
+              formats={formats}
             />
           </div>
         </div>
@@ -109,7 +226,9 @@ export default function CommunityWrite() {
               marginLeft:'5px'},{':hover':{
                 border:'1px solid #1976d2',
                 boxShadow:0
-              }}]}>
+              }}]}
+                onClick={handleSaveClick}
+              >
                 저장
             </Button>
         </Link>
