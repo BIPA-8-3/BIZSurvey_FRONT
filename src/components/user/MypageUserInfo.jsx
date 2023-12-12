@@ -12,41 +12,44 @@ import IconWithText from '../common/IconWithText';
 import { IoIosMail } from "react-icons/io";
 import { CiMail } from "react-icons/ci";
 import { LuMailOpen } from "react-icons/lu";
-function MypageUserInfo() {
+function MypageUserInfo({userData, setEditState}) {
   const fadeIn = useFadeIn();
+
+
+  const handleEditBtn = () => {
+    setEditState(true);
+  }
+
+  
+
   return (
     
       <div className={style.mypageUserInfoWrap}>
           <div>
             <ul className={style.mypageUserInfo}>
-                <li>
-                    내 프로필
+                <li style={{display:'flex', justifyContent:'space-between'}}>
+                    <div>
+                        <span>내 프로필</span>
+                    </div>
+                    <div>
+                        <button onClick={handleEditBtn}>수정</button>
+                    </div>
                 </li>
                 <li>
                     <FaRegUser style={{fontSize:'16px', color : '#ddd'}}/>
-                    <span>홍길동</span>
+                    <span>{userData.name}</span>
                 </li>
                 <li>
                     <FaRegUser style={{fontSize:'16px', color : '#ddd'}}/>
-                    <span>404444@naver.com</span>
+                    <span>{userData.email}</span>
                 </li>
-                <li style={{display:'flex', justifyContent:'space-between'}}>
-                    <div>
-                        <FaRegUser style={{fontSize:'16px', color : '#ddd'}}/>
-                        <span>1999-09-09</span>
-                    </div>
-                    <div>
-                        <button>수정</button>
-                    </div>
+                <li>
+                    <FaRegUser style={{fontSize:'16px', color : '#ddd'}}/>
+                    <span>{userData.birthdate}</span>
                 </li>
-                <li style={{display:'flex', justifyContent:'space-between'}}>
-                    <div>
-                        <FaRegUser style={{fontSize:'16px', color : '#ddd'}}/>
-                        <span>눈누난나</span>
-                    </div>
-                    <div>
-                        <button>수정</button>
-                    </div>
+                <li>
+                    <FaRegUser style={{fontSize:'16px', color : '#ddd'}}/>
+                    <span>{userData.nickname}</span>
                 </li>
             </ul>
           </div>
