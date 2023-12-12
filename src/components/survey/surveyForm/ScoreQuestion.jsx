@@ -3,7 +3,7 @@ import RequiredButton from "./RequiredButton";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { useEffect, useState } from "react";
-import ChoiceOption from "./options/ChoiceOption";
+import ScoreChoiceOption from "./score/ScoreChoiceOption";
 import TextOption from "./options/TextOption";
 import FileOption from "./options/FileOption";
 import DateOption from "./options/DateOption";
@@ -17,7 +17,7 @@ import IconWithText from "../../common/IconWithText";
 import { LuCheckSquare } from "react-icons/lu";
 import { isDisabled } from "@testing-library/user-event/dist/utils";
 
-export default function QuestionComp({
+export default function ScoreQuestion({
   index,
   questionInfo,
   changeTitle,
@@ -28,6 +28,8 @@ export default function QuestionComp({
   addAnswer,
   deleteAnswer,
   changeAnswerText,
+  changeScore,
+  changeCorrect,
 }) {
   const {
     surveyQuestion,
@@ -41,20 +43,21 @@ export default function QuestionComp({
 
   return (
     <>
-      <div className={style.container}>
+      <div className={style.scoreContainer}>
         {/*ㅇㅕ긴 선택 버튼들*/}
         <div className={style.wrapTopButton}>
           <Stack direction="row" alignItems="center" spacing={1}>
-            <span className={style.dragButton} {...provided.dragHandleProps}>
+            <span className={style.scoreDrag} {...provided.dragHandleProps}>
               <MdDragIndicator />
             </span>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <span>
-              <OptionSelect
+              <ScoreOptionSelect
                 option={answerType}
                 setOption={changeOption}
                 idx={index}
+                isScore
               />
             </span>
 
@@ -90,41 +93,35 @@ export default function QuestionComp({
         {/*옵션들 */}
         <div>
           <div>
-            {answerType ? (
-              <>
-                {/* 원하는 조건에 따른 옵션을 렌더링 */}
-                {answerType === "SINGLE_CHOICE" && (
-                  <ChoiceOption
-                    single
-                    qid={index}
-                    answers={answers}
-                    addAnswer={addAnswer}
-                    deleteAnswer={deleteAnswer}
-                    changeAnswerText={changeAnswerText}
-                  />
-                )}
-                {answerType === "MULTIPLE_CHOICE" && (
-                  <ChoiceOption
-                    qid={index}
-                    answers={answers}
-                    addAnswer={addAnswer}
-                    deleteAnswer={deleteAnswer}
-                    changeAnswerText={changeAnswerText}
-                  />
-                )}
-                {answerType === "TEXT" && <TextOption />}
-                {answerType === "CALENDAR" && <DateOption />}
-                {answerType === "FILE" && <FileOption />}
-              </>
-            ) : (
-              <></>
-            )}
+            <>
+              <ScoreChoiceOption
+                qid={index}
+                answers={answers}
+                addAnswer={addAnswer}
+                deleteAnswer={deleteAnswer}
+                changeAnswerText={changeAnswerText}
+                changeCorrect={changeCorrect}
+              />
+            </>
+
+            <></>
           </div>
         </div>
 
-        {/*필수체크 버튼*/}
+        {/*필수체크 버튼, 점수 입력칸*/}
 
-        <div className={style.footer}>
+        <div className={style.scoreFooter}>
+          <span style={{ marginTop: "8px", marginLeft: "30px" }}>
+            <span style={{ fontSize: "10pt", marginTop: "10px" }}>점수</span>
+            <input
+              type="number"
+              // pattern="[0-9]+"
+              value={score}
+              className={style.scoreInput}
+              onChange={(e) => changeScore(index, parseInt(e.target.value, 10))}
+            />
+          </span>
+
           <span className={style.requiredButton}>
             <RequiredButton
               required={isRequired}

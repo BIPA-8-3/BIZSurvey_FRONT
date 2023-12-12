@@ -1,10 +1,12 @@
 import style from "../../../style/survey/QuestionBox.module.css";
 
-export default function QuestionBox({ children }) {
+export default function QuestionBox({ children, score }) {
   return (
     <>
       <div>
-        <div className={style.container}>{children}</div>
+        <div className={`${score ? style.scoreContainer : style.container}`}>
+          {children}
+        </div>
       </div>
     </>
   );

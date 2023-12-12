@@ -9,6 +9,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { useState } from "react";
 import axios from "axios";
 import { ConstructionOutlined } from "@mui/icons-material";
+import Loader from "../../../pages/loader/Loader";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -54,6 +55,7 @@ export default function FileOption({ setFileAnswer, questionId, fileAnswer }) {
     try {
       const response = await axios.post("/storage/survey", data, config);
       url = response.data;
+      console.log("url!!!!!!!!!!!!!" + response.data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -77,9 +79,10 @@ export default function FileOption({ setFileAnswer, questionId, fileAnswer }) {
 
   return (
     <>
+      {loading ? <Loader /> : null}
       {/* 선택된 파일 정보 출력 */}
       {selectedFile ? (
-        <div>
+        <div style={{ paddingTop: "15px" }}>
           <TextField
             disabled
             id="outlined-disabled"
@@ -94,16 +97,18 @@ export default function FileOption({ setFileAnswer, questionId, fileAnswer }) {
         </div>
       ) : (
         <>
-          <Button
-            component="label"
-            variant="outlined"
-            startIcon={<CloudUploadIcon />}
-            onChange={handleFileChange}
-            size="small"
-          >
-            파일 업로드
-            <VisuallyHiddenInput type="file" />
-          </Button>
+          <div style={{ paddingTop: "15px" }}>
+            <Button
+              component="label"
+              variant="outlined"
+              startIcon={<CloudUploadIcon />}
+              onChange={handleFileChange}
+              size="small"
+            >
+              파일 업로드
+              <VisuallyHiddenInput type="file" />
+            </Button>
+          </div>
         </>
       )}
     </>

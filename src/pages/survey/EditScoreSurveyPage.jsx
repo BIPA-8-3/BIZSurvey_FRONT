@@ -1,74 +1,120 @@
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import * as React from "react";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle";
-import ScoreQuestion from "../../components/survey/surveyForm/ScoreQuestion";
-import style from "../../style/survey/CreatePage.module.css";
-import axios from "axios";
+import QuestionComp from "../../components/survey/surveyForm/QuestionComp";
+import style from "../../style/survey/EditSurveyPage.module.css";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { useEffect } from "react";
-import { login, call } from "./Login";
+import ScoreQuestion from "../../components/survey/surveyForm/ScoreQuestion";
 
-export default function CreateScoreSurveyPage() {
+export default function EditScoreSurveyPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  let surveyId = location.state.surveyId || 0;
+
+  useEffect(() => {
+    console.log(surveyId);
+    handleGetSurvey(surveyId);
+  }, []);
+
   const [formData, setFormData] = useState({
-    title: "",
-    content: "",
-    surveyType: "SCORE",
+    surveyId: 0,
+    title: "설문지 제목",
+    content: "설문지 내용",
+    surveyType: "점수",
     questions: [],
   });
 
   const [questions, setQuestions] = useState([
     {
+      questionId: 0,
       surveyQuestion: "",
       answerType: "MULTIPLE_CHOICE",
       score: 0,
-      step: 1,
+      step: 0,
       isRequired: false,
       answers: [
         {
           step: 0,
           surveyAnswer: "",
-          correct: "NO",
+          correct: "오답",
         },
       ],
     },
   ]);
 
   useEffect(() => {
-    login();
-  }, []);
-
-  useEffect(() => {
     console.log(questions);
   }, [questions]);
 
-  const handleOnDragEnd = (result) => {
-    if (!result.destination) return;
-    const updatedQuestions = Array.from(questions);
-    const [reorderedQuestion] = updatedQuestions.splice(result.source.index, 1);
-    updatedQuestions.splice(result.destination.index, 0, reorderedQuestion);
-
-    setQuestions(updatedQuestions);
+  const handleGoBack = () => {
+    navigate(-1);
   };
 
-  const handleSubmitSurvey = async (e) => {
-    e.preventDefault();
-    const questionData = questions.map((question, index) => ({
-      ...question,
-      step: index + 1,
-      answers: question.answers.map((answer, answerIndex) => ({
-        ...answer,
-        step: answerIndex + 1,
-      })),
-    }));
-    const surveyData = { ...formData };
-    surveyData.questions = questionData;
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return;
 
-    console.log(surveyData);
+    const items = [...questions];
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
 
-    call("/survey/1", "POST", surveyData);
+    setQuestions(items);
+  };
+
+  const handleGetSurvey = async (surveyId) => {
+    try {
+      const response = await axios.get("/survey/" + surveyId);
+      setFormData(response.data);
+      setQuestions(response.data.questions);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
+  };
+
+  const handleUpdateSurvey = async (surveyId) => {
+    const { createQuestion, updateQuestion } = questions.reduce(
+      (acc, question, index) => {
+        const { questionId, ...rest } = {
+          ...question,
+          step: index + 1,
+        };
+
+        if (questionId === 0) {
+          acc.createQuestion.push(rest);
+        } else {
+          acc.updateQuestion.push({
+            ...question,
+            step: index + 1,
+          });
+        }
+
+        return acc;
+      },
+      { createQuestion: [], updateQuestion: [] }
+    );
+
+    const surveyData = {
+      ...formData,
+      surveyType: "점수",
+      questions: undefined, // questions 필드 없애기
+      updateQuestions: updateQuestion,
+      createQuestions: createQuestion,
+    };
+
+    await axios
+      .patch("/survey/" + surveyId, surveyData)
+      .then((response) => {
+        console.log(response);
+        alert(response.data);
+        navigate("/surveyInfo");
+      })
+      .catch((error) => console.log(error));
   };
 
   const changeQuestionTitle = (id, text) => {
@@ -112,8 +158,9 @@ export default function CreateScoreSurveyPage() {
       return [
         ...pre,
         {
+          questionId: 0,
           surveyQuestion: "",
-          answerType: "MULTIPLE_CHOICE",
+          answerType: "",
           score: 0,
           step: 0,
           isRequired: false,
@@ -121,7 +168,7 @@ export default function CreateScoreSurveyPage() {
             {
               step: 0,
               surveyAnswer: "",
-              correct: "NO",
+              correct: "오답",
             },
           ],
         },
@@ -165,7 +212,7 @@ export default function CreateScoreSurveyPage() {
             ...question,
             answers: [
               ...question.answers,
-              { step: 0, surveyAnswer: "", correct: "NO" },
+              { step: 0, surveyAnswer: "", correct: "오답" },
             ],
           };
           return updatedQuestion;
@@ -246,7 +293,6 @@ export default function CreateScoreSurveyPage() {
     <>
       <div className={style.container}>
         <div className={style.wrapContent}>
-          {/* 설문지 제목  */}
           <EditSurveyTitle
             title={formData.title}
             content={formData.content}
@@ -254,7 +300,6 @@ export default function CreateScoreSurveyPage() {
             changeSurveyContent={changeSurveyContent}
           />
 
-          {/* 질문들  */}
           <DragDropContext onDragEnd={handleOnDragEnd}>
             <Droppable droppableId="createQuestions">
               {(provided) => (
@@ -302,33 +347,20 @@ export default function CreateScoreSurveyPage() {
             </Droppable>
           </DragDropContext>
 
-          {/* 추가 버튼  */}
           <IconButton aria-label="delete" size="medium" onClick={addQuestion}>
             <FaPlus />
           </IconButton>
 
-          {/* 저장 및 취소 버튼  */}
           <div className={style.wrapButton}>
-            <span style={{ marginRight: "8px" }}>
-              <Button
-                variant="outlined"
-                sx={{ color: "#243579", borderColor: "#243579" }}
-              >
-                취소
-              </Button>
-            </span>
-            <span>
-              <Button
-                sx={{
-                  backgroundColor: "#243579",
-                  height: "36.99px",
-                }}
-                variant="contained"
-                onClick={(e) => handleSubmitSurvey(e)}
-              >
-                완료
-              </Button>
-            </span>
+            <Button variant="outlined" onClick={handleGoBack}>
+              취소
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => handleUpdateSurvey(surveyId)}
+            >
+              완료
+            </Button>
           </div>
         </div>
       </div>

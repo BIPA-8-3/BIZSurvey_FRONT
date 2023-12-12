@@ -26,6 +26,11 @@
   background-color: #0171d1;
 }
 
+.scoreSelect {
+  background-color: #119fb3;
+  border-color: #119fb3;
+}
+
 .text {
   font-size: 15px;
   width: 550px;
@@ -38,6 +43,15 @@
   font-size: 15px;
   width: 550px;
   color: #0171d1;
+  height: 20px;
+  padding-top: 7px;
+}
+
+.scoreText {
+  font-weight: bold;
+  font-size: 15px;
+  width: 550px;
+  color: #119fb3;
   height: 20px;
   padding-top: 7px;
 }

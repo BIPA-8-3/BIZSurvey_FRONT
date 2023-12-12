@@ -9,7 +9,7 @@ export default function RequiredButton({ required, index, changeRequired }) {
       <span style={{ fontSize: "13px" }}>필수</span>{" "}
       <Switch
         {...label}
-        defaultChecked={required}
+        checked={required}
         onChange={() => changeRequired(index)}
       />
     </>

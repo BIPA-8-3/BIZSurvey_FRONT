@@ -24,7 +24,7 @@ export default function EditSurveyPage() {
     surveyId: 0,
     title: "설문지 제목",
     content: "설문지 내용",
-    surveyType: "기본",
+    surveyType: "NORMAL",
     questions: [],
   });
 
@@ -73,8 +73,8 @@ export default function EditSurveyPage() {
           ...question,
           step: index + 1,
           answers:
-            question.answerType === "객관식(택1)" ||
-            question.answerType === "객관식(복수형)"
+            question.answerType === "SINGLE_CHOICE" ||
+            question.answerType === "MULTIPLE_CHOICE"
               ? question.answers
               : [],
         };
@@ -86,8 +86,8 @@ export default function EditSurveyPage() {
             ...question,
             step: index + 1,
             answers:
-              question.answerType === "객관식(택1)" ||
-              question.answerType === "객관식(복수형)"
+              question.answerType === "SINGLE_CHOICE" ||
+              question.answerType === "MULTIPLE_CHOICE"
                 ? question.answers
                 : [],
           });
@@ -162,7 +162,12 @@ export default function EditSurveyPage() {
           score: 0,
           step: 0,
           isRequired: false,
-          answers: [],
+          answers: [
+            {
+              step: 0,
+              surveyAnswer: "",
+            },
+          ],
         },
       ];
     });
@@ -194,6 +199,54 @@ export default function EditSurveyPage() {
 
   const changeSurveyContent = (text) => {
     setFormData((pre) => ({ ...pre, content: text }));
+  };
+
+  const handleAddOption = (qid) => {
+    setQuestions((prevQuestions) => {
+      return prevQuestions.map((question, index) => {
+        if (index === qid) {
+          const updatedQuestion = {
+            ...question,
+            answers: [...question.answers, { step: 0, surveyAnswer: "" }],
+          };
+          return updatedQuestion;
+        }
+        return question;
+      });
+    });
+  };
+
+  const handleDeleteOption = (qid, aid) => {
+    setQuestions((prevQuestions) => {
+      return prevQuestions.map((question, index) => {
+        if (index === qid) {
+          const updatedAnswers = question.answers.filter(
+            (answer, answerIndex) => answerIndex !== aid
+          );
+          const updatedQuestion = { ...question, answers: updatedAnswers };
+          return updatedQuestion;
+        }
+        return question;
+      });
+    });
+  };
+
+  const handleChangeOptionText = (qid, aid, text) => {
+    setQuestions((prevQuestions) => {
+      return prevQuestions.map((question, index) => {
+        if (index === qid) {
+          const updatedAnswers = question.answers.map((answer, answerIndex) => {
+            if (answerIndex === aid) {
+              return { ...answer, surveyAnswer: text };
+            }
+            return answer;
+          });
+          const updatedQuestion = { ...question, answers: updatedAnswers };
+          return updatedQuestion;
+        }
+        return question;
+      });
+    });
   };
 
   return (
@@ -236,8 +289,10 @@ export default function EditSurveyPage() {
                               changeOption={changeOption}
                               deleteQuestion={deleteQuestion}
                               changeRequired={changeRequired}
-                              handleOption={handleOption}
                               provided={provided}
+                              addAnswer={handleAddOption}
+                              deleteAnswer={handleDeleteOption}
+                              changeAnswerText={handleChangeOptionText}
                             />
                           </div>
                         </div>
