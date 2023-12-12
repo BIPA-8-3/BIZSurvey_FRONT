@@ -77,7 +77,6 @@ export default function Main() {
   const getAdminState = () => {
     getAdminList(selectedWorkspaceId)
       .then((data) => {
-        console.log("여기여기", data);
         if (!data.owner) {
           setOwner({});
         } else {
@@ -142,33 +141,55 @@ export default function Main() {
   // 폼 최초 로딩 시
   useEffect(() => {
     // 로그인 이후 계정정보 불러옴
-    login()
-      .then((data) => {
-        getUserInfo()
-          .then((info) => {
-            if (!info) {
-              return;
-            }
-            switch (info.planSubscribe) {
-              case "COMPANY_SUBSCRIBE":
-                info.icon = "🏅";
-                break;
-              case "NORMAL_SUBSCRIBE":
-                info.icon = "🏅";
-                break;
-              default:
-                info.icon = "🎟️";
-                break;
-            }
+    // login()
+    //   .then((data) => {
+    //     getUserInfo()
+    //       .then((info) => {
+    //         if (!info) {
+    //           return;
+    //         }
+    //         switch (info.planSubscribe) {
+    //           case "COMPANY_SUBSCRIBE":
+    //             info.icon = "🏅";
+    //             break;
+    //           case "NORMAL_SUBSCRIBE":
+    //             info.icon = "🏅";
+    //             break;
+    //           default:
+    //             info.icon = "🎟️";
+    //             break;
+    //         }
 
-            setUserInfo(info);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+    //         setUserInfo(info);
+    //       })
+    //       .catch((error) => {
+    //         console.error(error);
+    //       });
+    //   })
+    //   .catch((error) => console.error(error));
+    getUserInfo()
+      .then((info) => {
+        if (!info) {
+          return;
+        }
+        switch (info.planSubscribe) {
+          case "COMPANY_SUBSCRIBE":
+            info.icon = "🏅";
+            break;
+          case "NORMAL_SUBSCRIBE":
+            info.icon = "🏅";
+            break;
+          default:
+            info.icon = "🎟️";
+            break;
+        }
+
+        setUserInfo(info);
       })
-      .catch((error) => console.error(error));
-
+      .catch((error) => {
+        console.error(error);
+        console.log(error);
+      });
     // 관리자 목록 조회 및 저장
   }, []);
 

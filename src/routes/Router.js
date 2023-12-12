@@ -40,10 +40,11 @@ const EmailValidation = lazy(() => import('../components/user/EmailValidation'))
 const ChangPassword = lazy(() => import('../components/user/ChangePassword'))
 const AdditionalJoin = lazy(() => import('../components/user/AdditionalJoin'))
 const CommunitySearchResult = lazy(() => import('../components/common/SearchResultTable'))
-const SCommunitySearchResult = lazy(() => import('../components/common/SCommunitySearchResult')) 
+const SCommunitySearchResult = lazy(() => import('../components/common/SCommunitySearchResult'))
 
 
 const Main = lazy(() => import("../pages/workspace/Main"));
+const Authorization = lazy(() => import("../pages/workspace/Authorization"));
 
 const ThemeRoutes = [
   {
@@ -80,12 +81,14 @@ const ThemeRoutes = [
       },
       { path: "/workspace", exact: true, element: <Main /> },
 
-            {path: "/login/oauth2/kakao", exact: true, element: <OAuth2RedirectHandler /> },
-            {path: "/emailValidation/:key", exact: true , element:<EmailValidation />},
-            {path: "/changePassword", exact : true, element : <ChangPassword />},
-            {path: "/additionalJoin", exact : true, element : <AdditionalJoin />},
-            {path: "/communitySearchResult", exact : true, element : <CommunitySearchResult />},
-            {path: "/surveyCommunitySearchResult", exact : true, element : <SCommunitySearchResult />}
+      { path: "/login/oauth2/kakao", exact: true, element: <OAuth2RedirectHandler /> },
+      { path: "/emailValidation/:key", exact: true, element: <EmailValidation /> },
+      { path: "/changePassword", exact: true, element: <ChangPassword /> },
+      { path: "/additionalJoin", exact: true, element: <AdditionalJoin /> },
+      { path: "/communitySearchResult", exact: true, element: <CommunitySearchResult /> },
+      { path: "/surveyCommunitySearchResult", exact: true, element: <SCommunitySearchResult /> },
+
+      { path: "/authorization/:type/:token", exact: true, element: <Authorization /> },
     ],
   },
 ];
