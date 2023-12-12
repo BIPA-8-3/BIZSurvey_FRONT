@@ -6,7 +6,7 @@ import axios from "axios";
 import SearchResult from "./SearchResult";
 import { useNavigate } from "react-router-dom";
 
-function Search() {
+function SCommunitySearch() {
   const [title, setTitle] = useState(""); // 검색할 데이터
   const [findTitles, setFindTitles] = useState([]); // 검색 자동 완성
   const [searchResults, setSearchResults] = useState({}); // 검색 결과 
@@ -17,7 +17,7 @@ function Search() {
     setTitle(e.target.value);
 
     axios
-      .post("http://localhost:8080/community/findPostTitle", {
+      .post("http://localhost:8080/s-community/findSurveyPostTitle", {
         keyword: e.target.value,
       })
       .then((response) => {
@@ -33,17 +33,17 @@ function Search() {
   const searchPosts = () => {
 
     axios
-      .get(`http://localhost:8080/community/search?keyword=${title}`)
+      .get(`http://localhost:8080/s-community/search?keyword=${title}`)
       .then((response) => {
-        console.log("검색 결과!!!!(<Search />):", response.data);
+        console.log("설문 게시물 검색 결과!!!!(<Search />):", response.data);
         
         console.log(response.data);
         
         let data = {keyword:title, result:response.data}
 
-        console.log( "보내는 데이터 : "+JSON.stringify(data))
+        console.log( "보내는 데이터(설)(설)(문)(문) : "+JSON.stringify(data))
         
-        navigate('/communitySearchResult', {state: data}) 
+        navigate('/surveyCommunitySearchResult', {state: data}) 
       })
       .catch((error) => {
         console.error("Error searching posts:", error);
@@ -81,10 +81,9 @@ function Search() {
         <IoIosSearch size={35} color="#f8f8f8" />
       </div>
     </div>
-    
         <SearchResult props={findTitles} />
     </div>
   );
 }
 
-export default Search;
+export default SCommunitySearch;

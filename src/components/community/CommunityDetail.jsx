@@ -13,9 +13,7 @@ import ParentsComment from './ParentsComment';
 import VoteWrite from './VoteWrite'
 import ChildCommentForm from './ChildCommentForm';
 import ChildComment from './ChildComment';
-import axios from 'axios';
-
-
+import axios from 'axios'
 
 
 export default function CommunityPost() {
@@ -124,6 +122,9 @@ export default function CommunityPost() {
             </div>
             <Comment />
             <ParentsComment props={data.commentList} />
+            <ChildComment />
+
+            
             {/* <ChildCommentForm />
             <ChildComment />
             <ChildComment />

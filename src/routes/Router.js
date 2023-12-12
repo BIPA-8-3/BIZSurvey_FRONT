@@ -39,18 +39,15 @@ const EditScoreSurvey = lazy(() =>
   import("../pages/survey/EditScoreSurveyPage")
 );
 const PostDetail = lazy(() => import("../components/community/PostDetail"));
+const SurveyCommunityWrite = lazy(() => import('../components/surveyCommunity/SurveyCommunityWrite'))
+const OAuth2RedirectHandler = lazy(() => import('../components/common/OAuth2RedirectHandler'))
+const EmailValidation = lazy(() => import('../components/user/EmailValidation'))
+const ChangPassword = lazy(() => import('../components/user/ChangePassword'))
+const AdditionalJoin = lazy(() => import('../components/user/AdditionalJoin'))
+const CommunitySearchResult = lazy(() => import('../components/common/SearchResultTable'))
+const SCommunitySearchResult = lazy(() => import('../components/common/SCommunitySearchResult')) 
 
-const SurveyCommunityWrite = lazy(() =>
-  import("../components/surveyCommunity/SurveyCommunityWrite")
-);
-const OAuth2RedirectHandler = lazy(() =>
-  import("../components/common/OAuth2RedirectHandler")
-);
-const EmailValidation = lazy(() =>
-  import("../components/user/EmailValidation")
-);
-const ChangPassword = lazy(() => import("../components/user/ChangePassword"));
-const AdditionalJoin = lazy(() => import("../components/user/AdditionalJoin"));
+
 
 const Main = lazy(() => import("../pages/workspace/Main"));
 
@@ -99,18 +96,12 @@ const ThemeRoutes = [
       },
       { path: "/workspace", exact: true, element: <Main /> },
 
-      {
-        path: "/login/oauth2/kakao",
-        exact: true,
-        element: <OAuth2RedirectHandler />,
-      },
-      {
-        path: "/emailValidation/:key",
-        exact: true,
-        element: <EmailValidation />,
-      },
-      { path: "/changePassword", exact: true, element: <ChangPassword /> },
-      { path: "/additionalJoin", exact: true, element: <AdditionalJoin /> },
+            {path: "/login/oauth2/kakao", exact: true, element: <OAuth2RedirectHandler /> },
+            {path: "/emailValidation/:key", exact: true , element:<EmailValidation />},
+            {path: "/changePassword", exact : true, element : <ChangPassword />},
+            {path: "/additionalJoin", exact : true, element : <AdditionalJoin />},
+            {path: "/communitySearchResult", exact : true, element : <CommunitySearchResult />},
+            {path: "/surveyCommunitySearchResult", exact : true, element : <SCommunitySearchResult />}
     ],
   },
 ];
