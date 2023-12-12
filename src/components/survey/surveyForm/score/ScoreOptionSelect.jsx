@@ -10,7 +10,7 @@ import "../../../../style/Common.css";
 import style from "../../../../style/survey/OptionSelect.module.css";
 import IconWithText from "../../../common/IconWithText";
 
-export default function ScoreOptionSelect({ option, setOption, idx }) {
+export default function ScoreOptionSelect({ option, setOption, idx, isScore }) {
   const handleChange = (event, type) => {
     setOption(idx, type);
   };
@@ -25,35 +25,17 @@ export default function ScoreOptionSelect({ option, setOption, idx }) {
   return (
     <FormControl sx={{ m: 1, minWidth: 100, height: 35, padding: 0 }}>
       <Select
-        value={option}
+        value={isScore ? "MULTIPLE_CHOICE" : option}
         onChange={(e) => handleChange(e, e.target.value)}
         displayEmpty
         defaultValue={option}
         inputProps={{ "aria-label": "Without label" }}
         sx={menuItemStyle}
       >
-        <MenuItem value="" sx={{ fontSize: 12 }}>
-          <p style={{ fontSize: "13px" }}>옵션</p>
-        </MenuItem>
-        <MenuItem
-          value={"객관식(택1)" || "SINGLE_CHOICE"}
-          sx={{ width: 150, padding: 1.5 }}
-        >
+        <MenuItem value={"MULTIPLE_CHOICE"} sx={{ width: 150, padding: 1.5 }}>
           <div className={style.singleChoiceIcon}>
             <IconWithText
               text={"객관식"}
-              fontsize={"10.5px"}
-              fontweight={"bold"}
-              fontcolor={"#304eb9"}
-            >
-              <FaListOl />
-            </IconWithText>
-          </div>
-        </MenuItem>
-        <MenuItem value={"객관식(복수형)"} sx={{ width: 150, padding: 1.5 }}>
-          <div className={style.multipleChoiceIcon}>
-            <IconWithText
-              text={"객관식(다중선택)"}
               fontsize={"10.5px"}
               fontweight={"bold"}
               fontcolor={"#304eb9"}

@@ -32,18 +32,21 @@ export default function PersonalResult({ postId }) {
   ]);
 
   useEffect(() => {
-    console.log("여긴 answers");
     console.log(answers);
-    console.log("여긴 실제 questions");
-    console.log(questions);
   }, [answers]);
+
+  // useEffect(() => {
+  //   console.log("여긴 answers");
+  //   console.log(answers);
+  //   console.log("여긴 실제 questions");
+  //   console.log(questions);
+  // }, [answers]);
 
   useEffect(() => {
     // 설문 게시물 참가자 목록
     if (nickname !== 0) {
       call(`/survey/result/${surveyId}/${postId}/${nickname}`, "GET")
         .then((data) => {
-          console.log("여기");
           handleMergeAnswers(data, (newData) => {
             setAnswers(newData);
           });
@@ -73,7 +76,6 @@ export default function PersonalResult({ postId }) {
     const resultMap = new Map();
 
     answers.forEach((answer) => {
-      console.log("데이터처리" + answer.answer);
       const { questionId, answer: answerValue } = answer;
 
       if (!resultMap.has(questionId)) {
@@ -84,8 +86,6 @@ export default function PersonalResult({ postId }) {
     });
 
     const mergedAnswers = Array.from(resultMap.values());
-    console.log("mergeData");
-    console.log(mergedAnswers);
 
     callback(mergedAnswers);
   };
@@ -93,7 +93,22 @@ export default function PersonalResult({ postId }) {
   if (postId === "0") {
     return (
       <>
-        <p>게시물을 선택해주세요.</p>
+        <div
+          style={{
+            width: "700px",
+            margin: "0 auto",
+            textAlign: "center",
+            height: "300px",
+            justifyContent: "center",
+            alignItems: "center",
+            lineHeight: "300px",
+            fontSize: "15pt",
+            fontStyle: "italic",
+            color: "#d6d6d6",
+          }}
+        >
+          <p>게시물을 선택해주세요.</p>
+        </div>
       </>
     );
   }
@@ -103,7 +118,22 @@ export default function PersonalResult({ postId }) {
       <>
         <UserList userList={userList} setUser={handleSetUser} />
 
-        <p>응답자를 선택해주세요.</p>
+        <div
+          style={{
+            width: "700px",
+            margin: "0 auto",
+            textAlign: "center",
+            height: "300px",
+            justifyContent: "center",
+            alignItems: "center",
+            lineHeight: "300px",
+            fontSize: "15pt",
+            fontStyle: "italic",
+            color: "#d6d6d6",
+          }}
+        >
+          <p>응답자를 선택해주세요.</p>
+        </div>
       </>
     );
   }
@@ -124,7 +154,7 @@ export default function PersonalResult({ postId }) {
               <OptionBox>
                 {matchingQuestion ? (
                   <>
-                    {question.answerType === "객관식(택1)" &&
+                    {question.answerType === "SINGLE_CHOICE" &&
                       matchingQuestion.answerType !== "FILE" &&
                       question.answers.map((answer, index) => (
                         <ChoiceField
@@ -137,7 +167,7 @@ export default function PersonalResult({ postId }) {
                         />
                       ))}
 
-                    {question.answerType === "객관식(복수형)" &&
+                    {question.answerType === "MULTIPLE_CHOICE" &&
                       matchingQuestion.answerType !== "FILE" &&
                       question.answers.map((answer, index) => (
                         <ChoiceField
@@ -149,18 +179,18 @@ export default function PersonalResult({ postId }) {
                         />
                       ))}
 
-                    {(question.answerType === "주관식" ||
-                      question.answerType === "날짜") &&
+                    {(question.answerType === "TEXT" ||
+                      question.answerType === "CALENDAR") &&
                       matchingQuestion.answerType !== "FILE" &&
                       matchingQuestion.answer.map((answer, index) => (
                         <Text key={index} value={answer} personal />
                       ))}
 
-                    {question.answerType === "파일" &&
+                    {question.answerType === "FILE" &&
                       matchingQuestion.answerType === "FILE" && (
                         <File
                           filename={matchingQuestion.answer[0]}
-                          url={matchingQuestion.answer.url}
+                          url={matchingQuestion.url}
                         />
                       )}
                   </>

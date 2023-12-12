@@ -1,0 +1,30 @@
+.selectPost {
+  width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  height: 300px;
+  justify-content: center;
+  align-items: center;
+  line-height: 300px;
+  font-size: 15pt;
+  font-style: italic;
+  color: #d6d6d6;
+}
+
+.totalScore {
+  width: 700px;
+  text-align: right;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  font-size: 15pt;
+  margin-top: 10px;
+  font-weight: bold;
+  padding-right: 5px;
+}
+
+.score {
+  text-align: right;
+  padding-top: 25px;
+  width: 600px;
+  margin: 0 auto;
+}
