@@ -61,20 +61,22 @@ export default function CommunityPost() {
     },
   ]);
 
+  const [pass, setPass] = useState([]);
+
   useEffect(() => {
     login();
     call("/s-community/survey/1", "GET")
       .then((data) => {
         setSurvey(data);
       })
+      .then(() => {
+        const newPassArray = Array(survey.questions.length).fill(true);
+        setPass(newPassArray);
+      })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-
-  useEffect(() => {
-    console.log(answers);
-  }, [answers]);
 
   const handleSetAnswer = (questionId, userAnswer, answerType, url) => {
     setAnswers((pre) => {
@@ -101,21 +103,55 @@ export default function CommunityPost() {
   };
 
   const handleSubmitAnswer = async () => {
-    const result = answers.filter(
-      (answer) =>
-        answer.questionId !== 0 &&
-        answer.answer.length > 0 &&
-        !answer.answer.includes("")
-    );
+    const res = handleCheckAnswer();
+    if (!res) {
+      alert("필수 질문에 응답해주세요.");
+      return;
+    } else {
+      const result = answers.filter(
+        (answer) =>
+          answer.questionId !== 0 &&
+          answer.answer.length > 0 &&
+          !answer.answer.includes("")
+      );
 
-    try {
-      const response = await call("/s-community/survey/1", "POST", result);
-      console.log(response);
-      alert(response);
-      navigate("/surveyCommunityDetail");
-    } catch (error) {
-      console.error("답변 제출 중 오류 발생:", error);
+      try {
+        const response = await call("/s-community/survey/1", "POST", result);
+        console.log(response);
+        alert(response);
+        navigate("/surveyCommunityDetail");
+      } catch (error) {
+        console.error("답변 제출 중 오류 발생:", error);
+      }
     }
+  };
+
+  const handleCheckAnswer = () => {
+    let result = true;
+    let newPassArray = Array(survey.questions.length).fill(true);
+
+    survey.questions.map((question, index) => {
+      if (question.isRequired) {
+        const match = answers.find(
+          (ans) => ans.questionId === question.questionId
+        );
+
+        console.log("match!!!!!!!1", match);
+        if (
+          !match ||
+          !match.answer ||
+          match.answer.length < 1 ||
+          match.answer[0] === ""
+        ) {
+          newPassArray[index] = false;
+          result = false;
+        }
+      }
+    });
+
+    setPass(newPassArray);
+
+    return result;
   };
 
   return (
@@ -147,6 +183,7 @@ export default function CommunityPost() {
                   key={index}
                   question={question}
                   handleSetAnswer={handleSetAnswer}
+                  pass={pass[index]}
                 />
               ))}
           </div>
