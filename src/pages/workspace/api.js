@@ -153,7 +153,24 @@ export const inviteAdmin = (inviteRequest) => {
 }
 
 // 관리자 삭제
-
 export const removeAdmin = (id) => {
     return call(`${adminURI}/${id}`, "DELETE");
+}
+
+// 공유 API
+const shareURI = '/workspace/shared-survey';
+
+// 공유 실행
+export const shareSurvey = (sharedRequest) => {
+    return call(`${shareURI}`, "POST", sharedRequest);
+}
+
+// 공유 히스토리 조회
+export const getSharedSurveyHistory = (id) => {
+    return call(`${shareURI}/${id}`, "GET");
+}
+
+// 공유 상세 내역 조회
+export const getSharedContactList = (id) => {
+    return call(`${shareURI}/survey/${id}`, "GET");
 }

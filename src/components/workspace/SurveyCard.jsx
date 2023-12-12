@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import style from "../../style/workspace/SurveyCard.module.css";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { removeSurvey } from "../../pages/workspace/api";
 
 export default function SurveyCard({
   type,
@@ -16,18 +15,6 @@ export default function SurveyCard({
   // 더보기 상태
   let [moreMenu, setMoreMenu] = useState(false);
 
-  // 메뉴 종류
-  let [menu, setMenu] = useState(null);
-  const toggleMenu = () => {
-    setMoreMenu(!moreMenu);
-  };
-
-  const handleDocumentClick = (event) => {
-    if (cotainerRef.current && !cotainerRef.current.contains(event.target) && moreMenu) {
-      toggleMenu();
-    }
-  };
-
   useEffect(() => {
     document.addEventListener("click", handleDocumentClick);
 
@@ -36,8 +23,16 @@ export default function SurveyCard({
     };
   }, [moreMenu]);
 
-  // 모달
-  // let [modal, setModal] = useState(null);
+  const handleDocumentClick = (event) => {
+    if (cotainerRef.current && !cotainerRef.current.contains(event.target) && moreMenu) {
+      toggleMenu();
+    }
+  };
+
+  const toggleMenu = () => {
+    setMoreMenu(!moreMenu);
+  };
+
   return (
     <div id={style.Container} ref={cotainerRef}>
       <div className={style.cardHeader}>
@@ -56,12 +51,19 @@ export default function SurveyCard({
               <ul>
                 <li
                   onClick={() => {
-                    setMenu("tab1");
                     toggleMenu();
-                    onOpenModal(surveyId);
+                    onOpenModal(surveyId, title, 0);
                   }}
                 >
                   공유
+                </li>
+                <li
+                  onClick={() => {
+                    toggleMenu();
+                    onOpenModal(surveyId, title, 1);
+                  }}
+                >
+                  공유 히스토리
                 </li>
                 <li>이름 바꾸기</li>
                 <li

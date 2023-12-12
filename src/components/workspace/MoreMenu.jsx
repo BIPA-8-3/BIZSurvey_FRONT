@@ -9,10 +9,57 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum }) => {
   // 더보기 메뉴
   const cotainerRef = useRef(null);
 
+  ////////////////////////////////////////////////////////////////
+  ////////////////////////// useContext //////////////////////////
+  ////////////////////////////////////////////////////////////////
   // active workspace
   let { selectedWorkspaceId, setSelectedWorkspaceId } = useContext(WorkspaceContext);
   let { workspaceList, setWorkspaceList } = useContext(WorkspaceContext);
+
+  ////////////////////////////////////////////////////////////////
+  /////////////////////////// useState ///////////////////////////
+  ////////////////////////////////////////////////////////////////
   let [moreMenu, setMoreMenu] = useState(false);
+
+  // 관리 모달
+  let [managementModal, setManagementModal] = useState(false);
+
+  // menu
+  let [menu, setMenu] = useState("tab1");
+
+  ///////////////////////////////////////////////////////////////
+  ////////////////////////// useEffect //////////////////////////
+  ///////////////////////////////////////////////////////////////
+  useEffect(() => {
+    // 컴포넌트가 마운트된 경우에만 이벤트 리스너 추가
+    document.addEventListener("click", handleDocumentClick);
+
+    // 컴포넌트가 언마운트되면 이벤트 리스너 제거
+    return () => {
+      document.removeEventListener("click", handleDocumentClick);
+    };
+  }, [moreMenu]);
+
+  ////////////////////////////////////////////////////////////////
+  ///////////////////////// event Method /////////////////////////
+  ////////////////////////////////////////////////////////////////
+  const closeManagementModal = () => {
+    setManagementModal(false);
+  };
+
+  // 삭제 메소드
+  const handleRemoveClick = () => {
+    removeWorkspace(selectedWorkspaceId)
+      .then((data) => {
+        let copy = workspaceList.filter((workspace) => workspace.id !== selectedWorkspaceId);
+        setWorkspaceList(copy);
+        setSelectedWorkspaceId(null);
+        toggleMenu();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   // open Workspace Modal
   const openWorkspaceModal = () => {
@@ -32,39 +79,6 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum }) => {
     }
   };
 
-  useEffect(() => {
-    // 컴포넌트가 마운트된 경우에만 이벤트 리스너 추가
-    document.addEventListener("click", handleDocumentClick);
-
-    // 컴포넌트가 언마운트되면 이벤트 리스너 제거
-    return () => {
-      document.removeEventListener("click", handleDocumentClick);
-    };
-  }, [moreMenu]);
-
-  // 관리 모달
-  let [managementModal, setManagementModal] = useState(false);
-
-  const closeManagementModal = () => {
-    setManagementModal(false);
-  };
-
-  // menu
-  let [menu, setMenu] = useState("tab1");
-
-  // 삭제 메소드
-  const handleRemoveClick = () => {
-    removeWorkspace(selectedWorkspaceId)
-      .then((data) => {
-        let copy = workspaceList.filter((workspace) => workspace.id !== selectedWorkspaceId);
-        setWorkspaceList(copy);
-        setSelectedWorkspaceId(null);
-        toggleMenu();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
   return (
     <div ref={cotainerRef} className={style.menuContainer}>
       <ManagementModal isOpen={managementModal} onClose={closeManagementModal} tab={menu} />
