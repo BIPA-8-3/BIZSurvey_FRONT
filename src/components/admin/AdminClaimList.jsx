@@ -6,6 +6,11 @@ import { useLocation, useNavigate, useHistory } from "react-router-dom";
 import axios from 'axios';
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 import useApiCall from '../api/ApiCall'; 
+import Pagination from '@mui/material/Pagination';
+import PaginationItem from '@mui/material/PaginationItem';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
 function AdminClaimList() {
     const navigate = useNavigate();
 
@@ -14,19 +19,36 @@ function AdminClaimList() {
     };
 
     const { call } = useApiCall();
-
+    const [total, setTotal] = useState(0);
     const [claimList, setClaimList] = useState([]);
 
     useEffect(() => {
       call("/admin/claim/unprocessed", "GET")
       .then((data) => {
-        console.log(data.content)
         setClaimList(data.content);
+        setTotal(data.totalPages)
       }).catch((error) => {
         console.log(error)
       })
   
     },[]);
+
+    const handlePage = (event) => {
+      const nowPageInt = parseInt(event.target.outerText)
+      // page에 해당하는 페이지로 GET 요청을 보냄
+      call(`/admin/claim/unprocessed?page=${nowPageInt-1}`, "GET")
+      .then(response => {
+        if (response.content && response.content.length > 0) {
+          setClaimList(response.content);
+        } else {
+          console.warn('Data is undefined or empty:', response.data);
+          setClaimList([]); 
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+    };
   return (
     <div
     className={style.userListWrap}
@@ -55,75 +77,36 @@ function AdminClaimList() {
         <thead>
             <tr>
                 <td>NO</td>
-                <td>제목</td>
-                <td>작성자</td>
-                <td>조회수</td>
-                <td>투표 시작일</td>
-                <td>투표 마감일</td>
-                <td>작성일</td>
-                <td>바로가기</td>
-                <td>삭제</td>
+                <td>타입</td>
+                <td>신고사유</td>
+                <td>신고자</td>
+                <td>신고일</td>
             </tr>
         </thead>
         <tbody>
-            
+          {claimList.map((claimItem, index) => (
             <tr onClick={handleRowClick}>
-                <td>1</td>
-                <td>21년동 상반기 설문조사</td>
-                <td>박소영</td>
-                <td>8</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td><button>바로가기</button></td>
-                <td><button>삭제</button></td>
+                <td style={{padding:'6px 2px'}}>{claimItem.id}</td>
+                <td>{claimItem.claimType}</td>
+                <td>{claimItem.claimReason}</td>
+                <td>{claimItem.userName}</td>
+                <td>{claimItem.regDate}</td>
             </tr>
-            <tr onClick={handleRowClick}>
-                <td>1</td>
-                <td>21년동 상반기 설문조사</td>
-                <td>박소영</td>
-                <td>8</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td><button>바로가기</button></td>
-                <td><button>삭제</button></td>
-            </tr>
-            <tr onClick={handleRowClick}>
-                <td>1</td>
-                <td>21년동 상반기 설문조사</td>
-                <td>박소영</td>
-                <td>8</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td><button>바로가기</button></td>
-                <td><button>삭제</button></td>
-            </tr>
-            <tr onClick={handleRowClick}>
-                <td>1</td>
-                <td>21년동 상반기 설문조사</td>
-                <td>박소영</td>
-                <td>8</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td><button>바로가기</button></td>
-                <td><button>삭제</button></td>
-            </tr>
-            <tr onClick={handleRowClick}>
-                <td>1</td>
-                <td>21년동 상반기 설문조사</td>
-                <td>박소영</td>
-                <td>8</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td><button>바로가기</button></td>
-                <td><button>삭제</button></td>
-            </tr>
+          ))}
         </tbody>
       </table>
+      <div style={{width:'1200px', display:'flex', justifyContent:'center', marginTop:'50px'}}>
+      <Pagination
+          count={total}
+          renderItem={(item) => (
+        <PaginationItem
+            slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+            {...item}
+            />
+          )}
+          onChange={(e) => handlePage(e)}
+      />
+      </div>
     </div>
   </div>
   

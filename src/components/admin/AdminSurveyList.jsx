@@ -6,6 +6,10 @@ import { useLocation, useNavigate, useHistory, Link } from "react-router-dom";
 import axios from 'axios';
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 import useApiCall from '../api/ApiCall'; 
+import Pagination from '@mui/material/Pagination';
+import PaginationItem from '@mui/material/PaginationItem';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 function AdminSurveyList() {
     const navigate = useNavigate();
 
@@ -16,16 +20,34 @@ function AdminSurveyList() {
     const { call } = useApiCall();
 
     const [communityList, setCommunityList] = useState([]);
+    const [total, setTotal] = useState(0);
 
     useEffect(() => {
       call("/admin/s-community", "GET")
       .then((data) => {
-        console.log(data.content)
         setCommunityList(data.content);
+        setTotal(data.totalPages)
       }).catch((error) => {
         console.log(error)
       })
     },[]);
+
+    const handlePage = (event) => {
+      const nowPageInt = parseInt(event.target.outerText)
+      // page에 해당하는 페이지로 GET 요청을 보냄
+      call(`/admin/s-communit?page=${nowPageInt-1}`, "GET")
+      .then(response => {
+        if (response.content && response.content.length > 0) {
+          setCommunityList(response.content);
+        } else {
+          console.warn('Data is undefined or empty:', response.data);
+          setCommunityList([]); 
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+    };
   return (
     <div
     className={style.userListWrap}
@@ -67,7 +89,7 @@ function AdminSurveyList() {
         <tbody>
           {communityList.map((communityitem, index) => (
               <tr onClick={handleRowClick}>
-                  <td>{index + 1}</td>
+                  <td>{communityitem.postId}</td>
                   <td>{communityitem.title}</td>
                   <td>{communityitem.nickname}</td>
                   <td>{communityitem.count}</td>
@@ -80,6 +102,18 @@ function AdminSurveyList() {
             ))}  
         </tbody>
       </table>
+      <div style={{width:'1200px', display:'flex', justifyContent:'center', marginTop:'50px'}}>
+      <Pagination
+          count={total}
+          renderItem={(item) => (
+        <PaginationItem
+            slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+            {...item}
+            />
+          )}
+          onChange={(e) => handlePage(e)}
+      />
+      </div>
     </div>
   </div>
   
