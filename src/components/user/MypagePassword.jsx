@@ -1,14 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import style from '../../style/user/MypageHeader.module.css'
+import style from '../../style/user/MypageSurveyList.module.css'
 import back from '../../assets/img/back.png'
 import useFadeIn from '../../style/useFadeIn';
 import useApiCall from '../api/ApiCall'; 
 
 import MypageHeader from './MypageHeader';
-import MypageUserInfo from './MypageUserInfo';
-import UserInfoEditForm from './UserInfoEditForm';
+import MypagePasswordChange from './MypagePasswordChange';
 
-function Mypage() {
+function MypagePassword() {
   const fadeIn = useFadeIn();
   const { call } = useApiCall();
   const [userData, setUserData] = useState({});
@@ -29,12 +28,7 @@ function Mypage() {
         <div style={{display:'flex'}}>
           <MypageHeader userData={userData}/>
           <div style={{background:'#fff', flex: '1', marginTop:'-54px'}}>
-          {editState ? (
-            <UserInfoEditForm userData={userData} setEditState={setEditState} setUserData={setUserData}/>
-          ) : (
-            <MypageUserInfo userData={userData} setEditState={setEditState}/>
-          )}
-         
+            <MypagePasswordChange userData={userData}/>
           </div>
         </div>
       <img src={back} alt="배경" className={style.back}/>
@@ -42,4 +36,4 @@ function Mypage() {
   );
 }
 
-export default Mypage;
+export default MypagePassword;

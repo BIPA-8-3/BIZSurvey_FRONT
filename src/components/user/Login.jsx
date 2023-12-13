@@ -8,7 +8,8 @@ import { Link } from "react-router-dom";
 import useFadeIn from '../../style/useFadeIn';
 import Axios from "axios";
 import BizModal from '../common/BizModal';
-import RefrechRequest from '../api/RefreshRequest';
+import useApiCall from '../api/ApiCall'; 
+ 
 
 function Login() {
   const navigate = useNavigate();
@@ -20,26 +21,10 @@ function Login() {
       password : ''
   })
   
-
+  const { call } = useApiCall();
   // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await Axios.get('/admin/users', {
-  //         headers: {
-  //           Authorization: localStorage.getItem("accessToken"),
-  //         },
-  //       });
-  //       console.log(response.data);
-  //     } catch (error) {
-  //       if (error.response.data.errorCode === 401) {
-  //         alert("로그인 필요")
-  //       }
-  //       if (error.response.data.errorCode === 402) {//아이디 패스워드 없음
-  //         RefrechRequest();
-  //       }
-  //     }
-  //   };
-  //   fetchData();
+  //   const response = call("/admin/users", "GET");
+  //   console.log(response)
   // },[]);
   
 
