@@ -109,7 +109,6 @@ function AdminUserInfo() {
               2022-11-11
             </div>
           </div>
-          
         </div>
       </div>
 

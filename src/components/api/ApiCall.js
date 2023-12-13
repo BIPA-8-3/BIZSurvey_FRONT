@@ -39,7 +39,7 @@ const useApiCall = () => {
       } else if (error.response.data.errorCode === 402) {
         RefreshRequest();
       } else{
-        alert(error.response.data.error.Message)
+        console.log(error.response.data.error.Message)
       }
     }
   };

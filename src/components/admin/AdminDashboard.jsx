@@ -22,35 +22,32 @@ function AdminDashboard() {
     const [company, setCompany] = useState(0);
     const [total, setTotal] = useState(0);
     const [communityList, setCommunityList] = useState([]);
+    const [signupCount, setSignupCount] = useState([])
+    const [lineChartData, setLineChartData] = useState([]);
+    const [surveyCommunityList, setSurveyCommunityList] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
         try {
             const communityData = await call("/admin/user/plan/COMMUNITY", "GET");
-            console.log("커뮤니티 데이터:", communityData);
             setCommunity(communityData);
 
             const normalData = await call("/admin/user/plan/NORMAL_SUBSCRIBE", "GET");
-            console.log("개인 데이터:", normalData);
             setNormal(normalData);
 
             const companyData = await call("/admin/user/plan/COMPANY_SUBSCRIBE", "GET");
-            console.log("개인 데이터:", companyData);
             setCompany(companyData);
-
             setTotal(communityData + normalData + companyData)
 
             const communityListData = await call("/admin/community", "GET")
-            console.log("커뮤니티 데이터:", communityListData);
             setCommunityList(communityListData);
 
+            const signupCount = await call("/admin/signup/count", "GET")
+            setLineChartData(signupCount);
+
+            const surveyCommunityListData = await call("/admin/s-community", "GET")
+            setSurveyCommunityList(surveyCommunityListData);
             
-            // setChartData([
-            //   { value: communityData, name: '커뮤니티' },
-            //   { value: normalData, name: '개인' },
-            //   { value: companyData, name: '그룹' },
-            //   { value: total, name: '총 회원수' }
-            // ]);
         } catch (error) {
             console.error("데이터를 불러오는 중 오류 발생:", error);
         }
@@ -68,6 +65,12 @@ function AdminDashboard() {
         { value: total, name: '총 회원수' }
         ]);
     }, [total]);
+
+    useEffect(() => {
+        setLineChartData(signupCount);
+    }, [signupCount])
+
+
 
 
   
@@ -128,7 +131,7 @@ function AdminDashboard() {
             </Grid>
             <Grid item xs={4}>
                 <div className={style.dashboardWrap}>
-                    <AdminLineChart />
+                    <AdminLineChart lineChartData={lineChartData}/>
                 </div>
             </Grid>
             <Grid item xs={4}>
@@ -190,54 +193,16 @@ function AdminDashboard() {
                 <div className={style.dashboardWrap}>
                     <h2>설문 커뮤니티</h2>
                     <table className={style.adminBoarderTable}>
-                        <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>21년도 상반기 설문조사</td>
-                            <td>홍길동</td>
-                            <td>2023-12-12</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>21년도 상반기 설문조사</td>
-                            <td>홍길동</td>
-                            <td>2023-12-12</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>21년도 상반기 설문조사</td>
-                            <td>홍길동</td>
-                            <td>2023-12-12</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>21년도 상반기 설문조사</td>
-                            <td>홍길동</td>
-                            <td>2023-12-12</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>21년도 상반기 설문조사</td>
-                            <td>홍길동</td>
-                            <td>2023-12-12</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>21년도 상반기 설문조사</td>
-                            <td>홍길동</td>
-                            <td>2023-12-12</td>
-                        </tr>
+                    {Array.isArray(surveyCommunityList.content) && surveyCommunityList.content.slice(0, 6).map((communityitem, index) => (
+                         <tr>
+                         <td>
+                             {index + 1}
+                         </td>
+                         <td>{communityitem.title}</td>
+                         <td>{communityitem.nickname}</td>
+                         <td>{communityitem.createDate}</td>
+                     </tr>
+                    ))}
                     </table>
                 </div>
             </Grid>
