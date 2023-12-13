@@ -2,15 +2,30 @@ import React, { useState, useEffect } from 'react';
 import style from '../../style/admin/AdminSurveyList.module.css'
 import useFadeIn from '../../style/useFadeIn';
 import Button from '@mui/material/Button';
-import { useLocation, useNavigate, useHistory } from "react-router-dom";
+import { useLocation, useNavigate, useHistory, Link } from "react-router-dom";
 import axios from 'axios';
 import { IoIosArrowDropdownCircle } from "react-icons/io";
+import useApiCall from '../api/ApiCall'; 
 function AdminSurveyList() {
     const navigate = useNavigate();
 
     const handleRowClick = () => {
         navigate('/admin/userInfo');
     };
+
+    const { call } = useApiCall();
+
+    const [communityList, setCommunityList] = useState([]);
+
+    useEffect(() => {
+      call("/admin/s-community", "GET")
+      .then((data) => {
+        console.log(data.content)
+        setCommunityList(data.content);
+      }).catch((error) => {
+        console.log(error)
+      })
+    },[]);
   return (
     <div
     className={style.userListWrap}
@@ -18,7 +33,7 @@ function AdminSurveyList() {
     <p className={style.titleWrap} style={{ fontWeight: "bold" }}>
       관리자 시스템
     </p>
-    <div style={{ width: "100%", borderTop: "1px solid rgb(221, 221, 221)", padding:'10px 20px'}}>
+    <div style={{ width: "96%", borderTop: "1px solid rgb(221, 221, 221)", padding:'10px 20px'}}>
       <div >
         <p style={{ fontSize: 12 }}>
           Bizsurvey관리자시스템 》
@@ -50,62 +65,19 @@ function AdminSurveyList() {
             </tr>
         </thead>
         <tbody>
-            
-            <tr onClick={handleRowClick}>
-                <td>1</td>
-                <td>21년동 상반기 설문조사</td>
-                <td>박소영</td>
-                <td>8</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td><button>바로가기</button></td>
-                <td><button>삭제</button></td>
-            </tr>
-            <tr onClick={handleRowClick}>
-                <td>1</td>
-                <td>21년동 상반기 설문조사</td>
-                <td>박소영</td>
-                <td>8</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td><button>바로가기</button></td>
-                <td><button>삭제</button></td>
-            </tr>
-            <tr onClick={handleRowClick}>
-                <td>1</td>
-                <td>21년동 상반기 설문조사</td>
-                <td>박소영</td>
-                <td>8</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td><button>바로가기</button></td>
-                <td><button>삭제</button></td>
-            </tr>
-            <tr onClick={handleRowClick}>
-                <td>1</td>
-                <td>21년동 상반기 설문조사</td>
-                <td>박소영</td>
-                <td>8</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td><button>바로가기</button></td>
-                <td><button>삭제</button></td>
-            </tr>
-            <tr onClick={handleRowClick}>
-                <td>1</td>
-                <td>21년동 상반기 설문조사</td>
-                <td>박소영</td>
-                <td>8</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td>2022-03-01</td>
-                <td><button>바로가기</button></td>
-                <td><button>삭제</button></td>
-            </tr>
+          {communityList.map((communityitem, index) => (
+              <tr onClick={handleRowClick}>
+                  <td>{index + 1}</td>
+                  <td>{communityitem.title}</td>
+                  <td>{communityitem.nickname}</td>
+                  <td>{communityitem.count}</td>
+                  <td>{communityitem.startDateTime}</td>
+                  <td>{communityitem.endDateTime}</td>
+                  <td>{communityitem.createDate} : {communityitem.postId}</td>
+                  <td><Link to={'/communityDetail'} target='_blank' state={{postId : communityitem.postId}}>< button>바로가기</button></Link></td>
+                  <td><button>삭제</button></td>
+              </tr>
+            ))}  
         </tbody>
       </table>
     </div>

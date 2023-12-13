@@ -68,21 +68,27 @@ function AdminHeader() {
                 <div><MdArrowForwardIos style={{fontSize:"10px", color:"gray"}}/></div>
             </li>
         </Link>
-        <li className={style.navItem}>
-            <div>
-                <FaFolderOpen style={{color:'#EADA4D'}}/>
-                <span style={{fontSize: '14px', paddingLeft:"10px"}}>신고 내역 및 관리</span>
-            </div>
-            <div><MdArrowForwardIos style={{fontSize:"10px", color:"gray"}}/></div>
-        </li>
-        <li className={style.navItem}>
-            <div>
-                <FaFolderOpen style={{color:'#EADA4D'}}/>
-                <span style={{fontSize: '14px', paddingLeft:"10px"}}>플랜 회원 관리</span>
-            </div>
-            <div><MdArrowForwardIos style={{fontSize:"10px", color:"gray"}}/></div>
-        </li>
+        <Link to={"/admin/claimList"}>
+            <li className={style.navItem} style={getLinkStyle(currentPage, '/admin/claimList')}>
+                <div>
+                    <FaFolderOpen style={{color:'#EADA4D'}}/>
+                    <span style={{fontSize: '14px', paddingLeft:"10px"}}>신고 내역 및 관리</span>
+                </div>
+                <div><MdArrowForwardIos style={{fontSize:"10px", color:"gray"}}/></div>
+                
+            </li>
+        </Link>
+        {/* <Link to={"/admin/planList"} style={getLinkStyle(currentPage, '/admin/planList')}> 
+            <li className={style.navItem}>
+                <div>
+                    <FaFolderOpen style={{color:'#EADA4D'}}/>
+                    <span style={{fontSize: '14px', paddingLeft:"10px"}}>플랜 회원 관리</span>
+                </div>
+                <div><MdArrowForwardIos style={{fontSize:"10px", color:"gray"}}/></div>
+            </li>
+        </Link> */}
       </div>
+      
   );
 }
 

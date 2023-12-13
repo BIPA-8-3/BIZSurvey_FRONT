@@ -15,7 +15,7 @@
 }
 
 .adminTable{
-    width: 1000px;
+    width: 1200px;
     margin-top: 10px;
 }
 
@@ -42,8 +42,8 @@
 }
 
 .adminSearchWrap{
-    width: 980px;
-    padding: 15px 0px 10px 15px;
+    width: 1182px;
+    padding: 15px 0px 17px 15px;
     margin-top: 10px;
     border-radius: 5px;
 }

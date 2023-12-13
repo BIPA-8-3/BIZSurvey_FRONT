@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BizModal from "../common/BizModal";
 import { Divider, Paper, Checkbox, Button, Box } from "@mui/material";
 import List from '@mui/material/List';
@@ -8,15 +8,19 @@ import ListItemText from '@mui/material/ListItemText';
 
 const SurveyListModal = () => {
     const [modalOpen, setModalOpen] = useState(false);
-    const [surveyList, setSurveyList] = useState([
-      { id: 1, title: "설문지 1ssssssssssssssssssss" },
-      { id: 2, title: "설문지 2ssssssssssssss" },
-      { id: 3, title: "설문지 3" },
-      { id: 4, title: "설문지 4" },
-      { id: 5, title: "설문지 5" },
-      { id: 6, title: "설문지 6" },
-      // 다른 설문지들...
-    ]);
+    const [surveyList, setSurveyList] = useState([]);
+
+    useEffect(() => {
+      setSurveyList([
+        { id: 1, title: "설문지 1ssssssssssssssssssss" },
+        { id: 2, title: "설문지 2ssssssssssssss" },
+        { id: 3, title: "설문지 3" },
+        { id: 4, title: "설문지 4" },
+        { id: 5, title: "설문지 5" },
+        { id: 6, title: "설문지 6" },
+      ]
+      )
+    }, [])
     const [selectedSurvey, setSelectedSurvey] = useState(null);
     const [error, setError] = useState("");
 
@@ -60,8 +64,8 @@ const SurveyListModal = () => {
 
         <BizModal isOpen={modalOpen} handleClose={handleCloseModal} title="내가 만든 설문">
 
-          <Paper style={{ maxHeight: "200px", overflow: "auto"}}>
-            <List sx={{width : "500px"}}>
+          
+            <List sx={{width : "500px", maxHeight:"200px", overflow: "auto"}}>
               {surveyList.map((survey) => (
                 <ListItem key={survey.id} divider>
                   <ListItemText primary={survey.title} />
@@ -72,7 +76,6 @@ const SurveyListModal = () => {
                 </ListItem>
               ))}
             </List>
-          </Paper>
           {/* 오류 메시지 표시 */}
           {error && <p style={{ color: "red", fontSize: "0.8rem", marginTop: "10px" }}>{error}</p>}
 

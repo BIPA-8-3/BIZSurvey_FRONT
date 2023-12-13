@@ -46,7 +46,8 @@ const AdminUserList = lazy(() => import('../pages/admin/AdminUserListPage'))
 const AdminUserInfo = lazy(() => import('../pages/admin/AdminUserInfoPage'))
 const AdminSurveyList = lazy(() => import('../pages/admin/AdminSurveyListPage'))
 const AdminCommunityListPage = lazy(() => import('../pages/admin/AdminCommunityListPage'))
-const AdminMainPage= lazy(() => import('../pages/admin/AdminMainPage'))
+const AdminMainPage = lazy(() => import('../pages/admin/AdminMainPage'))
+const AdminClaimListPage = lazy(() => import('../pages/admin/AdminClaimListPage'))
 
 const Main = lazy(() => import("../pages/workspace/Main"));
 
@@ -83,6 +84,7 @@ const ThemeRoutes = [
             {path: "/admin/surveyList", exact : true, element : <AdminSurveyList />},
             {path: "/admin/communityList", exact : true, element : <AdminCommunityListPage />},
             {path: "/admin/main", exact : true, element : <AdminMainPage />},
+            {path: "/admin/claimList", exact : true, element : <AdminClaimListPage />},
     ],
   },
 ];

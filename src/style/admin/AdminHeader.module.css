@@ -2,7 +2,7 @@
     width: 220px;
     height: 100vh;
     margin-top: -54px;
-    background-color: #fff;
+    background-color: #f5f2f2;
     box-shadow: 5px 1px 8px 0 rgba(0,0,0,.06);
     border-left: 1px solid rgba(0,0,0,.08);
     padding: 20px ;
@@ -25,7 +25,7 @@
 .shadowBox{
 	width:220px; 
     height:5px; 
-    background: linear-gradient(#ffffff,#c8c8c8);
+    background: linear-gradient(#f5f2f2,#c8c8c8);
     opacity:0.7; 
     margin: 0 auto;
 }
@@ -56,11 +56,12 @@
     font-size: 14px;
     background-color: red;
     padding: 7px;
+    padding-top: 8px;
     border-radius: 15px;
     background-color: #0476D9; 
     cursor:pointer;
     color: #fff;
-    font-weight: 700;
+    font-weight: 900;
     font-size: 12px;
     text-align: center;
 }
