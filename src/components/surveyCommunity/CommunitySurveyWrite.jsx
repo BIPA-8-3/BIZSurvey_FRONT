@@ -65,6 +65,11 @@ export default function CommunityPost() {
   const [pass, setPass] = useState([]);
 
   useEffect(() => {
+    console.log("!!!!!!!!!!!!!!!!!!");
+    console.log(answers);
+  }, [answers]);
+
+  useEffect(() => {
     login();
     call("/s-community/survey/1", "GET")
       .then((data) => {
@@ -175,18 +180,6 @@ export default function CommunityPost() {
         </div>
         <div className={style.content}>
           {/* 설문지 영역  */}
-          {/* <div className={style.surveyWrap}>
-            <p className={style.requiredText}>* 표시는 필수 질문입니다</p>
-            {survey.questions &&
-              survey.questions.map((question, index) => (
-                <SurveyQuestion
-                  key={index}
-                  question={question}
-                  handleSetAnswer={handleSetAnswer}
-                  pass={pass[index]}
-                />
-              ))}
-          </div> */}
 
           <SurveyForm
             survey={survey}
