@@ -4,7 +4,7 @@ import call from "./api.js";
 const adminURI = '/workspace/admin';
 
 // 관리자 초대 코드로 입장 시 유효성 체크 및 페이지 이동
-export const linkVerification = (token) => {
+export const inviteLinkVerification = (token) => {
     return call(`${adminURI}/invite/${token}`, "GET");
 }
 
@@ -32,4 +32,12 @@ export const acceptInvite = () => {
         });
 
     return "Success";
+}
+
+// 공유 API
+const sharedURL = '/workspace/shared-survey';
+
+// 공유 링크로 입장했을 때
+export const sharedLinkVerification = (sharedsurveyId, token) => {
+    return call(`${sharedURL}/link/${sharedsurveyId}/${token}`, "GET");
 }

@@ -9,7 +9,7 @@ import { createContext } from "react";
 
 export const SurveyContext = createContext();
 
-export default function SurveyInfoPage() {
+export default function SurveyInfoPage({ selectedSurveyId }) {
   const [page, setPage] = useState(0);
   const [element, setElement] = useState(<></>);
   const [loading, setLoading] = useState(true);
@@ -37,7 +37,7 @@ export default function SurveyInfoPage() {
   };
 
   useEffect(() => {
-    handleGetSurvey(11);
+    handleGetSurvey();
   }, []);
 
   useEffect(() => {
@@ -60,11 +60,14 @@ export default function SurveyInfoPage() {
     }
   }, [page, survey, loading]);
 
-  const handleGetSurvey = async (surveyId) => {
+  const handleGetSurvey = async () => {
+    if (!selectedSurveyId) {
+      return;
+    }
     setLoading(true); // 데이터 로딩 시작
 
     try {
-      const response = await axios.get("/survey/" + surveyId);
+      const response = await axios.get("/survey/" + selectedSurveyId);
       setSurvey(response.data);
       console.log(response.data);
     } catch (error) {

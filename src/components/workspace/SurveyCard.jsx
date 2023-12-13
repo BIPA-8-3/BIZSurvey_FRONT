@@ -9,6 +9,10 @@ export default function SurveyCard({
   onOpenModal,
   onClose,
   handleRemoveBtnClick,
+  handleClickCard,
+  setWorkspaceModalState,
+  setWorkspaceModalNum,
+  setChageModalSurveyId,
 }) {
   const cotainerRef = useRef(null);
 
@@ -33,15 +37,30 @@ export default function SurveyCard({
     setMoreMenu(!moreMenu);
   };
 
+  // open Workspace Modal
+  const openWorkspaceModal = (num) => {
+    toggleMenu();
+    setChageModalSurveyId(surveyId);
+    setWorkspaceModalNum(num);
+    setWorkspaceModalState(true);
+  };
+
   return (
-    <div id={style.Container} ref={cotainerRef}>
+    <div
+      id={style.Container}
+      ref={cotainerRef}
+      onClick={(e) => {
+        handleClickCard(surveyId);
+      }}
+    >
       <div className={style.cardHeader}>
         {type}
         <div className={style.menuContainer}>
           <span>
             <BiDotsHorizontalRounded
               className={style.optionBtn}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 toggleMenu();
               }}
             />
@@ -50,7 +69,8 @@ export default function SurveyCard({
             <div className={`${style.menu} ${moreMenu ? style.visible : ""}`}>
               <ul>
                 <li
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     toggleMenu();
                     onOpenModal(surveyId, title, 0);
                   }}
@@ -58,16 +78,26 @@ export default function SurveyCard({
                   공유
                 </li>
                 <li
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     toggleMenu();
                     onOpenModal(surveyId, title, 1);
                   }}
                 >
                   공유 히스토리
                 </li>
-                <li>이름 바꾸기</li>
                 <li
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleMenu();
+                    openWorkspaceModal(2);
+                  }}
+                >
+                  이름 바꾸기
+                </li>
+                <li
+                  onClick={(e) => {
+                    e.stopPropagation();
                     toggleMenu();
                     handleRemoveBtnClick(surveyId);
                   }}

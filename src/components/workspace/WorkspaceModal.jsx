@@ -10,16 +10,21 @@ export const WorkspaceModal = ({
   setWorkspaceList,
   pageNum,
   handleChangeWorkspaceName,
+  handleChangeSurveyName,
 }) => {
-  let title = ["워크스페이스 생성", "워크스페이스 수정"];
-  let explanation = ["워크스페이스 이름을 입력하세요", "새로운 이름을 입력하세요"];
-  let buttonName = ["생성", "수정"];
+  let title = ["워크스페이스 생성", "워크스페이스 수정", "설문지 제목 수정"];
+  let explanation = [
+    "워크스페이스 이름을 입력하세요",
+    "새로운 이름을 입력하세요",
+    "새로운 설문지 제목을 입력하세요",
+  ];
+  let buttonName = ["생성", "수정", "수정"];
 
   if (!isOpen) {
     return null;
   }
   const handleCreateBtnClick = () => {
-    const workspaceName = document.getElementById("workspace_name").value;
+    const workspaceName = document.getElementById("input_name").value;
 
     createWorkspace(workspaceName)
       .then((data) => {
@@ -34,8 +39,13 @@ export const WorkspaceModal = ({
   };
 
   const handleModifyBtnClick = () => {
-    const workspaceName = document.getElementById("workspace_name").value;
+    const workspaceName = document.getElementById("input_name").value;
     handleChangeWorkspaceName(null, workspaceName);
+  };
+
+  const handleModifySurveyNameBtnClick = () => {
+    const surveyTitle = document.getElementById("input_name").value;
+    handleChangeSurveyName(surveyTitle);
   };
 
   return ReactDOM.createPortal(
@@ -53,7 +63,7 @@ export const WorkspaceModal = ({
             <input
               className={style.input}
               type="text"
-              id="workspace_name"
+              id="input_name"
               placeholder={explanation[pageNum]}
             />
             <button
@@ -61,8 +71,10 @@ export const WorkspaceModal = ({
               onClick={() => {
                 if (pageNum === 0) {
                   handleCreateBtnClick();
-                } else {
+                } else if (pageNum === 1) {
                   handleModifyBtnClick();
+                } else {
+                  handleModifySurveyNameBtnClick();
                 }
                 onClose();
               }}

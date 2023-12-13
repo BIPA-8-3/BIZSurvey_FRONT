@@ -177,7 +177,7 @@ export const getSharedContactList = (id) => {
 }
 
 // // 관리자 초대 코드로 입장 시 유효성 체크 및 페이지 이동
-// export const linkVerification = (token) => {
+// export const inviteLinkVerification = (token) => {
 //     return call(`${adminURI}/invite/${token}`, "GET");
 // }
 
@@ -189,3 +189,13 @@ export const getSharedContactList = (id) => {
 //     }
 //     return call(`${adminURI}`, "POST", request);
 // }
+
+
+// 설문지 이름 수정
+export const modifySurveyName = (id, title) => {
+    const request = {
+        surveyId: id,
+        title: title,
+    }
+    return call(`/workspace/survey`, "PATCH", request);
+}

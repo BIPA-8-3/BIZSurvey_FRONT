@@ -51,12 +51,20 @@ export default function ResultView() {
     setIsPersonal(num);
   };
 
+  // 외부 커뮤니티 구분
+  const [sharedType, setSharedType] = useState("INTERNAL");
   return (
     <>
       {/* 응답 결과 탭의 모든 컴포넌트 집합  */}
 
       {/* 게시물 선택  */}
-      <SurveyPostSelect postInfo={post} postId={postId} setPostId={setPostId} />
+      <SurveyPostSelect
+        postInfo={post}
+        postId={postId}
+        setPostId={setPostId}
+        sharedType={sharedType}
+        setSharedType={setSharedType}
+      />
 
       {/* 전체 / 개별 선택 탭  */}
       <SurveyTitle

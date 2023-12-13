@@ -62,7 +62,7 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum }) => {
   };
 
   // open Workspace Modal
-  const openWorkspaceModal = () => {
+  const openWorkspaceModal = (num) => {
     toggleMenu();
     setWorkspaceModalNum(1);
     setWorkspaceModalState(true);
@@ -111,7 +111,7 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum }) => {
           </li>
           <li
             onClick={() => {
-              openWorkspaceModal();
+              openWorkspaceModal(1);
             }}
           >
             이름 바꾸기
