@@ -24,6 +24,7 @@ function Join({ onSubmit = async (data) => {
     getValues,
   } = useForm();
 
+  
   const password = watch('password', '');
   const passwordConfirm = watch('passwordConfirm', '');
 

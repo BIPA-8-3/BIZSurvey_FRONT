@@ -49,7 +49,7 @@ export default function CommunityPost() {
   }
   console.log("데이타"+data)
   console.log(postId);
-  console.log("댓글 리스트" + data.commentList)
+
 
   let votePostId = data.postId;
  
@@ -120,9 +120,9 @@ export default function CommunityPost() {
                 </p>
                 
             </div>
-            <Comment />
-            <ParentsComment props={data.commentList} />
-            <ChildComment />
+            <Comment props={postId} />
+            <ParentsComment props={{ postId: postId, commentList: data.commentList }} />
+            
 
             
             {/* <ChildCommentForm />
