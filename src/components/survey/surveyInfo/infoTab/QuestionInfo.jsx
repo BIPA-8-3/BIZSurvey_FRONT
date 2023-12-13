@@ -25,15 +25,17 @@ export default function QuestionInfo({ info }) {
       <QuestionBox>
         <QuestionTitle title={surveyQuestion} />
         <OptionBox>
-          {answerType === "객관식(택1)" &&
-            answers.map((answer) => (
-              <ChoiceField single text={answer.surveyAnswer} />
+          {answerType === "SINGLE_CHOICE" &&
+            answers.map((answer, index) => (
+              <ChoiceField key={index} single text={answer.surveyAnswer} />
             ))}
-          {answerType === "객관식(복수형)" &&
-            answers.map((answer) => <ChoiceField text={answer.surveyAnswer} />)}
-          {answerType === "주관식" && <TextOption />}
-          {answerType === "날짜" && <DateOption />}
-          {answerType === "파일" && <FileOption />}
+          {answerType === "MULTIPLE_CHOICE" &&
+            answers.map((answer, index) => (
+              <ChoiceField key={index} text={answer.surveyAnswer} />
+            ))}
+          {answerType === "TEXT" && <TextOption />}
+          {answerType === "CALENDAR" && <DateOption />}
+          {answerType === "FILE" && <FileOption />}
         </OptionBox>
       </QuestionBox>
     </>

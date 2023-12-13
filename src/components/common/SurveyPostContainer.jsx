@@ -4,7 +4,6 @@ import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import back from '../../assets/img/back.png'
 import SurveyCard from "./SurveyCard";
-import Search from './Search'
 import useFadeIn from "../../style/useFadeIn";
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
@@ -13,6 +12,7 @@ import { useInView } from 'react-intersection-observer';
 import axios from 'axios'
 import Loader from "../../pages/loader/Loader"
 import { useNavigate } from "react-router-dom";
+import SCommunitySearch from "./SCommunitySearch";
 
 
 
@@ -26,7 +26,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function SurveyPostContainer(){
 
-  const navigate = useNavigate();
   const [page, setPage] = useState(0); // 현재 페이지 번호 (페이지네이션)
   const [ref, inView] = useInView();
   const [data, setData] = useState({
@@ -79,7 +78,7 @@ function SurveyPostContainer(){
                 <h1 className='textCenter title textBold'>설문 참여</h1>
                 <p className='textCenter subTitle'>쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
             </div>
-            <Search></Search>
+            <SCommunitySearch />
             <div style={{textAlign:'right'}}>
                 <Link to={'/surveyCommunityWrite'}>
                     <Button variant="contained" href="#contained-buttons" 

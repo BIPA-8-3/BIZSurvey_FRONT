@@ -6,41 +6,212 @@ import QuestionTitle from "../QuestionTitle";
 import ChoiceField from "../../fields/ChoiceField";
 import { File } from "./totalOptions/FileList";
 import DateInfo from "../infoOptions/DateInfo";
+import { useContext, useEffect, useState } from "react";
+import { call } from "../../../../pages/survey/Login";
+import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 
-export default function PersonalResult() {
+export default function PersonalResult({ postId }) {
+  const { survey } = useContext(SurveyContext);
+  const { surveyId, questions, ...other } = survey;
+
+  const [nickname, setNickname] = useState(0);
+  const [userList, setUserList] = useState([
+    {
+      userId: 0,
+      nickname: "",
+    },
+  ]);
+  const [answers, setAnswers] = useState([
+    // {
+    //   questionId: 0,
+    //   answer: [],
+    //   url: "",
+    //   questionType: "",
+    //   answerType: "",
+    // },
+  ]);
+
+  useEffect(() => {
+    console.log(answers);
+  }, [answers]);
+
+  // useEffect(() => {
+  //   console.log("여긴 answers");
+  //   console.log(answers);
+  //   console.log("여긴 실제 questions");
+  //   console.log(questions);
+  // }, [answers]);
+
+  useEffect(() => {
+    // 설문 게시물 참가자 목록
+    if (nickname !== 0) {
+      call(`/survey/result/${surveyId}/${postId}/${nickname}`, "GET")
+        .then((data) => {
+          handleMergeAnswers(data, (newData) => {
+            setAnswers(newData);
+          });
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [nickname]);
+
+  useEffect(() => {
+    if (postId !== "0") {
+      call(`/survey/result/userList/${surveyId}/${postId}`, "GET")
+        .then((data) => {
+          setUserList(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+    }
+  }, [postId]);
+
+  const handleSetUser = (nick) => {
+    setNickname(nick);
+  };
+
+  const handleMergeAnswers = (answers, callback) => {
+    const resultMap = new Map();
+
+    answers.forEach((answer) => {
+      const { questionId, answer: answerValue } = answer;
+
+      if (!resultMap.has(questionId)) {
+        resultMap.set(questionId, { ...answer, answer: [answerValue] });
+      } else {
+        resultMap.get(questionId).answer.push(answerValue);
+      }
+    });
+
+    const mergedAnswers = Array.from(resultMap.values());
+
+    callback(mergedAnswers);
+  };
+
+  if (postId === "0") {
+    return (
+      <>
+        <div
+          style={{
+            width: "700px",
+            margin: "0 auto",
+            textAlign: "center",
+            height: "300px",
+            justifyContent: "center",
+            alignItems: "center",
+            lineHeight: "300px",
+            fontSize: "15pt",
+            fontStyle: "italic",
+            color: "#d6d6d6",
+          }}
+        >
+          <p>게시물을 선택해주세요.</p>
+        </div>
+      </>
+    );
+  }
+
+  if (nickname === 0) {
+    return (
+      <>
+        <UserList userList={userList} setUser={handleSetUser} />
+
+        <div
+          style={{
+            width: "700px",
+            margin: "0 auto",
+            textAlign: "center",
+            height: "300px",
+            justifyContent: "center",
+            alignItems: "center",
+            lineHeight: "300px",
+            fontSize: "15pt",
+            fontStyle: "italic",
+            color: "#d6d6d6",
+          }}
+        >
+          <p>응답자를 선택해주세요.</p>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
-      <UserList></UserList>
+      <UserList userList={userList} setUser={handleSetUser} />
 
-      <QuestionBox>
-        <QuestionTitle title={"객관식"} />
-        <OptionBox>
-          <ChoiceField single text={"옵션111"} />
-          <ChoiceField single text={"옵션222"} />
-          <ChoiceField single text={"옵션333"} select />
-        </OptionBox>
-      </QuestionBox>
+      {questions.map((question, index) => {
+        const matchingQuestion = answers.find(
+          (ans) => ans.questionId === question.questionId
+        );
 
-      <QuestionBox>
-        <QuestionTitle title={"주관식"} />
-        <OptionBox>
-          <Text value={"짖ㅂ에 가고 싶습니다"} personal />
-        </OptionBox>
-      </QuestionBox>
+        return (
+          <>
+            <QuestionBox key={index}>
+              <QuestionTitle title={question.surveyQuestion} />
+              <OptionBox>
+                {matchingQuestion ? (
+                  <>
+                    {question.answerType === "SINGLE_CHOICE" &&
+                      matchingQuestion.answerType !== "FILE" &&
+                      question.answers.map((answer, index) => (
+                        <ChoiceField
+                          key={index}
+                          single
+                          text={answer.surveyAnswer}
+                          select={matchingQuestion.answer.includes(
+                            answer.surveyAnswer
+                          )}
+                        />
+                      ))}
 
-      <QuestionBox>
-        <QuestionTitle title={"파일"} />
-        <OptionBox>
-          <File filename={"파일명"} url={"http://..............."} />
-        </OptionBox>
-      </QuestionBox>
+                    {question.answerType === "MULTIPLE_CHOICE" &&
+                      matchingQuestion.answerType !== "FILE" &&
+                      question.answers.map((answer, index) => (
+                        <ChoiceField
+                          key={index}
+                          text={answer.surveyAnswer}
+                          select={matchingQuestion.answer.includes(
+                            answer.surveyAnswer
+                          )}
+                        />
+                      ))}
 
-      <QuestionBox>
-        <QuestionTitle title={"날짜"} />
-        <OptionBox>
-          <DateInfo value={"2029-03-34"} />
-        </OptionBox>
-      </QuestionBox>
+                    {(question.answerType === "TEXT" ||
+                      question.answerType === "CALENDAR") &&
+                      matchingQuestion.answerType !== "FILE" &&
+                      matchingQuestion.answer.map((answer, index) => (
+                        <Text key={index} value={answer} personal />
+                      ))}
+
+                    {question.answerType === "FILE" &&
+                      matchingQuestion.answerType === "FILE" && (
+                        <File
+                          filename={matchingQuestion.answer[0]}
+                          url={matchingQuestion.url}
+                        />
+                      )}
+                  </>
+                ) : (
+                  <>
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        paddingTop: "10px",
+                        color: "grey",
+                      }}
+                    >
+                      사용자 응답이 없습니다.
+                    </p>
+                  </>
+                )}
+              </OptionBox>
+            </QuestionBox>
+          </>
+        );
+      })}
     </>
   );
 }

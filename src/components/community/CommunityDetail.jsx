@@ -13,9 +13,7 @@ import ParentsComment from './ParentsComment';
 import VoteWrite from './VoteWrite'
 import ChildCommentForm from './ChildCommentForm';
 import ChildComment from './ChildComment';
-import axios from 'axios';
-
-
+import axios from 'axios'
 
 
 export default function CommunityPost() {
@@ -51,7 +49,7 @@ export default function CommunityPost() {
   }
   console.log("데이타"+data)
   console.log(postId);
-  console.log("댓글 리스트" + data.commentList)
+
 
   let votePostId = data.postId;
  
@@ -122,8 +120,11 @@ export default function CommunityPost() {
                 </p>
                 
             </div>
-            <Comment />
-            <ParentsComment props={data.commentList} />
+            <Comment props={postId} />
+            <ParentsComment props={{ postId: postId, commentList: data.commentList }} />
+            
+
+            
             {/* <ChildCommentForm />
             <ChildComment />
             <ChildComment />
