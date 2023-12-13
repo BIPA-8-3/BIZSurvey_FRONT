@@ -8,7 +8,7 @@ import SingleOption from "./SingleOption";
 import TextOption from "./TextOption";
 import { useEffect } from "react";
 
-export default function SurveyQuestion({ question, handleSetAnswer }) {
+export default function SurveyQuestion({ question, handleSetAnswer, pass }) {
   const {
     questionId,
     surveyQuestion,
@@ -38,14 +38,14 @@ export default function SurveyQuestion({ question, handleSetAnswer }) {
 
   return (
     <>
-      <div className={style.question}>
+      <div className={`${pass === false ? style.questionRed : style.question}`}>
         {/* 질문  */}
         <div className={style.title}>
           <p>
             <span>{surveyQuestion} </span>
             <span style={{ color: "red" }}>
               {isRequired === true ? "*" : ""}
-            </span>{" "}
+            </span>
           </p>
         </div>
         {/* 옵션 영역  */}
