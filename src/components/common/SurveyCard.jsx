@@ -22,6 +22,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function SurveyCard({ data }) {
+
   const [hoveredCard, setHoveredCard] = useState(null);
 
   const handleMouseOver = (index) => {
@@ -74,6 +75,12 @@ function SurveyCard({ data }) {
                     <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
                         <MdDateRange />
                         <span style={{ margin: '0 5px 0 5px' }}>{cardData.startDateTime}</span>
+                    </div>
+                </div>
+                <div className={style.count}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
+                        <MdDateRange />
+                        <span style={{ margin: '0 5px 0 5px' }}>{cardData.canAccess}</span>
                     </div>
                 </div>
             </div>
