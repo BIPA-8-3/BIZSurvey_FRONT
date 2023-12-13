@@ -47,7 +47,12 @@ function SurveyPostContainer(){
       axios
       .get(`http://localhost:8080/s-community?page=${page}`)
       .then((res) => {
+
+        console.log(res);
+
         setData((prevData) => {
+
+
           return {
             ...res.data,
             content: [...prevData.content, ...res.data.content],

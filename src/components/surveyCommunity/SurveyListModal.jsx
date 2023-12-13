@@ -4,19 +4,16 @@ import { Divider, Paper, Checkbox, Button, Box } from "@mui/material";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import style from"../../style/community/CommunityPost.module.css"
 
+const SurveyListModal = ({props}) => {
 
-const SurveyListModal = () => {
+    const data = props.list
+    const modalTitle = props.title;
+
+    alert("받아온 데이터 : " + JSON.stringify(data))
+
     const [modalOpen, setModalOpen] = useState(false);
-    const [surveyList, setSurveyList] = useState([
-      { id: 1, title: "설문지 1ssssssssssssssssssss" },
-      { id: 2, title: "설문지 2ssssssssssssss" },
-      { id: 3, title: "설문지 3" },
-      { id: 4, title: "설문지 4" },
-      { id: 5, title: "설문지 5" },
-      { id: 6, title: "설문지 6" },
-      // 다른 설문지들...
-    ]);
     const [selectedSurvey, setSelectedSurvey] = useState(null);
     const [error, setError] = useState("");
 
@@ -34,6 +31,9 @@ const SurveyListModal = () => {
       // 선택된 설문 업데이트
       setSelectedSurvey(surveyId);
       setError(""); // 체크할 때마다 오류 메시지 초기화
+
+      const selectedSurvey = data.find(survey => survey.surveyId === surveyId);
+      props.setSurvey(selectedSurvey);
     };
 
     const handleApply = () => {
@@ -54,25 +54,28 @@ const SurveyListModal = () => {
 
     return (
       <div>
-
-        <button onClick={handleOpenModal}>모달 열기</button>
-
-
-        <BizModal isOpen={modalOpen} handleClose={handleCloseModal} title="내가 만든 설문">
-
-          <Paper style={{ maxHeight: "200px", overflow: "auto"}}>
-            <List sx={{width : "500px"}}>
-              {surveyList.map((survey) => (
-                <ListItem key={survey.id} divider>
-                  <ListItemText primary={survey.title} />
-                  <Checkbox
-                    checked={selectedSurvey === survey.id}
-                    onChange={() => handleCheckboxChange(survey.id)}
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </Paper>
+      <button onClick={handleOpenModal}>{modalTitle}</button>
+      <BizModal isOpen={modalOpen} handleClose={handleCloseModal} title={modalTitle}>
+          <List sx={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+  
+           <ListItemText primary={`제목`} />
+           <ListItemText primary={`워크스페이스 이름`} />
+        </List>
+        <Divider />
+        <Divider />
+        <List sx={{ width: "500px", overflowY: "auto", maxHeight: "400px" }}>
+          {data.map((survey) => (
+            <ListItem key={survey.surveyId} divider>
+              <ListItemText primary={survey.title} />
+              <ListItemText primary={survey.workspaceName} />
+              <Checkbox
+                checked={selectedSurvey === survey.surveyId}
+                onChange={() => handleCheckboxChange(survey.surveyId)}
+              />
+            </ListItem>
+          ))}
+        </List>
+          
           {/* 오류 메시지 표시 */}
           {error && <p style={{ color: "red", fontSize: "0.8rem", marginTop: "10px" }}>{error}</p>}
 
