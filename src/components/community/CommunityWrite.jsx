@@ -11,6 +11,7 @@ import { IoIosCloseCircle } from "react-icons/io";
 import axios from "axios";
 import CreateVote from './CreateVote';
 import RegisterVote from './RegisterVote'
+import { useNavigate } from "react-router-dom";
 
 // 가상의 서버 통신 함수 (실제로는 서버와의 통신을 구현해야 함)
 
@@ -21,6 +22,7 @@ export default function CommunityWrite() {
 
   const imageSrcArray = []; 
   const [title, setTitle] = useState('');
+  const navigate = useNavigate();
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -54,6 +56,8 @@ export default function CommunityWrite() {
             'Content-Type': 'multipart/form-data'
           },
         });
+      
+        
         console.log('성공 시, 백엔드가 보내주는 데이터', result.data.url);
         const IMG_URL = result.data;
         alert(JSON.stringify(result.data))
@@ -133,6 +137,9 @@ export default function CommunityWrite() {
         imageUrlList : imageSrcArray
       }).then((response) => {
         console.log(response.data)
+        let postId = response.data;
+        
+        navigate('/communityDetail', { state: { postId: postId } });
       }).catch((error) => {
         console.error("생성 실패", error)
       })
