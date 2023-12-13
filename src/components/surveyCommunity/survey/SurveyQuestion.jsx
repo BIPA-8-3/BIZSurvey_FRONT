@@ -50,27 +50,26 @@ export default function SurveyQuestion({ question, handleSetAnswer }) {
         </div>
         {/* 옵션 영역  */}
         <div className={style.option}>
-          {answerType === "객관식(택1)" && (
+          {answerType === "SINGLE_CHOICE" && (
             <SingleOption answers={answers} setUserAnswer={setUserAnswer} />
           )}
-          {answerType === "객관식(복수형)" &&
+          {answerType === "MULTIPLE_CHOICE" &&
             answers.map((answer, index) => (
-              <div style={{ marginBottom: "5px" }}>
+              <div style={{ marginBottom: "5px" }} key={index}>
                 <MultipleOption
-                  key={index}
                   answer={answer}
                   userAnswer={userAnswer}
                   setUserAnswer={setUserAnswer}
                 />
               </div>
             ))}
-          {answerType === "주관식" && (
+          {answerType === "TEXT" && (
             <TextOption setUserAnswer={setUserAnswer} />
           )}
-          {answerType === "날짜" && (
+          {answerType === "CALENDAR" && (
             <DateOption setUserAnswer={setUserAnswer} />
           )}
-          {answerType === "파일" && (
+          {answerType === "FILE" && (
             <FileOption
               setFileAnswer={setFileAnswer}
               questionId={questionId}

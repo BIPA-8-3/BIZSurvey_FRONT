@@ -27,7 +27,11 @@ export default function Main() {
   return (
     <div id={style.SectionBody}>
       {/* modal */}
-      <ShareModal isOpen={modal} onClose={closeModal} surveyId={selectedSurveyId} />
+      <ShareModal
+        isOpen={modal}
+        onClose={closeModal}
+        surveyId={selectedSurveyId}
+      />
       {/* Navbar */}
       <Navbar></Navbar>
       <div className={style.sectionWrap}>

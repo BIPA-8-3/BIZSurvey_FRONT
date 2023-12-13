@@ -6,54 +6,33 @@ import { useEffect, useState } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
 import Button from "@mui/material/Button";
 
-export default function ChoiceOption({ single, handleOption, index, answers }) {
-  const [options, setOptions] = useState([{ step: 1, surveyAnswer: "" }]);
-
+export default function ChoiceOption({
+  single,
+  qid,
+  answers,
+  addAnswer,
+  deleteAnswer,
+  changeAnswerText,
+}) {
   const addOption = () => {
-    setOptions((pre) => {
-      const lastId = pre.length > 0 ? pre[pre.length - 1].step : 0;
-      return [...pre, { step: lastId + 1, surveyAnswer: "" }];
-    });
+    addAnswer(qid);
   };
 
-  const deleteOption = (id) => {
-    setOptions((pre) => {
-      const deleteOptions = pre
-        .filter((option) => option.step !== id)
-        .map((option, index) => ({ ...option, step: index + 1 }));
-      return deleteOptions;
-    });
+  const deleteOption = (aid) => {
+    deleteAnswer(qid, aid);
   };
 
-  const changeText = (id, text) => {
-    setOptions((pre) => {
-      // id에 해당하는 옵션을 찾아 업데이트
-      const updatedOptions = pre.map((option, index) =>
-        option.step === id
-          ? { ...option, surveyAnswer: text, step: index + 1 }
-          : option
-      );
-      return updatedOptions;
-    });
+  const changeText = (aid, text) => {
+    changeAnswerText(qid, aid, text);
   };
-
-  useEffect(() => {
-    if (answers.length > 0) {
-      setOptions(answers);
-    }
-  }, []);
-
-  useEffect(() => {
-    handleOption(index, options);
-  }, [options]);
 
   return (
     <>
       <div style={{ marginTop: "15px" }}>
-        {options.map(({ step, surveyAnswer }) => (
+        {answers.map(({ step, surveyAnswer }, index) => (
           <Option
-            key={step}
-            index={step}
+            key={index}
+            index={index}
             onDelete={deleteOption}
             changeText={changeText}
             single={single}

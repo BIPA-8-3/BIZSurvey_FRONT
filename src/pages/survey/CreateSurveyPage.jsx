@@ -15,7 +15,7 @@ export default function CreateSurveyPage() {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
-    surveyType: "기본",
+    surveyType: "NORMAL",
     questions: [],
   });
 
@@ -26,7 +26,12 @@ export default function CreateSurveyPage() {
       score: 0,
       step: 1,
       isRequired: false,
-      answers: [],
+      answers: [
+        {
+          step: 0,
+          surveyAnswer: "",
+        },
+      ],
     },
   ]);
 
@@ -49,28 +54,25 @@ export default function CreateSurveyPage() {
     const questionData = questions.map((question, index) => ({
       ...question,
       step: index + 1,
+      answers:
+        question.answerType === "SINGLE_CHOICE" ||
+        question.answerType === "MULTIPLE_CHOICE"
+          ? question.answers.map((answer, answerIndex) => ({
+              ...answer,
+              step: answerIndex + 1,
+            }))
+          : [],
     }));
     const surveyData = { ...formData };
     surveyData.questions = questionData;
     console.log(surveyData);
-
-    call("/survey/1", "POST", surveyData);
-    // await axios
-    //   .post("/survey/1", surveyData)
-    //   .then((response) => {
-    //     console.log(response);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    // call("/survey/1", "POST", surveyData);
   };
 
   const changeQuestionTitle = (id, text) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        question.step === id
-          ? { ...question, surveyQuestion: text, step: index + 1 }
-          : question
+        index === id ? { ...question, surveyQuestion: text } : question
       );
       return result;
     });
@@ -79,9 +81,7 @@ export default function CreateSurveyPage() {
   const changeQuestionContent = (id, text) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        question.step === id
-          ? { ...question, content: text, step: index + 1 }
-          : question
+        index === id ? { ...question, content: text } : question
       );
       return result;
     });
@@ -90,9 +90,7 @@ export default function CreateSurveyPage() {
   const changeOption = (id, type) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        question.step === id
-          ? { ...question, answerType: type, step: index + 1 }
-          : question
+        index === id ? { ...question, answerType: type } : question
       );
       return result;
     });
@@ -101,24 +99,28 @@ export default function CreateSurveyPage() {
   const deleteQuestion = (id) => {
     setQuestions((pre) => {
       const result = pre
-        .filter((question) => question.step !== id)
-        .map((question, index) => ({ ...question, step: index + 1 }));
+        .filter((question, index) => index !== id)
+        .map((question, index) => ({ ...question }));
       return result;
     });
   };
 
   const addQuestion = () => {
     setQuestions((pre) => {
-      const lastId = pre.length > 0 ? pre[pre.length - 1].step : 0;
       return [
         ...pre,
         {
           surveyQuestion: "",
           answerType: "",
           score: 0,
-          step: lastId + 1,
+          step: 0,
           isRequired: false,
-          answers: [],
+          answers: [
+            {
+              step: 0,
+              surveyAnswer: "",
+            },
+          ],
         },
       ];
     });
@@ -127,8 +129,8 @@ export default function CreateSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        question.step === id
-          ? { ...question, isRequired: !question.isRequired, step: index + 1 }
+        index === id
+          ? { ...question, isRequired: !question.isRequired }
           : question
       );
       return result;
@@ -138,7 +140,7 @@ export default function CreateSurveyPage() {
   const handleOption = (id, options) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        question.step === id ? { ...question, answers: options } : question
+        index === id ? { ...question, answers: options } : question
       );
       return result;
     });
@@ -150,6 +152,54 @@ export default function CreateSurveyPage() {
 
   const changeSurveyContent = (text) => {
     setFormData((pre) => ({ ...pre, content: text }));
+  };
+
+  const handleAddOption = (qid) => {
+    setQuestions((prevQuestions) => {
+      return prevQuestions.map((question, index) => {
+        if (index === qid) {
+          const updatedQuestion = {
+            ...question,
+            answers: [...question.answers, { step: 0, surveyAnswer: "" }],
+          };
+          return updatedQuestion;
+        }
+        return question;
+      });
+    });
+  };
+
+  const handleDeleteOption = (qid, aid) => {
+    setQuestions((prevQuestions) => {
+      return prevQuestions.map((question, index) => {
+        if (index === qid) {
+          const updatedAnswers = question.answers.filter(
+            (answer, answerIndex) => answerIndex !== aid
+          );
+          const updatedQuestion = { ...question, answers: updatedAnswers };
+          return updatedQuestion;
+        }
+        return question;
+      });
+    });
+  };
+
+  const handleChangeOptionText = (qid, aid, text) => {
+    setQuestions((prevQuestions) => {
+      return prevQuestions.map((question, index) => {
+        if (index === qid) {
+          const updatedAnswers = question.answers.map((answer, answerIndex) => {
+            if (answerIndex === aid) {
+              return { ...answer, surveyAnswer: text };
+            }
+            return answer;
+          });
+          const updatedQuestion = { ...question, answers: updatedAnswers };
+          return updatedQuestion;
+        }
+        return question;
+      });
+    });
   };
 
   return (
@@ -175,8 +225,8 @@ export default function CreateSurveyPage() {
                 >
                   {questions.map((questionData, index) => (
                     <Draggable
-                      key={questionData.step}
-                      draggableId={`question-${questionData.step}`}
+                      key={index}
+                      draggableId={`question-${index}`}
                       index={index}
                     >
                       {(provided) => (
@@ -186,16 +236,18 @@ export default function CreateSurveyPage() {
                         >
                           <div className={style.question}>
                             <QuestionComp
-                              key={questionData.step}
-                              index={questionData.step}
+                              key={index}
+                              index={index}
                               questionInfo={questionData}
                               changeTitle={changeQuestionTitle}
                               changeContent={changeQuestionContent}
                               changeOption={changeOption}
                               deleteQuestion={deleteQuestion}
                               changeRequired={changeRequired}
-                              handleOption={handleOption}
                               provided={provided}
+                              addAnswer={handleAddOption}
+                              deleteAnswer={handleDeleteOption}
+                              changeAnswerText={handleChangeOptionText}
                             />
                           </div>
                         </div>
@@ -215,10 +267,26 @@ export default function CreateSurveyPage() {
 
           {/* 저장 및 취소 버튼  */}
           <div className={style.wrapButton}>
-            <Button variant="outlined">취소</Button>
-            <Button variant="contained" onClick={(e) => handleSubmitSurvey(e)}>
-              완료
-            </Button>
+            <span style={{ marginRight: "8px" }}>
+              <Button
+                variant="outlined"
+                sx={{ color: "#243579", borderColor: "#243579" }}
+              >
+                취소
+              </Button>
+            </span>
+            <span>
+              <Button
+                sx={{
+                  backgroundColor: "#243579",
+                  height: "36.99px",
+                }}
+                variant="contained"
+                onClick={(e) => handleSubmitSurvey(e)}
+              >
+                완료
+              </Button>
+            </span>
           </div>
         </div>
       </div>

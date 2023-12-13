@@ -12,19 +12,23 @@ import IconButton from "@mui/material/IconButton";
 import * as React from "react";
 import style from "../../../style/survey/QuestionComp.module.css";
 import { MdDragIndicator } from "react-icons/md";
+import ScoreOptionSelect from "./score/ScoreOptionSelect";
+import IconWithText from "../../common/IconWithText";
+import { LuCheckSquare } from "react-icons/lu";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 export default function QuestionComp({
   index,
   questionInfo,
-  handleOption,
   changeTitle,
   changeOption,
-  changeContent,
   deleteQuestion,
   changeRequired,
   provided,
+  addAnswer,
+  deleteAnswer,
+  changeAnswerText,
 }) {
-  const [option, setOption] = useState("");
   const {
     surveyQuestion,
     answerType,
@@ -89,24 +93,28 @@ export default function QuestionComp({
             {answerType ? (
               <>
                 {/* 원하는 조건에 따른 옵션을 렌더링 */}
-                {answerType === "객관식(택1)" && (
+                {answerType === "SINGLE_CHOICE" && (
                   <ChoiceOption
                     single
-                    handleOption={handleOption}
-                    index={index}
+                    qid={index}
                     answers={answers}
+                    addAnswer={addAnswer}
+                    deleteAnswer={deleteAnswer}
+                    changeAnswerText={changeAnswerText}
                   />
                 )}
-                {answerType === "객관식(복수형)" && (
+                {answerType === "MULTIPLE_CHOICE" && (
                   <ChoiceOption
-                    handleOption={handleOption}
-                    index={index}
+                    qid={index}
                     answers={answers}
+                    addAnswer={addAnswer}
+                    deleteAnswer={deleteAnswer}
+                    changeAnswerText={changeAnswerText}
                   />
                 )}
-                {answerType === "주관식" && <TextOption />}
-                {answerType === "날짜" && <DateOption />}
-                {answerType === "파일" && <FileOption />}
+                {answerType === "TEXT" && <TextOption />}
+                {answerType === "CALENDAR" && <DateOption />}
+                {answerType === "FILE" && <FileOption />}
               </>
             ) : (
               <></>
@@ -114,11 +122,15 @@ export default function QuestionComp({
           </div>
         </div>
 
-        {/*푸터*/}
+        {/*필수체크 버튼*/}
 
         <div className={style.footer}>
           <span className={style.requiredButton}>
-            <RequiredButton index={index} changeRequired={changeRequired} />
+            <RequiredButton
+              required={isRequired}
+              index={index}
+              changeRequired={changeRequired}
+            />
           </span>
         </div>
       </div>

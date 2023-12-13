@@ -7,6 +7,7 @@ import "../style/Common.css";
 const Layout = () => {
   const location = useLocation();
 
+
   const isWorkspace = location.pathname === '/workspace';
   const isMyPage = location.pathname === '/mypage' || 
       location.pathname === '/mypageSurveyCommunity' || 
@@ -14,6 +15,7 @@ const Layout = () => {
       location.pathname === '/mypageCommunity' || 
       location.pathname === "/login/oauth2/kakao" || 
       location.pathname.startsWith("/emailValidation/");
+
 
       const isAdmin = location.pathname.startsWith("/admin/")
 
@@ -25,6 +27,7 @@ const Layout = () => {
           {isWorkspace && <div className="custom-container"><Outlet /></div>}
           {isMyPage && <div className="container"><Outlet /></div>}
           {isAdmin && <div className="custom-container"><Outlet /></div>}
+
         </>
       ) : (
         <>

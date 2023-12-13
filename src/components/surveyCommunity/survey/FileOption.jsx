@@ -9,6 +9,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { useState } from "react";
 import axios from "axios";
 import { ConstructionOutlined } from "@mui/icons-material";
+import Loader from "../../../pages/loader/Loader";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -24,6 +25,7 @@ const VisuallyHiddenInput = styled("input")({
 
 export default function FileOption({ setFileAnswer, questionId, fileAnswer }) {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
@@ -36,7 +38,7 @@ export default function FileOption({ setFileAnswer, questionId, fileAnswer }) {
     // url 받아오기
     const data = new FormData();
     data.append("file", file);
-    data.append("surveyId", 7);
+    data.append("surveyId", 11);
     data.append("shareId", 1);
     data.append("shareType", "INTERNAL");
     data.append("questionId", questionId);
@@ -48,11 +50,16 @@ export default function FileOption({ setFileAnswer, questionId, fileAnswer }) {
       },
     };
 
+    setLoading(true);
+
     try {
-      const response = await axios.post("/storage/", data, config);
+      const response = await axios.post("/storage/survey", data, config);
       url = response.data;
+      console.log("url!!!!!!!!!!!!!" + response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
 
     setSelectedFile(file);
@@ -72,9 +79,10 @@ export default function FileOption({ setFileAnswer, questionId, fileAnswer }) {
 
   return (
     <>
+      {loading ? <Loader /> : null}
       {/* 선택된 파일 정보 출력 */}
       {selectedFile ? (
-        <div>
+        <div style={{ paddingTop: "15px" }}>
           <TextField
             disabled
             id="outlined-disabled"
@@ -89,16 +97,18 @@ export default function FileOption({ setFileAnswer, questionId, fileAnswer }) {
         </div>
       ) : (
         <>
-          <Button
-            component="label"
-            variant="outlined"
-            startIcon={<CloudUploadIcon />}
-            onChange={handleFileChange}
-            size="small"
-          >
-            파일 업로드
-            <VisuallyHiddenInput type="file" />
-          </Button>
+          <div style={{ paddingTop: "15px" }}>
+            <Button
+              component="label"
+              variant="outlined"
+              startIcon={<CloudUploadIcon />}
+              onChange={handleFileChange}
+              size="small"
+            >
+              파일 업로드
+              <VisuallyHiddenInput type="file" />
+            </Button>
+          </div>
         </>
       )}
     </>
