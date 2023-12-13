@@ -16,6 +16,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import { login, call } from "../../pages/survey/Login";
+import SurveyForm from "./survey/SurveyForm";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -136,7 +137,6 @@ export default function CommunityPost() {
           (ans) => ans.questionId === question.questionId
         );
 
-        console.log("match!!!!!!!1", match);
         if (
           !match ||
           !match.answer ||
@@ -175,7 +175,7 @@ export default function CommunityPost() {
         </div>
         <div className={style.content}>
           {/* 설문지 영역  */}
-          <div className={style.surveyWrap}>
+          {/* <div className={style.surveyWrap}>
             <p className={style.requiredText}>* 표시는 필수 질문입니다</p>
             {survey.questions &&
               survey.questions.map((question, index) => (
@@ -186,7 +186,13 @@ export default function CommunityPost() {
                   pass={pass[index]}
                 />
               ))}
-          </div>
+          </div> */}
+
+          <SurveyForm
+            survey={survey}
+            handleSetAnswer={handleSetAnswer}
+            pass={pass}
+          />
 
           <div className={style.surveyBtnWrap}>
             <Button

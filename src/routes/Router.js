@@ -57,6 +57,7 @@ const MypageCommunity = lazy(() =>
   import("../components/user/MypageCommunity")
 );
 const MypagePassword = lazy(() => import("../components/user/MypagePassword"));
+const MypagePlan = lazy(() => import("../components/user/MypagePlan"));
 const AdminUserList = lazy(() => import("../pages/admin/AdminUserListPage"));
 const AdminUserInfo = lazy(() => import("../pages/admin/AdminUserInfoPage"));
 const AdminSurveyList = lazy(() =>
@@ -142,6 +143,7 @@ const ThemeRoutes = [
       },
       { path: "/mypageCommunity", exact: true, element: <MypageCommunity /> },
       { path: "/mypagePassword", exact: true, element: <MypagePassword /> },
+      { path: "/mypagePlan", exact: true, element: <MypagePlan /> },
       { path: "/admin/userList", exact: true, element: <AdminUserList /> },
       { path: "/admin/userInfo", exact: true, element: <AdminUserInfo /> },
       { path: "/admin/surveyList", exact: true, element: <AdminSurveyList /> },
