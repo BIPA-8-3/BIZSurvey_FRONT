@@ -16,9 +16,8 @@
     display: flex;
     align-items: center;
 }
-
-.mypageUserInfo li span:not(:first-child){
-    padding-left: 15px;
+.MypageSurveyTitle{
+    font-weight: 400;
 }
 
 .mypageUserInfo li:first-child{
@@ -28,8 +27,8 @@
     color: #fff;
     font-weight: 900 !important;
     font-size: 16px;
-    padding: 15px 17px;
-    padding-top: 17px;
+    padding: 0px 17px;
+    padding-top: 0px;
 }
 
 .mypageUserInfo li:last-child{
@@ -60,3 +59,28 @@
 .mypageUserInfo li div span input:focus {
     outline: none;
   }
+.MypageSurveyLi{
+    display: flex;
+    justify-content: space-between;
+}
+  .MypageSurveyDate{
+    color: #adadad;
+  }
+
+.MypageSurveyLi:not(:first-child){
+    cursor: pointer;
+}
+
+.MypageSurveyLi:first-child{
+    height: 59.77px;
+}
+
+.back{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:-80px;
+    left: 0px;
+    z-index: -1;
+    opacity: 0.5;
+}

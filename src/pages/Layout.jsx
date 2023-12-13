@@ -10,13 +10,19 @@ const Layout = () => {
   const isWorkspace = location.pathname === "/workspace";
   const isMyPage =
     location.pathname === "/mypage" ||
+    location.pathname === "/mypageSurveyCommunity" ||
+    location.pathname === "/mypagePassword" ||
+    location.pathname === "/mypagePlan" ||
+    location.pathname === "/mypageCommunity" ||
     location.pathname === "/login/oauth2/kakao" ||
     location.pathname.startsWith("/emailValidation/");
   const isAuthorization = location.pathname.startsWith("/authorization/");
 
+  const isAdmin = location.pathname.startsWith("/admin/");
+
   return (
     <div>
-      {isWorkspace || isMyPage || isAuthorization ? (
+      {isWorkspace || isMyPage || isAuthorization || isAdmin ? (
         <>
           {isWorkspace && <WorkspaceHeader />}
           {isWorkspace && (
@@ -31,6 +37,11 @@ const Layout = () => {
           )}
           {isAuthorization && (
             <div>
+              <Outlet />
+            </div>
+          )}
+          {isAdmin && (
+            <div className="custom-container">
               <Outlet />
             </div>
           )}

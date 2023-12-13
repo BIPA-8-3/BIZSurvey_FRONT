@@ -47,7 +47,26 @@ const AdditionalJoin = lazy(() => import('../components/user/AdditionalJoin'))
 const CommunitySearchResult = lazy(() => import('../components/common/SearchResultTable'))
 const SCommunitySearchResult = lazy(() => import('../components/common/SCommunitySearchResult'))
 
-
+const MypageSurveyCommunity = lazy(() =>
+  import("../components/user/MypageSurveyCommunity")
+);
+const MypageCommunity = lazy(() =>
+  import("../components/user/MypageCommunity")
+);
+const MypagePassword = lazy(() => import("../components/user/MypagePassword"));
+const MypagePlan = lazy(() => import("../components/user/MypagePlan"));
+const AdminUserList = lazy(() => import("../pages/admin/AdminUserListPage"));
+const AdminUserInfo = lazy(() => import("../pages/admin/AdminUserInfoPage"));
+const AdminSurveyList = lazy(() =>
+  import("../pages/admin/AdminSurveyListPage")
+);
+const AdminCommunityListPage = lazy(() =>
+  import("../pages/admin/AdminCommunityListPage")
+);
+const AdminMainPage = lazy(() => import("../pages/admin/AdminMainPage"));
+const AdminClaimListPage = lazy(() =>
+  import("../pages/admin/AdminClaimListPage")
+);
 
 const Main = lazy(() => import("../pages/workspace/Main"));
 const Authorization = lazy(() => import("../pages/workspace/Authorization"));
@@ -97,14 +116,52 @@ const ThemeRoutes = [
       },
       { path: "/workspace", exact: true, element: <Main /> },
 
-      { path: "/login/oauth2/kakao", exact: true, element: <OAuth2RedirectHandler /> },
-      { path: "/emailValidation/:key", exact: true, element: <EmailValidation /> },
+      {
+        path: "/login/oauth2/kakao",
+        exact: true,
+        element: <OAuth2RedirectHandler />,
+      },
+      {
+        path: "/emailValidation/:key",
+        exact: true,
+        element: <EmailValidation />,
+      },
       { path: "/changePassword", exact: true, element: <ChangPassword /> },
       { path: "/additionalJoin", exact: true, element: <AdditionalJoin /> },
-      { path: "/communitySearchResult", exact: true, element: <CommunitySearchResult /> },
-      { path: "/surveyCommunitySearchResult", exact: true, element: <SCommunitySearchResult /> },
-
+      {
+        path: "/mypageSurveyCommunity",
+        exact: true,
+        element: <MypageSurveyCommunity />,
+      },
+      { path: "/mypageCommunity", exact: true, element: <MypageCommunity /> },
+      { path: "/mypagePassword", exact: true, element: <MypagePassword /> },
+      { path: "/mypagePlan", exact: true, element: <MypagePlan /> },
+      { path: "/admin/userList", exact: true, element: <AdminUserList /> },
+      { path: "/admin/userInfo", exact: true, element: <AdminUserInfo /> },
+      { path: "/admin/surveyList", exact: true, element: <AdminSurveyList /> },
+      {
+        path: "/admin/communityList",
+        exact: true,
+        element: <AdminCommunityListPage />,
+      },
+      { path: "/admin/main", exact: true, element: <AdminMainPage /> },
+      {
+        path: "/admin/claimList",
+        exact: true,
+        element: <AdminClaimListPage />,
+      },
+      {
+        path: "/communitySearchResult",
+        exact: true,
+        element: <CommunitySearchResult />,
+      },
       { path: "/authorization/:type/:token", exact: true, element: <Authorization /> },
+
+      {
+        path: "/surveyCommunitySearchResult",
+        exact: true,
+        element: <SCommunitySearchResult />,
+      },
     ],
   },
 ];

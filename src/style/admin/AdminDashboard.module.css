@@ -1,0 +1,200 @@
+.userListWrap{
+    width: 100%;
+}
+
+.titleWrap{
+    width: 120px;
+    background-color: #0476D9;
+    height: 45px;
+    margin-bottom: 0px;
+    border-radius: 10px 10px 0px 0px;
+    color: #fff;
+    text-align: center;
+    line-height: 45px;
+    font-size: 14px;
+}
+
+.adminTable{
+    width: 1000px;
+    margin-top: 10px;
+}
+
+.adminTable thead{
+    background-color: #0476D9;
+    text-align: center;
+    color: #fff;
+}
+.adminTable thead tr td {
+    padding: 6px 0px;
+    font-weight: bold;
+    font-size: 14px;
+    border: 1px solid #fff;
+}
+.adminTable tbody tr{
+    cursor: pointer;
+}
+.adminTable tbody tr td{
+    background-color: #ddd;
+    border: 1px solid #fff;
+    padding: 2px 2px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.adminSearchWrap{
+    width: 980px;
+    padding: 15px 0px 10px 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.adminSearchWrap input{
+    width: 200px;
+    border: 1px solid lightgrey;
+    height: 20px;
+
+}
+
+.adminSearchWrap button{
+    margin-left: 10px;
+}
+
+.adminSearchWrap{
+    background: #eaf6ff !important; 
+    border: 1px solid #81c0f0;
+}
+
+.dashboardUserCountWrap{
+    width: 100%;
+    height: 143px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-top: 5px solid #243579;
+    text-align: center;
+}
+.dashboardUserCountWrap p{
+    padding-top: 42px;
+    font-weight: 600;
+}
+
+.dashboardUserCountWrap h2{
+    padding-top: 15px;
+    font-size: 30px;
+    font-weight: bolder;
+}
+
+
+
+.dashboardWrap{
+    height: 297px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    padding-top: 15px;
+    padding-left: 15px;
+}
+
+.dashboardWrap h2{
+    font-weight: 900;
+    font-size: 17px;
+    color: #464646;
+    padding-top: 4px;
+}
+
+.adminClaimTable tr td span{
+    display: inline-block;
+    width: 50px;
+    height: 21px;
+    font-size: 12px;
+    text-align: center;
+    line-height: 21px;
+    border-radius: 10px;
+    font-weight: bold;
+    color: #ddd;
+}
+
+.claimSpanSuccess{
+    background-color: #ddd;
+    color: #464646 !important;
+    
+}
+
+.claimSpanNone{
+    background-color: #243579;
+}
+
+.adminClaimTable{
+    width: 95%;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.adminClaimTable tr td{
+    vertical-align: middle;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: 14px;
+    color: #464646;
+}
+
+.adminClaimTable tr{
+    border-bottom: 1px solid #ddd;
+}
+
+.adminClaimTable tr:last-child{
+    border: 0px;
+}
+
+/*  */
+
+
+.adminBoarderTable tr td span{
+    display: inline-block;
+    width: 50px;
+    height: 21px;
+    font-size: 12px;
+    text-align: center;
+    line-height: 21px;
+    border-radius: 10px;
+    font-weight: bold;
+    color: #ddd;
+}
+
+.claimSpanSuccess{
+    background-color: #ddd;
+    color: #464646 !important;
+    
+}
+
+.claimSpanNone{
+    background-color: #243579;
+}
+
+.adminBoarderTable{
+    width: 95%;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.adminBoarderTable tr td{
+    vertical-align: middle;
+    padding-bottom: 13px;
+    padding-top: 14px;
+    font-size: 14px;
+    color: #464646;
+    text-align: center;
+}
+
+.adminBoarderTable tr td:first-child{
+    width: 30px;
+}
+
+.adminBoarderTable tr{
+    border-bottom: 1px solid #ddd;
+}
+
+.adminBoarderTable tr:last-child{
+    border: 0px;
+}
+
+
+
