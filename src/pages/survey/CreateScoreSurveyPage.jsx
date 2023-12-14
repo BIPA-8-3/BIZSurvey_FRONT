@@ -11,7 +11,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect } from "react";
 import { login, call } from "./Login";
 
-export default function CreateScoreSurveyPage() {
+export default function CreateScoreSurveyPage({ selectedWorkspaceId, setSectionNum }) {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -68,7 +68,7 @@ export default function CreateScoreSurveyPage() {
 
     console.log(surveyData);
 
-    call("/survey/1", "POST", surveyData);
+    call("/survey/" + selectedWorkspaceId, "POST", surveyData);
   };
 
   const changeQuestionTitle = (id, text) => {
@@ -132,9 +132,7 @@ export default function CreateScoreSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id
-          ? { ...question, isRequired: !question.isRequired }
-          : question
+        index === id ? { ...question, isRequired: !question.isRequired } : question
       );
       return result;
     });
@@ -163,10 +161,7 @@ export default function CreateScoreSurveyPage() {
         if (index === qid) {
           const updatedQuestion = {
             ...question,
-            answers: [
-              ...question.answers,
-              { step: 0, surveyAnswer: "", correct: "NO" },
-            ],
+            answers: [...question.answers, { step: 0, surveyAnswer: "", correct: "NO" }],
           };
           return updatedQuestion;
         }
@@ -264,16 +259,9 @@ export default function CreateScoreSurveyPage() {
                   className={style.questionList}
                 >
                   {questions.map((questionData, index) => (
-                    <Draggable
-                      key={index}
-                      draggableId={`question-${index}`}
-                      index={index}
-                    >
+                    <Draggable key={index} draggableId={`question-${index}`} index={index}>
                       {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                        >
+                        <div ref={provided.innerRef} {...provided.draggableProps}>
                           <div className={style.question}>
                             <ScoreQuestion
                               key={index}
@@ -313,6 +301,9 @@ export default function CreateScoreSurveyPage() {
               <Button
                 variant="outlined"
                 sx={{ color: "#243579", borderColor: "#243579" }}
+                onClick={(e) => {
+                  setSectionNum(0);
+                }}
               >
                 취소
               </Button>
