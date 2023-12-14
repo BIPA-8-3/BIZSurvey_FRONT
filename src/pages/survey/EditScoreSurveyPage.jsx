@@ -159,7 +159,7 @@ export default function EditScoreSurveyPage() {
         ...pre,
         {
           questionId: 0,
-          surveyQuestion: "",
+          surveyQuestion: "질문",
           answerType: "",
           score: 0,
           step: 0,
@@ -167,7 +167,7 @@ export default function EditScoreSurveyPage() {
           answers: [
             {
               step: 0,
-              surveyAnswer: "",
+              surveyAnswer: "옵션 1",
               correct: "오답",
             },
           ],
@@ -187,14 +187,14 @@ export default function EditScoreSurveyPage() {
     });
   };
 
-  const handleOption = (id, options) => {
-    setQuestions((pre) => {
-      const result = pre.map((question, index) =>
-        index === id ? { ...question, answers: options } : question
-      );
-      return result;
-    });
-  };
+  // const handleOption = (id, options) => {
+  //   setQuestions((pre) => {
+  //     const result = pre.map((question, index) =>
+  //       index === id ? { ...question, answers: options } : question
+  //     );
+  //     return result;
+  //   });
+  // };
 
   const changeSurveyTitle = (text) => {
     setFormData((pre) => ({ ...pre, title: text }));
@@ -212,7 +212,11 @@ export default function EditScoreSurveyPage() {
             ...question,
             answers: [
               ...question.answers,
-              { step: 0, surveyAnswer: "", correct: "오답" },
+              {
+                step: 0,
+                surveyAnswer: "옵션 " + String(question.answers.length + 1),
+                correct: "오답",
+              },
             ],
           };
           return updatedQuestion;
