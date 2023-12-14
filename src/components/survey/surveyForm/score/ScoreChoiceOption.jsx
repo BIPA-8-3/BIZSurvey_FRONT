@@ -17,6 +17,7 @@ export default function ScoreChoiceOption({
   qid,
   answers,
   changeCorrect,
+  checkDuplication,
 }) {
   const addOption = () => {
     addAnswer(qid);
@@ -47,6 +48,8 @@ export default function ScoreChoiceOption({
             text={surveyAnswer}
             changeOptionCorrect={changeOptionCorrect}
             correct={correct}
+            qid={qid}
+            checkDuplication={checkDuplication}
           ></Option>
         ))}
       </div>
@@ -73,7 +76,21 @@ function Option({
   text,
   changeOptionCorrect,
   correct,
+  qid,
+  checkDuplication,
 }) {
+  // const [isPass, setPass] = useState(true);
+
+  const handleBlur = (text) => {
+    if (text.trim() === "") {
+      changeText(index, "옵션 " + (index + 1));
+    } else {
+      // const res = checkDuplication(qid, text);
+      // console.log("rrrrrrrr", res);
+      // setPass(res);
+    }
+  };
+
   return (
     <>
       <div style={{ margin: "0 auto", width: "600px" }}>
@@ -108,7 +125,11 @@ function Option({
             variant="standard"
             placeholder={"옵션을 입력하세요"}
             inputProps={{ style: { fontSize: 15 } }}
-            sx={{ width: 550 }}
+            sx={{
+              width: 550,
+              // borderBottom: isPass === false ? "1px solid red" : "",
+            }}
+            onBlur={(e) => handleBlur(e.target.value)}
           />
           <IconButton aria-label="fingerprint" onClick={() => onDelete(index)}>
             <IoCloseOutline />
