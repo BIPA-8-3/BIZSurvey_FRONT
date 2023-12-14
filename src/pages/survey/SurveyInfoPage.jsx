@@ -37,7 +37,7 @@ export default function SurveyInfoPage() {
   };
 
   useEffect(() => {
-    handleGetSurvey(11);
+    handleGetSurvey(14);
   }, []);
 
   useEffect(() => {

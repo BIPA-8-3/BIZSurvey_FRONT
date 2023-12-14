@@ -7,6 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import back from '../../assets/img/back.png';
 import useFadeIn from '../../style/useFadeIn';
 import { useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 import Axios from 'axios';
 
 import { useForm } from 'react-hook-form';
@@ -24,6 +25,7 @@ function Join({ onSubmit = async (data) => {
     getValues,
   } = useForm();
 
+  
   const password = watch('password', '');
   const passwordConfirm = watch('passwordConfirm', '');
 
@@ -75,24 +77,28 @@ function Join({ onSubmit = async (data) => {
       clearInterval(timer);
     };
   }, [isCounting, isInputDisabled]);
-
+  const [loading, setLoading] = useState(false);
   const handleVerificationCodeSend = async () => {
     const emailValue = getValues('email');
     try {
-      // 전송 성공 시 카운트다운 시작
-      setCountdown(180); // 초기화
-      setIsCounting(true);
-      setIsInputDisabled(true); // 인증번호 전송 후 입력 필드 비활성화
-      setIsButtonDisabled(false); 
+      setLoading(true);
 
       const response = await Axios.post('/signup/send-email', {
         email: emailValue,
+      }).then((data) => {
+        // 전송 성공 시 카운트다운 시작
+        setCountdown(180); // 초기화
+        setIsCounting(true);
+        setIsInputDisabled(true); // 인증번호 전송 후 입력 필드 비활성화
+        setIsButtonDisabled(false); 
+        setLoading(false);
       });
       
     } catch (error) {
       if (error.response.data.errorCode === 600) {
         alert(error.response.data.errorMessage);
-        setIsInputDisabled(false); // 전송 실패 시 다시 입력 필드 활성화
+        setIsCounting(false)
+        setIsInputDisabled(true); // 전송 실패 시 다시 입력 필드 활성화
       }
     }
   };
@@ -188,6 +194,11 @@ function Join({ onSubmit = async (data) => {
 
   return (
     <div id={style.joinWrap} className={`fade-in ${fadeIn ? 'active' : ''}`}>
+      {loading && (
+        <div className="customLoadingWrap">
+          <CircularProgress size="100px" />
+        </div>
+      )}
      <form onSubmit={handleSubmitFunction}>
         <div className={style.titleWrap}>
           <h1 className='textCenter title textBold'>회원가입</h1>

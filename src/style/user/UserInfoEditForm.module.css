@@ -1,0 +1,207 @@
+#joinWrap{
+    padding: 50px 50px 50px 50px;
+}
+
+
+label{
+    font-size: 10pt !important;
+    margin-bottom: 5px;
+    color: gray;
+}
+
+.inputDiv{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.input{
+    box-sizing: border-box;
+    width: 100%;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 4px;
+    border-color: #ddd;
+    padding: 11.5px 5px !important;
+    color: #6a6a6a;
+}
+.inputWrap{
+    width: 100%;
+    height: 44.16px;
+    position: relative;
+    margin-bottom: 16px;
+    
+}
+
+.inputBtn{
+    width: 100px;
+    height: 41px;
+    line-height: 42px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    background-color: #243579;
+    z-index: 9998;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    border-radius: 0px 5px 5px 0px;
+    cursor: pointer;
+}
+
+.searchPw{
+    margin-top: 3px;
+}
+
+.searchPw a{
+    font-size: 10pt;
+    color: #154DCA;
+    cursor: pointer;
+}
+
+.searchPw a:hover{
+    font-weight: bold;
+}
+
+.MuiButtonBase-root, .MuiButton-root{
+    padding: 11.5px 14px !important
+}
+
+.back{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:-80px;
+    left: 0px;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+.joinError{
+    margin-left: 10px;
+    color: red;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+.labelSpan{
+    padding-left: 3px;
+}
+
+.infoLabel{
+    font-size: 12px !important;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.mypageUserInfoWrap{
+    padding: 100px 50px 50px 50px;
+}
+
+.mypageUserInfo{
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    
+    
+}
+.mypageUserInfo li{
+    padding: 17px;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+}
+
+
+.mypageUserInfo li:first-child{
+    background-color: blue;
+    background: rgb(17,159,179);
+    background: linear-gradient(90deg, rgba(17,159,179,1) 0%, rgba(1,113,209,1) 100%);
+    color: #fff;
+    font-weight: 900 !important;
+    font-size: 16px;
+    padding: 15px 17px;
+    padding-top: 17px;
+}
+
+.mypageUserInfo li:last-child{
+    border-bottom: 0px;
+}
+
+
+
+.mypageUserInfo li div button{
+    background-color: rgba(212,216,229);
+    border-radius: 3px;
+    border: solid 1px rgb(212,216,229);
+    color: gray;
+    padding: 5px 8px;
+    cursor: pointer;
+}
+
+.mypageUserInfo li div button:hover{
+    background-color: rgba(212,216,229,0.9);
+}
+.mypageUserInfo li div span input{
+    border: 0px;
+    border-bottom: 1px solid #ddd;
+}
+.mypageUserInfo li div span input:focus {
+    outline: none;
+  }
+
+
+/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px)*/ 
+@media all and (min-width:1024px) and (max-width:1279px) { 
+} 
+  
+/* 테블릿 가로 (해상도 768px ~ 1023px)*/ 
+@media all and (min-width:801px) and (max-width:1023px) { 
+   
+} 
+
+/* 모바일 세로 (해상도 ~ 479px)*/ 
+@media all and (max-width:479px) {
+    .title{
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+    #joinWrap{
+        width: 90%;
+        margin: 0 auto;
+    }
+    .input{
+        width: 90%;
+        border-style: solid;
+        border-width: 1px;
+        height: 1.4375em;
+        border-radius: 4px;
+        border-color: rgba(0, 0, 0, 0.23);
+        padding: 11.5px 5px !important
+    }
+    .inputDiv{
+        width: 90%;
+    }
+    .kakaoLogin{
+        width: 100%;
+        height: auto;
+    }
+    .input100{
+        width: 110%;
+    }
+    .inputBtn{
+        width: 80px;
+        height: 100%;
+        line-height: 45px;
+        font-size: 10px;
+        color: #fff;
+        text-align: center;
+        background-color: #243579;
+        z-index: 9998;
+        position: absolute;
+        top: 0px;
+        right: -12px;
+        border-radius: 0px 5px 5px 0px;
+        cursor: pointer;
+    }
+}

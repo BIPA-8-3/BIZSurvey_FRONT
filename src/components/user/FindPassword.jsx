@@ -7,8 +7,10 @@ import useFadeIn from '../../style/useFadeIn';
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import useApiCall from '../api/ApiCall'; 
 
 function FindPassword() {
+  const { call } = useApiCall();
   const fadeIn = useFadeIn();
   const [isEmail, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,18 +24,15 @@ function FindPassword() {
     setLoading(true)
 
     try{
-      const response = await axios.post('/check-email', {
-        email: isEmail,
-      });
-
-      if (response.status === 200) {
-        alert("입력하신 이메일로 비밀번호 재전송 링크를 전송했습니다.")
-      }
+      const request = {email: isEmail}
+      const response = await call("/check-email", "POST", request);
 
     }catch(error){
-      alert(error.response.data.errorMessage)
-    }finally{
+      console.error("error:", error);
+    }
+    finally{
       setLoading(false)
+      alert("입력하신 이메일로 비밀번호 재전송 링크를 전송했습니다.");
     }
   }
 

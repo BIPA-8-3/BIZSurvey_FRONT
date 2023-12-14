@@ -53,13 +53,6 @@ export default function CommunityPost() {
   console.log(postId);
 
 
-
-
-
-
-
-
-
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.contentWrap}>

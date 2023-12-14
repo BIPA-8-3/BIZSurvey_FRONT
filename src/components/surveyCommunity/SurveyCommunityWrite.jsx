@@ -12,8 +12,12 @@ import SurveyListModal from './SurveyListModal';
 import axios from "axios";
 import call from './checkLogin.js';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { Paper } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { Divider, TextField, Input } from '@mui/material';
+import logo from "../../assets/img/설문 기본 사진.png";
+
+
+
 
 // import CreateVote from './CreateVote';
 // import RegisterVote from './RegisterVote'
@@ -22,22 +26,43 @@ export default function CommunityWrite() {
 
   const [data, setData] = useState([]);
   const [selectedSurvey, setSurvey] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState('');
   const fileInputRef = useRef();
 
   const handleUpload = () => {
     fileInputRef.current.click();
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const file = event.target.files[0];
     // 파일 선택 후의 로직을 처리합니다.
     console.log('Selected File:', file); // 넘겨받은 이미지
-    
+
+
+    const formData = new FormData();
+      formData.append('file', file); // formData는 키-밸류 구조
+      formData.append('domain', 'SURVEY_THUMB');
+      // 백엔드 multer라우터에 이미지를 보낸다.
+      try {
+          const result = await axios.post('http://localhost:8080/storage/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+        });
+        console.log('성공 시, 백엔드가 보내주는 데이터', result.data);
+        const HEAD_IMG_URL ="https://"; 
+        const IMG_URL = HEAD_IMG_URL + result.data;
+        
+        setSelectedFile(IMG_URL);
+        }catch (error) {
+          console.log('실패했어요ㅠ');
+        }
+      
   };
 
 
-  alert( "다시 다시 넘겨받은 데이터(선택된 설문지) : "+ JSON.stringify(selectedSurvey))
+
+  
 
   useEffect(() => {
     // 데이터를 가져오는 비동기 함수
@@ -46,7 +71,6 @@ export default function CommunityWrite() {
         call('/s-community/survey/list', 'GET').then((response) => {
           setData(response);
         });
-        alert(JSON.stringify(data))
       } catch (error) {
         console.error('데이터 가져오기 실패:', error);
       }
@@ -65,6 +89,7 @@ export default function CommunityWrite() {
           <p>비즈서베이의 설문 기능을 이용해보세요!</p>
           <p>워크스페이스에서 생성한 설문지를 추가해 설문지를 공유할 수 있습니다.</p>
           <SurveyListModal props={{list: data, setSurvey: setSurvey, title: setName}}/>
+
           </>
         );
 
@@ -74,12 +99,45 @@ export default function CommunityWrite() {
 
 
       return (<>
-                
-                  <Box sx={{width: 'auto' , maxWidth: '100%', }}>
-                      <TextField fullWidth id="fullWidth" InputProps={{ readOnly: true}} value={selectedSurvey.title}  />
-                  </Box>
                   <SurveyListModal props={{list: data, setSurvey: setSurvey, title: setName}}/>
              </>
+      );
+    }
+  }
+
+  function returnImgUrl(){
+    return selectedFile || logo;
+  }
+
+  function renderBox(){
+    if(selectedSurvey !== null){
+      return(<>
+        <Box
+      sx={{
+        display: 'flex',
+        border: '1px solid lightblue', // 항상 테두리를 표시
+        borderRadius: '8px', // 테두리를 둥글게 만들기
+        overflow: 'hidden', // 테두리를 넘어가는 내용 숨김
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', // 투영(튀어나온 효과) 추가
+        margin: 'auto',
+        width: '700px'
+      }}
+    >
+      {/* 좌측 이미지 */}
+      <Box component="img" src={returnImgUrl()} sx={{ width: '200px', height: 'auto' }} />
+
+      {/* 나머지 내용 */}
+      <Box sx={{ p: 2 }}>
+        <Typography variant="h5" gutterBottom>
+          {selectedSurvey.title}
+        </Typography>
+        <Typography variant="body1">
+          워크스페이스 : {selectedSurvey.workspaceName} <Divider />
+          작성자 닉네임 : {selectedSurvey.nickname}
+        </Typography>
+      </Box>
+    </Box>
+        </>
       );
     }
   }
@@ -140,10 +198,10 @@ export default function CommunityWrite() {
         });
       
         
-        console.log('성공 시, 백엔드가 보내주는 데이터', result.data.url);
+        console.log('성공 시, 백엔드가 보내주는 데이터', result.data);
         const HEAD_IMG_URL ="https://"; 
         const IMG_URL = HEAD_IMG_URL + result.data;
-        alert(JSON.stringify(IMG_URL))
+        
         // 이 URL을 img 태그의 src에 넣은 요소를 현재 에디터의 커서에 넣어주면 에디터 내에서 이미지가 나타난다
         // src가 base64가 아닌 짧은 URL이기 때문에 데이터베이스에 에디터의 전체 글 내용을 저장할 수있게된다
         // 이미지는 꼭 로컬 백엔드 uploads 폴더가 아닌 다른 곳에 저장해 URL로 사용하면된다.
@@ -185,6 +243,52 @@ export default function CommunityWrite() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [maxParticipants, setMaxParticipants] = useState('');
+
+  const handleSaveClick = () => {
+      const data = {
+        title : title,
+        content : content,
+        startDateTime : selectedStartDate + "T00:00:00",
+        endDateTime : selectedEndDate + "T00:00:00",
+        maxMember : maxParticipants,
+        surveyId : selectedSurvey.surveyId,
+        thumbImageUrl : selectedFile
+      }
+
+      call("/s-community/createPost", 'POST', data)
+      .then(data => {
+        alert("넘어온 데이터 :"+data)
+      }).catch(error => {
+        console.error(error);
+      });
+  }
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
+
+  const handleMaxParticipantsChange = (event) => {
+    setMaxParticipants(event.target.value);
+  };
+
+  // 시작일 관리 
+  const handleDateChange = (event) => {
+    setSelectedStartDate(event.target.value);
+    console.log("시작일 : "+JSON.stringify(event.target.value));
+  };
+
+  // 종료일 관리 
+  const handleEndDateChange = (event) => {
+    setSelectedEndDate(event.target.value);
+    console.log("종료일 : "+JSON.stringify(event.target.value));
+  };
+
+  
+
+
 
   return (
     <div className={`fade-in ${fadeIn ? 'active' : ''}`}>
@@ -194,7 +298,7 @@ export default function CommunityWrite() {
       </div>
       <div className={style.writeWrap}>
         <div style={{ textAlign: 'center' }}>
-          <input type='text' className={style.title} placeholder='제목을 입력해주세요.' />
+          <input type='text' className={style.title} placeholder='제목을 입력해주세요.' onChange={handleTitleChange} />
         </div>
         <div className={style.editorWrap}>
           <div style={{ width: '1000px', margin: '0 auto', marginBottom:'100px' }}>
@@ -209,14 +313,46 @@ export default function CommunityWrite() {
             />
           </div>
         </div>
+          {renderBox()}
+
         <div className={style.voteWrap}>
           {renderModal()}
 
           <br />
           <br />
+          설문을 응시할 수 있는 최대 인원을 입력해주세요!
+          <br />
+          <br />
+          <Input
+              value={maxParticipants}
+              onChange={handleMaxParticipantsChange}
+              type="number"
+              inputProps={{ style: { textAlign: 'center' } }} // 입력창 가운데 정렬
+          />(명)
+
+          <br />
+          <br />
           {renderImgForm()}
+          <br/>
+          <br/>
+          설문이 시작될 날짜를 입력해주세요!
+          <br/>
+          <br/>
+          <Input
+        type='date'
+        value={selectedStartDate || ''}
+        onChange={handleDateChange}
+        inputProps={{ min: new Date().toISOString().split('T')[0] }} />
+          <br/>
+          <br/>
+
+          설문이 종료될 날짜를 입력해주세요!
+          <br/>
+          <br/>
+          <Input type='date' value={selectedEndDate || ''} onChange={handleEndDateChange} inputProps={{ min: new Date().toISOString().split('T')[0] }}/>
         </div>
       </div>
+      
       
       <div style={{textAlign:'center', width:'1000px',margin:'0 auto', paddingTop:'80px'}}>
         <Link to={'/community'}>
@@ -235,8 +371,8 @@ export default function CommunityWrite() {
                 취소
             </Button>
         </Link>
-        <Link to={'/communityWrite'}>
-            <Button variant="contained" href="#contained-buttons" 
+        
+            <Button variant="contained" href="#contained-buttons" onClick={handleSaveClick}
             sx={[{
               padding:'11px 30px', 
               backgroundColor:'#243579', 
@@ -250,7 +386,7 @@ export default function CommunityWrite() {
               }}]}>
                 저장
             </Button>
-        </Link>
+        
       </div>
       
       <img src={back} alt="배경" className={style.back} />

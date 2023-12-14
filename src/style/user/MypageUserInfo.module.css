@@ -1,5 +1,5 @@
 .mypageUserInfoWrap{
-    padding: 100px 50px 50px 50px;
+    padding: 50px 50px 50px 50px;
 }
 
 .mypageUserInfo{
@@ -16,7 +16,8 @@
     display: flex;
     align-items: center;
 }
-.mypageUserInfo li span{
+
+.mypageUserInfo li span:not(:first-child){
     padding-left: 15px;
 }
 
@@ -27,7 +28,8 @@
     color: #fff;
     font-weight: 900 !important;
     font-size: 16px;
-    padding-top: 20px;
+    padding: 15px 17px;
+    padding-top: 17px;
 }
 
 .mypageUserInfo li:last-child{
@@ -40,9 +42,21 @@
 }
 
 .mypageUserInfo li div button{
-    background-color: rgba(212,216,229,.7);
+    background-color: rgba(212,216,229);
     border-radius: 3px;
     border: solid 1px rgb(212,216,229);
     color: gray;
-    padding: 3px 6px;
+    padding: 5px 8px;
+    cursor: pointer;
 }
+
+.mypageUserInfo li div button:hover{
+    background-color: rgba(212,216,229,0.9);
+}
+.mypageUserInfo li div span input{
+    border: 0px;
+    border-bottom: 1px solid #ddd;
+}
+.mypageUserInfo li div span input:focus {
+    outline: none;
+  }
