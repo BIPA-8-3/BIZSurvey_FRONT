@@ -22,10 +22,22 @@ function AdminUserList() {
     const [userList, setUserList] = useState([]);
     const [total, setTotal] = useState(0);
 
+    // const [formData, setFromData] = useState({
+    //   type: "",
+    //   password: "",
+    // });
+
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      // setFromData({
+      //   ...formData,
+      //   [name]: value,
+      // });
+    };
+
     useEffect(() => {
       call("/admin/users", "GET")
       .then((data) => {
-        console.log(data.content)
         setUserList(data.content);
         setTotal(data.totalPages)
       }).catch((error) => {
@@ -33,6 +45,21 @@ function AdminUserList() {
       })
   
     },[]);
+
+    useEffect(() => {
+      call("/admin/users", "GET")
+      .then((data) => {
+        setUserList(data.content);
+        setTotal(data.totalPages)
+      }).catch((error) => {
+        console.log(error)
+      })
+  
+    },[]);
+
+    const test = ()=>{
+      // alert(formdata)
+    };
 
     const handlePage = (event) => {
       const nowPageInt = parseInt(event.target.outerText)
@@ -72,10 +99,17 @@ function AdminUserList() {
           <p style={{marginLeft:'5px'}}>회원목록조회</p>
         </p>
       </div>
-      <div className={style.adminSearchWrap}>
-        <input type='text'/>
-        <button>검색</button>
-      </div>
+      {/* <div className={style.adminSearchWrap}>
+        <select onChange={handleInputChange}
+        name='type'
+        style={{height:"24px", border:'1px solid lightgrey', marginRight:'3px'}}>
+          <option value='email'>email</option>
+          <option value='nickname'>nickname</option>
+          <option value='name'>name</option>
+        </select>
+        <input type='text' name='valueText' onChange={handleInputChange} />
+        <button onClick={test}>검색</button>
+      </div> */}
       <table className={style.adminTable}>
         <thead>
             <tr>

@@ -75,4 +75,14 @@
     width: 1000px;
 }
 
+.claimInfoBtnWrap{
+    text-align:right;
+    width:1032px;
+    margin-top:20px;
+}
+
+.claimInfoBtnWrap button{
+    margin-left: 10px;
+}
+
 
