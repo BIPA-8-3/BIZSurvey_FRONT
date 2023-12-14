@@ -17,12 +17,12 @@ const Layout = () => {
     location.pathname === "/login/oauth2/kakao" ||
     location.pathname.startsWith("/emailValidation/");
   const isAuthorization = location.pathname.startsWith("/authorization/");
-
+  const isExternal = location.pathname.startsWith("/survey/participate/external");
   const isAdmin = location.pathname.startsWith("/admin/");
 
   return (
     <div>
-      {isWorkspace || isMyPage || isAuthorization || isAdmin ? (
+      {isWorkspace || isMyPage || isAuthorization || isAdmin || isExternal ? (
         <>
           {isWorkspace && <WorkspaceHeader />}
           {isWorkspace && (
@@ -36,6 +36,11 @@ const Layout = () => {
             </div>
           )}
           {isAuthorization && (
+            <div>
+              <Outlet />
+            </div>
+          )}
+          {isExternal && (
             <div>
               <Outlet />
             </div>

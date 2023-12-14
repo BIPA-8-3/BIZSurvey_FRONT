@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 import SurveyInfoPage from "../pages/survey/SurveyInfoPage";
 import SurveyResultPage from "../pages/survey/SurveyResultPage";
 import EditSurveyPage from "../pages/survey/EditSurveyPage";
+import SharedSurvey from '../pages/workspace/SharedSurvey';
 
 const FullLayout = lazy(() => import("../pages/Layout"));
 
@@ -156,6 +157,7 @@ const ThemeRoutes = [
         element: <CommunitySearchResult />,
       },
       { path: "/authorization/:type/:token", exact: true, element: <Authorization /> },
+      { path: "/survey/participate/external", exact: true, element: <SharedSurvey /> },
 
       {
         path: "/surveyCommunitySearchResult",

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { inviteLinkVerification, sharedLinkVerification } from "./authenticationApi";
 
 export default function Authorization() {
   const navigate = useNavigate();
   const [result, setResult] = useState("");
   const { type, token } = useParams();
+  const { state } = useLocation();
 
   useEffect(() => {
     switch (type) {
@@ -13,7 +14,7 @@ export default function Authorization() {
         inviteLinkVerification(token)
           .then((data) => {
             sessionStorage.setItem("INVITE_TOKEN", data);
-            navigate("/login");
+            navigate("/login", { replace: true });
           })
           .catch((error) => {
             console.log(error);
@@ -27,16 +28,23 @@ export default function Authorization() {
 
         sharedLinkVerification(sharedSurveyId, parseToken)
           .then((data) => {
-            sessionStorage.setItem("SHARED_TOKEN", parseToken);
-            sessionStorage.setItem("SHARED_SURVEY_ID", sharedSurveyId);
-            sessionStorage.setItem("SURVEY_ID", data);
+            // sessionStorage.setItem("SHARED_TOKEN", parseToken);
+            // sessionStorage.setItem("SHARED_SURVEY_ID", sharedSurveyId);
+            // sessionStorage.setItem("SURVEY_ID", data);
+            navigate("/survey/participate/external", {
+              state: {
+                token: parseToken,
+                sharedSurveyId: sharedSurveyId,
+                surveyId: data,
+              },
+            });
           })
           .catch((error) => {
-            console.log(error);
-
-            console.log(error.response.data.message);
             setResult(error.response.data.message);
           });
+        break;
+      default:
+        setResult(state.message);
         break;
     }
   }, []);

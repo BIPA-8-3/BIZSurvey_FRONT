@@ -9,19 +9,15 @@ import TextOption from "./TextOption";
 import { useEffect } from "react";
 
 export default function SurveyQuestion({ question, handleSetAnswer, pass }) {
-  const {
-    questionId,
-    surveyQuestion,
-    answerType,
-    score,
-    step,
-    isRequired,
-    answers,
-  } = question;
+  const { questionId, surveyQuestion, answerType, score, step, isRequired, answers } = question;
 
+  // 파일 제외 응답
   const [userAnswer, setUserAnswer] = useState([]);
+
+  // 파일 응답
   const [fileAnswer, setFileAnswer] = useState([]);
 
+  // [파일 제외] 사용자가 답변을 체크 할때마다 답변 설정
   useEffect(() => {
     console.log("answerTYpd: " + answerType);
     console.log("ans" + userAnswer);
@@ -29,6 +25,7 @@ export default function SurveyQuestion({ question, handleSetAnswer, pass }) {
     handleSetAnswer(questionId, userAnswer, answerType, "");
   }, [userAnswer]);
 
+  // [파일] 사용자가 답변을 체크 할때마다 답변 설정
   useEffect(() => {
     if (fileAnswer.length !== 0) {
       const filename = [fileAnswer[0].name];
@@ -43,9 +40,7 @@ export default function SurveyQuestion({ question, handleSetAnswer, pass }) {
         <div className={style.title}>
           <p>
             <span>{surveyQuestion} </span>
-            <span style={{ color: "red" }}>
-              {isRequired === true ? "*" : ""}
-            </span>
+            <span style={{ color: "red" }}>{isRequired === true ? "*" : ""}</span>
           </p>
         </div>
         {/* 옵션 영역  */}
@@ -63,12 +58,8 @@ export default function SurveyQuestion({ question, handleSetAnswer, pass }) {
                 />
               </div>
             ))}
-          {answerType === "TEXT" && (
-            <TextOption setUserAnswer={setUserAnswer} />
-          )}
-          {answerType === "CALENDAR" && (
-            <DateOption setUserAnswer={setUserAnswer} />
-          )}
+          {answerType === "TEXT" && <TextOption setUserAnswer={setUserAnswer} />}
+          {answerType === "CALENDAR" && <DateOption setUserAnswer={setUserAnswer} />}
           {answerType === "FILE" && (
             <FileOption
               setFileAnswer={setFileAnswer}
