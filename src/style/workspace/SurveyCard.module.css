@@ -20,6 +20,7 @@
 
 .cardBody {
   font-size: 18px;
+  font-weight: 500;
 }
 
 .cardFooter {
@@ -68,7 +69,7 @@
 
 .visible {
   opacity: 1;
-  height: 145px;
+  height: 192px;
 }
 .menu li {
   height: 45px;

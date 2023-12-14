@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import ECharts from "echarts-for-react";
 
-export default function AdminLineChart({ chartData }) {
+export default function AdminLineChart({ lineChartData }) {
   // chartData : [{value : '개수', name: '옵션명'},{value : '개수', name: '옵션명'},... ]
 
 
@@ -19,18 +19,40 @@ export default function AdminLineChart({ chartData }) {
       },
       xAxis: {
         type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        data: []
       },
       yAxis: {
         type: 'value'
       },
       series: [
         {
-          data: [150, 230, 224, 218, 135, 147, 260],
+          data: [],
           type: 'line'
         }
       ]
   });
+
+  useEffect(() => {
+    // Transform the lineChartData into the format expected by ECharts
+    const xAxisData = lineChartData.map(item => item.dayOfWeek);
+    const seriesData = lineChartData.map(item => item.signupCount);
+
+    // Update the options state with the transformed data
+    setOptions(prevOptions => ({
+      ...prevOptions,
+      xAxis: {
+        ...prevOptions.xAxis,
+        data: xAxisData
+      },
+      series: [
+        {
+          ...prevOptions.series[0],
+          data: seriesData
+        }
+      ]
+    }));
+  }, [lineChartData]);
+
 
   return (
     <>

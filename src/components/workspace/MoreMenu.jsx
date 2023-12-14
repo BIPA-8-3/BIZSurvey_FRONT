@@ -1,26 +1,35 @@
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import style from "../../style/workspace/MoreMenu.module.css";
-import { useRef, useEffect, useState } from "react";
-import Modal from "./Modal";
+import { useRef, useEffect, useState, useContext } from "react";
+import ManagementModal from "./ManagementModal";
+import { WorkspaceContext } from "../../pages/workspace/Main";
+import { removeWorkspace } from "../../pages/workspace/api.js";
 
-const MoreMenu = () => {
+const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum }) => {
   // 더보기 메뉴
-
   const cotainerRef = useRef(null);
 
-  // MoreMenu
+  ////////////////////////////////////////////////////////////////
+  ////////////////////////// useContext //////////////////////////
+  ////////////////////////////////////////////////////////////////
+  // active workspace
+  let { selectedWorkspaceId, setSelectedWorkspaceId } = useContext(WorkspaceContext);
+  let { workspaceList, setWorkspaceList } = useContext(WorkspaceContext);
+
+  ////////////////////////////////////////////////////////////////
+  /////////////////////////// useState ///////////////////////////
+  ////////////////////////////////////////////////////////////////
   let [moreMenu, setMoreMenu] = useState(false);
 
-  const toggleMenu = () => {
-    setMoreMenu(!moreMenu);
-  };
+  // 관리 모달
+  let [managementModal, setManagementModal] = useState(false);
 
-  const handleDocumentClick = (event) => {
-    if (cotainerRef.current && !cotainerRef.current.contains(event.target) && moreMenu) {
-      toggleMenu();
-    }
-  };
+  // menu
+  let [menu, setMenu] = useState("tab1");
 
+  ///////////////////////////////////////////////////////////////
+  ////////////////////////// useEffect //////////////////////////
+  ///////////////////////////////////////////////////////////////
   useEffect(() => {
     // 컴포넌트가 마운트된 경우에만 이벤트 리스너 추가
     document.addEventListener("click", handleDocumentClick);
@@ -31,23 +40,50 @@ const MoreMenu = () => {
     };
   }, [moreMenu]);
 
-  // 모달
-  let [modal, setModal] = useState(false);
-
-  const closeModal = () => {
-    setModal(false);
+  ////////////////////////////////////////////////////////////////
+  ///////////////////////// event Method /////////////////////////
+  ////////////////////////////////////////////////////////////////
+  const closeManagementModal = () => {
+    setManagementModal(false);
   };
 
-  // menu
-  let [menu, setMenu] = useState("tab1");
+  // 삭제 메소드
+  const handleRemoveClick = () => {
+    removeWorkspace(selectedWorkspaceId)
+      .then((data) => {
+        let copy = workspaceList.filter((workspace) => workspace.id !== selectedWorkspaceId);
+        setWorkspaceList(copy);
+        setSelectedWorkspaceId(null);
+        toggleMenu();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // open Workspace Modal
+  const openWorkspaceModal = (num) => {
+    toggleMenu();
+    setWorkspaceModalNum(1);
+    setWorkspaceModalState(true);
+  };
+
+  // MoreMenu
+  const toggleMenu = () => {
+    setMoreMenu(!moreMenu);
+  };
+
+  const handleDocumentClick = (event) => {
+    if (cotainerRef.current && !cotainerRef.current.contains(event.target) && moreMenu) {
+      toggleMenu();
+    }
+  };
 
   return (
     <div ref={cotainerRef} className={style.menuContainer}>
-      <Modal isOpen={modal} onClose={closeModal} tab={menu} />
-
+      <ManagementModal isOpen={managementModal} onClose={closeManagementModal} tab={menu} />
       <BiDotsHorizontalRounded
         onClick={() => {
-          // setModal(!modal);
           toggleMenu();
         }}
         className={style.callMoreMenuBtn}
@@ -56,25 +92,37 @@ const MoreMenu = () => {
       <div className={`${style.menu} ${moreMenu ? style.visible : ""}`}>
         <ul>
           <li
-            onClick={() => {
-              setMenu("tab1");
+            onClick={async () => {
+              await setMenu("tab1");
               toggleMenu();
-              setModal(true);
+              setManagementModal(true);
             }}
           >
             관리자 관리
           </li>
           <li
-            onClick={() => {
-              setMenu("tab2");
+            onClick={async () => {
+              await setMenu("tab2");
               toggleMenu();
-              setModal(true);
+              setManagementModal(true);
             }}
           >
             연락처 관리
           </li>
-          <li>이름 바꾸기</li>
-          <li>삭제</li>
+          <li
+            onClick={() => {
+              openWorkspaceModal(1);
+            }}
+          >
+            이름 바꾸기
+          </li>
+          <li
+            onClick={() => {
+              handleRemoveClick();
+            }}
+          >
+            삭제
+          </li>
         </ul>
       </div>
     </div>
