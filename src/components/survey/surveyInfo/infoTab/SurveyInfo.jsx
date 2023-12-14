@@ -47,19 +47,13 @@ export default function SurveyInfo() {
             </Button>
             {surveyType === "NORMAL" ? (
               <Link to={"/editSurvey"} state={{ surveyId: surveyId }}>
-                <Button
-                  variant="outlined"
-                  sx={{ color: "#243579", borderColor: "#243579" }}
-                >
+                <Button variant="outlined" sx={{ color: "#243579", borderColor: "#243579" }}>
                   수정
                 </Button>
               </Link>
             ) : (
               <Link to={"/editScoreSurvey"} state={{ surveyId: surveyId }}>
-                <Button
-                  variant="outlined"
-                  sx={{ color: "#243579", borderColor: "#243579" }}
-                >
+                <Button variant="outlined" sx={{ color: "#243579", borderColor: "#243579" }}>
                   수정
                 </Button>
               </Link>

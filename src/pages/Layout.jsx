@@ -16,12 +16,13 @@ const Layout = () => {
     location.pathname === "/mypageCommunity" ||
     location.pathname === "/login/oauth2/kakao" ||
     location.pathname.startsWith("/emailValidation/");
-
+  const isAuthorization = location.pathname.startsWith("/authorization/");
+  const isExternal = location.pathname.startsWith("/survey/participate/external");
   const isAdmin = location.pathname.startsWith("/admin/");
 
   return (
     <div>
-      {isWorkspace || isMyPage || isAdmin ? (
+      {isWorkspace || isMyPage || isAuthorization || isAdmin || isExternal ? (
         <>
           {isWorkspace && <WorkspaceHeader />}
           {isWorkspace && (
@@ -31,6 +32,16 @@ const Layout = () => {
           )}
           {isMyPage && (
             <div className="container">
+              <Outlet />
+            </div>
+          )}
+          {isAuthorization && (
+            <div>
+              <Outlet />
+            </div>
+          )}
+          {isExternal && (
+            <div>
               <Outlet />
             </div>
           )}

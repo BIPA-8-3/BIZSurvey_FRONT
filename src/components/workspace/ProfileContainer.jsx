@@ -4,8 +4,9 @@ import style from "../../style/workspace/ProfileContainer.module.css";
 const ProfileContainer = () => {
   const profileImages = [
     "https://via.placeholder.com/45X45",
-    "https://via.placeholder.com/45X45",
-    "https://via.placeholder.com/45X45",
+    "https://ui-avatars.com/api/?name=won-sik&background=random",
+    // "https://ui-avatars.com/api/?name=s-y&background=random",
+    "https://ui-avatars.com/api/?name=123&background=random",
   ];
   const [profiles, setProfiles] = useState(profileImages);
 

@@ -2,21 +2,22 @@ import { useEffect, useRef, useState } from "react";
 import style from "../../style/workspace/SurveyCard.module.css";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 
-export default function SurveyCard({ info, surveyId, onOpenModal, onClose }) {
+export default function SurveyCard({
+  type,
+  surveyId,
+  title,
+  onOpenModal,
+  onClose,
+  handleRemoveBtnClick,
+  handleClickCard,
+  setWorkspaceModalState,
+  setWorkspaceModalNum,
+  setChageModalSurveyId,
+}) {
   const cotainerRef = useRef(null);
 
   // 더보기 상태
   let [moreMenu, setMoreMenu] = useState(false);
-
-  const toggleMenu = () => {
-    setMoreMenu(!moreMenu);
-  };
-
-  const handleDocumentClick = (event) => {
-    if (cotainerRef.current && !cotainerRef.current.contains(event.target) && moreMenu) {
-      toggleMenu();
-    }
-  };
 
   useEffect(() => {
     document.addEventListener("click", handleDocumentClick);
@@ -26,20 +27,40 @@ export default function SurveyCard({ info, surveyId, onOpenModal, onClose }) {
     };
   }, [moreMenu]);
 
-  // 메뉴 종류
-  let [menu, setMenu] = useState(null);
+  const handleDocumentClick = (event) => {
+    if (cotainerRef.current && !cotainerRef.current.contains(event.target) && moreMenu) {
+      toggleMenu();
+    }
+  };
 
-  // 모달
-  // let [modal, setModal] = useState(null);
+  const toggleMenu = () => {
+    setMoreMenu(!moreMenu);
+  };
+
+  // open Workspace Modal
+  const openWorkspaceModal = (num) => {
+    toggleMenu();
+    setChageModalSurveyId(surveyId);
+    setWorkspaceModalNum(num);
+    setWorkspaceModalState(true);
+  };
+
   return (
-    <div id={style.Container} ref={cotainerRef}>
+    <div
+      id={style.Container}
+      ref={cotainerRef}
+      onClick={(e) => {
+        handleClickCard(surveyId);
+      }}
+    >
       <div className={style.cardHeader}>
-        {info}
+        {type}
         <div className={style.menuContainer}>
           <span>
             <BiDotsHorizontalRounded
               className={style.optionBtn}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 toggleMenu();
               }}
             />
@@ -48,23 +69,48 @@ export default function SurveyCard({ info, surveyId, onOpenModal, onClose }) {
             <div className={`${style.menu} ${moreMenu ? style.visible : ""}`}>
               <ul>
                 <li
-                  onClick={() => {
-                    setMenu("tab1");
+                  onClick={(e) => {
+                    e.stopPropagation();
                     toggleMenu();
-                    onOpenModal(surveyId);
+                    onOpenModal(surveyId, title, 0);
                   }}
                 >
                   공유
                 </li>
-                <li>이름 바꾸기</li>
-                <li>삭제</li>
+                <li
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleMenu();
+                    onOpenModal(surveyId, title, 1);
+                  }}
+                >
+                  공유 히스토리
+                </li>
+                <li
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleMenu();
+                    openWorkspaceModal(2);
+                  }}
+                >
+                  이름 바꾸기
+                </li>
+                <li
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleMenu();
+                    handleRemoveBtnClick(surveyId);
+                  }}
+                >
+                  삭제
+                </li>
               </ul>
             </div>
           </span>
         </div>
       </div>
-      <div className={style.cardBody}>안녕하세요 설문지</div>
-      <div className={style.cardFooter}>안녕하세요 설문지</div>
+      <div className={style.cardBody}>{title}</div>
+      <div className={style.cardFooter}>2023-12-05 16:14</div>
     </div>
   );
 }
