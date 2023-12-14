@@ -37,6 +37,24 @@
 .profileState {
   font-size: 14px;
   color: #6b778c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+}
+.ownerBox {
+  font-size: 14px;
+  color: #6b778c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  /* margin-right: 17px; */
+}
+.closeBtn {
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 15px;
 }
 
 /* event */

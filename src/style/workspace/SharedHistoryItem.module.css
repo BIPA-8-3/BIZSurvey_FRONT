@@ -1,0 +1,62 @@
+.historyWrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0px 10px 3px;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin: 5px 0;
+}
+
+.historyText {
+  font-size: 16px;
+  display: block;
+  color: #37352f;
+  font-weight: 500;
+  padding-top: 5px;
+  padding-left: 5px;
+}
+
+/* event */
+.historyWrap:hover {
+  background-color: rgba(55, 53, 47, 0.08);
+}
+
+.wrap {
+  display: flex;
+  justify-content: space-evenly;
+  padding-right: 10px;
+}
+
+.labelBox {
+  /* background-color: #f2f9ff; */
+  background-color: #eee;
+  /* color: #007ae5; */
+  color: gray;
+  font-weight: bold;
+  font-size: 10px;
+  height: 28px;
+  font-size: 12px;
+  border-radius: 6px;
+  padding: 0 14.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  box-sizing: border-box;
+  background-color: #2d9596;
+  border: 0;
+  border-radius: 3px;
+  color: #fff;
+  padding: 0 14.5px;
+  height: 28px;
+  transition: background-color 20ms ease-in 0s;
+  border-radius: 4px;
+  box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px inset, rgba(15, 15, 15, 0.1) 0px 1px 2px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}

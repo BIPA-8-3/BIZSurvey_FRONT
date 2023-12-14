@@ -1,7 +1,7 @@
 import style from "../../style/workspace/ContactItem.module.css";
 import { IoCloseSharp } from "react-icons/io5";
 
-export default function ContactItem({ btnVisible }) {
+export default function ContactItem({ btnVisible, id, email, name, handleClickRemoveBtn }) {
   if (typeof btnVisible === "undefined") {
     btnVisible = true;
   }
@@ -9,11 +9,20 @@ export default function ContactItem({ btnVisible }) {
     <div className={style.contactWrap}>
       <div>
         <span className={style.contactText} style={{ marginBottom: "3px" }}>
-          비즈서베이
+          {name}
         </span>
-        <span className={style.contactText}>hws6745@naver.com</span>
+        <span className={style.contactText}>{email}</span>
       </div>
-      {btnVisible ? <IoCloseSharp className={style.closeBtn} /> : ""}
+      {btnVisible ? (
+        <IoCloseSharp
+          className={style.closeBtn}
+          onClick={() => {
+            handleClickRemoveBtn(id);
+          }}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

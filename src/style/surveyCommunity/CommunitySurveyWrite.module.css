@@ -88,12 +88,11 @@
 }
 
 .surveyWrap {
-  width: 90%;
-
+  /* width: 90%; */
   /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; */
-
+  box-sizing: border-box;
   margin: 0 auto;
-  margin-top: 80px;
+  /* margin-top: 80px; */
   /* border: 1px solid #d6d6d6; */
   border-top: 15px solid #92a8fe;
   /* box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px; */
