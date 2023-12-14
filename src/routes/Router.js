@@ -79,6 +79,7 @@ const AdminClaimListPage = lazy(() =>
   import("../pages/admin/AdminClaimListPage")
 );
 const AdminLoginPage = lazy(() => import("../pages/admin/AdminLoginPage"));
+const AdminClaimInfoPage = lazy(() => import("../pages/admin/AdminClaimInfoPage"));
 
 const Main = lazy(() => import("../pages/workspace/Main"));
 const Authorization = lazy(() => import("../pages/workspace/Authorization"));
@@ -188,6 +189,11 @@ const ThemeRoutes = [
         path: "/admin/login",
         exact: true,
         element: <AdminLoginPage />,
+      },
+      {
+        path: "/admin/claim/info/:id",
+        exact: true,
+        element: <AdminClaimInfoPage />,
       },
     ],
   },
