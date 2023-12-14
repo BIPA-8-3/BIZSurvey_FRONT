@@ -11,17 +11,20 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect } from "react";
 import { login, call } from "./Login";
 
-export default function CreateSurveyPage({ selectedWorkspaceId, setSectionNum }) {
+export default function CreateSurveyPage({
+  selectedWorkspaceId,
+  setSectionNum,
+}) {
   const [formData, setFormData] = useState({
-    title: "",
-    content: "",
+    title: "제목",
+    content: "설명",
     surveyType: "NORMAL",
     questions: [],
   });
 
   const [questions, setQuestions] = useState([
     {
-      surveyQuestion: "",
+      surveyQuestion: "질문",
       answerType: "",
       score: 0,
       step: 1,
@@ -29,7 +32,7 @@ export default function CreateSurveyPage({ selectedWorkspaceId, setSectionNum })
       answers: [
         {
           step: 0,
-          surveyAnswer: "",
+          surveyAnswer: "옵션 1",
         },
       ],
     },
@@ -55,7 +58,8 @@ export default function CreateSurveyPage({ selectedWorkspaceId, setSectionNum })
       ...question,
       step: index + 1,
       answers:
-        question.answerType === "SINGLE_CHOICE" || question.answerType === "MULTIPLE_CHOICE"
+        question.answerType === "SINGLE_CHOICE" ||
+        question.answerType === "MULTIPLE_CHOICE"
           ? question.answers.map((answer, answerIndex) => ({
               ...answer,
               step: answerIndex + 1,
@@ -109,7 +113,7 @@ export default function CreateSurveyPage({ selectedWorkspaceId, setSectionNum })
       return [
         ...pre,
         {
-          surveyQuestion: "",
+          surveyQuestion: "질문",
           answerType: "",
           score: 0,
           step: 0,
@@ -117,7 +121,7 @@ export default function CreateSurveyPage({ selectedWorkspaceId, setSectionNum })
           answers: [
             {
               step: 0,
-              surveyAnswer: "",
+              surveyAnswer: "옵션 1",
             },
           ],
         },
@@ -128,7 +132,9 @@ export default function CreateSurveyPage({ selectedWorkspaceId, setSectionNum })
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id ? { ...question, isRequired: !question.isRequired } : question
+        index === id
+          ? { ...question, isRequired: !question.isRequired }
+          : question
       );
       return result;
     });
@@ -157,7 +163,13 @@ export default function CreateSurveyPage({ selectedWorkspaceId, setSectionNum })
         if (index === qid) {
           const updatedQuestion = {
             ...question,
-            answers: [...question.answers, { step: 0, surveyAnswer: "" }],
+            answers: [
+              ...question.answers,
+              {
+                step: 0,
+                surveyAnswer: "옵션 " + String(question.answers.length + 1),
+              },
+            ],
           };
           return updatedQuestion;
         }
@@ -221,9 +233,16 @@ export default function CreateSurveyPage({ selectedWorkspaceId, setSectionNum })
                   className={style.questionList}
                 >
                   {questions.map((questionData, index) => (
-                    <Draggable key={index} draggableId={`question-${index}`} index={index}>
+                    <Draggable
+                      key={index}
+                      draggableId={`question-${index}`}
+                      index={index}
+                    >
                       {(provided) => (
-                        <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                        >
                           <div className={style.question}>
                             <QuestionComp
                               key={index}
