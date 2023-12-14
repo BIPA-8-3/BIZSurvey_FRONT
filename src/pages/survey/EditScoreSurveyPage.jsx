@@ -25,7 +25,7 @@ export default function EditScoreSurveyPage() {
     surveyId: 0,
     title: "설문지 제목",
     content: "설문지 내용",
-    surveyType: "점수",
+    surveyType: "SCORE",
     questions: [],
   });
 
@@ -41,7 +41,7 @@ export default function EditScoreSurveyPage() {
         {
           step: 0,
           surveyAnswer: "",
-          correct: "오답",
+          correct: "NO",
         },
       ],
     },
@@ -101,7 +101,7 @@ export default function EditScoreSurveyPage() {
 
     const surveyData = {
       ...formData,
-      surveyType: "점수",
+      surveyType: "SCORE",
       questions: undefined, // questions 필드 없애기
       updateQuestions: updateQuestion,
       createQuestions: createQuestion,
@@ -160,7 +160,7 @@ export default function EditScoreSurveyPage() {
         {
           questionId: 0,
           surveyQuestion: "질문",
-          answerType: "",
+          answerType: "MULTIPLE_CHOICE",
           score: 0,
           step: 0,
           isRequired: false,
@@ -168,7 +168,7 @@ export default function EditScoreSurveyPage() {
             {
               step: 0,
               surveyAnswer: "옵션 1",
-              correct: "오답",
+              correct: "NO",
             },
           ],
         },
@@ -215,7 +215,7 @@ export default function EditScoreSurveyPage() {
               {
                 step: 0,
                 surveyAnswer: "옵션 " + String(question.answers.length + 1),
-                correct: "오답",
+                correct: "NO",
               },
             ],
           };
