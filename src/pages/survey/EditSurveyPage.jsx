@@ -157,7 +157,7 @@ export default function EditSurveyPage() {
         ...pre,
         {
           questionId: 0,
-          surveyQuestion: "",
+          surveyQuestion: "질문",
           answerType: "",
           score: 0,
           step: 0,
@@ -165,7 +165,7 @@ export default function EditSurveyPage() {
           answers: [
             {
               step: 0,
-              surveyAnswer: "",
+              surveyAnswer: "옵션 1",
             },
           ],
         },
@@ -207,7 +207,13 @@ export default function EditSurveyPage() {
         if (index === qid) {
           const updatedQuestion = {
             ...question,
-            answers: [...question.answers, { step: 0, surveyAnswer: "" }],
+            answers: [
+              ...question.answers,
+              {
+                step: 0,
+                surveyAnswer: "옵션 " + String(question.answers.length + 1),
+              },
+            ],
           };
           return updatedQuestion;
         }

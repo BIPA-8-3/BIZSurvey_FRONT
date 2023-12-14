@@ -11,17 +11,20 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect } from "react";
 import { login, call } from "./Login";
 
-export default function CreateSurveyPage() {
+export default function CreateSurveyPage({
+  selectedWorkspaceId,
+  setSectionNum,
+}) {
   const [formData, setFormData] = useState({
-    title: "",
-    content: "",
+    title: "제목",
+    content: "설명",
     surveyType: "NORMAL",
     questions: [],
   });
 
   const [questions, setQuestions] = useState([
     {
-      surveyQuestion: "",
+      surveyQuestion: "질문",
       answerType: "",
       score: 0,
       step: 1,
@@ -29,7 +32,7 @@ export default function CreateSurveyPage() {
       answers: [
         {
           step: 0,
-          surveyAnswer: "",
+          surveyAnswer: "옵션 1",
         },
       ],
     },
@@ -66,7 +69,7 @@ export default function CreateSurveyPage() {
     const surveyData = { ...formData };
     surveyData.questions = questionData;
     console.log(surveyData);
-    // call("/survey/1", "POST", surveyData);
+    call("/survey/" + selectedWorkspaceId, "POST", surveyData);
   };
 
   const changeQuestionTitle = (id, text) => {
@@ -110,7 +113,7 @@ export default function CreateSurveyPage() {
       return [
         ...pre,
         {
-          surveyQuestion: "",
+          surveyQuestion: "질문",
           answerType: "",
           score: 0,
           step: 0,
@@ -118,7 +121,7 @@ export default function CreateSurveyPage() {
           answers: [
             {
               step: 0,
-              surveyAnswer: "",
+              surveyAnswer: "옵션 1",
             },
           ],
         },
@@ -160,7 +163,13 @@ export default function CreateSurveyPage() {
         if (index === qid) {
           const updatedQuestion = {
             ...question,
-            answers: [...question.answers, { step: 0, surveyAnswer: "" }],
+            answers: [
+              ...question.answers,
+              {
+                step: 0,
+                surveyAnswer: "옵션 " + String(question.answers.length + 1),
+              },
+            ],
           };
           return updatedQuestion;
         }
@@ -271,6 +280,9 @@ export default function CreateSurveyPage() {
               <Button
                 variant="outlined"
                 sx={{ color: "#243579", borderColor: "#243579" }}
+                onClick={(e) => {
+                  setSectionNum(0);
+                }}
               >
                 취소
               </Button>

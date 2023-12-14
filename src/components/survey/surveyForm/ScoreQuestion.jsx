@@ -30,6 +30,7 @@ export default function ScoreQuestion({
   changeAnswerText,
   changeScore,
   changeCorrect,
+  checkDuplication,
 }) {
   const {
     surveyQuestion,
@@ -40,6 +41,12 @@ export default function ScoreQuestion({
     answers,
     content,
   } = questionInfo;
+
+  const handleBlur = (text) => {
+    if (text.trim() === "") {
+      changeTitle(index, "질문");
+    }
+  };
 
   return (
     <>
@@ -80,12 +87,13 @@ export default function ScoreQuestion({
               value={surveyQuestion}
               id="filled-basic"
               variant="filled"
-              placeholder={"제목"}
+              placeholder={"질문"}
               inputProps={{
                 style: { fontWeight: "bold", padding: "12px 13px" },
               }}
               sx={{ width: 600 }}
               onChange={(e) => changeTitle(index, e.target.value)}
+              onBlur={(e) => handleBlur(e.target.value)}
             />
           </div>
         </div>
@@ -101,6 +109,7 @@ export default function ScoreQuestion({
                 deleteAnswer={deleteAnswer}
                 changeAnswerText={changeAnswerText}
                 changeCorrect={changeCorrect}
+                checkDuplication={checkDuplication}
               />
             </>
 
