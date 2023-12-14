@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import SurveyInfoPage from "../pages/survey/SurveyInfoPage";
 import SurveyResultPage from "../pages/survey/SurveyResultPage";
 import EditSurveyPage from "../pages/survey/EditSurveyPage";
-import SharedSurvey from '../pages/workspace/SharedSurvey';
+import SharedSurvey from "../pages/workspace/SharedSurvey";
 
 const FullLayout = lazy(() => import("../pages/Layout"));
 
@@ -40,13 +40,23 @@ const EditScoreSurvey = lazy(() =>
   import("../pages/survey/EditScoreSurveyPage")
 );
 const PostDetail = lazy(() => import("../components/community/PostDetail"));
-const SurveyCommunityWrite = lazy(() => import('../components/surveyCommunity/SurveyCommunityWrite'))
-const OAuth2RedirectHandler = lazy(() => import('../components/common/OAuth2RedirectHandler'))
-const EmailValidation = lazy(() => import('../components/user/EmailValidation'))
-const ChangPassword = lazy(() => import('../components/user/ChangePassword'))
-const AdditionalJoin = lazy(() => import('../components/user/AdditionalJoin'))
-const CommunitySearchResult = lazy(() => import('../components/common/SearchResultTable'))
-const SCommunitySearchResult = lazy(() => import('../components/common/SCommunitySearchResult'))
+const SurveyCommunityWrite = lazy(() =>
+  import("../components/surveyCommunity/SurveyCommunityWrite")
+);
+const OAuth2RedirectHandler = lazy(() =>
+  import("../components/common/OAuth2RedirectHandler")
+);
+const EmailValidation = lazy(() =>
+  import("../components/user/EmailValidation")
+);
+const ChangPassword = lazy(() => import("../components/user/ChangePassword"));
+const AdditionalJoin = lazy(() => import("../components/user/AdditionalJoin"));
+const CommunitySearchResult = lazy(() =>
+  import("../components/common/SearchResultTable")
+);
+const SCommunitySearchResult = lazy(() =>
+  import("../components/common/SCommunitySearchResult")
+);
 
 const MypageSurveyCommunity = lazy(() =>
   import("../components/user/MypageSurveyCommunity")
@@ -68,6 +78,7 @@ const AdminMainPage = lazy(() => import("../pages/admin/AdminMainPage"));
 const AdminClaimListPage = lazy(() =>
   import("../pages/admin/AdminClaimListPage")
 );
+const AdminLoginPage = lazy(() => import("../pages/admin/AdminLoginPage"));
 
 const Main = lazy(() => import("../pages/workspace/Main"));
 const Authorization = lazy(() => import("../pages/workspace/Authorization"));
@@ -156,13 +167,27 @@ const ThemeRoutes = [
         exact: true,
         element: <CommunitySearchResult />,
       },
-      { path: "/authorization/:type/:token", exact: true, element: <Authorization /> },
-      { path: "/survey/participate/external", exact: true, element: <SharedSurvey /> },
+      {
+        path: "/authorization/:type/:token",
+        exact: true,
+        element: <Authorization />,
+      },
+      {
+        path: "/survey/participate/external",
+        exact: true,
+        element: <SharedSurvey />,
+      },
 
       {
         path: "/surveyCommunitySearchResult",
         exact: true,
         element: <SCommunitySearchResult />,
+      },
+
+      {
+        path: "/admin/login",
+        exact: true,
+        element: <AdminLoginPage />,
       },
     ],
   },
