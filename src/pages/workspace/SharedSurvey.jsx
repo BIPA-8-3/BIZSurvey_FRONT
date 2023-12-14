@@ -6,6 +6,7 @@ import useFadeIn from "../../style/useFadeIn";
 import style from "../../style/workspace/SharedSurvey.module.css";
 import SurveyTitle from "../../components/survey/surveyInfo/SurveyTitle";
 import SharedFooter from "../../components/workspace/SharedFooter";
+import Button from "@mui/material/Button";
 
 export default function SharedSurvey() {
   const { state } = useLocation();
@@ -37,10 +38,16 @@ export default function SharedSurvey() {
   // [커뮤니티 답변 DTO]  사용자 입력 데이터 [수정 필요]
   const [answers, setAnswers] = useState([
     {
-      questionId: 0,
-      answer: [],
-      answerType: "",
-      url: "",
+      surveyId: 0,
+      anssharedListId: 0,
+      sharedAnswerList: [
+        {
+          questionId: 0,
+          surveyAnswer: "",
+          answerType: "",
+          url: "",
+        },
+      ],
     },
   ]);
 
@@ -124,8 +131,19 @@ export default function SharedSurvey() {
 
   return (
     <div className={style.container}>
-      <SurveyTitle title={survey.title} content={survey.content} />
-      <SurveyForm survey={survey} handleSetAnswer={handleSetAnswer} pass={pass} type={"EXTERNAL"} />
+      <div>
+        <SurveyTitle title={survey.title} content={survey.content} />
+        <SurveyForm
+          survey={survey}
+          handleSetAnswer={handleSetAnswer}
+          pass={pass}
+          type={"EXTERNAL"}
+        />
+        <div className={style.surveyBtnWrap}>
+          <Button variant="contained">제출</Button>
+          <Button>양식 초기화</Button>
+        </div>
+      </div>
       <SharedFooter />
     </div>
   );
