@@ -435,7 +435,12 @@ export default function Main() {
                 />
               );
             } else if (sectionNum === 2) {
-              return <CreateScoreSurveyPage />;
+              return (
+                <CreateScoreSurveyPage
+                  selectedWorkspaceId={selectedWorkspaceId}
+                  setSectionNum={setSectionNum}
+                />
+              );
             } else if (sectionNum === 3) {
               return <SurveyInfoPage selectedSurveyId={selectedSurveyId} />;
             }

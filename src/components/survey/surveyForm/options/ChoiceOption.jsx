@@ -56,6 +56,12 @@ export default function ChoiceOption({
 }
 
 function Option({ onDelete, index, changeText, single, text }) {
+  const handleBlur = (text) => {
+    if (text.trim() === "") {
+      changeText(index, "옵션 " + (index + 1));
+    }
+  };
+
   return (
     <>
       <div style={{ margin: "0 auto", width: "600px" }}>
@@ -74,6 +80,7 @@ function Option({ onDelete, index, changeText, single, text }) {
             onChange={(e) => changeText(index, e.target.value)}
             id="standard-multiline-static"
             variant="standard"
+            onBlur={(e) => handleBlur(e.target.value)}
             placeholder={"옵션을 입력하세요"}
             inputProps={{ style: { fontSize: 15 } }}
             sx={{ width: 550 }}

@@ -7,6 +7,18 @@ export default function EditSurveyTitle({
   changeSurveyContent,
   changeSurveyTitle,
 }) {
+  const handleTitleBlur = (text) => {
+    if (text.trim() === "") {
+      changeSurveyTitle("제목");
+    }
+  };
+
+  const handleContentBlur = (text) => {
+    if (text.trim() === "") {
+      changeSurveyContent("설명");
+    }
+  };
+
   return (
     <>
       <div className={style.wrapSurveyInfo}>
@@ -14,7 +26,7 @@ export default function EditSurveyTitle({
           <TextField
             id="standard-basic"
             variant="standard"
-            placeholder={"설문지 제목"}
+            placeholder={"제목"}
             sx={{ width: 600 }}
             value={title}
             onChange={(e) => changeSurveyTitle(e.target.value)}
@@ -25,12 +37,13 @@ export default function EditSurveyTitle({
                 padding: "15px 0 0 0",
               },
             }}
+            onBlur={(e) => handleTitleBlur(e.target.value)}
           />
         </div>
         <div className={style.surveyText}>
           <TextField
             id="standard-basic"
-            placeholder={"설문지 설명"}
+            placeholder={"설명"}
             inputProps={{
               style: {
                 fontSize: "14px",
@@ -42,6 +55,7 @@ export default function EditSurveyTitle({
             value={content}
             onChange={(e) => changeSurveyContent(e.target.value)}
             variant="standard"
+            onBlur={(e) => handleContentBlur(e.target.value)}
           />
         </div>
       </div>
