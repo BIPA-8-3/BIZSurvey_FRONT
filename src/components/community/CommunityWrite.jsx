@@ -59,8 +59,9 @@ export default function CommunityWrite() {
       
         
         console.log('성공 시, 백엔드가 보내주는 데이터', result.data.url);
-        const IMG_URL = result.data;
-        alert(JSON.stringify(result.data))
+        const HEAD_IMG_URL ="https://"; 
+        const IMG_URL = HEAD_IMG_URL + result.data;
+        alert(JSON.stringify(IMG_URL))
         // 이 URL을 img 태그의 src에 넣은 요소를 현재 에디터의 커서에 넣어주면 에디터 내에서 이미지가 나타난다
         // src가 base64가 아닌 짧은 URL이기 때문에 데이터베이스에 에디터의 전체 글 내용을 저장할 수있게된다
         // 이미지는 꼭 로컬 백엔드 uploads 폴더가 아닌 다른 곳에 저장해 URL로 사용하면된다.
