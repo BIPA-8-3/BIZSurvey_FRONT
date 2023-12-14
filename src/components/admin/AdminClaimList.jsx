@@ -14,10 +14,6 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 function AdminClaimList() {
     const navigate = useNavigate();
 
-    const handleRowClick = () => {
-        navigate('/admin/userInfo');
-    };
-
     const { call } = useApiCall();
     const [total, setTotal] = useState(0);
     const [claimList, setClaimList] = useState([]);
@@ -49,6 +45,10 @@ function AdminClaimList() {
         console.error('Error fetching data:', error);
       });
     };
+
+    const handleRowClick = (e) => {
+        navigate('/admin/claim/info/' + e);
+    };
   return (
     <div
     className={style.userListWrap}
@@ -69,10 +69,10 @@ function AdminClaimList() {
           <p style={{marginLeft:'5px'}}>신고내역조회</p>
         </p>
       </div>
-      <div className={style.adminSearchWrap}>
+      {/* <div className={style.adminSearchWrap}>
         <input type='text'/>
         <button>검색</button>
-      </div>
+      </div> */}
       <table className={style.adminTable}>
         <thead>
             <tr>
@@ -85,7 +85,7 @@ function AdminClaimList() {
         </thead>
         <tbody>
           {claimList.map((claimItem, index) => (
-            <tr onClick={handleRowClick}>
+            <tr onClick={() => handleRowClick(`${claimItem.id}`)}>
                 <td style={{padding:'6px 2px'}}>{claimItem.id}</td>
                 <td>{claimItem.claimType}</td>
                 <td>{claimItem.claimReason}</td>
