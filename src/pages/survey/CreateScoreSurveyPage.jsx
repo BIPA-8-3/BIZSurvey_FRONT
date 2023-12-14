@@ -11,7 +11,10 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect } from "react";
 import { login, call } from "./Login";
 
-export default function CreateScoreSurveyPage() {
+export default function CreateScoreSurveyPage({
+  selectedWorkspaceId,
+  setSectionNum,
+}) {
   const [formData, setFormData] = useState({
     title: "제목",
     content: "설명",
@@ -84,7 +87,7 @@ export default function CreateScoreSurveyPage() {
 
     console.log(surveyData);
 
-    call("/survey/1", "POST", surveyData);
+    call("/survey/" + selectedWorkspaceId, "POST", surveyData);
   };
 
   const changeQuestionTitle = (id, text) => {
@@ -179,6 +182,7 @@ export default function CreateScoreSurveyPage() {
         if (index === qid) {
           const updatedQuestion = {
             ...question,
+
             answers: [
               ...question.answers,
               {
@@ -340,6 +344,9 @@ export default function CreateScoreSurveyPage() {
               <Button
                 variant="outlined"
                 sx={{ color: "#243579", borderColor: "#243579" }}
+                onClick={(e) => {
+                  setSectionNum(0);
+                }}
               >
                 취소
               </Button>

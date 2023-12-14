@@ -1,10 +1,10 @@
 #mainFooter {
-  margin-top: 50px;
-  padding-bottom: 15px;
+  margin-top: 75px;
+  padding-bottom: 10px;
 }
 
 .logo {
-  width: 350px;
+  width: 200px;
   cursor: pointer;
   align-items: center;
 }

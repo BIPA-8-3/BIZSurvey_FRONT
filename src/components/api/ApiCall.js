@@ -34,7 +34,6 @@ const useApiCall = () => {
       return response.data;
     } catch (error) {
       if (error.response.data.errorCode === 401) {
-        alert("로그인 필요");
         navigate('/login');  // 로그인 페이지로 이동
       } else if (error.response.data.errorCode === 402) {
         RefreshRequest();
