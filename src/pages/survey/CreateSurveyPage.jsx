@@ -25,7 +25,7 @@ export default function CreateSurveyPage({
   const [questions, setQuestions] = useState([
     {
       surveyQuestion: "질문",
-      answerType: "",
+      answerType: "SINGLE_CHOICE",
       score: 0,
       step: 1,
       isRequired: false,
@@ -114,7 +114,7 @@ export default function CreateSurveyPage({
         ...pre,
         {
           surveyQuestion: "질문",
-          answerType: "",
+          answerType: "SINGLE_CHOICE",
           score: 0,
           step: 0,
           isRequired: false,
