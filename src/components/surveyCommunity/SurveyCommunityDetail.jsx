@@ -11,9 +11,8 @@ import ParentsComment from "../community/ParentsComment";
 import { useState, useEffect } from "react";
 import ChildCommentForm from "../community/ChildCommentForm";
 import ChildComment from "../community/ChildComment";
-import Loader from "../../pages/loader/Loader"
-import axios from 'axios'
-
+import Loader from "../../pages/loader/Loader";
+import axios from "axios";
 
 export default function CommunityPost() {
   const fadeIn = useFadeIn();
@@ -21,21 +20,22 @@ export default function CommunityPost() {
   const location = useLocation();
   let postId = location.state.postId;
 
-  console.log('넘어오는지 확인 : ' + postId)
+  console.log("넘어오는지 확인 : " + postId);
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-
 
   useEffect(() => {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/community/showPost/'+postId);
-        console.log("리스폰스 : "+response);
+        const response = await axios.get(
+          "http://localhost:8080/community/showPost/" + postId
+        );
+        console.log("리스폰스 : " + response);
         setData(response.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false); // 데이터 로딩이 끝났음을 표시
       }
@@ -45,13 +45,14 @@ export default function CommunityPost() {
   }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
 
   if (loading) {
-    return <>
-      <Loader />
-    </>; // 데이터 로딩 중에는 로딩 표시
+    return (
+      <>
+        <Loader />
+      </>
+    ); // 데이터 로딩 중에는 로딩 표시
   }
-  console.log("데이타"+data)
+  console.log("데이타" + data);
   console.log(postId);
-
 
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
@@ -78,9 +79,7 @@ export default function CommunityPost() {
           </div>
         </div>
         <div className={style.content}>
-          <p>
-            {data.content}
-          </p>
+          <p>{data.content}</p>
           <div className={style.surveyBtnWrap}>
             <Link to={"/communitySurveyWrite"}>
               {isAvailable ? (
@@ -129,7 +128,7 @@ export default function CommunityPost() {
               )}
             </Link>
           </div>
-          <p
+          <div
             style={{
               marginTop: "100px",
               display: "flex",
@@ -142,9 +141,8 @@ export default function CommunityPost() {
               댓글 <span style={{ fontWeight: "bold" }}>13</span>
             </div>
             <div style={{ cursor: "pointer", fontSize: "14px" }}>신고</div>
-          </p>
+          </div>
         </div>
-        
       </div>
       <div style={{ textAlign: "center" }}>
         <Link to={"/community"}>
