@@ -6,6 +6,7 @@ import ChildCommentForm from './ChildCommentForm';
 import React, { useState } from 'react';
 
 
+
 const ParentsComment = ({props}) => {
   const data = props.commentList;
   let postId = props.postId;
