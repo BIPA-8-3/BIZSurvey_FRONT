@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import style from '../../style/user/MypageHeader.module.css';
 import logo from '../../assets/img/logo.png';
 import useFadeIn from '../../style/useFadeIn';
@@ -6,6 +6,7 @@ import avatar from '../../assets/img/avatar.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaPen } from 'react-icons/fa';
 import CircularProgress from '@mui/material/CircularProgress';
+import { LoginContext, LoginFunContext } from "../../App";
 import axios from 'axios';
 const getLinkStyle = (currentPage, path) => {
   return {
@@ -18,6 +19,7 @@ function MypageHeader({ userData }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const {setUserInfo} = useContext(LoginFunContext)
   const location = useLocation();
   const currentPage = location.pathname;
   
@@ -67,6 +69,18 @@ function MypageHeader({ userData }) {
     if(window.confirm("로그아웃 하시겠습니까?")){
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
+      setUserInfo({
+        birthdate: "",
+        email:"", 
+        gender: "",
+        id:0,
+        name: "",
+        nickname: "",
+        planSubscribe: "",
+        profile: ""
+
+      })
+      localStorage.removeItem("userInfo");
       navigate('/');
     }
   }
