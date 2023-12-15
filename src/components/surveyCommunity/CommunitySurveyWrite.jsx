@@ -69,7 +69,6 @@ export default function CommunityPost() {
   }, [answers]);
 
   useEffect(() => {
-    login();
     call("/s-community/survey/1", "GET")
       .then((data) => {
         setSurvey(data);

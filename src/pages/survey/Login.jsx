@@ -21,7 +21,7 @@ export async function call(api, method, request) {
     }
 
     // token 추가
-    const accessToken = localStorage.getItem("ACCESS_TOKEN");
+    const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       config.headers.Authorization = "Bearer " + accessToken;
     }
@@ -32,19 +32,3 @@ export async function call(api, method, request) {
     throw error;
   }
 }
-
-export const login = () => {
-  const loginData = {
-    email: "404444@naver.com",
-    password: "qkrthdud6032!",
-  };
-
-  call("/login", "POST", loginData)
-    .then((data) => {
-      localStorage.setItem("ACCESS_TOKEN", data.token);
-      localStorage.setItem("REFRESH_TOKEN", data.refreshToken);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-};

@@ -41,9 +41,9 @@ export default function CreateScoreSurveyPage({
 
   const [pass, setPass] = useState(false);
 
-  useEffect(() => {
-    login();
-  }, []);
+  // useEffect(() => {
+  //   login();
+  // }, []);
 
   useEffect(() => {
     console.log(questions);

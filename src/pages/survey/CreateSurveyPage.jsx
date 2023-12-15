@@ -38,9 +38,9 @@ export default function CreateSurveyPage({
     },
   ]);
 
-  useEffect(() => {
-    login();
-  }, []);
+  // useEffect(() => {
+  //   login();
+  // }, []);
 
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
