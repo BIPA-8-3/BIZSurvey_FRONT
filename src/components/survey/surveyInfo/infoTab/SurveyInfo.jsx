@@ -36,15 +36,17 @@ export default function SurveyInfo() {
         <div className={style.wrapButton}>
           <div></div>
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "#243579",
-                height: "36.99px",
-              }}
-            >
-              업로드
-            </Button>
+            <Link to={"/surveyCommunityWrite"} state={{ surveyId: surveyId }}>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "#243579",
+                  height: "36.99px",
+                }}
+              >
+                업로드
+              </Button>
+            </Link>
             <Button
               variant="contained"
               sx={{
