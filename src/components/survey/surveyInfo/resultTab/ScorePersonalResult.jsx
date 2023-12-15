@@ -12,7 +12,7 @@ import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import ScoreResultOption from "./personalOption/ScoreResultOption";
 import style from "../../../../style/survey/ScorePersonalResult.module.css";
 
-export default function ScorePersonalResult({ postId }) {
+export default function ScorePersonalResult({ sharedId, sharedType }) {
   const { survey } = useContext(SurveyContext);
   const { surveyId, questions, ...other } = survey;
 
@@ -58,7 +58,7 @@ export default function ScorePersonalResult({ postId }) {
   useEffect(() => {
     // 설문 게시물 참가자 목록
     if (nickname !== 0) {
-      call(`/survey/result/score/${surveyId}/${postId}/${nickname}`, "GET")
+      call(`/survey/result/score/${surveyId}/${sharedId}/${nickname}`, "GET")
         .then((data) => {
           console.log("여기");
           handleMergeAnswers(data, (newData) => {
@@ -70,8 +70,8 @@ export default function ScorePersonalResult({ postId }) {
   }, [nickname]);
 
   useEffect(() => {
-    if (postId !== "0") {
-      call(`/survey/result/userList/${surveyId}/${postId}`, "GET")
+    if (sharedId !== 0) {
+      call(`/survey/result/userList/${surveyId}/${sharedId}`, "GET")
         .then((data) => {
           setUserList(data);
         })
@@ -80,7 +80,7 @@ export default function ScorePersonalResult({ postId }) {
         });
     } else {
     }
-  }, [postId]);
+  }, [sharedId]);
 
   const handleSetUser = (nick) => {
     setNickname(nick);
@@ -93,13 +93,10 @@ export default function ScorePersonalResult({ postId }) {
     let totalGetScore = 0;
 
     questions.map((question) => {
-      const userAnswer = userAnswers.find(
-        (ans) => ans.questionId === question.questionId
-      );
+      const userAnswer = userAnswers.find((ans) => ans.questionId === question.questionId);
 
       const updateAnswer = question.answers.map((ans) => {
-        const isUserAnswer =
-          userAnswer && userAnswer.userAnswer.includes(ans.surveyAnswer);
+        const isUserAnswer = userAnswer && userAnswer.userAnswer.includes(ans.surveyAnswer);
 
         return {
           answer: ans.surveyAnswer,
@@ -108,12 +105,9 @@ export default function ScorePersonalResult({ postId }) {
       });
 
       const hasNoCorrect = !updateAnswer.some((ans) => ans.correct === "NO");
-      const hasAtLeastOneYes = updateAnswer.some(
-        (ans) => ans.correct === "YES"
-      );
+      const hasAtLeastOneYes = updateAnswer.some((ans) => ans.correct === "YES");
 
-      const questionGetScore =
-        hasNoCorrect && hasAtLeastOneYes ? question.score : 0;
+      const questionGetScore = hasNoCorrect && hasAtLeastOneYes ? question.score : 0;
 
       result.push({
         questionId: question.questionId,
@@ -135,7 +129,7 @@ export default function ScorePersonalResult({ postId }) {
     callback(result);
   };
 
-  if (postId === "0") {
+  if (sharedId === "0") {
     return (
       <>
         <div className={style.selectPost}>
@@ -183,11 +177,7 @@ export default function ScorePersonalResult({ postId }) {
                     //     answer.surveyAnswer
                     //   )}
                     // />
-                    <ScoreResultOption
-                      key={index}
-                      text={answer.answer}
-                      correct={answer.correct}
-                    />
+                    <ScoreResultOption key={index} text={answer.answer} correct={answer.correct} />
                   ))}
                 </>
                 {/* // ) : (

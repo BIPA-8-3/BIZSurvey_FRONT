@@ -32,6 +32,17 @@ const acceptInviteSSE = (workspaceId) => {
 
 
 // 일반 api
+// 공유 API
+const shareURI = '/workspace/shared-survey';
+
+// 연락처 API
+const contactURI = '/workspace/contact';
+
+
+// 관리자 API
+const adminURI = '/workspace/admin';
+
+
 const instance = axios.create({
     headers: {
         "Content-Type": "application/json",
@@ -121,8 +132,7 @@ export const removeSurvey = (surveyId) => {
     return call(`/survey/${surveyId}`, "DELETE");
 }
 
-// 연락처 API
-const contactURI = '/workspace/contact';
+
 
 
 // 연락처 등록
@@ -140,9 +150,6 @@ export const removeContact = (id) => {
     return call(`${contactURI}/${id}`, "DELETE");
 }
 
-// 관리자 API
-const adminURI = '/workspace/admin';
-
 // 관리자 조회
 export const getAdminList = (workspaceId) => {
     return call(`${adminURI}/list/${workspaceId}`, "GET");
@@ -158,8 +165,7 @@ export const removeAdmin = (id) => {
     return call(`${adminURI}/${id}`, "DELETE");
 }
 
-// 공유 API
-const shareURI = '/workspace/shared-survey';
+
 
 // 공유 실행
 export const shareSurvey = (sharedRequest) => {
@@ -176,21 +182,6 @@ export const getSharedContactList = (id) => {
     return call(`${shareURI}/survey/${id}`, "GET");
 }
 
-// // 관리자 초대 코드로 입장 시 유효성 체크 및 페이지 이동
-// export const inviteLinkVerification = (token) => {
-//     return call(`${adminURI}/invite/${token}`, "GET");
-// }
-
-// // 초대코드로 입장해서 로그인 완료했을때
-// export const acceptInvite = (token) => {
-//     const request = {
-//         userId: null,
-//         token: token,
-//     }
-//     return call(`${adminURI}`, "POST", request);
-// }
-
-
 // 설문지 이름 수정
 export const modifySurveyName = (id, title) => {
     const request = {
@@ -198,4 +189,9 @@ export const modifySurveyName = (id, title) => {
         title: title,
     }
     return call(`/workspace/survey`, "PATCH", request);
+}
+
+// 개인 외부 집계
+export const getPersonalResult = (sharedListId) => {
+    return call(`${shareURI}/personal/result/${sharedListId}`, "GET");
 }
