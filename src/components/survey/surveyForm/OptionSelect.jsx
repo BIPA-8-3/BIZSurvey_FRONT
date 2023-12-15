@@ -32,9 +32,9 @@ export default function OptionSelect({ option, setOption, idx }) {
         inputProps={{ "aria-label": "Without label" }}
         sx={menuItemStyle}
       >
-        <MenuItem value="" sx={{ fontSize: 12 }}>
+        {/* <MenuItem value="" sx={{ fontSize: 12 }}>
           <p style={{ fontSize: "13px" }}>옵션</p>
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem value={"SINGLE_CHOICE"} sx={{ width: 150, padding: 1.5 }}>
           <div className={style.singleChoiceIcon}>
             <IconWithText
