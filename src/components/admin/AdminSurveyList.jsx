@@ -68,10 +68,10 @@ function AdminSurveyList() {
           <p style={{marginLeft:'5px'}}>설문커뮤니티조회</p>
         </p>
       </div>
-      <div className={style.adminSearchWrap}>
+      {/* <div className={style.adminSearchWrap}>
         <input type='text'/>
         <button>검색</button>
-      </div>
+      </div> */}
       <table className={style.adminTable}>
         <thead>
             <tr>

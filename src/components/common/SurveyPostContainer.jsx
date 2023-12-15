@@ -36,29 +36,25 @@ function SurveyPostContainer() {
   });
 
   const dataFetch = () => {
-    console.log("데이터 라스트" + data.last);
 
-    let plag = true;
-
-    if (data.last) {
-      plag = false;
-    }
-
-    if (plag) {
+      console.log('토탈 페이지스'+ data.totalPages)
+    
+      if(page<data.totalPages || data.totalPages === undefined){
       axios
-        .get(`http://localhost:8080/s-community?page=${page}`)
-        .then((res) => {
-          setData((prevData) => {
-            return {
-              ...res.data,
-              content: [...prevData.content, ...res.data.content],
-            };
-          });
-          setPage((prevPage) => prevPage + 1);
-        })
-        .catch((err) => {
-          console.log(err);
+      .get(`http://localhost:8080/s-community?page=${page}`)
+      .then((res) => {
+        setData((prevData) => {
+          return {
+            ...res.data,
+            content: [...prevData.content, ...res.data.content],
+          };
         });
+         setPage((prevPage) => prevPage + 1);
+     })
+      .catch((err) => {
+        console.log(err);
+     });
+
     }
   };
 
