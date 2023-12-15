@@ -75,6 +75,8 @@ export default function ResultView() {
         content={survey.content}
       />
 
+      <div>엑셀 다운로드</div>
+
       {/* 질문과 옵션들  */}
 
       {isScore ? (

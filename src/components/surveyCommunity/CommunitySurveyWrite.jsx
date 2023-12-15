@@ -73,7 +73,7 @@ export default function CommunityPost() {
   useEffect(() => {
     login();
     // call("/s-community/survey/1", "GET")
-    call("/survey/6", "GET")
+    call("/survey/11", "GET")
       .then((data) => {
         setSurvey(data);
       })
@@ -96,7 +96,9 @@ export default function CommunityPost() {
       // 질문을 찾았을떄?
       if (existingAnswer) {
         return pre.map((ans) =>
-          ans.questionId === questionId ? { ...ans, answer: [...userAnswer], url: url } : ans
+          ans.questionId === questionId
+            ? { ...ans, answer: [...userAnswer], url: url }
+            : ans
         );
       } else {
         return [
@@ -126,7 +128,9 @@ export default function CommunityPost() {
     else {
       const result = answers.filter(
         (answer) =>
-          answer.questionId !== 0 && answer.answer.length > 0 && !answer.answer.includes("")
+          answer.questionId !== 0 &&
+          answer.answer.length > 0 &&
+          !answer.answer.includes("")
       );
 
       try {
@@ -147,9 +151,16 @@ export default function CommunityPost() {
 
     survey.questions.map((question, index) => {
       if (question.isRequired) {
-        const match = answers.find((ans) => ans.questionId === question.questionId);
+        const match = answers.find(
+          (ans) => ans.questionId === question.questionId
+        );
 
-        if (!match || !match.answer || match.answer.length < 1 || match.answer[0] === "") {
+        if (
+          !match ||
+          !match.answer ||
+          match.answer.length < 1 ||
+          match.answer[0] === ""
+        ) {
           newPassArray[index] = false;
           result = false;
         }
@@ -169,7 +180,10 @@ export default function CommunityPost() {
             <h1>21년도 상반기 설문조사</h1>
             <p style={{ display: "flex" }}>
               <p style={{ textAlign: "center" }}>
-                <div className={style.profil} style={{ textAlign: "center" }}></div>
+                <div
+                  className={style.profil}
+                  style={{ textAlign: "center" }}
+                ></div>
               </p>
               <div style={{ marginTop: "16px" }}>
                 <span>COMMUNITY</span>
@@ -180,7 +194,11 @@ export default function CommunityPost() {
         <div className={style.content}>
           {/* 설문지 영역  */}
 
-          <SurveyForm survey={survey} handleSetAnswer={handleSetAnswer} pass={pass} />
+          <SurveyForm
+            survey={survey}
+            handleSetAnswer={handleSetAnswer}
+            pass={pass}
+          />
 
           <div className={style.surveyBtnWrap}>
             <Button
