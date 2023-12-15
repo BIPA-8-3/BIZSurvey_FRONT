@@ -76,10 +76,7 @@ export default function CommunityPost() {
    
 
     <div className={`fade-in ${fadeIn ? 'active' : ''}`}>
-        {/* <div className={style.titleWrap}>
-            <h1 className='textCenter title textBold'>COMMUNITY</h1>
-            <p className='textCenter subTitle'>쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
-        </div> */}
+    
         <div className={style.contentWrap} style={{marginTop:"170px"}}>
             <div style={{backgroundColor: 'rgba(209, 232, 248, 0.1)'}}>
                 <div className={style.title}>
@@ -120,21 +117,8 @@ export default function CommunityPost() {
                 </p>
                 
             </div>
-            <Comment props={postId} />
+            <Comment props={{postId: postId, type: 'co' }} />
             <ParentsComment props={{ postId: postId, commentList: data.commentList }} />
-            
-
-            
-            {/* <ChildCommentForm />
-            <ChildComment />
-            <ChildComment />
-            <ParentsComment />
-            <ChildComment />
-            <ParentsComment />
-            <ChildComment />
-            <ParentsComment />
-            <ParentsComment />
-            <ChildCommentForm /> */}
         </div>
         <div style={{textAlign:'center'}}>
             <Link to={'/community'}>

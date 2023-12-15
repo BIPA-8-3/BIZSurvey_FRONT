@@ -10,7 +10,10 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function Comment({props}) {
-  let postId = props;
+  let postId = props.postId;
+  let type = props.type;
+  console.log("게시물 타입이야 : " + type)
+
   const navigate = useNavigate();
 
   const [comment, setComment] = useState('');
@@ -21,12 +24,20 @@ export default function Comment({props}) {
 
   const handleSaveClick = async () => {
     try {
-      const response = await axios.post(`http://localhost:8080/community/${props}/createComment`, {
+      const response = await axios.post(`http://localhost:8080/community/${postId}/createComment`, {
         content: comment,
       });
       console.log('Comment created:', response.data);
       window.location.reload();
-      navigate('/communityDetail', { state: { postId: postId } });
+      if(type === 'sc'){
+        navigate('/surveyCommunityDetail', { state: { postId: postId } });
+      }
+
+      else if(type === 'co'){
+        navigate('/communityDetail', { state: { postId: postId } });
+      }
+
+      
     } catch (error) {
       console.error('Error creating comment:', error);
     }

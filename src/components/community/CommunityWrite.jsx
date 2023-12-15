@@ -145,8 +145,6 @@ export default function CommunityWrite() {
         console.error("생성 실패", error)
       })
 
-
-
   };
 
 

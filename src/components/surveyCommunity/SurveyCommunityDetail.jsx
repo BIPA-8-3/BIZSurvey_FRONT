@@ -30,9 +30,10 @@ export default function CommunityPost() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/community/showPost/" + postId
+          "http://localhost:8080/s-community/showPost/" + postId
         );
-        console.log("리스폰스 : " + response);
+        console.log("리스폰스 : " + JSON.stringify(response.data));
+
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -138,14 +139,21 @@ export default function CommunityPost() {
             <div>
               조회수 <span style={{ fontWeight: "bold" }}>{data.count}</span>
               <span style={{ color: "#ddd" }}> | </span>
-              댓글 <span style={{ fontWeight: "bold" }}>13</span>
+              댓글{" "}
+              <span style={{ fontWeight: "bold" }}>{data.commentSize}</span>
             </div>
             <div style={{ cursor: "pointer", fontSize: "14px" }}>신고</div>
           </div>
         </div>
+
+        <Comment props={{ postId: postId, type: "sc" }} />
+        <ParentsComment
+          props={{ postId: postId, commentList: data.commentList, type: "sc" }}
+        />
       </div>
+
       <div style={{ textAlign: "center" }}>
-        <Link to={"/community"}>
+        <Link to={"/surveyPost"}>
           <Button
             variant="contained"
             href="#contained-buttons"

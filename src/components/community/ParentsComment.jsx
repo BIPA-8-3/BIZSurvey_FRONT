@@ -2,7 +2,6 @@
 import style from"../../style/community/ParentsComment.module.css"
 import '../../style/Common.css'
 import logo from "../../assets/img/avatar.png"
-import ChildComment from './ChildComment';
 import ChildCommentForm from './ChildCommentForm';
 import React, { useState } from 'react';
 
@@ -10,6 +9,9 @@ import React, { useState } from 'react';
 const ParentsComment = ({props}) => {
   const data = props.commentList;
   let postId = props.postId;
+  let type = props.type;
+
+  console.log("서베이쪽에서 넘어온 게시물 ID야 : " +postId)
 
 
   const [showChildCommentForm, setShowChildCommentForm] = useState({});
@@ -21,7 +23,7 @@ const ParentsComment = ({props}) => {
       return (
         <div>
           {childCommentList.map((childItem) => (
-            <div key={childItem.commentId} className={style.commentWrap}>
+            <div key={childItem.commentId} className={style.commentWrap} >
               <div className={style.writeWrap}>
                 <div className={style.writer}>
                  <div>
@@ -56,7 +58,7 @@ const ParentsComment = ({props}) => {
 
     if (showChildCommentForm[commentId]) {
       alert(commentId+', '+postId)
-      return <ChildCommentForm props={{postId:postId, commentId:commentId}}/>;
+      return <ChildCommentForm props={{postId:postId, commentId:commentId, type: type}}/>;
     }
     return null;
   };
