@@ -48,6 +48,12 @@ export default function ScoreQuestion({
     }
   };
 
+  const handleScoreBlur = (text) => {
+    if (isNaN(text) || parseInt(text) < 0 || text === "") {
+      changeScore(index, 0);
+    }
+  };
+
   return (
     <>
       <div className={style.scoreContainer}>
@@ -127,7 +133,8 @@ export default function ScoreQuestion({
               // pattern="[0-9]+"
               value={score}
               className={style.scoreInput}
-              onChange={(e) => changeScore(index, parseInt(e.target.value, 10))}
+              onChange={(e) => changeScore(index, e.target.value)}
+              onBlur={(e) => handleScoreBlur(e.target.value)}
             />
           </span>
 

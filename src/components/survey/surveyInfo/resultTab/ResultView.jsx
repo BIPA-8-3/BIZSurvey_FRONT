@@ -9,26 +9,40 @@ import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import { call } from "../../../../pages/survey/Login";
 import ScorePostResult from "./ScorePostResult";
 import ScorePersonalResult from "./ScorePersonalResult";
+import { getSharedSurveyHistory } from "../../../../pages/workspace/api";
 
 export default function ResultView() {
   const { survey } = useContext(SurveyContext);
 
   // 게시물 통계 , 사용자 응답 구별
   const [isPersonal, setIsPersonal] = useState(0);
-  const [postId, setPostId] = useState("0");
-  const [post, setPost] = useState([
+  const [sharedId, setSharedId] = useState(0);
+  const [sharedUnit, setSharedUnit] = useState([
     // {
-    //   postId: 0,
+    //   sharedId: 0,
     //   title: "",
     // },
   ]);
   const [isScore, setIsScore] = useState(false);
+  // 외부 / 커뮤니티 구분
+  const [sharedType, setSharedType] = useState("INTERNAL");
 
   useEffect(() => {
-    call("/survey/result/postList/" + survey.surveyId, "GET")
-      .then((data) => setPost(data))
-      .catch((error) => console.log(error));
-  }, []);
+    setSharedId(0);
+    setSharedUnit([]);
+    if (sharedType === "INTERNAL") {
+      call("/survey/result/postList/" + survey.surveyId, "GET")
+        .then((data) => setSharedUnit(data))
+        .catch((error) => console.log(error));
+    } else {
+      getSharedSurveyHistory(survey.surveyId)
+        .then((data) => {
+          console.log(data);
+          setSharedUnit(data);
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [sharedType]);
 
   useEffect(() => {
     if (survey.surveyType === "SCORE") {
@@ -51,17 +65,15 @@ export default function ResultView() {
     setIsPersonal(num);
   };
 
-  // 외부 커뮤니티 구분
-  const [sharedType, setSharedType] = useState("INTERNAL");
   return (
     <>
       {/* 응답 결과 탭의 모든 컴포넌트 집합  */}
 
-      {/* 게시물 선택  */}
+      {/* 게시물 선택 & 외부 및 커뮤니티 구분*/}
       <SurveyPostSelect
-        postInfo={post}
-        postId={postId}
-        setPostId={setPostId}
+        sharedUnit={sharedUnit}
+        sharedId={sharedId}
+        setSharedId={setSharedId}
         sharedType={sharedType}
         setSharedType={setSharedType}
       />
@@ -81,14 +93,14 @@ export default function ResultView() {
 
       {isScore ? (
         isPersonal ? (
-          <ScorePersonalResult postId={postId} />
+          <ScorePersonalResult sharedId={sharedId} sharedType={sharedType} />
         ) : (
-          <ScorePostResult postId={postId} />
+          <ScorePostResult sharedId={sharedId} sharedType={sharedType} />
         )
       ) : isPersonal ? (
-        <PersonalResult postId={postId} />
+        <PersonalResult sharedId={sharedId} sharedType={sharedType} />
       ) : (
-        <PostResult postId={postId} />
+        <PostResult sharedId={sharedId} sharedType={sharedType} />
       )}
     </>
   );

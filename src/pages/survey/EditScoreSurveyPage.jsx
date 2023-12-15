@@ -260,13 +260,11 @@ export default function EditScoreSurveyPage() {
   };
 
   const handleChangeScore = (qid, score) => {
-    if (typeof score !== "number") {
-      return;
-    }
-
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === qid ? { ...question, score: score } : question
+        index === qid
+          ? { ...question, score: isNaN(score) ? score : parseInt(score, 10) }
+          : question
       );
       return result;
     });

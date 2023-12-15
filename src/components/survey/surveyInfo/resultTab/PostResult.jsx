@@ -11,9 +11,8 @@ import { call } from "../../../../pages/survey/Login";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
-import SurveyQuestion from "../../../surveyCommunity/survey/SurveyQuestion";
 
-export default function PostResult({ postId }) {
+export default function PostResult({ sharedType, sharedId }) {
   const { survey } = useContext(SurveyContext);
 
   // get data
@@ -49,10 +48,10 @@ export default function PostResult({ postId }) {
   const [processed, setProcessed] = useState([]);
 
   useEffect(() => {
-    if (postId !== "0") {
+    if (sharedId) {
       handleGetData();
     }
-  }, [postId]);
+  }, [sharedId]);
 
   useEffect(() => {
     handleProcessData();
@@ -65,13 +64,19 @@ export default function PostResult({ postId }) {
 
   const handleGetData = async () => {
     // 데이터 받아오는 곳
-    call("/survey/result/" + postId, "GET")
-      .then((data) => {
-        setResult(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    switch (sharedType) {
+      case "INTERNAL":
+        call("/survey/result/" + sharedId, "GET")
+          .then((data) => {
+            setResult(data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        break;
+      case "EXTERNAL":
+        break;
+    }
   };
 
   const handleProcessData = () => {
@@ -85,10 +90,7 @@ export default function PostResult({ postId }) {
         title: data.title,
         data: [],
       };
-      if (
-        data.questionType === "SINGLE_CHOICE" ||
-        data.questionType === "MULTIPLE_CHOICE"
-      ) {
+      if (data.questionType === "SINGLE_CHOICE" || data.questionType === "MULTIPLE_CHOICE") {
         chartResult.data = handleChartData(data.answers);
       } else {
         chartResult.data = handleTextData(data.answers);
@@ -138,7 +140,7 @@ export default function PostResult({ postId }) {
     return textArr;
   };
 
-  if (postId === "0") {
+  if (sharedId === "0") {
     return (
       <>
         <div
@@ -164,9 +166,7 @@ export default function PostResult({ postId }) {
   return (
     <>
       {survey.questions.map((question, index) => {
-        const matchingQuestion = processed.find(
-          (pro) => pro.questionId === question.questionId
-        );
+        const matchingQuestion = processed.find((pro) => pro.questionId === question.questionId);
 
         return (
           <QuestionBox key={index}>
@@ -178,8 +178,7 @@ export default function PostResult({ postId }) {
                     matchingQuestion.type === "MULTIPLE_CHOICE") && (
                     <Chart chartData={matchingQuestion.data} />
                   )}
-                  {(matchingQuestion.type === "TEXT" ||
-                    matchingQuestion.type === "CALENDAR") && (
+                  {(matchingQuestion.type === "TEXT" || matchingQuestion.type === "CALENDAR") && (
                     <TextList values={matchingQuestion.data} />
                   )}
                   {matchingQuestion.type === "FILE" && (
