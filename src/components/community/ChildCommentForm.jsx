@@ -11,6 +11,7 @@ export default function ChildCommentForm({props}) {
 
     let getCommentId = props.commentId;
     let getPostId = props.postId;
+    let type = props.type;
     const navigate = useNavigate();
 
     const [childComment, setChildComment] = useState('');
@@ -26,7 +27,13 @@ export default function ChildCommentForm({props}) {
           });
           console.log('Comment created:', response.data);
           window.location.reload();
-          navigate('/communityDetail', { state: { postId: getPostId } });
+          if(type === 'sc'){
+            navigate('/surveyCommunityDetail', { state: { postId: getPostId } });
+          }
+    
+          else if(type === 'co'){
+            navigate('/communityDetail', { state: { postId: getPostId } });
+          }
         } catch (error) {
           console.error('Error creating comment:', error);
         }
