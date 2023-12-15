@@ -4,7 +4,7 @@ import { Divider, Paper, Checkbox, Button, Box } from "@mui/material";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import style from "../../style/community/CommunityPost.module.css";
+
 
 const SurveyListModal = ({ props }) => {
   const data = props.list;
@@ -46,7 +46,7 @@ const SurveyListModal = ({ props }) => {
 
   return (
     <div>
-      {/* <button onClick={handleOpenModal}>{modalTitle}</button> */}
+      
       <button onClick={handleOpenModal}>{modalTitle}</button>
       <BizModal
         isOpen={modalOpen}

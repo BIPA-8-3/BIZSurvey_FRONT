@@ -11,32 +11,31 @@ import ParentsComment from "../community/ParentsComment";
 import { useState, useEffect } from "react";
 import ChildCommentForm from "../community/ChildCommentForm";
 import ChildComment from "../community/ChildComment";
-import Loader from "../../pages/loader/Loader";
-import axios from "axios";
+import Loader from "../../pages/loader/Loader"
+import axios from 'axios'
+import BizModal from "../common/BizModal";
+import ClaimReasonModal from "../common/ClaimReasonModal";
+
 
 export default function CommunityPost() {
   const fadeIn = useFadeIn();
   const [isAvailable, setIsAvailable] = useState(false);
   const location = useLocation();
   let postId = location.state.postId;
-
-  console.log("넘어오는지 확인 : " + postId);
-
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   useEffect(() => {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/s-community/showPost/" + postId
-        );
-        console.log("리스폰스 : " + JSON.stringify(response.data));
-
+        const response = await axios.get('http://localhost:8080/s-community/showPost/'+postId);
+        console.log("리스폰스 : "+JSON.stringify(response.data));
         setData(response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       } finally {
         setLoading(false); // 데이터 로딩이 끝났음을 표시
       }
@@ -46,14 +45,27 @@ export default function CommunityPost() {
   }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
 
   if (loading) {
-    return (
-      <>
-        <Loader />
-      </>
-    ); // 데이터 로딩 중에는 로딩 표시
+    return <>
+      <Loader />
+    </>; // 데이터 로딩 중에는 로딩 표시
   }
-  console.log("데이타" + data);
+  console.log("데이타"+data)
   console.log(postId);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSelectReasons = (selectedReasons) => {
+    // 선택된 이유들을 사용하거나 필요에 따라 다른 작업을 수행합니다.
+    console.log("Selected Reasons:", selectedReasons);
+  };
+
+
 
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
@@ -80,7 +92,9 @@ export default function CommunityPost() {
           </div>
         </div>
         <div className={style.content}>
-          <p>{data.content}</p>
+          <p>
+            {data.content}
+          </p>
           <div className={style.surveyBtnWrap}>
             <Link to={"/communitySurveyWrite"}>
               {isAvailable ? (
@@ -129,7 +143,7 @@ export default function CommunityPost() {
               )}
             </Link>
           </div>
-          <div
+          <p
             style={{
               marginTop: "100px",
               display: "flex",
@@ -139,19 +153,25 @@ export default function CommunityPost() {
             <div>
               조회수 <span style={{ fontWeight: "bold" }}>{data.count}</span>
               <span style={{ color: "#ddd" }}> | </span>
-              댓글{" "}
-              <span style={{ fontWeight: "bold" }}>{data.commentSize}</span>
+              댓글 <span style={{ fontWeight: "bold" }}>{data.commentSize}</span>
             </div>
-            <div style={{ cursor: "pointer", fontSize: "14px" }}>신고</div>
-          </div>
+            <div style={{ cursor: "pointer", fontSize: "14px" }} onClick={handleOpenModal}>신고</div>
+            {/* 모달 */}
+            {isModalOpen && (
+              <ClaimReasonModal
+                onSelect={handleSelectReasons}
+                onClose={handleCloseModal}
+                isModalOpen={isModalOpen}
+                props={'post'}
+                id={postId}
+              />
+            )}
+          </p>
         </div>
-
-        <Comment props={{ postId: postId, type: "sc" }} />
-        <ParentsComment
-          props={{ postId: postId, commentList: data.commentList, type: "sc" }}
-        />
+        <Comment props={{postId: postId, type : 'sc'}} />
+        <ParentsComment props={{ postId: postId, commentList: data.commentList, type : 'sc' }} />
       </div>
-
+      
       <div style={{ textAlign: "center" }}>
         <Link to={"/surveyPost"}>
           <Button
