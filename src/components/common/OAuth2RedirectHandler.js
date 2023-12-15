@@ -1,10 +1,15 @@
 // Header.jsx
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from "axios";
 import CircularProgress from '@mui/material/CircularProgress';
+import useApiCall from "../api/ApiCall";
+import { LoginContext, LoginFunContext } from "../../App";
 
 const OAuth2RedirectHandler = () => {
+    const { call } = useApiCall();
+    const userInfo = useContext(LoginContext)
+    const {setUserInfo} = useContext(LoginFunContext)
     const [authorization, setAuthorization] = useState(null);
 
     const navigate = useNavigate();
@@ -41,6 +46,14 @@ const OAuth2RedirectHandler = () => {
             
                     saveAccessTokenToLocalStorage(authorization);
                     saveRefreshTokenToLocalStorage(refreshAuthorization);
+
+                    try {
+                      const data = await call("/user/info", "GET");
+                      console.log(data);
+                      setUserInfo(data);
+                    } catch (error) {
+                      console.error("사용자 정보 가져오기 실패:", error);
+                    }
 
                     navigate('/');
                 }

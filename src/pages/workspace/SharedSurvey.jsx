@@ -31,44 +31,38 @@ export default function SharedSurvey() {
         })
         .catch((error) => {
           console.log(error);
+          console.log(error.response);
         });
     }
   }, []);
 
-  // [커뮤니티 답변 DTO]  사용자 입력 데이터 [수정 필요]
+  // [커뮤니티 답변 DTO]  사용자 입력 데이터 [수정 필요] | 햇음
   const [answers, setAnswers] = useState([
     {
-      surveyId: 0,
-      anssharedListId: 0,
-      sharedAnswerList: [
-        {
-          questionId: 0,
-          surveyAnswer: "",
-          answerType: "",
-          url: "",
-        },
-      ],
+      questionId: 0,
+      surveyAnswer: [],
+      answerType: "",
+      url: "",
     },
   ]);
-
-  // 답변 설정 ( SurveyQuestion 사용함 ) [ 나의 구조에 맞구 수정 필요 ]
+  // 답변 설정 ( SurveyQuestion 사용함 )
   const handleSetAnswer = (questionId, userAnswer, answerType, url) => {
     // 현재 값의 복사 값으로 맵핑 진행
     setAnswers((pre) => {
       // 기존 Answers의 답변과 사용자가 체크한 답변을 비교
       const existingAnswer = pre.find((ans) => ans.questionId === questionId);
 
-      // 질문을 찾았을떄?
+      // 질문을 찾았을떄
       if (existingAnswer) {
         return pre.map((ans) =>
-          ans.questionId === questionId ? { ...ans, answer: [...userAnswer], url: url } : ans
+          ans.questionId === questionId ? { ...ans, surveyAnswer: [...userAnswer], url: url } : ans
         );
       } else {
         return [
           ...pre,
           {
             questionId: questionId,
-            answer: [...userAnswer],
+            surveyAnswer: [...userAnswer],
             answerType: answerType,
             url: url,
           },
@@ -77,7 +71,7 @@ export default function SharedSurvey() {
     });
   };
 
-  // 응답 저장 [ 수정 필요]
+  // 응답 저장 [ 수정 필요 ] |
   const handleSubmitAnswer = async () => {
     // 필수 체크 검사
     const res = handleCheckAnswer();
@@ -89,20 +83,28 @@ export default function SharedSurvey() {
     }
     // 필수 통과
     else {
-      const result = answers.filter(
+      let result = answers.filter(
         (answer) =>
-          answer.questionId !== 0 && answer.answer.length > 0 && !answer.answer.includes("")
+          answer.questionId !== 0 &&
+          answer.surveyAnswer.length > 0 &&
+          !answer.surveyAnswer.includes("")
       );
 
       try {
-        const response = await call("/s-community/survey/1", "POST", result);
-        console.log(response);
-        alert(response);
-        navigate("/survey/participate/external", {
+        result = {
+          surveyId: sharedSurveyId,
+          token: token,
+          sharedAnswerList: [...result],
+        };
+
+        const response = await call("/workspace/shared-survey/survey", "POST", result);
+        navigate("/authorization/result/external", {
           state: { message: "설문 참여를 완료하였습니다." },
         });
       } catch (error) {
-        navigate("/survey/participate/external", {
+        console.log("error", error);
+        console.log("error", error.response);
+        navigate("/authorization/result/external", {
           state: { message: error },
         });
       }
@@ -113,14 +115,21 @@ export default function SharedSurvey() {
   const handleCheckAnswer = () => {
     let result = true;
     let newPassArray = Array(survey.questions.length).fill(true);
-
+    console.log("survey", survey);
     survey.questions.map((question, index) => {
       if (question.isRequired) {
         const match = answers.find((ans) => ans.questionId === question.questionId);
 
-        if (!match || !match.answer || match.answer.length < 1 || match.answer[0] === "") {
+        if (
+          !match ||
+          !match.surveyAnswer ||
+          match.surveyAnswer.length < 1 ||
+          match.surveyAnswer[0] === ""
+        ) {
           newPassArray[index] = false;
-          result = false;
+          setPass(newPassArray);
+          console.log(match);
+          return false;
         }
       }
     });
@@ -140,7 +149,14 @@ export default function SharedSurvey() {
           type={"EXTERNAL"}
         />
         <div className={style.surveyBtnWrap}>
-          <Button variant="contained">제출</Button>
+          <Button
+            variant="contained"
+            onClick={(e) => {
+              handleSubmitAnswer();
+            }}
+          >
+            제출
+          </Button>
           <Button>양식 초기화</Button>
         </div>
       </div>
