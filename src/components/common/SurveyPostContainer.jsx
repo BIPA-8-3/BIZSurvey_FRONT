@@ -7,13 +7,14 @@ import SurveyCard from "./SurveyCard";
 import useFadeIn from "../../style/useFadeIn";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useInView } from "react-intersection-observer";
 import axios from "axios";
 import Loader from "../../pages/loader/Loader";
 import { useNavigate } from "react-router-dom";
 import SCommunitySearch from "./SCommunitySearch";
 import { acceptInvite } from "../../pages/workspace/authenticationApi";
+import { LoginContext } from "../../App";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -23,9 +24,14 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+
 function SurveyPostContainer() {
+
+  const userInfo = useContext(LoginContext);
+
   //useEffct 수정함
   useEffect(() => {
+    console.log('userInfo ', userInfo);
     acceptInvite();
   }, []);
 
