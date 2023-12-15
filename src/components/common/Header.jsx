@@ -6,6 +6,10 @@ import { IoMenu } from "react-icons/io5";
 import avatar from '../../assets/img/avatar.png';
 import { Link, useNavigate } from "react-router-dom";
 import { LoginContext, LoginFunContext } from "../../App";
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+
 
 const navItems = ['설문 참여', '플랜', '커뮤니티', '워크스페이스', 'Sign In'];
 
@@ -16,7 +20,7 @@ function Header() {
   const bestRef = useRef();
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem('accessToken'); 
-
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
   useEffect(() => {
     console.log("userInfo : " + userInfo.email)
     const closeMenu = () => {
@@ -74,6 +78,15 @@ function Header() {
       navigate('/');
     }
   }
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
   return (
     <div id={style.mainHeader}>
       <div id={style.headerItemWrap}>
@@ -86,11 +99,36 @@ function Header() {
             <Link to={'/workspace'}><li>워크스페이스</li></Link>
             {isLoggedIn ? (
               // 로그인 상태일 때 표시되는 링크
-              <Link onClick={handleLogout}>
+              <Link >
                 <li style={{padding:'0px', paddingLeft:'10px'}}>
-                  <div className={style.photo}>
-                      <img className="" src={avatar} alt="프로필 이미지" />
+                  <div className={style.photo} onClick={handleOpenUserMenu}>
+                      <img className="" src={userInfo.profile ? `https://${userInfo.profile}` : avatar} alt="프로필 이미지" />
                   </div>
+                  <Menu
+                    sx={{ mt: '45px'}}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                  >
+                    <Link to={'/mypage'}>
+                      <MenuItem onClick={handleCloseUserMenu} sx={{width:"150px"}}>
+                        <Typography textAlign="center">마이페이지</Typography>
+                      </MenuItem>
+                    </Link>
+                      <MenuItem onClick={handleLogout}>
+                        <Typography textAlign="center" >로그아웃</Typography>
+                      </MenuItem>
+                  </Menu>
                 </li>
               </Link>
             ) : (
