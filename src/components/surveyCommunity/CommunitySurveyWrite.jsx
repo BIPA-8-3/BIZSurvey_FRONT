@@ -52,7 +52,6 @@ export default function CommunityPost() {
     ],
   });
 
-  // [커뮤니티 답변 DTO]  사용자 입력 데이터
   const [answers, setAnswers] = useState([
     {
       questionId: 0,
@@ -64,11 +63,9 @@ export default function CommunityPost() {
 
   const [pass, setPass] = useState([]);
 
-  // 처음 렌더링 시 조회 및 pass true 처리
   useEffect(() => {
     login();
-    // call("/s-community/survey/1", "GET")
-    call("/survey/6", "GET")
+    call("/s-community/survey/1", "GET")
       .then((data) => {
         setSurvey(data);
       })
@@ -81,14 +78,10 @@ export default function CommunityPost() {
       });
   }, []);
 
-  // 답변 설정 ( SurveyQuestion 사용함 )
   const handleSetAnswer = (questionId, userAnswer, answerType, url) => {
-    // 현재 값의 복사 값으로 맵핑 진행
     setAnswers((pre) => {
-      // 기존 Answers의 답변과 사용자가 체크한 답변을 비교
       const existingAnswer = pre.find((ans) => ans.questionId === questionId);
 
-      // 질문을 찾았을떄?
       if (existingAnswer) {
         return pre.map((ans) =>
           ans.questionId === questionId ? { ...ans, answer: [...userAnswer], url: url } : ans
@@ -107,18 +100,13 @@ export default function CommunityPost() {
     });
   };
 
-  // 응답 저장
   const handleSubmitAnswer = async () => {
-    // 필수 체크 검사
     const res = handleCheckAnswer();
 
-    // 필수 체크에 답을 안했을때
     if (!res) {
       alert("필수 질문에 응답해주세요.");
       return;
-    }
-    // 필수 통과
-    else {
+    } else {
       const result = answers.filter(
         (answer) =>
           answer.questionId !== 0 && answer.answer.length > 0 && !answer.answer.includes("")
@@ -135,7 +123,6 @@ export default function CommunityPost() {
     }
   };
 
-  // 저장 요청 시 실행 메소드, 필수 체크 Temp true로 초기화 후 검사 하는 메소드
   const handleCheckAnswer = () => {
     let result = true;
     let newPassArray = Array(survey.questions.length).fill(true);
