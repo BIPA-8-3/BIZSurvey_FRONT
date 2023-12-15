@@ -25,7 +25,7 @@ export default function EditScoreSurveyPage() {
     surveyId: 0,
     title: "설문지 제목",
     content: "설문지 내용",
-    surveyType: "점수",
+    surveyType: "SCORE",
     questions: [],
   });
 
@@ -41,7 +41,7 @@ export default function EditScoreSurveyPage() {
         {
           step: 0,
           surveyAnswer: "",
-          correct: "오답",
+          correct: "NO",
         },
       ],
     },
@@ -101,7 +101,7 @@ export default function EditScoreSurveyPage() {
 
     const surveyData = {
       ...formData,
-      surveyType: "점수",
+      surveyType: "SCORE",
       questions: undefined, // questions 필드 없애기
       updateQuestions: updateQuestion,
       createQuestions: createQuestion,
@@ -159,16 +159,16 @@ export default function EditScoreSurveyPage() {
         ...pre,
         {
           questionId: 0,
-          surveyQuestion: "",
-          answerType: "",
+          surveyQuestion: "질문",
+          answerType: "MULTIPLE_CHOICE",
           score: 0,
           step: 0,
           isRequired: false,
           answers: [
             {
               step: 0,
-              surveyAnswer: "",
-              correct: "오답",
+              surveyAnswer: "옵션 1",
+              correct: "NO",
             },
           ],
         },
@@ -187,14 +187,14 @@ export default function EditScoreSurveyPage() {
     });
   };
 
-  const handleOption = (id, options) => {
-    setQuestions((pre) => {
-      const result = pre.map((question, index) =>
-        index === id ? { ...question, answers: options } : question
-      );
-      return result;
-    });
-  };
+  // const handleOption = (id, options) => {
+  //   setQuestions((pre) => {
+  //     const result = pre.map((question, index) =>
+  //       index === id ? { ...question, answers: options } : question
+  //     );
+  //     return result;
+  //   });
+  // };
 
   const changeSurveyTitle = (text) => {
     setFormData((pre) => ({ ...pre, title: text }));
@@ -212,7 +212,11 @@ export default function EditScoreSurveyPage() {
             ...question,
             answers: [
               ...question.answers,
-              { step: 0, surveyAnswer: "", correct: "오답" },
+              {
+                step: 0,
+                surveyAnswer: "옵션 " + String(question.answers.length + 1),
+                correct: "NO",
+              },
             ],
           };
           return updatedQuestion;
@@ -256,13 +260,11 @@ export default function EditScoreSurveyPage() {
   };
 
   const handleChangeScore = (qid, score) => {
-    if (typeof score !== "number") {
-      return;
-    }
-
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === qid ? { ...question, score: score } : question
+        index === qid
+          ? { ...question, score: isNaN(score) ? score : parseInt(score, 10) }
+          : question
       );
       return result;
     });

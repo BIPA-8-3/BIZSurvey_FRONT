@@ -10,6 +10,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import { call } from "../../../../pages/survey/Login";
+import { IoArrowBackSharp } from "react-icons/io5";
+
+import IconButton from "@mui/material/IconButton";
 
 export default function SurveyInfo() {
   const { survey } = useContext(SurveyContext);
@@ -34,8 +37,25 @@ export default function SurveyInfo() {
         {/* 버튼들  */}
 
         <div className={style.wrapButton}>
+          <div style={{ marginTop: "7px" }}>
+            <IconButton>
+              <IoArrowBackSharp />
+            </IconButton>
+          </div>
+
           <div></div>
           <Stack direction="row" alignItems="center" spacing={1}>
+            <Link to={"/surveyCommunityWrite"} state={{ surveyId: surveyId }}>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "#243579",
+                  height: "36.99px",
+                }}
+              >
+                업로드
+              </Button>
+            </Link>
             <Button
               variant="contained"
               sx={{
@@ -43,17 +63,23 @@ export default function SurveyInfo() {
                 height: "36.99px",
               }}
             >
-              업로드
+              공유
             </Button>
             {surveyType === "NORMAL" ? (
               <Link to={"/editSurvey"} state={{ surveyId: surveyId }}>
-                <Button variant="outlined" sx={{ color: "#243579", borderColor: "#243579" }}>
+                <Button
+                  variant="outlined"
+                  sx={{ color: "#243579", borderColor: "#243579" }}
+                >
                   수정
                 </Button>
               </Link>
             ) : (
               <Link to={"/editScoreSurvey"} state={{ surveyId: surveyId }}>
-                <Button variant="outlined" sx={{ color: "#243579", borderColor: "#243579" }}>
+                <Button
+                  variant="outlined"
+                  sx={{ color: "#243579", borderColor: "#243579" }}
+                >
                   수정
                 </Button>
               </Link>

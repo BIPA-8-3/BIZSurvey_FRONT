@@ -135,9 +135,26 @@ export default function EditSurveyPage() {
 
   const changeOption = (id, type) => {
     setQuestions((pre) => {
-      const result = pre.map((question, index) =>
-        index === id ? { ...question, answerType: type } : question
-      );
+      const result = pre.map((question, index) => {
+        if (index === id) {
+          if (type === "SINGLE_CHOICE" || type === "MULTIPLE_CHOICE") {
+            return {
+              ...question,
+              answerType: type,
+              answers: [
+                {
+                  step: 0,
+                  surveyAnswer: "옵션 1",
+                },
+              ],
+            };
+          } else {
+            return { ...question, answerType: type };
+          }
+        } else {
+          return question;
+        }
+      });
       return result;
     });
   };
@@ -157,15 +174,15 @@ export default function EditSurveyPage() {
         ...pre,
         {
           questionId: 0,
-          surveyQuestion: "",
-          answerType: "",
+          surveyQuestion: "질문",
+          answerType: "SINGLE_CHOICE",
           score: 0,
           step: 0,
           isRequired: false,
           answers: [
             {
               step: 0,
-              surveyAnswer: "",
+              surveyAnswer: "옵션 1",
             },
           ],
         },
@@ -184,14 +201,14 @@ export default function EditSurveyPage() {
     });
   };
 
-  const handleOption = (id, options) => {
-    setQuestions((pre) => {
-      const result = pre.map((question, index) =>
-        index === id ? { ...question, answers: options } : question
-      );
-      return result;
-    });
-  };
+  // const handleOption = (id, options) => {
+  //   setQuestions((pre) => {
+  //     const result = pre.map((question, index) =>
+  //       index === id ? { ...question, answers: options } : question
+  //     );
+  //     return result;
+  //   });
+  // };
 
   const changeSurveyTitle = (text) => {
     setFormData((pre) => ({ ...pre, title: text }));
@@ -207,7 +224,13 @@ export default function EditSurveyPage() {
         if (index === qid) {
           const updatedQuestion = {
             ...question,
-            answers: [...question.answers, { step: 0, surveyAnswer: "" }],
+            answers: [
+              ...question.answers,
+              {
+                step: 0,
+                surveyAnswer: "옵션 " + String(question.answers.length + 1),
+              },
+            ],
           };
           return updatedQuestion;
         }

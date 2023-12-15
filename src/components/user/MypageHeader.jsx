@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import style from "../../style/user/MypageHeader.module.css";
-import logo from "../../assets/img/logo.png";
-import useFadeIn from "../../style/useFadeIn";
-import avatar from "../../assets/img/avatar.png";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaPen } from "react-icons/fa";
-import CircularProgress from "@mui/material/CircularProgress";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import style from '../../style/user/MypageHeader.module.css';
+import logo from '../../assets/img/logo.png';
+import useFadeIn from '../../style/useFadeIn';
+import avatar from '../../assets/img/avatar.png';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FaPen } from 'react-icons/fa';
+import CircularProgress from '@mui/material/CircularProgress';
+import axios from 'axios';
 const getLinkStyle = (currentPage, path) => {
   return {
-    fontWeight: currentPage === path ? "bold" : "normal",
-    borderBottom: currentPage === path ? "2px solid #111" : "0px",
+    fontWeight: currentPage === path ? 'bold' : 'normal',
+    borderBottom: currentPage === path ? '2px solid #111' : '0px',
   };
 };
 
@@ -20,10 +20,12 @@ function MypageHeader({ userData }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const location = useLocation();
   const currentPage = location.pathname;
-
+  
   const handleImageChange = async (event) => {
     setLoading(true);
     const file = event.target.files[0];
+
+    
 
     if (file) {
       const imageUrl = URL.createObjectURL(file);
@@ -31,34 +33,43 @@ function MypageHeader({ userData }) {
 
       try {
         const formData = new FormData();
-        formData.append("file", file);
-        formData.append("domain", "USER");
+        formData.append('file', file);
+        formData.append('domain', 'USER');
+      
+        await axios.post('/storage/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+        }).then(async(data) => {
 
-        await axios
-          .post("/storage/", formData, {
+          await axios.patch('/user/profile/', {
+            userId : userData.id,
+            profile : data.data
+          },
+          {
             headers: {
-              "Content-Type": "multipart/form-data",
+              Authorization: localStorage.getItem('accessToken'),
             },
           })
-          .then((data) => {
-            console.log(data);
-          });
+        })
+          
       } catch (error) {
-        console.error("클라이언트에서 오류 발생:", error);
+        console.error('클라이언트에서 오류 발생:', error);
       } finally {
         setLoading(false);
-        alert("프로필을 수정하였습니다");
+        alert('프로필을 수정하였습니다');
       }
     }
   };
 
   const handleLogout = () => {
-    if (window.confirm("로그아웃 하시겠습니까?")) {
+    
+    if(window.confirm("로그아웃 하시겠습니까?")){
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-      navigate("/");
+      navigate('/');
     }
-  };
+  }
 
   return (
     <div className={style.mypageHeader}>
@@ -72,14 +83,12 @@ function MypageHeader({ userData }) {
       </Link>
       <div className={style.mypageUser}>
         <div className={style.profil}>
-          <div
-            style={{ position: "relative", width: "150px", margin: "0 auto" }}
-          >
+          <div style={{ position: 'relative', width: '150px', margin: '0 auto' }}>
             <div className={style.photo}>
               {selectedImage ? (
                 <img className="" src={selectedImage} alt="선택된 아바타" />
               ) : (
-                <img className="" src={avatar} alt="기본 아바타" />
+                <img className="" src={userData.profile ? `https://${userData.profile}` : avatar} alt="프포필 이미지" />
               )}
             </div>
             <label htmlFor="avatarInput" className={style.profilePen}>
@@ -89,7 +98,7 @@ function MypageHeader({ userData }) {
               type="file"
               id="avatarInput"
               accept="image/*"
-              style={{ display: "none" }}
+              style={{ display: 'none' }}
               onChange={handleImageChange}
             />
           </div>
@@ -100,35 +109,33 @@ function MypageHeader({ userData }) {
       <div className={style.mypageMenu}>
         <ul>
           <li>
-            <span style={getLinkStyle(currentPage, "/mypage")}>
+            <span style={getLinkStyle(currentPage, '/mypage')}>
               <Link to="/mypage">내 프로필</Link>
             </span>
           </li>
           <li>
-            <span style={getLinkStyle(currentPage, "/mypageSurveyCommunity")}>
+            <span style={getLinkStyle(currentPage, '/mypageSurveyCommunity')}>
               <Link to="/mypageSurveyCommunity">설문 커뮤니티 관리</Link>
             </span>
           </li>
           <li>
-            <span style={getLinkStyle(currentPage, "/mypageCommunity")}>
+            <span style={getLinkStyle(currentPage, '/mypageCommunity')}>
               <Link to="/mypageCommunity">커뮤니티 관리</Link>
             </span>
           </li>
           <li>
-            <span style={getLinkStyle(currentPage, "/mypagePassword")}>
+            <span style={getLinkStyle(currentPage, '/mypagePassword')}>
               <Link to="/mypagePassword">비밀번호 변경</Link>
             </span>
           </li>
           <li>
-            <span style={getLinkStyle(currentPage, "/mypagePlan")}>
+            <span style={getLinkStyle(currentPage, '/mypagePlan')}>
               <Link to="/mypagePlan">플랜 구독</Link>
             </span>
           </li>
         </ul>
       </div>
-      <p className={style.mypageLogout} onClick={handleLogout}>
-        로그아웃
-      </p>
+      <p className={style.mypageLogout} onClick={handleLogout}>로그아웃</p>
     </div>
   );
 }

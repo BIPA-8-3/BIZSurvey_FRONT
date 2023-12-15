@@ -39,6 +39,12 @@ export default function QuestionComp({
     content,
   } = questionInfo;
 
+  const handleBlur = (text) => {
+    if (text.trim() === "") {
+      changeTitle(index, "질문");
+    }
+  };
+
   return (
     <>
       <div className={style.container}>
@@ -77,12 +83,13 @@ export default function QuestionComp({
               value={surveyQuestion}
               id="filled-basic"
               variant="filled"
-              placeholder={"제목"}
+              placeholder={"질문"}
               inputProps={{
                 style: { fontWeight: "bold", padding: "12px 13px" },
               }}
               sx={{ width: 600 }}
               onChange={(e) => changeTitle(index, e.target.value)}
+              onBlur={(e) => handleBlur(e.target.value)}
             />
           </div>
         </div>

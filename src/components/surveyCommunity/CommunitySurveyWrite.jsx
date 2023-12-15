@@ -64,6 +64,11 @@ export default function CommunityPost() {
   const [pass, setPass] = useState([]);
 
   useEffect(() => {
+    console.log("!!!!!!!!!!!!!!!!!!");
+    console.log(answers);
+  }, [answers]);
+
+  useEffect(() => {
     login();
     call("/s-community/survey/1", "GET")
       .then((data) => {
@@ -84,7 +89,9 @@ export default function CommunityPost() {
 
       if (existingAnswer) {
         return pre.map((ans) =>
-          ans.questionId === questionId ? { ...ans, answer: [...userAnswer], url: url } : ans
+          ans.questionId === questionId
+            ? { ...ans, answer: [...userAnswer], url: url }
+            : ans
         );
       } else {
         return [
@@ -109,7 +116,9 @@ export default function CommunityPost() {
     } else {
       const result = answers.filter(
         (answer) =>
-          answer.questionId !== 0 && answer.answer.length > 0 && !answer.answer.includes("")
+          answer.questionId !== 0 &&
+          answer.answer.length > 0 &&
+          !answer.answer.includes("")
       );
 
       try {
@@ -129,9 +138,16 @@ export default function CommunityPost() {
 
     survey.questions.map((question, index) => {
       if (question.isRequired) {
-        const match = answers.find((ans) => ans.questionId === question.questionId);
+        const match = answers.find(
+          (ans) => ans.questionId === question.questionId
+        );
 
-        if (!match || !match.answer || match.answer.length < 1 || match.answer[0] === "") {
+        if (
+          !match ||
+          !match.answer ||
+          match.answer.length < 1 ||
+          match.answer[0] === ""
+        ) {
           newPassArray[index] = false;
           result = false;
         }
@@ -151,7 +167,10 @@ export default function CommunityPost() {
             <h1>21년도 상반기 설문조사</h1>
             <p style={{ display: "flex" }}>
               <p style={{ textAlign: "center" }}>
-                <div className={style.profil} style={{ textAlign: "center" }}></div>
+                <div
+                  className={style.profil}
+                  style={{ textAlign: "center" }}
+                ></div>
               </p>
               <div style={{ marginTop: "16px" }}>
                 <span>COMMUNITY</span>
@@ -161,20 +180,12 @@ export default function CommunityPost() {
         </div>
         <div className={style.content}>
           {/* 설문지 영역  */}
-          {/* <div className={style.surveyWrap}>
-            <p className={style.requiredText}>* 표시는 필수 질문입니다</p>
-            {survey.questions &&
-              survey.questions.map((question, index) => (
-                <SurveyQuestion
-                  key={index}
-                  question={question}
-                  handleSetAnswer={handleSetAnswer}
-                  pass={pass[index]}
-                />
-              ))}
-          </div> */}
 
-          <SurveyForm survey={survey} handleSetAnswer={handleSetAnswer} pass={pass} />
+          <SurveyForm
+            survey={survey}
+            handleSetAnswer={handleSetAnswer}
+            pass={pass}
+          />
 
           <div className={style.surveyBtnWrap}>
             <Button

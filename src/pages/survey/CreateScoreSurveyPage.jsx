@@ -11,17 +11,20 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect } from "react";
 import { login, call } from "./Login";
 
-export default function CreateScoreSurveyPage({ selectedWorkspaceId, setSectionNum }) {
+export default function CreateScoreSurveyPage({
+  selectedWorkspaceId,
+  setSectionNum,
+}) {
   const [formData, setFormData] = useState({
-    title: "",
-    content: "",
+    title: "제목",
+    content: "설명",
     surveyType: "SCORE",
     questions: [],
   });
 
   const [questions, setQuestions] = useState([
     {
-      surveyQuestion: "",
+      surveyQuestion: "질문",
       answerType: "MULTIPLE_CHOICE",
       score: 0,
       step: 1,
@@ -29,12 +32,14 @@ export default function CreateScoreSurveyPage({ selectedWorkspaceId, setSectionN
       answers: [
         {
           step: 0,
-          surveyAnswer: "",
+          surveyAnswer: "옵션 1",
           correct: "NO",
         },
       ],
     },
   ]);
+
+  const [pass, setPass] = useState(false);
 
   useEffect(() => {
     login();
@@ -43,6 +48,20 @@ export default function CreateScoreSurveyPage({ selectedWorkspaceId, setSectionN
   useEffect(() => {
     console.log(questions);
   }, [questions]);
+
+  // const handleCheckDuplication = (idx, text) => {
+  //   let isPass = true;
+  //   const question = questions.find((q, index) => index === idx);
+  //   const matchingAnswers = question.answers.filter(
+  //     (ans) => ans.surveyAnswer === text
+  //   );
+  //   console.log(matchingAnswers.surveyAnswer, "anssssssssssss");
+  //   if (matchingAnswers.length > 1) {
+  //     isPass = false;
+  //   }
+
+  //   return isPass;
+  // };
 
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
@@ -80,14 +99,14 @@ export default function CreateScoreSurveyPage({ selectedWorkspaceId, setSectionN
     });
   };
 
-  const changeQuestionContent = (id, text) => {
-    setQuestions((pre) => {
-      const result = pre.map((question, index) =>
-        index === id ? { ...question, content: text } : question
-      );
-      return result;
-    });
-  };
+  // const changeQuestionContent = (id, text) => {
+  //   setQuestions((pre) => {
+  //     const result = pre.map((question, index) =>
+  //       index === id ? { ...question, content: text } : question
+  //     );
+  //     return result;
+  //   });
+  // };
 
   const changeOption = (id, type) => {
     setQuestions((pre) => {
@@ -112,7 +131,7 @@ export default function CreateScoreSurveyPage({ selectedWorkspaceId, setSectionN
       return [
         ...pre,
         {
-          surveyQuestion: "",
+          surveyQuestion: "질문",
           answerType: "MULTIPLE_CHOICE",
           score: 0,
           step: 0,
@@ -120,7 +139,7 @@ export default function CreateScoreSurveyPage({ selectedWorkspaceId, setSectionN
           answers: [
             {
               step: 0,
-              surveyAnswer: "",
+              surveyAnswer: "옵션 1",
               correct: "NO",
             },
           ],
@@ -132,20 +151,22 @@ export default function CreateScoreSurveyPage({ selectedWorkspaceId, setSectionN
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id ? { ...question, isRequired: !question.isRequired } : question
+        index === id
+          ? { ...question, isRequired: !question.isRequired }
+          : question
       );
       return result;
     });
   };
 
-  const handleOption = (id, options) => {
-    setQuestions((pre) => {
-      const result = pre.map((question, index) =>
-        index === id ? { ...question, answers: options } : question
-      );
-      return result;
-    });
-  };
+  // const handleOption = (id, options) => {
+  //   setQuestions((pre) => {
+  //     const result = pre.map((question, index) =>
+  //       index === id ? { ...question, answers: options } : question
+  //     );
+  //     return result;
+  //   });
+  // };
 
   const changeSurveyTitle = (text) => {
     setFormData((pre) => ({ ...pre, title: text }));
@@ -161,7 +182,15 @@ export default function CreateScoreSurveyPage({ selectedWorkspaceId, setSectionN
         if (index === qid) {
           const updatedQuestion = {
             ...question,
-            answers: [...question.answers, { step: 0, surveyAnswer: "", correct: "NO" }],
+
+            answers: [
+              ...question.answers,
+              {
+                step: 0,
+                surveyAnswer: "옵션 " + String(question.answers.length + 1),
+                correct: "NO",
+              },
+            ],
           };
           return updatedQuestion;
         }
@@ -204,13 +233,11 @@ export default function CreateScoreSurveyPage({ selectedWorkspaceId, setSectionN
   };
 
   const handleChangeScore = (qid, score) => {
-    if (typeof score !== "number") {
-      return;
-    }
-
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === qid ? { ...question, score: score } : question
+        index === qid
+          ? { ...question, score: isNaN(score) ? score : parseInt(score, 10) }
+          : question
       );
       return result;
     });
@@ -259,16 +286,23 @@ export default function CreateScoreSurveyPage({ selectedWorkspaceId, setSectionN
                   className={style.questionList}
                 >
                   {questions.map((questionData, index) => (
-                    <Draggable key={index} draggableId={`question-${index}`} index={index}>
+                    <Draggable
+                      key={index}
+                      draggableId={`question-${index}`}
+                      index={index}
+                    >
                       {(provided) => (
-                        <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                        >
                           <div className={style.question}>
                             <ScoreQuestion
                               key={index}
                               index={index}
                               questionInfo={questionData}
                               changeTitle={changeQuestionTitle}
-                              changeContent={changeQuestionContent}
+                              // changeContent={changeQuestionContent}
                               changeOption={changeOption}
                               deleteQuestion={deleteQuestion}
                               changeRequired={changeRequired}
@@ -278,6 +312,7 @@ export default function CreateScoreSurveyPage({ selectedWorkspaceId, setSectionN
                               changeAnswerText={handleChangeOptionText}
                               changeScore={handleChangeScore}
                               changeCorrect={handleChangeCorrect}
+                              // checkDuplication={handleCheckDuplication}
                             />
                           </div>
                         </div>
