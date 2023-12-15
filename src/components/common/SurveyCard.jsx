@@ -7,7 +7,7 @@ import { BiComment } from "react-icons/bi";
 import { IoPersonOutline } from "react-icons/io5";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { MdDateRange } from "react-icons/md";
-import logo1 from "../../assets/img/1.jpg";
+import logo1 from "../../assets/img/설문 기본 사진.png";
 import logo from "../../assets/img/avatar.png";
 import Search from "./Search";
 import Grid from "@mui/material/Grid";
@@ -33,6 +33,14 @@ function SurveyCard({ data }) {
     setHoveredCard(null);
   };
 
+  function returnImgUrl(imageUrl){// cardData.thumbImageUrl
+      if(imageUrl === "" || imageUrl === null){
+        return logo1;
+      }else{
+        return imageUrl;
+      }
+  }
+
   const renderCard = (cardData) => (
     <Grid item xs={12} md={6} lg={3} key={cardData.postId}>
       <Link to={'/surveyCommunityDetail'} state={{postId : cardData.postId}}>
@@ -44,7 +52,7 @@ function SurveyCard({ data }) {
         >
           <div className={style.cardThumnail}>
             <img
-              src="http://localhost:3000/static/media/1.85b24f5bdde08e1546d7.jpg"
+              src={returnImgUrl(cardData.thumbImageUrl)}
               alt="logo"
               className={`${style.img} ${
                 hoveredCard === cardData.postId ? `${style.scaleUp}` : ""
@@ -67,11 +75,11 @@ function SurveyCard({ data }) {
                 <div className={style.count}>
                     <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
                         <BiComment />
-                        <span style={{ margin: '0 5px 0 5px' }}>{0}</span>
+                        <span style={{ margin: '0 5px 0 5px' }}>{cardData.commentSize}</span>
                     </div>
                     <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
                         <IoPersonOutline />
-                        <span style={{ margin: '0 5px 0 5px' }}>{0}</span>
+                        <span style={{ margin: '0 5px 0 5px' }}>{cardData.participateCount}</span>
                     </div>
                     <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
                         <MdOutlineRemoveRedEye />
@@ -81,7 +89,7 @@ function SurveyCard({ data }) {
                 <div className={style.count}>
                     <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
                         <MdDateRange />
-                        <span style={{ margin: '0 5px 0 5px' }}>{cardData.startDateTime}</span>
+                        <span style={{ margin: '0 5px 0 5px' }}>{cardData.canAccess}</span>
                     </div>
                 </div>
             </div>
