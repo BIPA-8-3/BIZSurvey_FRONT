@@ -14,6 +14,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Divider, TextField, Input } from "@mui/material";
 import logo from "../../assets/img/설문 기본 사진.png";
+import { useLocation } from "react-router-dom";
 
 // import CreateVote from './CreateVote';
 // import RegisterVote from './RegisterVote'
@@ -23,6 +24,17 @@ export default function CommunityWrite() {
   const [selectedSurvey, setSurvey] = useState(null);
   const [selectedFile, setSelectedFile] = useState("");
   const fileInputRef = useRef();
+
+  const location = useLocation();
+  let surveyId = location.state ? location.state.surveyId : 0;
+
+  useEffect(() => {
+    console.log(data);
+    if (data.length > 0 && surveyId !== 0) {
+      const surveyData = data.find((dt) => dt.surveyId === surveyId);
+      setSurvey(surveyData);
+    }
+  }, [data]);
 
   const handleUpload = () => {
     fileInputRef.current.click();
