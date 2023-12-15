@@ -2,7 +2,6 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import * as React from "react";
-import { useState } from "react";
 
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -10,21 +9,14 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 
 export default function SurveyPostSelect({
-  postInfo,
-  postId,
-  setPostId,
+  sharedUnit,
+  sharedId,
+  setSharedId,
   sharedType,
   setSharedType,
 }) {
-  // const [postInfo, setPostInfo] = useState([
-  //   {
-  //     postId: 1,
-  //     title: "123",
-  //   },
-  // ]);
-
   const handleChange = (event) => {
-    setPostId(event.target.value);
+    setSharedId(event.target.value);
   };
 
   const handleSharedChange = (event) => {
@@ -51,7 +43,7 @@ export default function SurveyPostSelect({
         </FormControl>
         <FormControl sx={{ minWidth: 700 }}>
           <Select
-            value={postId}
+            value={sharedId}
             onChange={handleChange}
             displayEmpty
             inputProps={{
@@ -61,14 +53,45 @@ export default function SurveyPostSelect({
             <MenuItem value="0">
               <em style={{ color: "grey" }}>== 게시물 선택 ==</em>
             </MenuItem>
-            {postInfo.map((post) => (
-              <MenuItem key={post.postId} value={post.postId}>
-                {post.title}
+            {sharedUnit.map((unit) => (
+              <MenuItem key={unit.id} value={unit.id}>
+                {sharedType === "EXTERNAL" ? createExternalItem(unit) : createInternalItem(unit)}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
       </div>
+    </>
+  );
+}
+
+const formattedDate = new Intl.DateTimeFormat("ko-KR", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+  timeZone: "Asia/Seoul",
+});
+
+function createExternalItem(unit) {
+  return (
+    <>
+      <span style={{ marginRight: "10px" }}>
+        공유: {formattedDate.format(new Date(unit.regDate))}
+      </span>
+      <span>마감: {formattedDate.format(new Date(unit.dueDate))}</span>
+    </>
+  );
+}
+
+function createInternalItem(unit) {
+  return (
+    <>
+      <MenuItem key={unit.postId} value={unit.postId}>
+        {unit.title}
+      </MenuItem>
     </>
   );
 }
