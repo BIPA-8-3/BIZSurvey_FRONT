@@ -19,20 +19,20 @@ export default function ChildComment({props}) {
                         
                         </div>
                     </div>
-                    <div className={style.childCommentWrap}>
-                    <div className={style.writeWrap}>
-                        <div className={style.writer}>
-                            <div>
-                                <img src={logo} />
+                            <div className={style.childCommentWrap}>
+                            <div className={style.writeWrap}>
+                                <div className={style.writer}>
+                                    <div>
+                                        <img src={logo} />
+                                    </div>
+                                </div>
+                                <div className={style.commentFormWrap}>
+                                        <p>{item.nickName}</p>
+                                        <p>{item.content}</p>
+                                        <p><span>{item.createTime}</span> ・ <span>답글 달기</span> ・ <span> 신고 </span></p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div className={style.commentFormWrap}>
-                                <p>{item.nickName}</p>
-                                <p>{item.content}</p>
-                                <p><span>{item.createTime}</span> ・ <span>답글 달기</span> ・ <span> 신고 </span></p>
-                            </div>
-                        </div>
-                    </div>
                     
                 </div>
                 

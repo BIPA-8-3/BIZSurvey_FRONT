@@ -135,9 +135,26 @@ export default function EditSurveyPage() {
 
   const changeOption = (id, type) => {
     setQuestions((pre) => {
-      const result = pre.map((question, index) =>
-        index === id ? { ...question, answerType: type } : question
-      );
+      const result = pre.map((question, index) => {
+        if (index === id) {
+          if (type === "SINGLE_CHOICE" || type === "MULTIPLE_CHOICE") {
+            return {
+              ...question,
+              answerType: type,
+              answers: [
+                {
+                  step: 0,
+                  surveyAnswer: "옵션 1",
+                },
+              ],
+            };
+          } else {
+            return { ...question, answerType: type };
+          }
+        } else {
+          return question;
+        }
+      });
       return result;
     });
   };
@@ -158,7 +175,7 @@ export default function EditSurveyPage() {
         {
           questionId: 0,
           surveyQuestion: "질문",
-          answerType: "",
+          answerType: "SINGLE_CHOICE",
           score: 0,
           step: 0,
           isRequired: false,
@@ -184,14 +201,14 @@ export default function EditSurveyPage() {
     });
   };
 
-  const handleOption = (id, options) => {
-    setQuestions((pre) => {
-      const result = pre.map((question, index) =>
-        index === id ? { ...question, answers: options } : question
-      );
-      return result;
-    });
-  };
+  // const handleOption = (id, options) => {
+  //   setQuestions((pre) => {
+  //     const result = pre.map((question, index) =>
+  //       index === id ? { ...question, answers: options } : question
+  //     );
+  //     return result;
+  //   });
+  // };
 
   const changeSurveyTitle = (text) => {
     setFormData((pre) => ({ ...pre, title: text }));

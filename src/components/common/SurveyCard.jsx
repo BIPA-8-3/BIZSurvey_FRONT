@@ -22,6 +22,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function SurveyCard({ data }) {
+
   const [hoveredCard, setHoveredCard] = useState(null);
 
   const handleMouseOver = (index) => {
@@ -34,7 +35,7 @@ function SurveyCard({ data }) {
 
   const renderCard = (cardData) => (
     <Grid item xs={12} md={6} lg={3} key={cardData.postId}>
-      <Link to={"/surveyCommunityDetail"} state={{ postId: cardData.postId }}>
+      <Link to={'/surveyCommunityDetail'} state={{postId : cardData.postId}}>
         <div
           key={cardData.postId}
           className={`${style.cardWrap}`}
@@ -62,59 +63,27 @@ function SurveyCard({ data }) {
               <span className={style.nickname}>{cardData.nickname}</span>
             </div>
             <h1>{cardData.title}</h1>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <div className={style.count}>
-                <div
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "12px",
-                  }}
-                >
-                  <BiComment />
-                  <span style={{ margin: "0 5px 0 5px" }}>{0}</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div className={style.count}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
+                        <BiComment />
+                        <span style={{ margin: '0 5px 0 5px' }}>{0}</span>
+                    </div>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
+                        <IoPersonOutline />
+                        <span style={{ margin: '0 5px 0 5px' }}>{0}</span>
+                    </div>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
+                        <MdOutlineRemoveRedEye />
+                        <span style={{ margin: '0 5px 0 5px' }}>{cardData.count}</span>
+                    </div>
                 </div>
-                <div
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "12px",
-                  }}
-                >
-                  <IoPersonOutline />
-                  <span style={{ margin: "0 5px 0 5px" }}>{0}</span>
+                <div className={style.count}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
+                        <MdDateRange />
+                        <span style={{ margin: '0 5px 0 5px' }}>{cardData.startDateTime}</span>
+                    </div>
                 </div>
-                <div
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "12px",
-                  }}
-                >
-                  <MdOutlineRemoveRedEye />
-                  <span style={{ margin: "0 5px 0 5px" }}>
-                    {cardData.count}
-                  </span>
-                </div>
-              </div>
-              <div className={style.count}>
-                <div
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "12px",
-                  }}
-                >
-                  <MdDateRange />
-                  <span style={{ margin: "0 5px 0 5px" }}>
-                    {cardData.startDateTime}
-                  </span>
-                </div>
-              </div>
             </div>
           </div>
         </div>

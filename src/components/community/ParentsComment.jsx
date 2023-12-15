@@ -24,18 +24,25 @@ const ParentsComment = ({props}) => {
             <div key={childItem.commentId} className={style.commentWrap}>
               <div className={style.writeWrap}>
                 <div className={style.writer}>
-                  <div>
-                    <img src={logo} alt="Profile" />
+                 <div>
+
+                 </div>
+                </div>
+                <div className={style.childCommentWrap}>
+                  <div className={style.writeWrap}>
+                     <div className={style.writer}>
+                        <div>
+                            <img src={logo} />
+                        </div>
+                     </div>
+                        <div className={style.commentFormWrap}>
+                          <p>{childItem.nickName}</p>
+                          <p>{childItem.content}</p>
+                          <p><span>{childItem.createTime}</span> <span> 신고 </span></p>
+                      </div>
                   </div>
                 </div>
-                <div className={style.commentFormWrap}>
-                  <p>{childItem.nickName}</p>
-                  <p>{childItem.content}</p>
-                  <p>
-                    <span>{childItem.createTime}</span> ・{' '}
-                    <span> 신고 </span>
-                  </p>
-                </div>
+
               </div>
             </div>
           ))}

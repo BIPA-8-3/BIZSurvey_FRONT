@@ -233,22 +233,14 @@ export default function CreateScoreSurveyPage({
   };
 
   const handleChangeScore = (qid, score) => {
-    console.log(typeof score);
-    if (typeof score === "number" && score > 0) {
-      setQuestions((pre) => {
-        const result = pre.map((question, index) =>
-          index === qid ? { ...question, score: score } : question
-        );
-        return result;
-      });
-    } else {
-      setQuestions((pre) => {
-        const result = pre.map((question, index) =>
-          index === qid ? { ...question, score: 0 } : question
-        );
-        return result;
-      });
-    }
+    setQuestions((pre) => {
+      const result = pre.map((question, index) =>
+        index === qid
+          ? { ...question, score: isNaN(score) ? score : parseInt(score, 10) }
+          : question
+      );
+      return result;
+    });
   };
 
   const handleChangeCorrect = (qid, aid) => {
