@@ -61,11 +61,14 @@ export default function MypagePlanDetail() {
     }
 
     setLoading(true);
-    if (userInfo.plan === "COMMUNITY") {
+
+    if (userInfo.plan === "커뮤니티 회원") {
       // get
+      console.log("여기ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ");
 
       call("/workspace/personal", "GET")
         .then((data) => {
+          console.log("asssssssssssss", data);
           if (!data) {
             const newData = {
               workspaceName: userInfo.nickname + "님 워크스페이스",
@@ -75,12 +78,19 @@ export default function MypagePlanDetail() {
           }
           return null;
         })
-        .then((data) => console.log(data))
+        .then((data) => {
+          const name =
+            planName === "개인 플랜" ? "NORMAL_SUBSCRIBE" : "COMPANY_SUBSCRIBE";
+          call("/plan/" + name, "PATCH")
+            .then((data) => console.log(data))
+            .catch((error) => console.log(error));
+        })
         .catch((error) => console.log(error))
         .finally(() => window.location.reload());
     } else {
       const name =
         planName === "개인 플랜" ? "NORMAL_SUBSCRIBE" : "COMPANY_SUBSCRIBE";
+      console.log("name,,,,,,,,,", name);
       call("/plan/" + name, "PATCH")
         .then((data) => console.log(data))
         .catch((error) => console.log(error))
