@@ -1,27 +1,30 @@
 // Header.jsx
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import style from "../../style/Header.module.css";
 import logo from '../../assets/img/logo.png'
 import { IoMenu } from "react-icons/io5";
+import avatar from '../../assets/img/avatar.png';
 import { Link, useNavigate } from "react-router-dom";
+import { LoginContext, LoginFunContext } from "../../App";
 
 const navItems = ['설문 참여', '플랜', '커뮤니티', '워크스페이스', 'Sign In'];
 
 function Header() {
+  const userInfo = useContext(LoginContext)
+  const  {setUserInfo} = useContext(LoginFunContext)
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const bestRef = useRef();
   const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem('accessToken'); 
 
   useEffect(() => {
+    console.log("userInfo : " + userInfo.email)
     const closeMenu = () => {
       setIsMenuOpen(false);
     };
-
-    // 'popstate' 이벤트에 대한 리스너 등록 및 메뉴 닫기
     window.addEventListener('popstate', closeMenu);
 
     return () => {
-      // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
       window.removeEventListener('popstate', closeMenu);
     };
   }, []);
@@ -51,6 +54,26 @@ function Header() {
     setIsMenuOpen(false);
   };
 
+  const handleLogout = () => {
+    
+    if(window.confirm("로그아웃 하시겠습니까?")){
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      setUserInfo({
+        birthdate: "",
+        email:"", 
+        gender: "",
+        id:0,
+        name: "",
+        nickname: "",
+        planSubscribe: "",
+        profile: ""
+
+      })
+      localStorage.removeItem("userInfo");
+      navigate('/');
+    }
+  }
   return (
     <div id={style.mainHeader}>
       <div id={style.headerItemWrap}>
@@ -61,7 +84,23 @@ function Header() {
             <Link to={'/plan'}><li>플랜</li></Link>
             <Link to={'/community'}><li>커뮤니티</li></Link>
             <Link to={'/workspace'}><li>워크스페이스</li></Link>
-            <Link to={'/login'}><li>Sign In</li></Link>
+            {isLoggedIn ? (
+              // 로그인 상태일 때 표시되는 링크
+              <Link onClick={handleLogout}>
+                <li style={{padding:'0px', paddingLeft:'10px'}}>
+                  <div className={style.photo}>
+                      <img className="" src={avatar} alt="프로필 이미지" />
+                  </div>
+                </li>
+              </Link>
+            ) : (
+              // 비로그인 상태일 때 표시되는 링크
+              <Link to={'/login'}>
+                <li style={{padding:'0px', paddingLeft:'10px'}}>
+                  로그인
+                </li>
+              </Link>
+            )}
           </ul>
         </div>
         <div id="menuIcon" onClick={toggleMenu}>
