@@ -11,6 +11,7 @@ import { call } from "../../../../pages/survey/Login";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
+import { getSharedSurveyResult } from "../../../../pages/workspace/api";
 
 export default function PostResult({ sharedType, sharedId }) {
   const { survey } = useContext(SurveyContext);
@@ -75,6 +76,13 @@ export default function PostResult({ sharedType, sharedId }) {
           });
         break;
       case "EXTERNAL":
+        getSharedSurveyResult(sharedId)
+          .then((data) => {
+            setResult(data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
         break;
     }
   };
