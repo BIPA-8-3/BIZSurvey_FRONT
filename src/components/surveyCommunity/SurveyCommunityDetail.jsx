@@ -13,6 +13,8 @@ import ChildCommentForm from "../community/ChildCommentForm";
 import ChildComment from "../community/ChildComment";
 import Loader from "../../pages/loader/Loader"
 import axios from 'axios'
+import BizModal from "../common/BizModal";
+import ClaimReasonModal from "../common/ClaimReasonModal";
 
 
 export default function CommunityPost() {
@@ -22,6 +24,7 @@ export default function CommunityPost() {
   let postId = location.state.postId;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
 
   useEffect(() => {
@@ -48,6 +51,20 @@ export default function CommunityPost() {
   }
   console.log("데이타"+data)
   console.log(postId);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSelectReasons = (selectedReasons) => {
+    // 선택된 이유들을 사용하거나 필요에 따라 다른 작업을 수행합니다.
+    console.log("Selected Reasons:", selectedReasons);
+  };
+
 
 
   return (
@@ -138,7 +155,17 @@ export default function CommunityPost() {
               <span style={{ color: "#ddd" }}> | </span>
               댓글 <span style={{ fontWeight: "bold" }}>{data.commentSize}</span>
             </div>
-            <div style={{ cursor: "pointer", fontSize: "14px" }}>신고</div>
+            <div style={{ cursor: "pointer", fontSize: "14px" }} onClick={handleOpenModal}>신고</div>
+            {/* 모달 */}
+            {isModalOpen && (
+              <ClaimReasonModal
+                onSelect={handleSelectReasons}
+                onClose={handleCloseModal}
+                isModalOpen={isModalOpen}
+                props={'post'}
+                id={postId}
+              />
+            )}
           </p>
         </div>
         <Comment props={{postId: postId, type : 'sc'}} />

@@ -69,7 +69,6 @@ export default function CommunityPost() {
   }, [answers]);
 
   useEffect(() => {
-    login();
     call("/s-community/survey/1", "GET")
       .then((data) => {
         setSurvey(data);
@@ -158,6 +157,10 @@ export default function CommunityPost() {
 
     return result;
   };
+
+  if (survey.surveyId === 0) {
+    return;
+  }
 
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
