@@ -21,7 +21,7 @@ export async function call(api, method, request) {
     }
 
     // token 추가
-    const accessToken = localStorage.getItem("ACCESS_TOKEN");
+    const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       config.headers.Authorization = "Bearer " + accessToken;
     }
