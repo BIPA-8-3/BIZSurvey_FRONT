@@ -11,6 +11,10 @@ import { call } from "../../../../pages/survey/Login";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import ScoreResultOption from "./personalOption/ScoreResultOption";
 import style from "../../../../style/survey/ScorePersonalResult.module.css";
+import {
+  getSharedContactList,
+  getdPersonalScoreResult,
+} from "../../../../pages/workspace/api";
 
 export default function ScorePersonalResult({ sharedId, sharedType }) {
   const { survey } = useContext(SurveyContext);
@@ -34,16 +38,16 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
   //   ]);
 
   const [resultData, setResultData] = useState([
-    // {
-    //   questionId: 0,
-    //   title: "",
-    //   answers: [
-    //     {
-    //       answer: "",
-    //       correct: "", //YES, NO, ''
-    //     },
-    //   ],
-    // },
+    {
+      questionId: 0,
+      title: "",
+      answers: [
+        {
+          answer: "",
+          correct: "", //YES, NO, ''
+        },
+      ],
+    },
   ]);
 
   const [score, setScore] = useState({
@@ -58,26 +62,55 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
   useEffect(() => {
     // 설문 게시물 참가자 목록
     if (nickname !== 0) {
-      call(`/survey/result/score/${surveyId}/${sharedId}/${nickname}`, "GET")
-        .then((data) => {
-          console.log("여기");
-          handleMergeAnswers(data, (newData) => {
-            setResultData(newData);
-          });
-        })
-        .catch((error) => console.log(error));
+      switch (sharedType) {
+        case "INTERNAL":
+          call(
+            `/survey/result/score/${surveyId}/${sharedId}/${nickname}`,
+            "GET"
+          )
+            .then((data) => {
+              handleMergeAnswers(data, (newData) => {
+                setResultData(newData);
+              });
+            })
+            .catch((error) => console.log(error));
+          break;
+        case "EXTERNAL":
+          getdPersonalScoreResult(nickname)
+            .then((data) => {
+              console.log("여기", data);
+              handleMergeAnswers(data, (newData) => {
+                setResultData(newData);
+              });
+            })
+            .catch((error) => console.log(error));
+          break;
+      }
     }
   }, [nickname]);
 
   useEffect(() => {
     if (sharedId !== 0) {
-      call(`/survey/result/userList/${surveyId}/${sharedId}`, "GET")
-        .then((data) => {
-          setUserList(data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      switch (sharedType) {
+        case "INTERNAL":
+          call(`/survey/result/userList/${surveyId}/${sharedId}`, "GET")
+            .then((data) => {
+              setUserList(data);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          break;
+        case "EXTERNAL":
+          getSharedContactList(sharedId)
+            .then((data) => {
+              setUserList(data);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          break;
+      }
     } else {
     }
   }, [sharedId]);
@@ -87,16 +120,22 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
   };
 
   const handleMergeAnswers = (userAnswers, callback) => {
+    // 결과 배열
     const result = [];
 
+    // 총점 저장
     let totalScore = 0;
     let totalGetScore = 0;
 
+    // 실제 설문지의 문제 기준으로 사용자 답변을 비교하며 점수 산출
     questions.map((question) => {
-      const userAnswer = userAnswers.find((ans) => ans.questionId === question.questionId);
+      const userAnswer = userAnswers.find(
+        (ans) => ans.questionId === question.questionId
+      );
 
       const updateAnswer = question.answers.map((ans) => {
-        const isUserAnswer = userAnswer && userAnswer.userAnswer.includes(ans.surveyAnswer);
+        const isUserAnswer =
+          userAnswer && userAnswer.userAnswer.includes(ans.surveyAnswer);
 
         return {
           answer: ans.surveyAnswer,
@@ -104,10 +143,17 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
         };
       });
 
+      // 하나라도 NO가 잇는지 (없으면 True)
       const hasNoCorrect = !updateAnswer.some((ans) => ans.correct === "NO");
-      const hasAtLeastOneYes = updateAnswer.some((ans) => ans.correct === "YES");
 
-      const questionGetScore = hasNoCorrect && hasAtLeastOneYes ? question.score : 0;
+      // 하나라도 yes가 잇는지
+      const hasAtLeastOneYes = updateAnswer.some(
+        (ans) => ans.correct === "YES"
+      );
+
+      // yse가 잇고 NO가 없으면 점수, 아니면 0
+      const questionGetScore =
+        hasNoCorrect && hasAtLeastOneYes ? question.score : 0;
 
       result.push({
         questionId: question.questionId,
@@ -117,19 +163,24 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
         answers: updateAnswer,
       });
 
+      // 나의 총점
       totalGetScore += questionGetScore;
+
+      // 원래 총점
       totalScore += question.score;
     });
 
+    // 모든 질문으로 파싱 후 점수 저장
     setScore({
       total: totalScore,
       get: totalGetScore,
     });
 
+    // 콜백
     callback(result);
   };
 
-  if (sharedId === "0") {
+  if (sharedId === 0) {
     return (
       <>
         <div className={style.selectPost}>
@@ -153,7 +204,11 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
 
   return (
     <>
-      <UserList userList={userList} setUser={handleSetUser} />
+      <UserList
+        userList={userList}
+        setUser={handleSetUser}
+        sharedType={sharedType}
+      />
 
       <div>
         <p className={style.totalScore}>
@@ -161,26 +216,29 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
         </p>
       </div>
 
-      {resultData.map((question, index) => {
-        return (
-          <>
-            <QuestionBox key={index} score>
-              <QuestionTitle title={question.title} />
-              <OptionBox>
-                {/* {matchingQuestion ? ( */}
-                <>
-                  {question.answers.map((answer, index) => (
-                    // <ChoiceField
-                    //   key={index}
-                    //   text={answer.answer}
-                    //   select={matchingQuestion.answer.includes(
-                    //     answer.surveyAnswer
-                    //   )}
-                    // />
-                    <ScoreResultOption key={index} text={answer.answer} correct={answer.correct} />
-                  ))}
-                </>
-                {/* // ) : (
+      {resultData.map((question, index) => (
+        <>
+          <QuestionBox key={index} score>
+            <QuestionTitle title={question.title} />
+            <OptionBox>
+              {/* {matchingQuestion ? ( */}
+
+              {question.answers.map((answer, index) => (
+                // <ChoiceField
+                //   key={index}
+                //   text={answer.answer}
+                //   select={matchingQuestion.answer.includes(
+                //     answer.surveyAnswer
+                //   )}
+                // />
+                <ScoreResultOption
+                  key={index}
+                  text={answer.answer}
+                  correct={answer.correct}
+                />
+              ))}
+
+              {/* // ) : (
                 //   <>
                 //     <p
                 //       style={{
@@ -193,14 +251,13 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
                 //     </p>
                 //   </>
                 // )} */}
-                <p className={style.score}>
-                  {question.getScore} / {question.score}
-                </p>
-              </OptionBox>
-            </QuestionBox>
-          </>
-        );
-      })}
+              <p className={style.score}>
+                {question.getScore} / {question.score}
+              </p>
+            </OptionBox>
+          </QuestionBox>
+        </>
+      ))}
     </>
   );
 }

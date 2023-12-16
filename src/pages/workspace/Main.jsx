@@ -78,7 +78,6 @@ export default function Main() {
 
   // 워크스페이스 이름 변경 이벤트
   useEffect(() => {
-    // document.getElementById("workspaceName").value = originWorkspaceName;
     setChangeWorkspaceName(originWorkspaceName);
   }, [originWorkspaceName]);
 
@@ -410,7 +409,8 @@ export default function Main() {
                       return (
                         <SurveyCard
                           key={survey.surveyId}
-                          type={"🗒️"}
+                          // type={"🗒️"}
+                          type={survey.type === "NORMAL" ? "🗒️" : "📝"}
                           surveyId={survey.surveyId}
                           title={survey.title}
                           onOpenModal={openShareModal}
