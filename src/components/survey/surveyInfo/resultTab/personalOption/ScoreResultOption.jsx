@@ -11,7 +11,12 @@ export default function ScoreResultOption(props) {
         <div className={style.yes}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <span style={{ zIndex: "9999" }}>
-              <Checkbox defaultChecked disabled color="default" />
+              <Checkbox
+                defaultChecked={false}
+                checked={correct === "YES"}
+                disabled
+                color="default"
+              />
             </span>
 
             <p>{text}</p>
@@ -25,7 +30,12 @@ export default function ScoreResultOption(props) {
         <div className={style.no}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <span style={{ zIndex: "9999" }}>
-              <Checkbox defaultChecked disabled color="default" />
+              <Checkbox
+                defaultChecked={false}
+                checked={correct === "NO"}
+                disabled
+                color="default"
+              />
             </span>
 
             <p>{text}</p>
@@ -39,7 +49,7 @@ export default function ScoreResultOption(props) {
         <div className={style.wrapChoice}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <span style={{ zIndex: "9999" }}>
-              <Checkbox disabled />
+              <Checkbox disabled defaultChecked={false} checked={false} />
             </span>
 
             <p style={{ color: "grey" }}>{text}</p>
