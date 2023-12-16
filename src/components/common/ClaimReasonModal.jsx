@@ -44,7 +44,7 @@ const ClaimReasonModal = ({ onSelect, onClose, props, id }) => {
     }else if(type === 'child'){
       selctedType = '대댓글';
     }
-
+    
     const data = {
       id : seltedId,
       claimReason : selectedReasons,

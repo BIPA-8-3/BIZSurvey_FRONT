@@ -4,6 +4,7 @@ import '../../style/Common.css'
 import logo from "../../assets/img/avatar.png"
 import ChildCommentForm from './ChildCommentForm';
 import React, { useState } from 'react';
+import ClaimReasonModal from "../common/ClaimReasonModal";
 
 
 
@@ -16,15 +17,52 @@ const ParentsComment = ({props}) => {
 
 
   const [showChildCommentForm, setShowChildCommentForm] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [childIsModalOpen, setChildIsModalOpen] = useState({});
+
+  // 댓글 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+  
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSelectReasons = (selectedReasons) => {
+    // 선택된 이유들을 사용하거나 필요에 따라 다른 작업을 수행합니다.
+    console.log("Selected Reasons:", selectedReasons);
+  };
 
 
-  // 수정해야 함 
+  // 대댓글 
+  const childHandleOpen = (childCommentId) => {
+    setChildIsModalOpen((prev) => ({
+      ...prev,
+      [childCommentId]: true,
+    }));
+  }
+
+  const childHandleCloseModal = (childCommentId) => {
+    setChildIsModalOpen((prev) => ({
+      ...prev,
+      [childCommentId]: false,
+    }));
+  }
+
+
+  const childHandleSelectReasons = (selectedReasons) => {
+    // 선택된 이유들을 사용하거나 필요에 따라 다른 작업을 수행합니다.
+    console.log("Selected Reasons:", selectedReasons);
+  };
+
+ 
   const renderChildComment = (childCommentList) => {
     if (childCommentList !== null) {
       return (
         <div>
           {childCommentList.map((childItem) => (
-            <div key={childItem.commentId} className={style.commentWrap} >
+            <div key={childItem.childCommentId} className={style.commentWrap} >
               <div className={style.writeWrap}>
                 <div className={style.writer}>
                  <div>
@@ -41,7 +79,17 @@ const ParentsComment = ({props}) => {
                         <div className={style.commentFormWrap}>
                           <p>{childItem.nickName}</p>
                           <p>{childItem.content}</p>
-                          <p><span>{childItem.createTime}</span> <span> 신고 </span></p>
+                          <p><span>{childItem.createTime}</span > <span onClick={() => childHandleOpen(childItem.childCommentId)}> 신고 </span></p>
+
+                                                                          {childIsModalOpen[childItem.childCommentId] && (
+                                                                    <ClaimReasonModal
+                                                                    onSelect={() => childHandleSelectReasons(childItem.childCommentId)}
+                                                                    onClose={() => childHandleCloseModal(childItem.childCommentId)}
+                                                                    isModalOpen={childIsModalOpen[childItem.childCommentId]}
+                                                                    props={'child'}
+                                                                      id={childItem.childCommentId}
+                                                                    />
+                                                                  )}
                       </div>
                   </div>
                 </div>
@@ -89,7 +137,16 @@ const ParentsComment = ({props}) => {
                 <span onClick={() => toggleChildCommentForm(item.commentId)}>
                   답글 달기
                 </span>{' '}
-                ・ <span> 신고 </span>
+                ・ <span onClick={handleOpenModal}> 신고 </span>
+                      {isModalOpen && (
+                    <ClaimReasonModal
+                      onSelect={handleSelectReasons}
+                      onClose={handleCloseModal}
+                      isModalOpen={isModalOpen}
+                      props={'comment'}
+                      id={item.commentId}
+                    />
+                  )}
               </p>
             </div>
           </div>
