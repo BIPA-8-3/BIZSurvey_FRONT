@@ -17,8 +17,6 @@ function Search({props}) {
     setTitle(props)
   },[]);
 
-
-
   const handleKeyDown = (e) => {
     if (e.keyCode === 40) {
       if (findTitles.length > 0) {
