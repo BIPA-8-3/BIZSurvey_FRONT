@@ -38,7 +38,7 @@ function MypageSurveyList({userData, setEditState}) {
       <div className={style.mypageUserInfoWrap}>
           <div>
             <ul className={style.mypageUserInfo}>
-                <li className={style.MypageSurveyLi}>
+                <li className={`${style.MypageSurveyLi} ${style.mypageLiFirst}`}>
                     <div>
                         <span>설문 커뮤니티</span>
                     </div>

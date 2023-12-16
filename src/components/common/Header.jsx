@@ -99,7 +99,6 @@ function Header() {
             <Link to={'/workspace'}><li>워크스페이스</li></Link>
             {isLoggedIn ? (
               // 로그인 상태일 때 표시되는 링크
-              <Link >
                 <li style={{padding:'0px', paddingLeft:'10px'}}>
                   <div className={style.photo} onClick={handleOpenUserMenu}>
                       <img className="" src={userInfo.profile ? `https://${userInfo.profile}` : avatar} alt="프로필 이미지" />
@@ -130,7 +129,6 @@ function Header() {
                       </MenuItem>
                   </Menu>
                 </li>
-              </Link>
             ) : (
               // 비로그인 상태일 때 표시되는 링크
               <Link to={'/login'}>
