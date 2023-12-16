@@ -6,11 +6,46 @@ import axios from "axios";
 import SearchResult from "./SearchResult";
 import { useNavigate, Link } from "react-router-dom";
 
-function Search() {
+function Search({props}) {
   const [title, setTitle] = useState(""); // 검색할 데이터
   const [findTitles, setFindTitles] = useState([]); // 검색 자동 완성
   const [searchResults, setSearchResults] = useState({}); // 검색 결과 
   const navigate = useNavigate();
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  useEffect(() => {
+    setTitle(props)
+  },[]);
+
+
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 40) {
+      if (findTitles.length > 0) {
+        const currentIndex = findTitles.findIndex(
+          (item) => item.result === selectedItem
+        );
+        const nextIndex = (currentIndex + 1) % findTitles.length;
+        setSelectedItem(findTitles[nextIndex].result);
+        console.log("test " + findTitles[nextIndex].result)
+      }
+    } else if (e.keyCode === 38) {
+      if (findTitles.length > 0) {
+        const currentIndex = findTitles.findIndex(
+          (item) => item.result === selectedItem
+        );
+        const prevIndex =
+          currentIndex === 0 ? findTitles.length - 1 : currentIndex - 1;
+        setSelectedItem(findTitles[prevIndex].result);
+        console.log("test2 " + findTitles[prevIndex].result)
+      }
+    }else if (e.keyCode === 13) {
+      if (selectedItem) {
+        clickSearchPosts(selectedItem)
+        setFindTitles([]);
+      }
+    }
+  };
 
 
   const handleBlur = (e) => {
@@ -20,6 +55,7 @@ function Search() {
       }, 200);
     }
   };
+
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
 
@@ -38,7 +74,7 @@ function Search() {
   };
  
 
-  const searchPosts = (e) => {
+  const searchPosts = () => {
 
     axios
       .get(`http://localhost:8080/community/search?keyword=${title}`)
@@ -63,10 +99,12 @@ function Search() {
 
   const clickSearchPosts = (e) => {
     setTitle(e)
+
     axios
       .get(`http://localhost:8080/community/search?keyword=${e}`)
       .then((response) => {
         let data = { keyword: e, result: response.data };
+        setTitle(e)
         navigate('/communitySearchResult', { state: data });
       })
       .catch((error) => {
@@ -98,6 +136,8 @@ function Search() {
             onBlur={handleBlur}
             onClick={onChangeTitle}
             placeholder="검색어를 입력하세요"
+            onKeyDown={handleKeyDown}
+            tabIndex="0" // 요소가 포커스를 받을 수 있도록 함
           />
           
         </div>
@@ -107,7 +147,13 @@ function Search() {
       </div>
       <div className={`${style.autocomplete} ${findTitles.length > 0 ? style.hasResultsAutocomplete : ''}`}>
         {Array.isArray(findTitles) && findTitles.map((item) => 
-            <div key={item.id} className={style.comItem}  onClick={() => clickSearchPosts(item.result)}>{item.result}</div>
+            <div 
+              key={item.id} 
+              className={`${style.comItem} ${
+                item.result === selectedItem ? style.selectedItem : ''
+              }`}
+              onClick={() => clickSearchPosts(item.result)}
+              tabIndex="0">{item.result}</div>
         )}
       </div>
     </div>
