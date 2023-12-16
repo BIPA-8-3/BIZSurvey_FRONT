@@ -191,7 +191,22 @@ export const modifySurveyName = (id, title) => {
     return call(`/workspace/survey`, "PATCH", request);
 }
 
-// 개인 외부 집계
+// 기본형 개인 외부 집계
 export const getPersonalResult = (sharedListId) => {
     return call(`${shareURI}/personal/result/${sharedListId}`, "GET");
+}
+
+// 기본형 전체 외부 집계
+export const getSharedSurveyResult = (sharedSurveyId) => {
+    return call(`${shareURI}/external/${sharedSurveyId}`, "GET");
+}
+
+// 점수형 개인 외부 집계
+export const getdPersonalScoreResult = (sharedSurveyId) => {
+    return call(`${shareURI}/personal/score/result/${sharedSurveyId}`, "GET");
+}
+
+// 점수형 전체 외부 집계
+export const getSharedSurveyScoreResult = (surveyId, sharedSurveyId) => {
+    return call(`${shareURI}/score/result/${surveyId}/${sharedSurveyId}`, "GET");
 }
