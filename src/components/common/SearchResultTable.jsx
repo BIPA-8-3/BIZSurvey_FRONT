@@ -54,7 +54,7 @@ export default function SearchResultTable(){
               <h1 className='textCenter title textBold'>'{keyword}' 검색 결과</h1>
               <p className='textCenter subTitle'>쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
           </div>
-          <Search></Search>
+          <Search props={keyword}></Search>
     
         <div style={{textAlign:'right'}}>
             <Link to={'/communityWrite'}>
