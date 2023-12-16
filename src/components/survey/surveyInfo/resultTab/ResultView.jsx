@@ -38,21 +38,19 @@ export default function ResultView() {
   useEffect(() => {
     setSharedId(0);
     setSharedUnit([]);
-    if (sharedType === "INTERNAL") {
-      console.log("surveyTYpeeeeeeeeee", survey.surveyId);
-      call("/survey/result/postList/" + survey.surveyId, "GET")
-        .then((data) => {
-          console.log("data", data);
-          setSharedUnit(data);
-        })
-        .catch((error) => console.log(error));
-    } else {
-      getSharedSurveyHistory(survey.surveyId)
-        .then((data) => {
-          console.log(data);
-          setSharedUnit(data);
-        })
-        .catch((error) => console.log(error));
+    switch (sharedType) {
+      case "INTERNAL":
+        call("/survey/result/postList/" + survey.surveyId, "GET")
+          .then((data) => setSharedUnit(data))
+          .catch((error) => console.log(error));
+        break;
+      case "EXTERNAL":
+        getSharedSurveyHistory(survey.surveyId)
+          .then((data) => {
+            setSharedUnit(data);
+          })
+          .catch((error) => console.log(error));
+        break;
     }
   }, [sharedType]);
 

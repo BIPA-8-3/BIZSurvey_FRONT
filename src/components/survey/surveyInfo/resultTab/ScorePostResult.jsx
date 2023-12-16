@@ -13,6 +13,7 @@ import { useContext } from "react";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import SurveyQuestion from "../../../surveyCommunity/survey/SurveyQuestion";
 import BarChart from "../../../common/BarChart";
+import { getSharedSurveyScoreResult } from "../../../../pages/workspace/api";
 
 export default function ScorePostResult({ sharedId, sharedType }) {
   const { survey } = useContext(SurveyContext);
@@ -51,28 +52,42 @@ export default function ScorePostResult({ sharedId, sharedType }) {
   ]);
 
   useEffect(() => {
-    console.log("sharedId", sharedId);
     if (sharedId) {
       handleGetData();
     }
   }, [sharedId]);
 
   useEffect(() => {
-    console.log(result);
+    console.log("여기: ", result);
   }, [result]);
 
   const handleGetData = async () => {
     // 데이터 받아오는 곳
-    call("/survey/result/score/" + sharedId, "GET")
-      .then((data) => {
-        setResult(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    switch (sharedType) {
+      case "INTERNAL":
+        call("/survey/result/score/" + sharedId, "GET")
+          .then((data) => {
+            setResult(data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        break;
+      case "EXTERNAL":
+        console.log(survey.surveyId);
+        getSharedSurveyScoreResult(survey.surveyId, sharedId)
+          .then((data) => {
+            console.log("asdf", data);
+            setResult(data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        break;
+    }
   };
 
-  if (!sharedId) {
+  if (sharedId === 0) {
     return (
       <>
         <div
