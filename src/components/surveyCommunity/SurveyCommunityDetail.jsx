@@ -15,6 +15,7 @@ import Loader from "../../pages/loader/Loader"
 import axios from 'axios'
 import BizModal from "../common/BizModal";
 import ClaimReasonModal from "../common/ClaimReasonModal";
+import { useNavigate } from "react-router-dom";
 
 
 export default function CommunityPost() {
@@ -25,6 +26,7 @@ export default function CommunityPost() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -33,6 +35,14 @@ export default function CommunityPost() {
       try {
         const response = await axios.get('http://localhost:8080/s-community/showPost/'+postId);
         console.log("리스폰스 : "+JSON.stringify(response.data));
+
+        if(response.data.reported === 1){
+          alert("신고당한 게시물입니다.")
+          navigate('/');
+        }
+
+
+
         setData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);

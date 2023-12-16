@@ -6,6 +6,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 
 
+
 const SurveyListModal = ({ props }) => {
   const data = props.list;
   const modalTitle = props.title;
@@ -46,7 +47,7 @@ const SurveyListModal = ({ props }) => {
 
   return (
     <div>
-      
+
       <button onClick={handleOpenModal}>{modalTitle}</button>
       <BizModal
         isOpen={modalOpen}

@@ -14,6 +14,7 @@ import VoteWrite from './VoteWrite'
 import ChildCommentForm from './ChildCommentForm';
 import ChildComment from './ChildComment';
 import axios from 'axios'
+import ClaimReasonModal from "../common/ClaimReasonModal";
 
 
 export default function CommunityPost() {
@@ -24,12 +25,20 @@ export default function CommunityPost() {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:8080/community/showPost/'+postId);
+
+        if(response.data.reported === 1){
+          alert("신고당한 게시물입니다.")
+          navigate('/community');
+        }
+
         console.log("리스폰스 : "+response);
         setData(response.data);
       } catch (error) {
@@ -66,14 +75,24 @@ export default function CommunityPost() {
     }
   }
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSelectReasons = (selectedReasons) => {
+    // 선택된 이유들을 사용하거나 필요에 따라 다른 작업을 수행합니다.
+    console.log("Selected Reasons:", selectedReasons);
+  };
 
 
 
 
 
   return (
-
-   
 
     <div className={`fade-in ${fadeIn ? 'active' : ''}`}>
     
@@ -111,9 +130,17 @@ export default function CommunityPost() {
                         <span style={{color:'#ddd'}}> | </span> 
                         댓글 <span style={{fontWeight:'bold'}}>{data.commentSize}</span>
                     </div>
-                    <div style={{cursor:'pointer', fontSize:'14px'}}>
-                        신고
-                    </div>
+                    <div style={{ cursor: "pointer", fontSize: "14px" }} onClick={handleOpenModal}>신고</div>
+                    {/* 모달 */}
+                        {isModalOpen && (
+                          <ClaimReasonModal
+                            onSelect={handleSelectReasons}
+                            onClose={handleCloseModal}
+                            isModalOpen={isModalOpen}
+                            props={'post'}
+                            id={postId}
+                          />
+                        )}
                 </p>
                 
             </div>
