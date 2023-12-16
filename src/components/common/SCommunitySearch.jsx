@@ -67,21 +67,32 @@ function SCommunitySearch() {
   return (
     <div>
     <div className={style.searchWrap}>
-      <div>
-        <input
-          value={title}
-          onChange={onChangeTitle}
-          type="text"
-          className={style.searchInput}
-          placeholder="검색어를 입력하세요"
-        />
-        
+      <div className={style.searchInputWrap}>
+        <div>
+          <input
+            value={title}
+            onChange={onChangeTitle}
+            type="text"
+            className={`${style.searchInput} ${findTitles.length > 0 ? style.hasResults : ''}`}
+            // onBlur={handleBlur}
+            // onClick={onClickTitle}
+            placeholder="검색어를 입력하세요"
+          />
+          
+        </div>
+        <div className={style.searchBtn} onClick={onSearchButtonClick} >
+          <IoIosSearch size={35} color="#f8f8f8" />
+        </div>
       </div>
-      <div className={style.searchBtn} onClick={onSearchButtonClick} >
-        <IoIosSearch size={35} color="#f8f8f8" />
-      </div>
+      {/* <div className={`${style.autocomplete} ${findTitles.length > 0 ? style.hasResultsAutocomplete : ''}`}>
+        {Array.isArray(findTitles) && findTitles.map((item) => 
+          <div key={item.id} className={style.comItem}>{item.result}</div>
+        )}
+      </div> */}
+      {/*  자동완성 css적용 코드  */}
     </div>
-        <SearchResult props={findTitles} />
+        {/* <SearchResult props={findTitles} />       */}  
+        {/* 이전 코드 잠시 주석했습니다 */}
     </div>
   );
 }
