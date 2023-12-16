@@ -22,10 +22,10 @@
     transition: all 0.2s linear;
     cursor: pointer;
 }
-
+/* 
 .plan:hover{
     transform: scale(1.02);
-}
+} */
 
 .planHead{
     padding: 15px 0px;

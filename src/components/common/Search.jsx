@@ -1,10 +1,10 @@
 import style from "../../style/Search.module.css";
 import "../../style/Common.css";
 import { IoIosSearch } from "react-icons/io";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import SearchResult from "./SearchResult";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Search() {
   const [title, setTitle] = useState(""); // 검색할 데이터
@@ -12,7 +12,14 @@ function Search() {
   const [searchResults, setSearchResults] = useState({}); // 검색 결과 
   const navigate = useNavigate();
 
-  // 
+
+  const handleBlur = (e) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setTimeout(() => {
+        setFindTitles([]);
+      }, 200);
+    }
+  };
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
 
@@ -29,8 +36,9 @@ function Search() {
       });
 
   };
+ 
 
-  const searchPosts = () => {
+  const searchPosts = (e) => {
 
     axios
       .get(`http://localhost:8080/community/search?keyword=${title}`)
@@ -53,6 +61,19 @@ function Search() {
       
   };
 
+  const clickSearchPosts = (e) => {
+    setTitle(e)
+    axios
+      .get(`http://localhost:8080/community/search?keyword=${e}`)
+      .then((response) => {
+        let data = { keyword: e, result: response.data };
+        navigate('/communitySearchResult', { state: data });
+      })
+      .catch((error) => {
+        console.error("Error searching posts:", error);
+      });
+  };
+
 
   const onSearchButtonClick = () => {
     if(title === "" || title === null){
@@ -67,22 +88,31 @@ function Search() {
   return (
     <div>
     <div className={style.searchWrap}>
-      <div>
-        <input
-          value={title}
-          onChange={onChangeTitle}
-          type="text"
-          className={style.searchInput}
-          placeholder="검색어를 입력하세요"
-        />
-        
+      <div className={style.searchInputWrap}>
+        <div>
+          <input
+            value={title}
+            onChange={onChangeTitle}
+            type="text"
+            className={`${style.searchInput} ${findTitles.length > 0 ? style.hasResults : ''}`}
+            onBlur={handleBlur}
+            onClick={onChangeTitle}
+            placeholder="검색어를 입력하세요"
+          />
+          
+        </div>
+        <div className={style.searchBtn} onClick={onSearchButtonClick} >
+          <IoIosSearch size={35} color="#f8f8f8" />
+        </div>
       </div>
-      <div className={style.searchBtn} onClick={onSearchButtonClick} >
-        <IoIosSearch size={35} color="#f8f8f8" />
+      <div className={`${style.autocomplete} ${findTitles.length > 0 ? style.hasResultsAutocomplete : ''}`}>
+        {Array.isArray(findTitles) && findTitles.map((item) => 
+            <div key={item.id} className={style.comItem}  onClick={() => clickSearchPosts(item.result)}>{item.result}</div>
+        )}
       </div>
     </div>
-    
-        <SearchResult props={findTitles} />
+          
+        {/* <SearchResult props={findTitles} /> */}
     </div>
   );
 }

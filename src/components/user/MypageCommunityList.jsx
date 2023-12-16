@@ -51,28 +51,29 @@ function MypageCommunityList({userData, setEditState}) {
       <div className={style.mypageUserInfoWrap}>
           <div>
             <ul className={style.mypageUserInfo}>
-                <li className={style.MypageSurveyLi}>
+                <li className={`${style.MypageSurveyLi} ${style.mypageLiFirst}`}>
                     <div>
                         <span>커뮤니티</span>
                     </div>
                 </li>
                 {communityList.map((communityItem) => (
-                <li className={style.MypageSurveyLi}>
-                    
-                    <div className={style.MypageSurveyTitle}>{communityItem.title}</div>
-                    <div className={style.MypageSurveyDate}>
+                  <Link to={'/communityDetail'} state={{postId : communityItem.postId}}>
+                    <li className={style.MypageSurveyLi}>
+                        <div className={style.MypageSurveyTitle}>{communityItem.title}</div>
                         <div className={style.MypageSurveyDate}>
-                            <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
-                                <MdOutlineRemoveRedEye />
-                                <span style={{ margin: '0 5px 0 5px' }}>00</span>
-                            </div>
-                            <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', marginLeft:'15px'}}>
-                                <MdDateRange />
-                                <span style={{ margin: '0 5px 0 5px', display:'inline-block', width:'65px'}}>{formatDateTime(communityItem.createTime)}</span>
+                            <div className={style.MypageSurveyDate}>
+                                <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
+                                    <MdOutlineRemoveRedEye />
+                                    <span style={{ margin: '0 5px 0 5px' }}>00</span>
+                                </div>
+                                <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', marginLeft:'15px'}}>
+                                    <MdDateRange />
+                                    <span style={{ margin: '0 5px 0 5px', display:'inline-block', width:'65px'}}>{formatDateTime(communityItem.createTime)}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                  </Link>
                 ))}
             </ul>
           </div>
