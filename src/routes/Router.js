@@ -25,6 +25,9 @@ const CommunityWrite = lazy(() =>
 const SurveyCommunityDetail = lazy(() =>
   import("../components/surveyCommunity/SurveyCommunityDetail")
 );
+const EditSurveyCommunity = lazy(() =>
+  import("../components/surveyCommunity/EditSurveyCommunity")
+);
 const CommunitySurveyWrite = lazy(() =>
   import("../components/surveyCommunity/CommunitySurveyWrite")
 );
@@ -79,7 +82,9 @@ const AdminClaimListPage = lazy(() =>
   import("../pages/admin/AdminClaimListPage")
 );
 const AdminLoginPage = lazy(() => import("../pages/admin/AdminLoginPage"));
-const AdminClaimInfoPage = lazy(() => import("../pages/admin/AdminClaimInfoPage"));
+const AdminClaimInfoPage = lazy(() =>
+  import("../pages/admin/AdminClaimInfoPage")
+);
 
 const Main = lazy(() => import("../pages/workspace/Main"));
 const Authorization = lazy(() => import("../pages/workspace/Authorization"));
@@ -101,6 +106,11 @@ const ThemeRoutes = [
         path: "/surveyCommunityDetail",
         exact: true,
         element: <SurveyCommunityDetail />,
+      },
+      {
+        path: "/editSurveyCommunity",
+        exact: true,
+        element: <EditSurveyCommunity />,
       },
       {
         path: "/communitySurveyWrite",
