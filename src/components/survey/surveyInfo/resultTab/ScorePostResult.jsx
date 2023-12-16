@@ -14,7 +14,7 @@ import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import SurveyQuestion from "../../../surveyCommunity/survey/SurveyQuestion";
 import BarChart from "../../../common/BarChart";
 
-export default function ScorePostResult({ postId }) {
+export default function ScorePostResult({ sharedId, sharedType }) {
   const { survey } = useContext(SurveyContext);
 
   //   const [survey, setSurvey] = useState({
@@ -51,10 +51,11 @@ export default function ScorePostResult({ postId }) {
   ]);
 
   useEffect(() => {
-    if (postId !== "0") {
+    console.log("sharedId", sharedId);
+    if (sharedId) {
       handleGetData();
     }
-  }, [postId]);
+  }, [sharedId]);
 
   useEffect(() => {
     console.log(result);
@@ -62,7 +63,7 @@ export default function ScorePostResult({ postId }) {
 
   const handleGetData = async () => {
     // 데이터 받아오는 곳
-    call("/survey/result/score/" + postId, "GET")
+    call("/survey/result/score/" + sharedId, "GET")
       .then((data) => {
         setResult(data);
       })
@@ -71,7 +72,7 @@ export default function ScorePostResult({ postId }) {
       });
   };
 
-  if (postId === "0") {
+  if (!sharedId) {
     return (
       <>
         <div
