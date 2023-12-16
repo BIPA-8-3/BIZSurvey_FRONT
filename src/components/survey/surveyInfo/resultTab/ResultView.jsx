@@ -1,6 +1,10 @@
 import { useContext, useState } from "react";
 import SurveyTitle from "../SurveyTitle";
 import SurveyPostSelect from "./SurvePostSelect";
+import IconWithText from "../../../common/IconWithText";
+import { IoArrowBackSharp } from "react-icons/io5";
+import { IoMdDownload } from "react-icons/io";
+import Button from "@mui/material/Button";
 
 import { useEffect } from "react";
 import PersonalResult from "./PersonalResult";
@@ -26,6 +30,10 @@ export default function ResultView() {
   const [isScore, setIsScore] = useState(false);
   // 외부 / 커뮤니티 구분
   const [sharedType, setSharedType] = useState("INTERNAL");
+
+  useEffect(() => {
+    console.log("aaaaaaaaaaaaa", sharedId);
+  }, [sharedId]);
 
   useEffect(() => {
     setSharedId(0);
@@ -67,6 +75,11 @@ export default function ResultView() {
     setIsPersonal(num);
   };
 
+  const handleDownloadExcel = () => {
+    call(`/survey/result/file/${sharedId}`, "GET")
+      .then((data) => console.log(data))
+      .catch((error) => console.log(error));
+  };
   return (
     <>
       {/* 응답 결과 탭의 모든 컴포넌트 집합  */}
@@ -89,7 +102,32 @@ export default function ResultView() {
         content={survey.content}
       />
 
-      <div>엑셀 다운로드</div>
+      <div
+        style={{
+          width: "700px",
+          margin: "0 auto",
+          textAlign: "right",
+          marginBottom: "3px",
+        }}
+      >
+        <Button
+          onClick={handleDownloadExcel}
+          variant="text"
+          startIcon={<IoMdDownload />}
+          sx={[
+            {
+              color: "#0171d1",
+            },
+            {
+              ":hover": {
+                backgroundColor: "#f5fbff",
+              },
+            },
+          ]}
+        >
+          엑셀 다운받기
+        </Button>
+      </div>
 
       {/* 질문과 옵션들  */}
 

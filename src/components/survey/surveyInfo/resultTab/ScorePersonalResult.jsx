@@ -11,7 +11,10 @@ import { call } from "../../../../pages/survey/Login";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import ScoreResultOption from "./personalOption/ScoreResultOption";
 import style from "../../../../style/survey/ScorePersonalResult.module.css";
-import { getSharedContactList, getdPersonalScoreResult } from "../../../../pages/workspace/api";
+import {
+  getSharedContactList,
+  getdPersonalScoreResult,
+} from "../../../../pages/workspace/api";
 
 export default function ScorePersonalResult({ sharedId, sharedType }) {
   const { survey } = useContext(SurveyContext);
@@ -35,16 +38,16 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
   //   ]);
 
   const [resultData, setResultData] = useState([
-    // {
-    //   questionId: 0,
-    //   title: "",
-    //   answers: [
-    //     {
-    //       answer: "",
-    //       correct: "", //YES, NO, ''
-    //     },
-    //   ],
-    // },
+    {
+      questionId: 0,
+      title: "",
+      answers: [
+        {
+          answer: "",
+          correct: "", //YES, NO, ''
+        },
+      ],
+    },
   ]);
 
   const [score, setScore] = useState({
@@ -61,7 +64,10 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
     if (nickname !== 0) {
       switch (sharedType) {
         case "INTERNAL":
-          call(`/survey/result/score/${surveyId}/${sharedId}/${nickname}`, "GET")
+          call(
+            `/survey/result/score/${surveyId}/${sharedId}/${nickname}`,
+            "GET"
+          )
             .then((data) => {
               handleMergeAnswers(data, (newData) => {
                 setResultData(newData);
@@ -123,10 +129,13 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
 
     // 실제 설문지의 문제 기준으로 사용자 답변을 비교하며 점수 산출
     questions.map((question) => {
-      const userAnswer = userAnswers.find((ans) => ans.questionId === question.questionId);
+      const userAnswer = userAnswers.find(
+        (ans) => ans.questionId === question.questionId
+      );
 
       const updateAnswer = question.answers.map((ans) => {
-        const isUserAnswer = userAnswer && userAnswer.userAnswer.includes(ans.surveyAnswer);
+        const isUserAnswer =
+          userAnswer && userAnswer.userAnswer.includes(ans.surveyAnswer);
 
         return {
           answer: ans.surveyAnswer,
@@ -138,10 +147,13 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
       const hasNoCorrect = !updateAnswer.some((ans) => ans.correct === "NO");
 
       // 하나라도 yes가 잇는지
-      const hasAtLeastOneYes = updateAnswer.some((ans) => ans.correct === "YES");
+      const hasAtLeastOneYes = updateAnswer.some(
+        (ans) => ans.correct === "YES"
+      );
 
       // yse가 잇고 NO가 없으면 점수, 아니면 0
-      const questionGetScore = hasNoCorrect && hasAtLeastOneYes ? question.score : 0;
+      const questionGetScore =
+        hasNoCorrect && hasAtLeastOneYes ? question.score : 0;
 
       result.push({
         questionId: question.questionId,
@@ -192,7 +204,11 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
 
   return (
     <>
-      <UserList userList={userList} setUser={handleSetUser} sharedType={sharedType} />
+      <UserList
+        userList={userList}
+        setUser={handleSetUser}
+        sharedType={sharedType}
+      />
 
       <div>
         <p className={style.totalScore}>
@@ -200,26 +216,29 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
         </p>
       </div>
 
-      {resultData.map((question, index) => {
-        return (
-          <>
-            <QuestionBox key={index} score>
-              <QuestionTitle title={question.title} />
-              <OptionBox>
-                {/* {matchingQuestion ? ( */}
-                <>
-                  {question.answers.map((answer, index) => (
-                    // <ChoiceField
-                    //   key={index}
-                    //   text={answer.answer}
-                    //   select={matchingQuestion.answer.includes(
-                    //     answer.surveyAnswer
-                    //   )}
-                    // />
-                    <ScoreResultOption key={index} text={answer.answer} correct={answer.correct} />
-                  ))}
-                </>
-                {/* // ) : (
+      {resultData.map((question, index) => (
+        <>
+          <QuestionBox key={index} score>
+            <QuestionTitle title={question.title} />
+            <OptionBox>
+              {/* {matchingQuestion ? ( */}
+
+              {question.answers.map((answer, index) => (
+                // <ChoiceField
+                //   key={index}
+                //   text={answer.answer}
+                //   select={matchingQuestion.answer.includes(
+                //     answer.surveyAnswer
+                //   )}
+                // />
+                <ScoreResultOption
+                  key={index}
+                  text={answer.answer}
+                  correct={answer.correct}
+                />
+              ))}
+
+              {/* // ) : (
                 //   <>
                 //     <p
                 //       style={{
@@ -232,14 +251,13 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
                 //     </p>
                 //   </>
                 // )} */}
-                <p className={style.score}>
-                  {question.getScore} / {question.score}
-                </p>
-              </OptionBox>
-            </QuestionBox>
-          </>
-        );
-      })}
+              <p className={style.score}>
+                {question.getScore} / {question.score}
+              </p>
+            </OptionBox>
+          </QuestionBox>
+        </>
+      ))}
     </>
   );
 }
