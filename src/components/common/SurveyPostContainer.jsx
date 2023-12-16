@@ -16,6 +16,7 @@ import SCommunitySearch from "./SCommunitySearch";
 import { acceptInvite } from "../../pages/workspace/authenticationApi";
 import { LoginContext } from "../../App";
 
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -27,19 +28,31 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function SurveyPostContainer() {
 
-  const userInfo = useContext(LoginContext);
-
-  //useEffct 수정함
-  useEffect(() => {
-    console.log('userInfo ', userInfo);
-    acceptInvite();
-  }, []);
-
+  const navigate = useNavigate();
+  const [dataFromLocalStorage, setDataFromLocalStorage] = useState('');
   const [page, setPage] = useState(0); // 현재 페이지 번호 (페이지네이션)
   const [ref, inView] = useInView();
   const [data, setData] = useState({
     content: [],
   });
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('userInfo'); 
+    const parsedData = JSON.parse(storedData);
+    setDataFromLocalStorage(parsedData);
+    alert(JSON.stringify(parsedData));
+  }, []); 
+
+  const handleButtonClick = () => {
+    if(dataFromLocalStorage === null){
+        alert('로그인을 먼저 해야 글을 쓰실 수 있습니다.')
+        navigate('/login')
+    }else{
+      navigate('/surveyCommunityWrite')
+    }
+  };
+
+
 
   const dataFetch = () => {
 
@@ -64,6 +77,8 @@ function SurveyPostContainer() {
     }
   };
 
+  
+
   useEffect(() => {
     // inView가 true 일때만 실행한다.
     if (inView) {
@@ -81,7 +96,7 @@ function SurveyPostContainer() {
       </div>
       <SCommunitySearch />
       <div style={{ textAlign: "right" }}>
-        <Link to={"/surveyCommunityWrite"}>
+        
           <Button
             variant="contained"
             href="#contained-buttons"
@@ -92,10 +107,11 @@ function SurveyPostContainer() {
               marginBottom: "10px",
               boxShadow: 0,
             }}
+            onClick={() => handleButtonClick()}
           >
             설문 등록
           </Button>
-        </Link>
+        
       </div>
       <SurveyCard data={data.content} />
 
