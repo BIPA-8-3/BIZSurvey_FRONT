@@ -4,17 +4,19 @@ import "../../style/Common.css";
 import useFadeIn from "../../style/useFadeIn";
 import back from "../../assets/img/back.png";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import SurveyListModal from "./SurveyListModal";
 import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
 import call from "./checkLogin.js";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Divider, TextField, Input } from "@mui/material";
 import logo from "../../assets/img/설문 기본 사진.png";
 import { useLocation } from "react-router-dom";
+import Loader from "../../pages/loader/Loader.js";
 
 // import CreateVote from './CreateVote';
 // import RegisterVote from './RegisterVote'
@@ -41,12 +43,13 @@ export default function CommunityWrite() {
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [maxParticipants, setMaxParticipants] = useState("");
   //   const [postData, setPostData] = useState({});
-  //   const imageSrcArray = [];
+  const imageSrcArray = [];
   const [title, setTitle] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
-  const { postId, surveyId } = location.state ? location.state : null;
+  const { postId, surveyId } = location.state || {};
 
+  useEffect(() => {}, [loading]);
   useEffect(() => {
     console.log(data);
     if (data.length > 0 && surveyId !== 0) {
@@ -102,6 +105,9 @@ export default function CommunityWrite() {
     setSelectedEndDate(data.endDateTime); //마감일
     setMaxParticipants(data.maxMember); //인원수
     setSelectedFile(data.thumbImageUrl); //썸네일
+    returnImgUrl();
+
+    // handleFileChange(data.thumbImageUrl);
   };
 
   const handleUpload = () => {
@@ -117,6 +123,7 @@ export default function CommunityWrite() {
     formData.append("file", file); // formData는 키-밸류 구조
     formData.append("domain", "SURVEY_THUMB");
     // 백엔드 multer라우터에 이미지를 보낸다.
+    setLoading(true);
     try {
       const result = await axios.post(
         "http://localhost:8080/storage/",
@@ -130,10 +137,12 @@ export default function CommunityWrite() {
       console.log("성공 시, 백엔드가 보내주는 데이터", result.data);
       const HEAD_IMG_URL = "https://";
       const IMG_URL = HEAD_IMG_URL + result.data;
-
+      console.log(IMG_URL);
       setSelectedFile(IMG_URL);
     } catch (error) {
       console.log("실패했어요ㅠ");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -299,6 +308,7 @@ export default function CommunityWrite() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const navigate = useNavigate();
 
   const handleSaveClick = () => {
     const data = {
@@ -308,12 +318,13 @@ export default function CommunityWrite() {
       endDateTime: selectedEndDate + "T00:00:00",
       maxMember: maxParticipants,
       surveyId: selectedSurvey.surveyId,
-      thumbImageUrl: selectedFile,
+      thumbImgUrl: selectedFile,
     };
 
-    call("/s-community/createPost", "POST", data)
+    call("/s-community/updateSurveyPost/" + postId, "PATCH", data)
       .then((data) => {
-        alert("넘어온 데이터 :" + data);
+        alert(data);
+        navigate("/surveyCommunityDetail", { state: { postId: postId } });
       })
       .catch((error) => {
         console.error(error);
@@ -350,144 +361,152 @@ export default function CommunityWrite() {
   };
 
   return (
-    <div className={`fade-in ${fadeIn ? "active" : ""}`}>
-      <div className={style.titleWrap}>
-        <h1 className="textCenter title textBold">설문 등록</h1>
-        <p className="textCenter subTitle">
-          쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.
-        </p>
-      </div>
-      <div className={style.writeWrap}>
-        <div style={{ textAlign: "center" }}>
-          <input
-            type="text"
-            className={style.title}
-            placeholder="제목을 입력해주세요."
-            onChange={handleTitleChange}
-          />
+    <>
+      {loading ? <Loader /> : null}
+      <div className={`fade-in ${fadeIn ? "active" : ""}`}>
+        <div className={style.titleWrap}>
+          <h1 className="textCenter title textBold">설문 수정</h1>
+          <p className="textCenter subTitle">
+            쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.
+          </p>
         </div>
-        <div className={style.editorWrap}>
-          <div
-            style={{ width: "1000px", margin: "0 auto", marginBottom: "100px" }}
-          >
-            <ReactQuill
-              style={{ width: "1000px", height: "300px" }}
-              placeholder="내용을 입력해주세요."
-              theme="snow"
-              ref={quillRef}
-              value={content}
-              onChange={setContent}
-              modules={modules}
+        <div className={style.writeWrap}>
+          <div style={{ textAlign: "center" }}>
+            <input
+              type="text"
+              className={style.title}
+              placeholder="제목을 입력해주세요."
+              onChange={handleTitleChange}
+              value={title}
+            />
+          </div>
+          <div className={style.editorWrap}>
+            <div
+              style={{
+                width: "1000px",
+                margin: "0 auto",
+                marginBottom: "100px",
+              }}
+            >
+              <ReactQuill
+                style={{ width: "1000px", height: "300px" }}
+                placeholder="내용을 입력해주세요."
+                theme="snow"
+                ref={quillRef}
+                value={content}
+                onChange={setContent}
+                modules={modules}
+              />
+            </div>
+          </div>
+          {renderBox()}
+
+          <div className={style.voteWrap}>
+            {renderModal()}
+            <br />
+            <br />
+            설문을 응시할 수 있는 최대 인원을 입력해주세요!
+            <br />
+            <br />
+            <Input
+              value={maxParticipants}
+              onChange={handleMaxParticipantsChange}
+              type="number"
+              defaultValue={1}
+              onBlur={(e) => handleMaxParticipantsBlur(e)}
+              inputProps={{ style: { textAlign: "center" } }} // 입력창 가운데 정렬
+            />
+            (명)
+            <br />
+            <br />
+            {renderImgForm()}
+            <br />
+            <br />
+            설문이 시작될 날짜를 입력해주세요!
+            <br />
+            <br />
+            <Input
+              type="date"
+              value={selectedStartDate || ""}
+              onChange={handleDateChange}
+              inputProps={{ min: new Date().toISOString().split("T")[0] }}
+            />
+            <br />
+            <br />
+            설문이 종료될 날짜를 입력해주세요!
+            <br />
+            <br />
+            <Input
+              type="date"
+              value={selectedEndDate || ""}
+              onChange={handleEndDateChange}
+              defaultValue={1}
+              inputProps={{ min: new Date().toISOString().split("T")[0] }}
             />
           </div>
         </div>
-        {renderBox()}
 
-        <div className={style.voteWrap}>
-          {renderModal()}
-          <br />
-          <br />
-          설문을 응시할 수 있는 최대 인원을 입력해주세요!
-          <br />
-          <br />
-          <Input
-            value={maxParticipants}
-            onChange={handleMaxParticipantsChange}
-            type="number"
-            defaultValue={1}
-            onBlur={(e) => handleMaxParticipantsBlur(e)}
-            inputProps={{ style: { textAlign: "center" } }} // 입력창 가운데 정렬
-          />
-          (명)
-          <br />
-          <br />
-          {renderImgForm()}
-          <br />
-          <br />
-          설문이 시작될 날짜를 입력해주세요!
-          <br />
-          <br />
-          <Input
-            type="date"
-            value={selectedStartDate || ""}
-            onChange={handleDateChange}
-            inputProps={{ min: new Date().toISOString().split("T")[0] }}
-          />
-          <br />
-          <br />
-          설문이 종료될 날짜를 입력해주세요!
-          <br />
-          <br />
-          <Input
-            type="date"
-            value={selectedEndDate || ""}
-            onChange={handleEndDateChange}
-            defaultValue={1}
-            inputProps={{ min: new Date().toISOString().split("T")[0] }}
-          />
-        </div>
-      </div>
+        <div
+          style={{
+            textAlign: "center",
+            width: "1000px",
+            margin: "0 auto",
+            paddingTop: "80px",
+          }}
+        >
+          <Link to={"/community"}>
+            <Button
+              variant="outlined"
+              href="#contained-buttons"
+              sx={[
+                {
+                  padding: "11px 30px",
+                  backgroundColor: "#fff",
+                  color: "#243579",
+                  border: "1px solid #243579",
+                  fontWeight: "bold",
+                  marginBottom: "10px",
+                  marginRight: "5px",
+                },
+                {
+                  ":hover": {
+                    backgroundColor: "#f8f8f8",
+                  },
+                },
+              ]}
+            >
+              취소
+            </Button>
+          </Link>
 
-      <div
-        style={{
-          textAlign: "center",
-          width: "1000px",
-          margin: "0 auto",
-          paddingTop: "80px",
-        }}
-      >
-        <Link to={"/community"}>
           <Button
-            variant="outlined"
+            variant="contained"
             href="#contained-buttons"
+            onClick={handleSaveClick}
             sx={[
               {
                 padding: "11px 30px",
-                backgroundColor: "#fff",
-                color: "#243579",
-                border: "1px solid #243579",
+                backgroundColor: "#243579",
                 fontWeight: "bold",
                 marginBottom: "10px",
-                marginRight: "5px",
+                border: "1px solid #243579",
+                boxShadow: 0,
+                marginLeft: "5px",
               },
               {
                 ":hover": {
-                  backgroundColor: "#f8f8f8",
+                  border: "1px solid #1976d2",
+                  boxShadow: 0,
                 },
               },
             ]}
           >
-            취소
+            저장
           </Button>
-        </Link>
+        </div>
 
-        <Button
-          variant="contained"
-          href="#contained-buttons"
-          onClick={handleSaveClick}
-          sx={[
-            {
-              padding: "11px 30px",
-              backgroundColor: "#243579",
-              fontWeight: "bold",
-              marginBottom: "10px",
-              border: "1px solid #243579",
-              boxShadow: 0,
-              marginLeft: "5px",
-            },
-            {
-              ":hover": {
-                border: "1px solid #1976d2",
-                boxShadow: 0,
-              },
-            },
-          ]}
-        >
-          저장
-        </Button>
+        <img src={back} alt="배경" className={style.back} />
       </div>
-
-      <img src={back} alt="배경" className={style.back} />
-    </div>
+    </>
   );
 }

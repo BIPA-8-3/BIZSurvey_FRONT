@@ -15,11 +15,14 @@ import Loader from "../../pages/loader/Loader";
 import axios from "axios";
 import BizModal from "../common/BizModal";
 import ClaimReasonModal from "../common/ClaimReasonModal";
+
+import { call } from "../../pages/survey/Login";
+
 import { useNavigate } from "react-router-dom";
 
 export default function CommunityPost() {
   const fadeIn = useFadeIn();
-  const [isAvailable, setIsAvailable] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(true);
   const location = useLocation();
   let postId = location.state.postId;
   const [data, setData] = useState([]);
@@ -27,20 +30,42 @@ export default function CommunityPost() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await call("/s-community/survey/check/" + postId, "GET");
+        setIsAvailable(!res);
 
+        const access = data.canAccess;
+        console.log(data.canAccess, "aaaaaaaaaaaaaaaaaaaaa");
+
+        if (access === "대기" || access === "설문 종료") {
+          setIsAvailable(false);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [data]);
+
+  useEffect(() => {
+    console.log(isAvailable);
+  }, [isAvailable]);
   useEffect(() => {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/s-community/showPost/'+postId);
-        console.log("리스폰스 : "+JSON.stringify(response.data));
+        const response = await axios.get(
+          "http://localhost:8080/s-community/showPost/" + postId
+        );
+        console.log("리스폰스 : " + JSON.stringify(response.data));
 
-        if(response.data.reported === 1){
-          alert("신고당한 게시물입니다.")
-          navigate('/');
+        if (response.data.reported === 1) {
+          alert("신고당한 게시물입니다.");
+          navigate("/");
         }
-
-
 
         setData(response.data);
       } catch (error) {
@@ -60,7 +85,7 @@ export default function CommunityPost() {
       </>
     ); // 데이터 로딩 중에는 로딩 표시
   }
-  console.log("데이타" + data);
+  console.log("데이타", data);
   console.log(postId);
 
   const handleOpenModal = () => {
@@ -78,19 +103,17 @@ export default function CommunityPost() {
 
   const removePTags = (html) => {
     // 정규식을 사용하여 <p></p> 태그를 제거합니다.
-    const withoutPTags = html.replace(/<p>/g, '').replace(/<\/p>/g, '');
+    const withoutPTags = html.replace(/<p>/g, "").replace(/<\/p>/g, "");
     return withoutPTags;
   };
 
-  function renderAccess(){
-    if(data.canAccess === '대기'){
-        return '시작전';
-    }else if(data.canAccess === '참여 가능'){
-        return '설문 참여';
-    }else if(data.canAccess === '설문 종료'){
-      return '설문 종료';
-    }else{
-      return '참여 완료';
+  function renderAccess() {
+    if (data.canAccess === "대기") {
+      return "시작전";
+    } else if (data.canAccess === "설문 종료") {
+      return "설문 종료";
+    } else {
+      return "참여 완료";
     }
   }
 
@@ -120,9 +143,9 @@ export default function CommunityPost() {
         </div>
         <div className={style.content}>
           <div style={{ textAlign: "right" }}>
-            {/* <Link
+            <Link
               to={"/editSurveyCommunity"}
-              state={{ surveyId: surveyId, postId: postId }}
+              state={{ surveyId: data.surveyId, postId: postId }}
             >
               <Button
                 variant="contained"
@@ -146,12 +169,12 @@ export default function CommunityPost() {
               >
                 수정
               </Button>
-            </Link> */}
+            </Link>
           </div>
           <p dangerouslySetInnerHTML={{ __html: removePTags(data.content) }} />
           <div className={style.surveyBtnWrap}>
-            <Link to={"/communitySurveyWrite"}>
-              {isAvailable ? (
+            {isAvailable ? (
+              <Link to={"/communitySurveyWrite"} state={{ postId: postId }}>
                 <Button
                   variant="contained"
                   href="#contained-buttons"
@@ -175,27 +198,26 @@ export default function CommunityPost() {
                 >
                   설문참여
                 </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  href="#contained-buttons"
-                  disabled
-                  sx={[
-                    {
-                      padding: "11px 30px",
-                      backgroundColor: "#243579",
-                      fontWeight: "bold",
-                      marginBottom: "10px",
+              </Link>
+            ) : (
+              <Button
+                variant="contained"
+                disabled={true}
+                sx={[
+                  {
+                    padding: "11px 30px",
+                    backgroundColor: "#243579",
+                    fontWeight: "bold",
+                    marginBottom: "10px",
 
-                      boxShadow: 0,
-                      marginLeft: "5px",
-                    },
-                  ]}
-                >
-                  {renderAccess()}
-                </Button>
-              )}
-            </Link>
+                    boxShadow: 0,
+                    marginLeft: "5px",
+                  },
+                ]}
+              >
+                {renderAccess()}
+              </Button>
+            )}
           </div>
           <p
             style={{
