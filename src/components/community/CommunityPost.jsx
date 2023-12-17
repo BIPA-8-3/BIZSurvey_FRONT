@@ -15,16 +15,27 @@ import CommunityTable from './CommunityTable';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import Loader from "../../pages/loader/Loader"
+import { useNavigate } from "react-router-dom";
 
 
 
 export default function CommunityPost() {
-
+  const [dataFromLocalStorage, setDataFromLocalStorage] = useState('');
   const [data, setData] = useState([]);
   console.log("데이타"+data)
   console.log("총 페이지 수"+data.totalPages)
   const [loading, setLoading] = useState(true);
   const fadeIn = useFadeIn();
+  const navigate = useNavigate();
+
+
+  // 유저 정보 불러오기
+  useEffect(() => {
+    const storedData = localStorage.getItem('userInfo'); 
+    const parsedData = JSON.parse(storedData);
+    setDataFromLocalStorage(parsedData);
+    alert(JSON.stringify(parsedData));
+  }, []); 
   
   useEffect(() => {
     // 데이터를 가져오는 함수
@@ -50,6 +61,11 @@ export default function CommunityPost() {
     </>; // 데이터 로딩 중에는 로딩 표시
   }
 
+  
+
+
+
+
   const handlePage = (event) => {
     const nowPageInt = parseInt(event.target.outerText)
     // page에 해당하는 페이지로 GET 요청을 보냄
@@ -62,6 +78,16 @@ export default function CommunityPost() {
       });
   };
 
+
+
+  const handleButtonClick = () => {
+    if(dataFromLocalStorage === null){
+        alert('로그인을 먼저 해야 글을 쓰실 수 있습니다.')
+        navigate('/login')
+    }else{
+      navigate('/communityWrite')
+    }
+  };
   
  
   return (
@@ -75,8 +101,8 @@ export default function CommunityPost() {
       <Search></Search>
 
     <div style={{textAlign:'right'}}>
-        <Link to={'/communityWrite'}>
-            <Button variant="contained" href="#contained-buttons" 
+        
+            <Button variant="contained" href="#contained-buttons" onClick={() => handleButtonClick()}
             sx={{
               padding:'11px 30px', 
               backgroundColor:'#243579', 
@@ -85,7 +111,7 @@ export default function CommunityPost() {
               boxShadow:0,}}>
                 글쓰기
             </Button>
-        </Link>
+        
     </div>
     <CommunityTable props={data.content} />
     <div style={{width : '1200px', margin : '0 auto', marginTop:'20px'}} >

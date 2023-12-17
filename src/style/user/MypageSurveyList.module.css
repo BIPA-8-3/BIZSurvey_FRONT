@@ -19,7 +19,7 @@
   font-weight: 400;
 }
 
-.mypageUserInfo li:first-child {
+.mypageLiFirst{
   background-color: blue;
   background: rgb(17, 159, 179);
   background: linear-gradient(
@@ -74,8 +74,10 @@
   cursor: pointer;
 }
 
-.MypageSurveyLi:first-child {
+.mypageLiFirst {
   height: 59.77px;
+  padding: 0px !important;
+  padding-left: 17px !important;
 }
 
 .back {
