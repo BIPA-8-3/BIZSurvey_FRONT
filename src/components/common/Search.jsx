@@ -6,16 +6,13 @@ import axios from "axios";
 import SearchResult from "./SearchResult";
 import { useNavigate, Link } from "react-router-dom";
 
-function Search({props}) {
+function Search() {
   const [title, setTitle] = useState(""); // 검색할 데이터
   const [findTitles, setFindTitles] = useState([]); // 검색 자동 완성
   const [searchResults, setSearchResults] = useState({}); // 검색 결과 
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState(null);
 
-  useEffect(() => {
-    setTitle(props)
-  },[]);
 
   const handleKeyDown = (e) => {
     if (e.keyCode === 40) {
@@ -73,7 +70,7 @@ function Search({props}) {
  
 
   const searchPosts = () => {
-
+    
     axios
       .get(`http://localhost:8080/community/search?keyword=${title}`)
       .then((response) => {
@@ -86,6 +83,7 @@ function Search({props}) {
         console.log( "보내는 데이터 : "+JSON.stringify(data))
         
         navigate('/communitySearchResult', {state: data}) 
+        
       })
       .catch((error) => {
         console.error("Error searching posts:", error);
@@ -116,6 +114,7 @@ function Search({props}) {
       alert('검색어를 입력하셔야합니다.')
       
     }else{
+      
       searchPosts();
     }
   };
