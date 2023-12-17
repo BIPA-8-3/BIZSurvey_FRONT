@@ -19,10 +19,11 @@ import Loader from "../../pages/loader/Loader"
 export default function SearchResultTable(){
     // let location = useLocation(); // 넘어온 결과 
     // let result = location.state.result;
+    
     const location = useLocation();
+    
     let keyword = location.state.keyword;
     let result = location.state.result;
-
     console.log("키워드드ㅡ드드드드드"+JSON.stringify(keyword));
     console.log(JSON.stringify(result));
     
@@ -31,8 +32,14 @@ export default function SearchResultTable(){
     const [data, setData] = useState({});
 
     useEffect(()=> {
+      
       setData(result)
+      
+      
     }, [result])
+    
+    
+   
 
     const handlePage = (event) => {
         const nowPageInt = parseInt(event.target.outerText)
@@ -47,14 +54,14 @@ export default function SearchResultTable(){
       };
 
     return (
-
+      
   
         <div className={`fade-in ${fadeIn ? 'active' : ''}`}>
           <div className={style.titleWrap}>
               <h1 className='textCenter title textBold'>'{keyword}' 검색 결과</h1>
               <p className='textCenter subTitle'>쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
           </div>
-          <Search props={keyword}></Search>
+          <Search> </Search>
     
         <div style={{textAlign:'right'}}>
             <Link to={'/communityWrite'}>
@@ -88,7 +95,6 @@ export default function SearchResultTable(){
         <img src={back} alt="배경" className={style.back}/>
         </div>
       );
-
 
 
 }

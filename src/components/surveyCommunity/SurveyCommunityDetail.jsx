@@ -15,7 +15,7 @@ import Loader from "../../pages/loader/Loader";
 import axios from "axios";
 import BizModal from "../common/BizModal";
 import ClaimReasonModal from "../common/ClaimReasonModal";
-
+import { useNavigate } from "react-router-dom";
 
 export default function CommunityPost() {
   const fadeIn = useFadeIn();
@@ -76,6 +76,24 @@ export default function CommunityPost() {
     console.log("Selected Reasons:", selectedReasons);
   };
 
+  const removePTags = (html) => {
+    // 정규식을 사용하여 <p></p> 태그를 제거합니다.
+    const withoutPTags = html.replace(/<p>/g, '').replace(/<\/p>/g, '');
+    return withoutPTags;
+  };
+
+  function renderAccess(){
+    if(data.canAccess === '대기'){
+        return '시작전';
+    }else if(data.canAccess === '참여 가능'){
+        return '설문 참여';
+    }else if(data.canAccess === '설문 종료'){
+      return '설문 종료';
+    }else{
+      return '참여 완료';
+    }
+  }
+
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.contentWrap}>
@@ -130,7 +148,7 @@ export default function CommunityPost() {
               </Button>
             </Link> */}
           </div>
-          <p>{data.content}</p>
+          <p dangerouslySetInnerHTML={{ __html: removePTags(data.content) }} />
           <div className={style.surveyBtnWrap}>
             <Link to={"/communitySurveyWrite"}>
               {isAvailable ? (
@@ -174,7 +192,7 @@ export default function CommunityPost() {
                     },
                   ]}
                 >
-                  참여완료
+                  {renderAccess()}
                 </Button>
               )}
             </Link>

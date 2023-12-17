@@ -11,8 +11,46 @@ function SCommunitySearch() {
   const [findTitles, setFindTitles] = useState([]); // 검색 자동 완성
   const [searchResults, setSearchResults] = useState({}); // 검색 결과 
   const navigate = useNavigate();
+  const [selectedItem, setSelectedItem] = useState(null);
 
-  // 
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 40) {
+      if (findTitles.length > 0) {
+        const currentIndex = findTitles.findIndex(
+          (item) => item.result === selectedItem
+        );
+        const nextIndex = (currentIndex + 1) % findTitles.length;
+        setSelectedItem(findTitles[nextIndex].result);
+        console.log("test " + findTitles[nextIndex].result)
+      }
+    } else if (e.keyCode === 38) {
+      if (findTitles.length > 0) {
+        const currentIndex = findTitles.findIndex(
+          (item) => item.result === selectedItem
+        );
+        const prevIndex =
+          currentIndex === 0 ? findTitles.length - 1 : currentIndex - 1;
+        setSelectedItem(findTitles[prevIndex].result);
+        console.log("test2 " + findTitles[prevIndex].result)
+      }
+    }else if (e.keyCode === 13) {
+      if (selectedItem) {
+        clickSearchPosts(selectedItem)
+        setFindTitles([]);
+      }
+    }
+  };
+
+
+  const handleBlur = (e) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setTimeout(() => {
+        setFindTitles([]);
+      }, 200);
+    }
+  };
+
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
 
@@ -29,21 +67,23 @@ function SCommunitySearch() {
       });
 
   };
+ 
 
   const searchPosts = () => {
-
+    
     axios
       .get(`http://localhost:8080/s-community/search?keyword=${title}`)
       .then((response) => {
-        console.log("설문 게시물 검색 결과!!!!(<Search />):", response.data);
+        console.log("검색 결과!!!!(<Search />):", response.data);
         
         console.log(response.data);
         
         let data = {keyword:title, result:response.data}
 
-        console.log( "보내는 데이터(설)(설)(문)(문) : "+JSON.stringify(data))
+        console.log( "보내는 데이터 : "+JSON.stringify(data))
         
         navigate('/surveyCommunitySearchResult', {state: data}) 
+        
       })
       .catch((error) => {
         console.error("Error searching posts:", error);
@@ -53,12 +93,28 @@ function SCommunitySearch() {
       
   };
 
+  const clickSearchPosts = (e) => {
+    setTitle(e)
+
+    axios
+      .get(`http://localhost:8080/s-community/search?keyword=${e}`)
+      .then((response) => {
+        let data = { keyword: e, result: response.data };
+        setTitle(e)
+        navigate('/surveyCommunitySearchResult', { state: data });
+      })
+      .catch((error) => {
+        console.error("Error searching posts:", error);
+      });
+  };
+
 
   const onSearchButtonClick = () => {
     if(title === "" || title === null){
       alert('검색어를 입력하셔야합니다.')
       
     }else{
+      
       searchPosts();
     }
   };
@@ -74,9 +130,11 @@ function SCommunitySearch() {
             onChange={onChangeTitle}
             type="text"
             className={`${style.searchInput} ${findTitles.length > 0 ? style.hasResults : ''}`}
-            // onBlur={handleBlur}
-            // onClick={onClickTitle}
+            onBlur={handleBlur}
+            onClick={onChangeTitle}
             placeholder="검색어를 입력하세요"
+            onKeyDown={handleKeyDown}
+            tabIndex="0" // 요소가 포커스를 받을 수 있도록 함
           />
           
         </div>
@@ -84,15 +142,20 @@ function SCommunitySearch() {
           <IoIosSearch size={35} color="#f8f8f8" />
         </div>
       </div>
-      {/* <div className={`${style.autocomplete} ${findTitles.length > 0 ? style.hasResultsAutocomplete : ''}`}>
+      <div className={`${style.autocomplete} ${findTitles.length > 0 ? style.hasResultsAutocomplete : ''}`}>
         {Array.isArray(findTitles) && findTitles.map((item) => 
-          <div key={item.id} className={style.comItem}>{item.result}</div>
+            <div 
+              key={item.id} 
+              className={`${style.comItem} ${
+                item.result === selectedItem ? style.selectedItem : ''
+              }`}
+              onClick={() => clickSearchPosts(item.result)}
+              tabIndex="0">{item.result}</div>
         )}
-      </div> */}
-      {/*  자동완성 css적용 코드  */}
+      </div>
     </div>
-        {/* <SearchResult props={findTitles} />       */}  
-        {/* 이전 코드 잠시 주석했습니다 */}
+          
+        {/* <SearchResult props={findTitles} /> */}
     </div>
   );
 }

@@ -1,4 +1,3 @@
-
 import style from"../../style/community/ParentsComment.module.css"
 import '../../style/Common.css'
 import logo from "../../assets/img/avatar.png"

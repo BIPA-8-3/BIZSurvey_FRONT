@@ -22,11 +22,18 @@ export default function CommunityPost() {
   const fadeIn = useFadeIn();
   const location = useLocation();
   let postId = location.state.postId;
-
+  const [dataFromLocalStorage, setDataFromLocalStorage] = useState('');
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('userInfo'); 
+    const parsedData = JSON.parse(storedData);
+    setDataFromLocalStorage(parsedData);
+    alert(JSON.stringify(parsedData));
+  }, []); 
 
   useEffect(() => {
     // 데이터를 가져오는 함수
@@ -60,6 +67,45 @@ export default function CommunityPost() {
   console.log(postId);
 
 
+  function renderChangeButton(){
+
+    if(data.nickname === dataFromLocalStorage.nickname){
+            return(
+              <div style={{ textAlign: "right" }}>
+                    <Link
+                      to={"/editSurveyCommunity"}
+                      state={{postId: postId }}
+                    >
+                      <Button
+                        variant="contained"
+                        sx={[
+                          {
+                            padding: "11px 30px",
+                            backgroundColor: "#243579",
+                            fontWeight: "bold",
+                            marginBottom: "10px",
+                            border: "1px solid #243579",
+                            boxShadow: 0,
+                            marginLeft: "5px",
+                          },
+                          {
+                            ":hover": {
+                              border: "1px solid #1976d2",
+                              boxShadow: 0,
+                            },
+                          },
+                        ]}
+                      >
+                        수정
+                      </Button>
+                    </Link> 
+            </div>
+            
+            );
+      }
+    }
+
+
   let votePostId = data.postId;
  
   function renderVote(isVote){
@@ -89,7 +135,11 @@ export default function CommunityPost() {
   };
 
 
-
+  const removePTags = (html) => {
+    // 정규식을 사용하여 <p></p> 태그를 제거합니다.
+    const withoutPTags = html.replace(/<p>/g, '').replace(/<\/p>/g, '');
+    return withoutPTags;
+  };
 
 
   return (
@@ -120,7 +170,8 @@ export default function CommunityPost() {
                 </div>
             </div>
             <div className={style.content}>
-                <p>{data.content}</p>
+            {renderChangeButton()}
+            <p dangerouslySetInnerHTML={{ __html: removePTags(data.content) }} />
                
                 {renderVote(data.voteId)}
 
