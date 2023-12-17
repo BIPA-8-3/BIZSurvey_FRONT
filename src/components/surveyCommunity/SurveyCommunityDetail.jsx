@@ -31,6 +31,29 @@ export default function CommunityPost() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await call("/s-community/survey/check/" + postId, "GET");
+        setIsAvailable(!res);
+
+        const access = data.canAccess;
+        console.log(data.canAccess, "aaaaaaaaaaaaaaaaaaaaa");
+
+        if (access === "대기" || access === "설문 종료") {
+          setIsAvailable(false);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [data]);
+
+  useEffect(() => {
+    console.log(isAvailable);
+  }, [isAvailable]);
+  useEffect(() => {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
@@ -45,10 +68,6 @@ export default function CommunityPost() {
         }
 
         setData(response.data);
-        call("/s-community/survey/check/" + postId, "GET").then((data) => {
-          console.log(data);
-          setIsAvailable(!data);
-        });
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -66,7 +85,7 @@ export default function CommunityPost() {
       </>
     ); // 데이터 로딩 중에는 로딩 표시
   }
-  console.log("데이타" + data);
+  console.log("데이타", data);
   console.log(postId);
 
   const handleOpenModal = () => {
@@ -91,8 +110,6 @@ export default function CommunityPost() {
   function renderAccess() {
     if (data.canAccess === "대기") {
       return "시작전";
-    } else if (data.canAccess === "참여 가능") {
-      return "설문 참여";
     } else if (data.canAccess === "설문 종료") {
       return "설문 종료";
     } else {
