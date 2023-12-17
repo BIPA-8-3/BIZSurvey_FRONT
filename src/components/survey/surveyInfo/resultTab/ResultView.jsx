@@ -76,7 +76,7 @@ export default function ResultView() {
   };
 
   const handleDownloadExcel = () => {
-    call(`/survey/result/file/${sharedId}`, "GET")
+    call(`/survey/result/file/${sharedType}/${sharedId}`, "GET")
       .then((data) => console.log(data))
       .catch((error) => console.log(error));
   };
