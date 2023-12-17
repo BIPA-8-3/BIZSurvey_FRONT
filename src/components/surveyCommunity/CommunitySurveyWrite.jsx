@@ -5,7 +5,7 @@ import useFadeIn from "../../style/useFadeIn";
 import back from "../../assets/img/back.png";
 import Button from "@mui/material/Button";
 import logo from "../../assets/img/avatar.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Comment from "../community/Comment";
 import ParentsComment from "../community/ParentsComment";
 import ChildCommentForm from "../community/ChildCommentForm";
@@ -25,6 +25,8 @@ function createData(name, calories, fat, carbs, protein) {
 export default function CommunityPost() {
   const fadeIn = useFadeIn();
   const navigate = useNavigate();
+  const location = useLocation();
+  const postId = location.state?.postId || 0;
 
   // 설문지 데이터
   const [survey, setSurvey] = useState({
@@ -69,7 +71,7 @@ export default function CommunityPost() {
   }, [answers]);
 
   useEffect(() => {
-    call("/s-community/survey/1", "GET")
+    call("/s-community/survey/" + postId, "GET")
       .then((data) => {
         setSurvey(data);
       })
@@ -121,10 +123,14 @@ export default function CommunityPost() {
       );
 
       try {
-        const response = await call("/s-community/survey/1", "POST", result);
+        const response = await call(
+          "/s-community/survey/" + postId,
+          "POST",
+          result
+        );
         console.log(response);
         alert(response);
-        navigate("/surveyCommunityDetail");
+        navigate("/surveyCommunityDetail", { state: { postId: postId } });
       } catch (error) {
         console.error("답변 제출 중 오류 발생:", error);
       }
@@ -167,7 +173,7 @@ export default function CommunityPost() {
       <div className={style.contentWrap}>
         <div style={{ backgroundColor: "rgba(209, 232, 248, 0.1)" }}>
           <div className={style.title}>
-            <h1>21년도 상반기 설문조사</h1>
+            <h1>{survey.title}</h1>
             <p style={{ display: "flex" }}>
               <p style={{ textAlign: "center" }}>
                 <div
@@ -176,7 +182,7 @@ export default function CommunityPost() {
                 ></div>
               </p>
               <div style={{ marginTop: "16px" }}>
-                <span>COMMUNITY</span>
+                <span>{survey.content}</span>
               </div>
             </p>
           </div>

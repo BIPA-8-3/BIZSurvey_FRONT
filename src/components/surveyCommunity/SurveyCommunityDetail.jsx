@@ -15,10 +15,11 @@ import Loader from "../../pages/loader/Loader";
 import axios from "axios";
 import BizModal from "../common/BizModal";
 import ClaimReasonModal from "../common/ClaimReasonModal";
+import { call } from "../../pages/survey/Login";
 
 export default function CommunityPost() {
   const fadeIn = useFadeIn();
-  const [isAvailable, setIsAvailable] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(true);
   const location = useLocation();
   let postId = location.state.postId;
   const [data, setData] = useState([]);
@@ -34,6 +35,10 @@ export default function CommunityPost() {
         );
         console.log("리스폰스 : " + JSON.stringify(response.data));
         setData(response.data);
+        call("/s-community/survey/check/" + postId, "GET").then((data) => {
+          console.log(data);
+          setIsAvailable(!data);
+        });
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -93,9 +98,9 @@ export default function CommunityPost() {
         </div>
         <div className={style.content}>
           <div style={{ textAlign: "right" }}>
-            {/* <Link
+            <Link
               to={"/editSurveyCommunity"}
-              state={{ surveyId: surveyId, postId: postId }}
+              state={{ surveyId: data.surveyId, postId: postId }}
             >
               <Button
                 variant="contained"
@@ -119,12 +124,12 @@ export default function CommunityPost() {
               >
                 수정
               </Button>
-            </Link> */}
+            </Link>
           </div>
           <p>{data.content}</p>
           <div className={style.surveyBtnWrap}>
-            <Link to={"/communitySurveyWrite"}>
-              {isAvailable ? (
+            {isAvailable ? (
+              <Link to={"/communitySurveyWrite"} state={{ postId: postId }}>
                 <Button
                   variant="contained"
                   href="#contained-buttons"
@@ -148,27 +153,26 @@ export default function CommunityPost() {
                 >
                   설문참여
                 </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  href="#contained-buttons"
-                  disabled
-                  sx={[
-                    {
-                      padding: "11px 30px",
-                      backgroundColor: "#243579",
-                      fontWeight: "bold",
-                      marginBottom: "10px",
+              </Link>
+            ) : (
+              <Button
+                variant="contained"
+                disabled={true}
+                sx={[
+                  {
+                    padding: "11px 30px",
+                    backgroundColor: "#243579",
+                    fontWeight: "bold",
+                    marginBottom: "10px",
 
-                      boxShadow: 0,
-                      marginLeft: "5px",
-                    },
-                  ]}
-                >
-                  참여완료
-                </Button>
-              )}
-            </Link>
+                    boxShadow: 0,
+                    marginLeft: "5px",
+                  },
+                ]}
+              >
+                참여완료
+              </Button>
+            )}
           </div>
           <p
             style={{
