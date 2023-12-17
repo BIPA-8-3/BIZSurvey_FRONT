@@ -15,7 +15,10 @@ import Loader from "../../pages/loader/Loader";
 import axios from "axios";
 import BizModal from "../common/BizModal";
 import ClaimReasonModal from "../common/ClaimReasonModal";
+
 import { call } from "../../pages/survey/Login";
+
+import { useNavigate } from "react-router-dom";
 
 export default function CommunityPost() {
   const fadeIn = useFadeIn();
@@ -25,6 +28,7 @@ export default function CommunityPost() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 데이터를 가져오는 함수
@@ -34,6 +38,12 @@ export default function CommunityPost() {
           "http://localhost:8080/s-community/showPost/" + postId
         );
         console.log("리스폰스 : " + JSON.stringify(response.data));
+
+        if (response.data.reported === 1) {
+          alert("신고당한 게시물입니다.");
+          navigate("/");
+        }
+
         setData(response.data);
         call("/s-community/survey/check/" + postId, "GET").then((data) => {
           console.log(data);
@@ -71,6 +81,24 @@ export default function CommunityPost() {
     // 선택된 이유들을 사용하거나 필요에 따라 다른 작업을 수행합니다.
     console.log("Selected Reasons:", selectedReasons);
   };
+
+  const removePTags = (html) => {
+    // 정규식을 사용하여 <p></p> 태그를 제거합니다.
+    const withoutPTags = html.replace(/<p>/g, "").replace(/<\/p>/g, "");
+    return withoutPTags;
+  };
+
+  function renderAccess() {
+    if (data.canAccess === "대기") {
+      return "시작전";
+    } else if (data.canAccess === "참여 가능") {
+      return "설문 참여";
+    } else if (data.canAccess === "설문 종료") {
+      return "설문 종료";
+    } else {
+      return "참여 완료";
+    }
+  }
 
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
@@ -126,7 +154,7 @@ export default function CommunityPost() {
               </Button>
             </Link>
           </div>
-          <p>{data.content}</p>
+          <p dangerouslySetInnerHTML={{ __html: removePTags(data.content) }} />
           <div className={style.surveyBtnWrap}>
             {isAvailable ? (
               <Link to={"/communitySurveyWrite"} state={{ postId: postId }}>
@@ -170,7 +198,7 @@ export default function CommunityPost() {
                   },
                 ]}
               >
-                참여완료
+                {renderAccess()}
               </Button>
             )}
           </div>

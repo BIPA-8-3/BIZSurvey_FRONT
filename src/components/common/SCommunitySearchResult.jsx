@@ -29,51 +29,39 @@ function SurveyCommunitySearchResult(){
 
   const [page, setPage] = useState(0); // 현재 페이지 번호 (페이지네이션)
   const [ref, inView] = useInView();
-
-  const location = useLocation();
-  let keyword = location.state.keyword;
-  let result = location.state.result; // content
-  //alert("넘겨 받은 친구(설문 검색 결과)"+JSON.stringify(result));
-
   const [data, setData] = useState({
     content:[]
   });
+  const [keyword, setKeyword] = useState('');
+  const location = useLocation();
 
-    useEffect(()=> {
-      setData(result)
-    }, [result])
-  
-    
+  useEffect(() => {
+    const newKeyword = location.state.keyword;
+    setKeyword(newKeyword);
+
+    // 새로운 검색어를 받지 않으면 데이터 초기화하지 않음
+    if (newKeyword) {
+      setPage(0); // 검색어가 변경되면 페이지를 리셋
+      setData({ content: [] }); // 검색어가 변경되면 데이터 초기화
+    }
+  }, [location.state.keyword]);
 
   const dataFetch = () => {
-
-      console.log('데이터 라스트'+ data.last)
-
-      let plag = true;
-
-      if(data.last){
-
-        plag = false;
-      }
-      
-      if(plag){
+    if (page < data.totalPages || data.totalPages === undefined) {
       axios
-      .get(`http://localhost:8080/s-community/search?keyword=${keyword}&page=${page}`)
-      .then((res) => {
-        setData((prevData) => {
-          return {
+        .get(`http://localhost:8080/s-community/search?keyword=${keyword}&page=${page}`)
+        .then((res) => {
+          // 기존 데이터에 새로운 데이터를 더해주는 것이 아니라 새로운 데이터로 설정
+          setData({
             ...res.data,
-            content: [...prevData.content, ...res.data.content],
-          };
+            content: [...data.content, ...res.data.content], // 기존 데이터에 추가
+          });
+          setPage((prevPage) => prevPage + 1);
+        })
+        .catch((err) => {
+          console.log(err);
         });
-         setPage((prevPage) => prevPage + 1);
-     })
-      .catch((err) => {
-        console.log(err);
-     });
-
     }
-  
   };
 
   useEffect(() => {
@@ -82,7 +70,7 @@ function SurveyCommunitySearchResult(){
       console.log(inView, '무한 스크롤 요청 🎃')
       dataFetch();
     }
-    }, [inView]);
+    }, [inView, page, keyword]);
 
     const fadeIn = useFadeIn();
     return(
@@ -106,6 +94,7 @@ function SurveyCommunitySearchResult(){
                 </Link>
             </div>
             <SurveyCard data={data.content} />
+            
             
             <img src={back} alt="배경" className={style.back}/>
             <div ref={ref}></div>

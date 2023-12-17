@@ -14,6 +14,7 @@ import VoteWrite from './VoteWrite'
 import ChildCommentForm from './ChildCommentForm';
 import ChildComment from './ChildComment';
 import axios from 'axios'
+import ClaimReasonModal from "../common/ClaimReasonModal";
 
 
 export default function CommunityPost() {
@@ -21,15 +22,30 @@ export default function CommunityPost() {
   const fadeIn = useFadeIn();
   const location = useLocation();
   let postId = location.state.postId;
-
+  const [dataFromLocalStorage, setDataFromLocalStorage] = useState('');
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('userInfo'); 
+    const parsedData = JSON.parse(storedData);
+    setDataFromLocalStorage(parsedData);
+    alert(JSON.stringify(parsedData));
+  }, []); 
 
   useEffect(() => {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:8080/community/showPost/'+postId);
+
+        if(response.data.reported === 1){
+          alert("신고당한 게시물입니다.")
+          navigate('/community');
+        }
+
         console.log("리스폰스 : "+response);
         setData(response.data);
       } catch (error) {
@@ -51,6 +67,45 @@ export default function CommunityPost() {
   console.log(postId);
 
 
+  function renderChangeButton(){
+
+    if(data.nickname === dataFromLocalStorage.nickname){
+            return(
+              <div style={{ textAlign: "right" }}>
+                    <Link
+                      to={"/editSurveyCommunity"}
+                      state={{postId: postId }}
+                    >
+                      <Button
+                        variant="contained"
+                        sx={[
+                          {
+                            padding: "11px 30px",
+                            backgroundColor: "#243579",
+                            fontWeight: "bold",
+                            marginBottom: "10px",
+                            border: "1px solid #243579",
+                            boxShadow: 0,
+                            marginLeft: "5px",
+                          },
+                          {
+                            ":hover": {
+                              border: "1px solid #1976d2",
+                              boxShadow: 0,
+                            },
+                          },
+                        ]}
+                      >
+                        수정
+                      </Button>
+                    </Link> 
+            </div>
+            
+            );
+      }
+    }
+
+
   let votePostId = data.postId;
  
   function renderVote(isVote){
@@ -66,18 +121,32 @@ export default function CommunityPost() {
     }
   }
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSelectReasons = (selectedReasons) => {
+    // 선택된 이유들을 사용하거나 필요에 따라 다른 작업을 수행합니다.
+    console.log("Selected Reasons:", selectedReasons);
+  };
 
 
-
+  const removePTags = (html) => {
+    // 정규식을 사용하여 <p></p> 태그를 제거합니다.
+    const withoutPTags = html.replace(/<p>/g, '').replace(/<\/p>/g, '');
+    return withoutPTags;
+  };
 
 
   return (
 
-   
-
     <div className={`fade-in ${fadeIn ? 'active' : ''}`}>
     
-        <div className={style.contentWrap} style={{marginTop:"170px"}}>
+        <div className={style.contentWrap} style={{marginTop:"30px"}}>
             <div style={{backgroundColor: 'rgba(209, 232, 248, 0.1)'}}>
                 <div className={style.title}>
                     <h1>{data.title}</h1>
@@ -101,7 +170,8 @@ export default function CommunityPost() {
                 </div>
             </div>
             <div className={style.content}>
-                <p>{data.content}</p>
+            {renderChangeButton()}
+            <p dangerouslySetInnerHTML={{ __html: removePTags(data.content) }} />
                
                 {renderVote(data.voteId)}
 
@@ -111,9 +181,17 @@ export default function CommunityPost() {
                         <span style={{color:'#ddd'}}> | </span> 
                         댓글 <span style={{fontWeight:'bold'}}>{data.commentSize}</span>
                     </div>
-                    <div style={{cursor:'pointer', fontSize:'14px'}}>
-                        신고
-                    </div>
+                    <div style={{ cursor: "pointer", fontSize: "14px" }} onClick={handleOpenModal}>신고</div>
+                    {/* 모달 */}
+                        {isModalOpen && (
+                          <ClaimReasonModal
+                            onSelect={handleSelectReasons}
+                            onClose={handleCloseModal}
+                            isModalOpen={isModalOpen}
+                            props={'post'}
+                            id={postId}
+                          />
+                        )}
                 </p>
                 
             </div>
