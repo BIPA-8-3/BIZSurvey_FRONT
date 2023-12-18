@@ -119,7 +119,7 @@ export default function CommunityPost() {
   const handleDeletePost = () => {
     const res = window.confirm("게시물을 삭제하시겠습니까?");
     if (res) {
-      call("/community/deletePost/" + postId, "DELETE")
+      call("/s-community/deleteSurveyPost/" + postId, "DELETE")
         .then((data) => {
           window.alert(data);
           navigate("/");
