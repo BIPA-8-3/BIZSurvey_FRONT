@@ -181,7 +181,7 @@ export default function CommunityWrite() {
   }
 
   function renderBox() {
-    if (selectedSurvey !== null) {
+    if (selectedSurvey !== null && selectedSurvey !== undefined) {
       return (
         <>
           <Box
