@@ -19,7 +19,7 @@ function MypageHeader({ userData }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const {setUserInfo} = useContext(LoginFunContext)
+  const {setUserInfo} = useContext(LoginFunContext);
   const location = useLocation();
   const currentPage = location.pathname;
   
