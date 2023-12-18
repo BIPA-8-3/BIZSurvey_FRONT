@@ -35,9 +35,7 @@ export default function CommunityWrite() {
 //   }
 
   
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
-  };
+ 
 
   const imageHandler = () => {
     console.log('에디터에서 이미지 버튼을 클릭하면 이 핸들러가 시작됩니다!');
@@ -198,6 +196,9 @@ export default function CommunityWrite() {
     'image',
   ];
 
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
 
 
   return (
@@ -208,7 +209,7 @@ export default function CommunityWrite() {
       </div>
       <div className={style.writeWrap}>
         <div style={{ textAlign: 'center' }}>
-          <input type='text' className={style.title} placeholder='제목을 입력해주세요.' onChange={handleTitleChange} value={title}/>
+          <input type='text' className={style.title} placeholder='제목을 입력해주세요.' onChange={handleTitleChange} value={title}/> {/*제목*/}
         </div>
         <div className={style.editorWrap}>
           <div style={{ width: '1000px', margin: '0 auto', marginBottom:'100px' }}>
