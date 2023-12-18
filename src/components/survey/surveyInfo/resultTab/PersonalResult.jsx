@@ -27,10 +27,6 @@ export default function PersonalResult({ sharedType, sharedId }) {
   const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
-    console.log(answers);
-  }, [answers]);
-
-  useEffect(() => {
     // 설문 게시물 참가자 목록
     if (nickname !== 0) {
       switch (sharedType) {
@@ -131,11 +127,13 @@ export default function PersonalResult({ sharedType, sharedId }) {
   if (nickname === 0) {
     return (
       <>
-        <UserList
-          userList={userList}
-          setUser={handleSetUser}
-          sharedType={sharedType}
-        />
+        {userList.length !== 0 ? (
+          <UserList
+            userList={userList}
+            setUser={handleSetUser}
+            sharedType={sharedType}
+          />
+        ) : null}
 
         <div
           style={{
@@ -155,14 +153,18 @@ export default function PersonalResult({ sharedType, sharedId }) {
         </div>
       </>
     );
+  } else {
+    return (
+      <>
+        <UserList
+          userList={userList}
+          setUser={handleSetUser}
+          sharedType={sharedType}
+        />
+        {createAnswerItem(questions, answers)}
+      </>
+    );
   }
-
-  return (
-    <>
-      <UserList userList={userList} setUser={handleSetUser} />
-      {createAnswerItem(questions, answers)}
-    </>
-  );
 }
 
 function createAnswerItem(questions, answers) {

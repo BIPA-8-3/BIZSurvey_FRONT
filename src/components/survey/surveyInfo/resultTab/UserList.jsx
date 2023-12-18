@@ -6,26 +6,6 @@ import style from "../../../../style/survey/UserLIst.module.css";
 import { useState } from "react";
 
 export default function UserList({ userList, setUser, sharedType }) {
-  // const [users, setUsers] = useState([
-  //   {
-  //     userId: 1,
-  //     nickname: "nick",
-  //   },
-  //   {
-  //     userId: 1,
-  //     nickname: "nick",
-  //   },
-  //   {
-  //     userId: 1,
-  //     nickname: "nick",
-  //   },
-  //   {
-  //     userId: 1,
-  //     nickname: "nick",
-  //   },
-  //
-  // ]);
-
   return (
     <>
       {/* 응답한 사용자 목록  */}
@@ -53,7 +33,10 @@ function User({ nickname, setUser, sharedType, contact }) {
   } else {
     return (
       <>
-        <button className={style.userButton} onClick={() => setUser(contact.id)}>
+        <button
+          className={style.userButton}
+          onClick={() => setUser(contact.id)}
+        >
           <div style={{ display: "flex" }}>
             <span style={{ width: "50%" }}>이름: {contact.name}</span>
             <span>이메일: {contact.email}</span>
@@ -68,7 +51,12 @@ function User({ nickname, setUser, sharedType, contact }) {
 function createInternalItem(userList, setUser, sharedType) {
   return userList.map((user, index) =>
     user.userId !== 0 ? (
-      <User key={index} nickname={user.nickname} setUser={setUser} sharedType={sharedType} />
+      <User
+        key={index}
+        nickname={user.nickname}
+        setUser={setUser}
+        sharedType={sharedType}
+      />
     ) : (
       <p>응답자가 존재하지 않습니다.</p>
     )
@@ -78,7 +66,12 @@ function createInternalItem(userList, setUser, sharedType) {
 function createExternalItem(userList, setUser, sharedType) {
   return userList.map((user) =>
     user.userId !== 0 ? (
-      <User key={user.id} contact={user} sharedType={sharedType} setUser={setUser} />
+      <User
+        key={user.id}
+        contact={user}
+        sharedType={sharedType}
+        setUser={setUser}
+      />
     ) : (
       <p>응답자가 존재하지 않습니다.</p>
     )
