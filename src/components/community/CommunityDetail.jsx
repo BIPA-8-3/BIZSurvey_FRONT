@@ -73,7 +73,7 @@ export default function CommunityPost() {
             return(
               <div style={{ textAlign: "right" }}>
                     <Link
-                      to={"/editSurveyCommunity"}
+                      to={"/editCommunityPost"}
                       state={{postId: postId }}
                     >
                       <Button

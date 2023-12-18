@@ -9,6 +9,9 @@ import Chart from "../../../common/Chart";
 import FileList from "./totalOptions/FileList";
 import { call } from "../../../../pages/survey/Login";
 import { useEffect } from "react";
+import Button from "@mui/material/Button";
+import { IoMdDownload } from "react-icons/io";
+
 import { useContext } from "react";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import { getSharedSurveyResult } from "../../../../pages/workspace/api";
@@ -98,7 +101,10 @@ export default function PostResult({ sharedType, sharedId }) {
         title: data.title,
         data: [],
       };
-      if (data.questionType === "SINGLE_CHOICE" || data.questionType === "MULTIPLE_CHOICE") {
+      if (
+        data.questionType === "SINGLE_CHOICE" ||
+        data.questionType === "MULTIPLE_CHOICE"
+      ) {
         chartResult.data = handleChartData(data.answers);
       } else {
         chartResult.data = handleTextData(data.answers);
@@ -148,7 +154,13 @@ export default function PostResult({ sharedType, sharedId }) {
     return textArr;
   };
 
-  if (sharedId === "0") {
+  const handleDownloadExcel = () => {
+    call(`/survey/result/file/${sharedType}/${sharedId}`, "GET")
+      .then((data) => console.log(data))
+      .catch((error) => console.log(error));
+  };
+
+  if (sharedId === 0) {
     return (
       <>
         <div
@@ -173,8 +185,45 @@ export default function PostResult({ sharedType, sharedId }) {
 
   return (
     <>
+      <div
+        style={{
+          width: "700px",
+          margin: "0 auto",
+          textAlign: "right",
+          marginBottom: "3px",
+        }}
+      >
+        <a
+          href={
+            "http://localhost:8080/survey/result/file/" +
+            sharedType +
+            "/" +
+            sharedId
+          }
+        >
+          <Button
+            // onClick={handleDownloadExcel}
+            variant="text"
+            startIcon={<IoMdDownload />}
+            sx={[
+              {
+                color: "#0171d1",
+              },
+              {
+                ":hover": {
+                  backgroundColor: "#f5fbff",
+                },
+              },
+            ]}
+          >
+            엑셀 다운받기
+          </Button>
+        </a>
+      </div>
       {survey.questions.map((question, index) => {
-        const matchingQuestion = processed.find((pro) => pro.questionId === question.questionId);
+        const matchingQuestion = processed.find(
+          (pro) => pro.questionId === question.questionId
+        );
 
         return (
           <QuestionBox key={index}>
@@ -186,7 +235,8 @@ export default function PostResult({ sharedType, sharedId }) {
                     matchingQuestion.type === "MULTIPLE_CHOICE") && (
                     <Chart chartData={matchingQuestion.data} />
                   )}
-                  {(matchingQuestion.type === "TEXT" || matchingQuestion.type === "CALENDAR") && (
+                  {(matchingQuestion.type === "TEXT" ||
+                    matchingQuestion.type === "CALENDAR") && (
                     <TextList values={matchingQuestion.data} />
                   )}
                   {matchingQuestion.type === "FILE" && (

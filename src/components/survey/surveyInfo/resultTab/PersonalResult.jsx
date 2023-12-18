@@ -8,7 +8,10 @@ import { File } from "./totalOptions/FileList";
 import { useContext, useEffect, useState } from "react";
 import { call } from "../../../../pages/survey/Login";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
-import { getPersonalResult, getSharedContactList } from "../../../../pages/workspace/api";
+import {
+  getPersonalResult,
+  getSharedContactList,
+} from "../../../../pages/workspace/api";
 
 export default function PersonalResult({ sharedType, sharedId }) {
   const { survey } = useContext(SurveyContext);
@@ -102,7 +105,7 @@ export default function PersonalResult({ sharedType, sharedId }) {
     callback(mergedAnswers);
   };
 
-  if (sharedId === "0") {
+  if (sharedId === 0) {
     return (
       <>
         <div
@@ -128,7 +131,11 @@ export default function PersonalResult({ sharedType, sharedId }) {
   if (nickname === 0) {
     return (
       <>
-        <UserList userList={userList} setUser={handleSetUser} sharedType={sharedType} />
+        <UserList
+          userList={userList}
+          setUser={handleSetUser}
+          sharedType={sharedType}
+        />
 
         <div
           style={{
@@ -160,7 +167,9 @@ export default function PersonalResult({ sharedType, sharedId }) {
 
 function createAnswerItem(questions, answers) {
   return questions.map((question, index) => {
-    const matchingQuestion = answers.find((ans) => ans.questionId === question.questionId);
+    const matchingQuestion = answers.find(
+      (ans) => ans.questionId === question.questionId
+    );
     return (
       <>
         <QuestionBox key={index}>
@@ -175,7 +184,9 @@ function createAnswerItem(questions, answers) {
                       key={index}
                       single
                       text={answer.surveyAnswer}
-                      select={matchingQuestion.answer.includes(answer.surveyAnswer)}
+                      select={matchingQuestion.answer.includes(
+                        answer.surveyAnswer
+                      )}
                     />
                   ))}
 
@@ -185,19 +196,26 @@ function createAnswerItem(questions, answers) {
                     <ChoiceField
                       key={index}
                       text={answer.surveyAnswer}
-                      select={matchingQuestion.answer.includes(answer.surveyAnswer)}
+                      select={matchingQuestion.answer.includes(
+                        answer.surveyAnswer
+                      )}
                     />
                   ))}
 
-                {(question.answerType === "TEXT" || question.answerType === "CALENDAR") &&
+                {(question.answerType === "TEXT" ||
+                  question.answerType === "CALENDAR") &&
                   matchingQuestion.answerType !== "FILE" &&
                   matchingQuestion.answer.map((answer, index) => (
                     <Text key={index} value={answer} personal />
                   ))}
 
-                {question.answerType === "FILE" && matchingQuestion.answerType === "FILE" && (
-                  <File filename={matchingQuestion.answer[0]} url={matchingQuestion.url} />
-                )}
+                {question.answerType === "FILE" &&
+                  matchingQuestion.answerType === "FILE" && (
+                    <File
+                      filename={matchingQuestion.answer[0]}
+                      url={matchingQuestion.url}
+                    />
+                  )}
               </>
             ) : (
               <>

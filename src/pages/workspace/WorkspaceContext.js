@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { checkPermissions } from './api';
 
 const WorkspaceContext = createContext();
 
@@ -19,6 +20,18 @@ export const WorkspaceProvider = ({ children }) => {
     // 선택된 설문지 (상세 조회)
     const [selectedSurveyId, setSelectedSurveyId] = useState(0);
     const navigate = useNavigate();
+    const [permission, setPermission] = useState(false);
+
+    useEffect(() => {
+        checkPermissions()
+            .then((data) => {
+                console.log('sadf', data);
+                setPermission(true);
+            }).catch((error) => {
+                alert(error.response.data);
+                navigate("/");
+            })
+    }, [])
 
     useEffect(() => {
         if (selectedSurveyId) {
@@ -28,6 +41,10 @@ export const WorkspaceProvider = ({ children }) => {
         }
     }, [selectedSurveyId]);
 
+
+    if (!permission) {
+        return;
+    }
     return (
         <WorkspaceContext.Provider value={{
             workspaceList,

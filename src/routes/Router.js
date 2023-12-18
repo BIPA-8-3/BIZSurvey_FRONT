@@ -24,6 +24,10 @@ const CommunityDetail = lazy(() =>
 const CommunityWrite = lazy(() =>
   import("../components/community/CommunityWrite")
 );
+
+const EditCommunityPost = lazy(() => import("../components/community/EditCommunityPost"))
+
+
 const SurveyCommunityDetail = lazy(() =>
   import("../components/surveyCommunity/SurveyCommunityDetail")
 );
@@ -108,6 +112,11 @@ const ThemeRoutes = [
         path: "/surveyCommunityDetail",
         exact: true,
         element: <SurveyCommunityDetail />,
+      },
+      {
+        path: "/editCommunityPost",
+        exact: true,
+        element: <EditCommunityPost />
       },
       {
         path: "/editSurveyCommunity",
