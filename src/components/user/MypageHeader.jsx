@@ -7,6 +7,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaPen } from 'react-icons/fa';
 import CircularProgress from '@mui/material/CircularProgress';
 import { LoginContext, LoginFunContext } from "../../App";
+import useApiCall from "../api/ApiCall";
 import axios from 'axios';
 const getLinkStyle = (currentPage, path) => {
   return {
@@ -20,8 +21,10 @@ function MypageHeader({ userData }) {
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const {setUserInfo} = useContext(LoginFunContext);
+  const userInfo = useContext(LoginContext)
   const location = useLocation();
   const currentPage = location.pathname;
+  const { call } = useApiCall();
   
   const handleImageChange = async (event) => {
     setLoading(true);
@@ -52,6 +55,12 @@ function MypageHeader({ userData }) {
             headers: {
               Authorization: localStorage.getItem('accessToken'),
             },
+          }).then((data) => {
+            call("/user/info", "GET").then((data)=>{
+              console.log(data);
+              setUserInfo(data);
+            });
+            
           })
         })
           

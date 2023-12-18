@@ -34,9 +34,9 @@
   padding-top: 0px;
 }
 
-.mypageUserInfo li:last-child {
+/* .mypageUserInfo a li:last-child {
   border-bottom: 0px;
-}
+} */
 
 .mypageUserInfo li div {
   display: flex;
