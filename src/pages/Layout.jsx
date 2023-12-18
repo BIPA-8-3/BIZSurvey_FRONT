@@ -3,11 +3,13 @@ import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import WorkspaceHeader from "../components/workspace/WorkspaceHeader";
 import "../style/Common.css";
+import Navbar from "../components/workspace/Navbar";
+import { WorkspaceProvider } from "./workspace/WorkspaceContext";
 
 const Layout = () => {
   const location = useLocation();
 
-  const isWorkspace = location.pathname === "/workspace";
+  const isWorkspace = location.pathname.startsWith("/workspace");
   const isMyPage =
     location.pathname === "/mypage" ||
     location.pathname === "/mypageSurveyCommunity" ||
@@ -24,11 +26,14 @@ const Layout = () => {
     <div>
       {isWorkspace || isMyPage || isAuthorization || isAdmin || isExternal ? (
         <>
-          {isWorkspace && <WorkspaceHeader />}
           {isWorkspace && (
-            <div className="custom-container">
-              <Outlet />
-            </div>
+            <WorkspaceProvider>
+              <WorkspaceHeader />
+              <Navbar />
+              <div className="custom-container">
+                <Outlet />
+              </div>
+            </WorkspaceProvider>
           )}
           {isMyPage && (
             <div className="container">

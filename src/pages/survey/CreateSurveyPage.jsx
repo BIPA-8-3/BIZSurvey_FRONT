@@ -6,15 +6,15 @@ import { FaPlus } from "react-icons/fa6";
 import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle";
 import QuestionComp from "../../components/survey/surveyForm/QuestionComp";
 import style from "../../style/survey/CreatePage.module.css";
-import axios from "axios";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useEffect } from "react";
 import { login, call } from "./Login";
+import { useWorkspaceContext } from "../workspace/WorkspaceContext";
+import { useNavigate } from "react-router-dom";
 
-export default function CreateSurveyPage({
-  selectedWorkspaceId,
-  setSectionNum,
-}) {
+export default function CreateSurveyPage() {
+  const { selectedWorkspaceId } = useWorkspaceContext();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     title: "제목",
     content: "설명",
@@ -38,10 +38,6 @@ export default function CreateSurveyPage({
     },
   ]);
 
-  // useEffect(() => {
-  //   login();
-  // }, []);
-
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
 
@@ -58,8 +54,7 @@ export default function CreateSurveyPage({
       ...question,
       step: index + 1,
       answers:
-        question.answerType === "SINGLE_CHOICE" ||
-        question.answerType === "MULTIPLE_CHOICE"
+        question.answerType === "SINGLE_CHOICE" || question.answerType === "MULTIPLE_CHOICE"
           ? question.answers.map((answer, answerIndex) => ({
               ...answer,
               step: answerIndex + 1,
@@ -69,7 +64,10 @@ export default function CreateSurveyPage({
     const surveyData = { ...formData };
     surveyData.questions = questionData;
     console.log(surveyData);
-    call("/survey/" + selectedWorkspaceId, "POST", surveyData);
+    call("/survey/" + selectedWorkspaceId, "POST", surveyData).then((data) => {
+      navigate("/workspace");
+      console.log("저장 완료, ", data);
+    });
   };
 
   const changeQuestionTitle = (id, text) => {
@@ -132,9 +130,7 @@ export default function CreateSurveyPage({
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id
-          ? { ...question, isRequired: !question.isRequired }
-          : question
+        index === id ? { ...question, isRequired: !question.isRequired } : question
       );
       return result;
     });
@@ -233,16 +229,9 @@ export default function CreateSurveyPage({
                   className={style.questionList}
                 >
                   {questions.map((questionData, index) => (
-                    <Draggable
-                      key={index}
-                      draggableId={`question-${index}`}
-                      index={index}
-                    >
+                    <Draggable key={index} draggableId={`question-${index}`} index={index}>
                       {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                        >
+                        <div ref={provided.innerRef} {...provided.draggableProps}>
                           <div className={style.question}>
                             <QuestionComp
                               key={index}
@@ -281,7 +270,7 @@ export default function CreateSurveyPage({
                 variant="outlined"
                 sx={{ color: "#243579", borderColor: "#243579" }}
                 onClick={(e) => {
-                  setSectionNum(0);
+                  navigate("/workspace");
                 }}
               >
                 취소

@@ -2,16 +2,16 @@ import style from "../../style/workspace/WorkspaceModal.module.css";
 import ReactDOM from "react-dom";
 import { IoCloseSharp } from "react-icons/io5";
 import { createWorkspace, modifyWorkspace } from "../../pages/workspace/api";
+import { useWorkspaceContext } from "../../pages/workspace/WorkspaceContext";
 
 export const WorkspaceModal = ({
   isOpen,
-  onClose,
-  workspaceList,
-  setWorkspaceList,
+  setWorkspaceModalState,
   pageNum,
-  handleChangeWorkspaceName,
-  handleChangeSurveyName,
+  handleClickSubmitBtn,
 }) => {
+  const { workspaceList, setWorkspaceList } = useWorkspaceContext();
+
   let title = ["워크스페이스 생성", "워크스페이스 수정", "설문지 제목 수정"];
   let explanation = [
     "워크스페이스 이름을 입력하세요",
@@ -23,29 +23,19 @@ export const WorkspaceModal = ({
   if (!isOpen) {
     return null;
   }
-  const handleCreateBtnClick = () => {
-    const workspaceName = document.getElementById("input_name").value;
-
-    createWorkspace(workspaceName)
-      .then((data) => {
-        let copy = [...workspaceList];
-        copy.push(data);
-        setWorkspaceList(copy);
-      })
-      .catch((error) => {
-        console.error(error);
-        console.log("Response from server:", error.response);
-      });
-  };
 
   const handleModifyBtnClick = () => {
     const workspaceName = document.getElementById("input_name").value;
-    handleChangeWorkspaceName(null, workspaceName);
+    handleClickSubmitBtn(null, workspaceName);
   };
 
   const handleModifySurveyNameBtnClick = () => {
     const surveyTitle = document.getElementById("input_name").value;
-    handleChangeSurveyName(surveyTitle);
+    handleClickSubmitBtn(surveyTitle);
+  };
+
+  const onClose = () => {
+    setWorkspaceModalState(false);
   };
 
   return ReactDOM.createPortal(
@@ -70,7 +60,7 @@ export const WorkspaceModal = ({
               className={style.button}
               onClick={() => {
                 if (pageNum === 0) {
-                  handleCreateBtnClick();
+                  handleClickSubmitBtn();
                 } else if (pageNum === 1) {
                   handleModifyBtnClick();
                 } else {

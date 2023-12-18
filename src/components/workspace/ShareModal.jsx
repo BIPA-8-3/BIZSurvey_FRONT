@@ -2,13 +2,12 @@ import style from "../../style/workspace/ShareModal.module.css";
 import { IoCloseSharp } from "react-icons/io5";
 import ReactDOM from "react-dom";
 import { useContext, useEffect, useState } from "react";
-import { WorkspaceContext } from "../../pages/workspace/Main";
 import ShareItem from "./ShareItem";
 import { shareSurvey, getSharedSurveyHistory } from "../../pages/workspace/api";
 import SharedHistoryItem from "./SharedHistoryItem";
 import { getSharedContactList } from "../../pages/workspace/api";
 
-export default function ShareModal({ isOpen, onClose, survey }) {
+export default function ShareModal({ isOpen, onClose, survey, contactList }) {
   const modalTitle = ["연락처 공유", "공유 히스토리"];
   const leftBoxTitle = ["이메일 목록", "공유 내역"];
   const rightBoxTitle = ["선택 목록", "공유 상세 내역"];
@@ -19,8 +18,7 @@ export default function ShareModal({ isOpen, onClose, survey }) {
   // share
   const [shareContactList, setShareContactList] = useState([]);
   const [selectedList, setSelectedList] = useState([]);
-  const { contactList } = useContext(WorkspaceContext);
-  const { setLoader } = useContext(WorkspaceContext);
+  // const { setLoader } = useContext(WorkspaceContext);
 
   // history
   const [sharedHistory, setSharedHistory] = useState([]);
@@ -90,7 +88,7 @@ export default function ShareModal({ isOpen, onClose, survey }) {
 
   // 초대 메소드
   const handleClickShareBtn = () => {
-    setLoader(true);
+    // setLoader(true);
 
     let sharedRequest = {
       surveyId: survey.surveyId,
@@ -101,15 +99,15 @@ export default function ShareModal({ isOpen, onClose, survey }) {
     shareSurvey(sharedRequest)
       .then((data) => {
         console.log(data);
-        alert("공유가 완료되었습니다.");
+        // alert("공유가 완료되었습니다.");
       })
       .catch((error) => {
         console.log(error);
         console.log(error.response);
-        alert("공유에 실패하셨습니다.");
+        // alert("공유에 실패하셨습니다.");
       })
       .finally((data) => {
-        setLoader(false);
+        // setLoader(false);
         onClose();
       });
   };
