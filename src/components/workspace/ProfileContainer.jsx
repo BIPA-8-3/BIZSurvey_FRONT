@@ -13,7 +13,7 @@ const ProfileContainer = ({ owner, adminList }) => {
           <img
             key={index}
             src={
-              admin.profileUrl ||
+              (admin.profileUrl && "https://" + admin.profileUrl) ||
               "https://ui-avatars.com/api/?name=" + admin.email + "&background=random"
             }
             alt={`Profile ${index + 1}`}
@@ -23,7 +23,7 @@ const ProfileContainer = ({ owner, adminList }) => {
               right: `${index * 35}px`,
               zIndex: index + 1,
             }}
-          ></img>
+          />
           <div
             className={style.description}
             style={{
