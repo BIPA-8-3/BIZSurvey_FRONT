@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import style from "../../style/Plan.module.css";
 import back from "../../assets/img/back.png";
 import Grid from "@mui/material/Grid";
@@ -11,9 +11,14 @@ import { MdGroup, MdWorkspaces } from "react-icons/md";
 import { FaLink } from "react-icons/fa6";
 import useFadeIn from "../../style/useFadeIn";
 import axios from "axios";
+import Button from "@mui/material/Button";
+import { LoginContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 
 function Plan() {
   const fadeIn = useFadeIn();
+  const userInfo = useContext(LoginContext);
+  const navigate = useNavigate();
   // const handlePlenChange = async (type) => {
   //     let state = window.confirm(getLabelForType(type) + '으로 플랜을 변경하시겠습니까?')
 
@@ -31,6 +36,27 @@ function Plan() {
   //     }
 
   // }
+
+  const handleCheckLogin = async () => {
+    if (userInfo.id === 0) {
+      try {
+        const res = await new Promise((resolve) => {
+          const result = window.confirm(
+            "로그인이 필요한 서비스입니다. \n로그인을 하시겠습니까?"
+          );
+          resolve(result);
+        });
+
+        if (res) {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("알 수 없는 오류가 발생했습니다.", error);
+      }
+    } else {
+      navigate("/mypagePlan");
+    }
+  };
 
   function getLabelForType(type) {
     if (type === "NORMAL_SUBSCRIBE") {
@@ -261,6 +287,23 @@ function Plan() {
             </div>
           </Grid>
         </Grid>
+        <div style={{ textAlign: "center", paddingTop: "40px" }}>
+          <Button
+            variant="contained"
+            href="#contained-buttons"
+            sx={{
+              padding: "11px 30px",
+              backgroundColor: "#243579",
+              fontWeight: "bold",
+              marginBottom: "10px",
+              boxShadow: 0,
+              width: "150px",
+            }}
+            onClick={handleCheckLogin}
+          >
+            플랜 구독하기
+          </Button>
+        </div>
       </div>
       <img src={back} alt="배경" className={style.back} />
     </div>
