@@ -3,11 +3,12 @@ import Modal from "@mui/material/Modal";
 import { IoClose, IoDocumentTextSharp } from "react-icons/io5";
 import { LuPencilLine } from "react-icons/lu";
 import style from "../../style/workspace/SurveyModal.module.css";
-import { useContext } from "react";
-import { WorkspaceContext } from "../../pages/workspace/Main";
+import { useWorkspaceContext } from "../../pages/workspace/WorkspaceContext";
+import { useNavigate } from "react-router-dom";
 
 export default function SurveyCreateModal({ isOpen, handleClose, title }) {
-  const { sectionNum, setSectionNum } = useContext(WorkspaceContext);
+  const navigate = useNavigate();
+
   return (
     <>
       <Modal
@@ -31,9 +32,8 @@ export default function SurveyCreateModal({ isOpen, handleClose, title }) {
               <div
                 className={style.first}
                 onClick={(e) => {
-                  console.log("sectionNum: " + sectionNum);
-                  setSectionNum(1);
                   handleClose();
+                  navigate("/workspace/create");
                 }}
               >
                 <div className={style.firstIconWrap}>
@@ -50,9 +50,8 @@ export default function SurveyCreateModal({ isOpen, handleClose, title }) {
               <div
                 className={style.second}
                 onClick={(e) => {
-                  console.log("sectionNum: " + sectionNum);
-                  setSectionNum(2);
                   handleClose();
+                  navigate("/workspace/createscore");
                 }}
               >
                 <div className={style.secondIconWrap}>
