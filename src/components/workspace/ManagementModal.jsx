@@ -5,22 +5,25 @@ import ReactDOM from "react-dom";
 import { IoCloseSharp } from "react-icons/io5";
 import ContactItem from "./ContactItem";
 import { createContact, removeContact, inviteAdmin, removeAdmin } from "../../pages/workspace/api";
-import { WorkspaceContext } from "../../pages/workspace/Main";
+import { useWorkspaceContext } from "../../pages/workspace/WorkspaceContext";
 
-export default function ManagementModal({ isOpen, onClose, tab }) {
+export default function ManagementModal({ isOpen, onClose, tab, managedValues }) {
   ////////////////////////////////////////////////////////////////
   ////////////////////////// useContext //////////////////////////
   ////////////////////////////////////////////////////////////////
   // context에서 workspace id 추출
-  const { selectedWorkspaceId } = useContext(WorkspaceContext);
+  const { selectedWorkspaceId } = useWorkspaceContext();
 
-  // context에서 contactList 추출
-  const { contactList, setContactList } = useContext(WorkspaceContext);
-
-  // context에서 adminList 추출
-  const { owner } = useContext(WorkspaceContext);
-  const { adminList, setAdminList } = useContext(WorkspaceContext);
-  const { adminWaitList, setAdminWaitList } = useContext(WorkspaceContext);
+  // 관리정보 추출
+  const {
+    owner,
+    adminList,
+    setAdminList,
+    adminWaitList,
+    setAdminWaitList,
+    contactList,
+    setContactList,
+  } = managedValues;
 
   ////////////////////////////////////////////////////////////////
   /////////////////////////// useState ///////////////////////////
