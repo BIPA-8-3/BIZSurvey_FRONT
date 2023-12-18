@@ -150,12 +150,9 @@ export default function Main() {
       keyword: "",
     };
 
-    console.log("들어옴");
-
     getContactList(listRequest)
       .then((data) => {
         setContactList(data);
-        console.log("들어옴", data);
       })
       .catch((error) => {
         console.error(error);
