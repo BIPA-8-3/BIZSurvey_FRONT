@@ -95,7 +95,7 @@ function AdminSurveyList() {
                   <td>{communityitem.count}</td>
                   <td>{communityitem.startDateTime}</td>
                   <td>{communityitem.endDateTime}</td>
-                  <td>{communityitem.createDate} : {communityitem.postId}</td>
+                  <td>{communityitem.createDate}</td>
                   <td><Link to={'/communityDetail'} target='_blank' state={{postId : communityitem.postId}}>< button>바로가기</button></Link></td>
                   <td><button>삭제</button></td>
               </tr>
