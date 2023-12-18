@@ -25,6 +25,7 @@ function Header() {
     console.log("userInfo : " + userInfo.email)
     const closeMenu = () => {
       setIsMenuOpen(false);
+      setAnchorElUser(null);
     };
     window.addEventListener('popstate', closeMenu);
 
@@ -32,6 +33,7 @@ function Header() {
       window.removeEventListener('popstate', closeMenu);
     };
   }, []);
+
 
   useEffect(() => {
     if (bestRef.current) {
