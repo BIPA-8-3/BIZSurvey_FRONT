@@ -6,9 +6,13 @@ import TextList from "./totalOptions/TextList";
 import QuestionBox from "../QuestionBox";
 import QuestionTitle from "../QuestionTitle";
 import Chart from "../../../common/Chart";
+import { IoMdDownload } from "react-icons/io";
+
 import FileList from "./totalOptions/FileList";
 import { call } from "../../../../pages/survey/Login";
 import { useEffect } from "react";
+import Button from "@mui/material/Button";
+
 import { useContext } from "react";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import SurveyQuestion from "../../../surveyCommunity/survey/SurveyQuestion";
@@ -87,6 +91,12 @@ export default function ScorePostResult({ sharedId, sharedType }) {
     }
   };
 
+  const handleDownloadExcel = () => {
+    call(`/survey/result/file/${sharedType}/${sharedId}`, "GET")
+      .then((data) => console.log(data))
+      .catch((error) => console.log(error));
+  };
+
   if (sharedId === 0) {
     return (
       <>
@@ -112,6 +122,41 @@ export default function ScorePostResult({ sharedId, sharedType }) {
 
   return (
     <>
+      <div
+        style={{
+          width: "700px",
+          margin: "0 auto",
+          textAlign: "right",
+          marginBottom: "3px",
+        }}
+      >
+        <a
+          href={
+            "http://localhost:8080/survey/result/file/" +
+            sharedType +
+            "/" +
+            sharedId
+          }
+        >
+          <Button
+            // onClick={handleDownloadExcel}
+            variant="text"
+            startIcon={<IoMdDownload />}
+            sx={[
+              {
+                color: "#0171d1",
+              },
+              {
+                ":hover": {
+                  backgroundColor: "#f5fbff",
+                },
+              },
+            ]}
+          >
+            엑셀 다운받기
+          </Button>
+        </a>
+      </div>
       {result.map((question, index) => {
         return (
           <QuestionBox key={index} score>

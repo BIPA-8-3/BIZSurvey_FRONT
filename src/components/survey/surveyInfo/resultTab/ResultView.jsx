@@ -32,10 +32,6 @@ export default function ResultView() {
   const [sharedType, setSharedType] = useState("INTERNAL");
 
   useEffect(() => {
-    console.log("aaaaaaaaaaaaa", sharedId);
-  }, [sharedId]);
-
-  useEffect(() => {
     setSharedId(0);
     setSharedUnit([]);
     switch (sharedType) {
@@ -75,11 +71,6 @@ export default function ResultView() {
     setIsPersonal(num);
   };
 
-  const handleDownloadExcel = () => {
-    call(`/survey/result/file/${sharedType}/${sharedId}`, "GET")
-      .then((data) => console.log(data))
-      .catch((error) => console.log(error));
-  };
   return (
     <>
       {/* 응답 결과 탭의 모든 컴포넌트 집합  */}
@@ -101,33 +92,6 @@ export default function ResultView() {
         title={survey.title}
         content={survey.content}
       />
-
-      <div
-        style={{
-          width: "700px",
-          margin: "0 auto",
-          textAlign: "right",
-          marginBottom: "3px",
-        }}
-      >
-        <Button
-          onClick={handleDownloadExcel}
-          variant="text"
-          startIcon={<IoMdDownload />}
-          sx={[
-            {
-              color: "#0171d1",
-            },
-            {
-              ":hover": {
-                backgroundColor: "#f5fbff",
-              },
-            },
-          ]}
-        >
-          엑셀 다운받기
-        </Button>
-      </div>
 
       {/* 질문과 옵션들  */}
 

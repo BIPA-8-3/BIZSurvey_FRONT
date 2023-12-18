@@ -42,6 +42,7 @@ const contactURI = '/workspace/contact';
 // 관리자 API
 const adminURI = '/workspace/admin';
 
+const workspaceURI = '/workspace';
 
 const instance = axios.create({
     headers: {
@@ -209,4 +210,9 @@ export const getdPersonalScoreResult = (sharedSurveyId) => {
 // 점수형 전체 외부 집계
 export const getSharedSurveyScoreResult = (surveyId, sharedSurveyId) => {
     return call(`${shareURI}/score/result/${surveyId}/${sharedSurveyId}`, "GET");
+}
+
+// 권한 체크
+export const checkPermissions = () => {
+    return call(`${workspaceURI}/permission/check`, "GET");
 }

@@ -8,7 +8,7 @@ import logo from "../../assets/img/avatar.png";
 import { Link, useLocation } from "react-router-dom";
 import Comment from "../community/Comment";
 import ParentsComment from "../community/ParentsComment";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import ChildCommentForm from "../community/ChildCommentForm";
 import ChildComment from "../community/ChildComment";
 import Loader from "../../pages/loader/Loader";
@@ -17,7 +17,7 @@ import BizModal from "../common/BizModal";
 import ClaimReasonModal from "../common/ClaimReasonModal";
 
 import { call } from "../../pages/survey/Login";
-
+import { LoginContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 
 export default function CommunityPost() {
@@ -29,16 +29,19 @@ export default function CommunityPost() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const userInfo = useContext(LoginContext);
+  const [isAuthor, setIsAuthor] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if (userInfo.nickname === data.nickname) {
+          console.log(userInfo.nickname, "aaaaaaaaaaaaaaaaaa", data.nickname);
+          setIsAuthor(true);
+        }
         const res = await call("/s-community/survey/check/" + postId, "GET");
         setIsAvailable(!res);
-
         const access = data.canAccess;
-        console.log(data.canAccess, "aaaaaaaaaaaaaaaaaaaaa");
-
         if (access === "대기" || access === "설문 종료") {
           setIsAvailable(false);
         }
@@ -50,9 +53,6 @@ export default function CommunityPost() {
     fetchData();
   }, [data]);
 
-  useEffect(() => {
-    console.log(isAvailable);
-  }, [isAvailable]);
   useEffect(() => {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
@@ -74,7 +74,6 @@ export default function CommunityPost() {
         setLoading(false); // 데이터 로딩이 끝났음을 표시
       }
     };
-
     fetchData(); // 함수 호출
   }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
 
@@ -117,6 +116,18 @@ export default function CommunityPost() {
     }
   }
 
+  const handleDeletePost = () => {
+    const res = window.confirm("게시물을 삭제하시겠습니까?");
+    if (res) {
+      call("/s-community/deleteSurveyPost/" + postId, "DELETE")
+        .then((data) => {
+          window.alert(data);
+          navigate("/");
+        })
+        .catch((error) => console.error(error));
+    }
+  };
+
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.contentWrap}>
@@ -142,35 +153,6 @@ export default function CommunityPost() {
           </div>
         </div>
         <div className={style.content}>
-          <div style={{ textAlign: "right" }}>
-            <Link
-              to={"/editSurveyCommunity"}
-              state={{ surveyId: data.surveyId, postId: postId }}
-            >
-              <Button
-                variant="contained"
-                sx={[
-                  {
-                    padding: "11px 30px",
-                    backgroundColor: "#243579",
-                    fontWeight: "bold",
-                    marginBottom: "10px",
-                    border: "1px solid #243579",
-                    boxShadow: 0,
-                    marginLeft: "5px",
-                  },
-                  {
-                    ":hover": {
-                      border: "1px solid #1976d2",
-                      boxShadow: 0,
-                    },
-                  },
-                ]}
-              >
-                수정
-              </Button>
-            </Link>
-          </div>
           <p dangerouslySetInnerHTML={{ __html: removePTags(data.content) }} />
           <div className={style.surveyBtnWrap}>
             {isAvailable ? (
@@ -232,12 +214,39 @@ export default function CommunityPost() {
               댓글{" "}
               <span style={{ fontWeight: "bold" }}>{data.commentSize}</span>
             </div>
-            <div
-              style={{ cursor: "pointer", fontSize: "14px" }}
-              onClick={handleOpenModal}
-            >
-              신고
+            <div>
+              {isAuthor ? (
+                <>
+                  <Link
+                    to={"/editSurveyCommunity"}
+                    state={{ surveyId: data.surveyId, postId: postId }}
+                  >
+                    <span
+                      style={{ cursor: "pointer", fontSize: "14px" }}
+                      onClick={handleOpenModal}
+                    >
+                      수정
+                    </span>
+                  </Link>
+                  <span> | </span>
+                  <span
+                    style={{ cursor: "pointer", fontSize: "14px" }}
+                    onClick={handleDeletePost}
+                  >
+                    삭제
+                  </span>
+                  <span> | </span>
+                </>
+              ) : null}
+
+              <span
+                style={{ cursor: "pointer", fontSize: "14px" }}
+                onClick={handleOpenModal}
+              >
+                신고
+              </span>
             </div>
+
             {/* 모달 */}
             {isModalOpen && (
               <ClaimReasonModal
