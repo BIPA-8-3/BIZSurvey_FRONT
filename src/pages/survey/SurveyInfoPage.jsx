@@ -6,10 +6,12 @@ import ButtonTab from "../../components/survey/surveyInfo/ButtonTab";
 import ResultView from "../../components/survey/surveyInfo/resultTab/ResultView";
 import Loader from "../loader/Loader";
 import { createContext } from "react";
+import { useWorkspaceContext } from "../workspace/WorkspaceContext";
 
 export const SurveyContext = createContext();
 
-export default function SurveyInfoPage({ selectedSurveyId }) {
+export default function SurveyInfoPage() {
+  const { selectedSurveyId } = useWorkspaceContext();
   const [page, setPage] = useState(0);
   const [element, setElement] = useState(<></>);
   const [loading, setLoading] = useState(true);
@@ -61,6 +63,7 @@ export default function SurveyInfoPage({ selectedSurveyId }) {
   }, [page, survey, loading]);
 
   const handleGetSurvey = async () => {
+    console.log("handleGetSurvey: ", selectedSurveyId);
     if (!selectedSurveyId) {
       return;
     }
@@ -85,7 +88,7 @@ export default function SurveyInfoPage({ selectedSurveyId }) {
   return (
     <>
       <SurveyContext.Provider value={contextValue}>
-        <div style={{ marginTop: "20px" }}>
+        <div style={{ paddingTop: "100px", paddingLeft: "254px" }}>
           <div style={{ width: "700px", margin: "0 auto" }}>
             <ButtonTab
               handleChangeTab={handleChangeTab}

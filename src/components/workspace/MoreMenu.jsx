@@ -2,10 +2,10 @@ import { BiDotsHorizontalRounded } from "react-icons/bi";
 import style from "../../style/workspace/MoreMenu.module.css";
 import { useRef, useEffect, useState, useContext } from "react";
 import ManagementModal from "./ManagementModal";
-import { WorkspaceContext } from "../../pages/workspace/Main";
 import { removeWorkspace } from "../../pages/workspace/api.js";
+import { useWorkspaceContext } from "../../pages/workspace/WorkspaceContext";
 
-const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum }) => {
+const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum, managedValues }) => {
   // 더보기 메뉴
   const cotainerRef = useRef(null);
 
@@ -13,8 +13,8 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum }) => {
   ////////////////////////// useContext //////////////////////////
   ////////////////////////////////////////////////////////////////
   // active workspace
-  let { selectedWorkspaceId, setSelectedWorkspaceId } = useContext(WorkspaceContext);
-  let { workspaceList, setWorkspaceList } = useContext(WorkspaceContext);
+  let { workspaceList, setWorkspaceList, selectedWorkspaceId, setSelectedWorkspaceId } =
+    useWorkspaceContext();
 
   ////////////////////////////////////////////////////////////////
   /////////////////////////// useState ///////////////////////////
@@ -81,7 +81,12 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum }) => {
 
   return (
     <div ref={cotainerRef} className={style.menuContainer}>
-      <ManagementModal isOpen={managementModal} onClose={closeManagementModal} tab={menu} />
+      <ManagementModal
+        isOpen={managementModal}
+        onClose={closeManagementModal}
+        tab={menu}
+        managedValues={managedValues}
+      />
       <BiDotsHorizontalRounded
         onClick={() => {
           toggleMenu();

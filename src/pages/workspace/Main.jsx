@@ -1,45 +1,31 @@
-import Navbar from "../../components/workspace/Navbar";
 import style from "../../style/workspace/Main.module.css";
 import SurveyCard from "../../components/workspace/SurveyCard";
 import DefaultCard from "../../components/workspace/DefaultCard";
 import MoreMenu from "../../components/workspace/MoreMenu";
-import { useEffect, useState, useMemo, createContext } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import ProfileContainer from "../../components/workspace/ProfileContainer";
 import ShareModal from "../../components/workspace/ShareModal";
 import Loader from "../../pages/loader/Loader";
+import _ from "lodash";
 
 import {
-  login,
   getSurveyList,
-  modifyWorkspace,
-  getUserInfo,
   removeSurvey,
   getAdminList,
   getContactList,
   modifySurveyName,
+  modifyWorkspace,
 } from "./api.js";
 import { WorkspaceModal } from "../../components/workspace/WorkspaceModal";
-import CreateSurveyPage from "../survey/CreateSurveyPage";
-import CreateScoreSurveyPage from "../survey/CreateScoreSurveyPage";
-import SurveyInfoPage from "../survey/SurveyInfoPage";
-
-export let WorkspaceContext = createContext();
+import { useWorkspaceContext } from "./WorkspaceContext";
 
 export default function Main() {
   /////////////////////////////////////////////////////////////////
   /////////////////////////// State 설정 ///////////////////////////
   /////////////////////////////////////////////////////////////////
-  // 유저 정보
-  const [userInfo, setUserInfo] = useState({});
 
-  // 워크스페이스 목록
-  const [workspaceList, setWorkspaceList] = useState([]);
-
-  // 선택된 워크스페이스 관리
-  const [selectedWorkspaceId, setSelectedWorkspaceId] = useState(null);
-
-  // 설문지 목록
-  const [surveyList, setSurveyList] = useState([]);
+  const { workspaceList, setWorkspaceList, selectedWorkspaceId, setSelectedSurveyId } =
+    useWorkspaceContext();
 
   // 관리자 목록 (캐싱)
   const [owner, setOwner] = useState({});
@@ -48,6 +34,9 @@ export default function Main() {
 
   // 연락처 목록
   let [contactList, setContactList] = useState([]);
+
+  // 설문지 목록
+  const [surveyList, setSurveyList] = useState([]);
 
   // 공유 모달
   let [shareModal, setShareModal] = useState(false);
@@ -63,18 +52,12 @@ export default function Main() {
   const [originWorkspaceName, setOriginWorkspaceName] = useState("");
   const [changeWorkspaceName, setChangeWorkspaceName] = useState("");
 
-  // 워크스페이스 모달
+  // // 워크스페이스 모달
   const [workspaceModalState, setWorkspaceModalState] = useState(false);
-  const [workspaceModalNum, setWorkspaceModalNum] = useState(null);
+  const [workspaceModalNum, setWorkspaceModalNum] = useState(1);
 
   // Loader 상태
   const [loader, setLoader] = useState(false);
-
-  // 워크스페이스 섹션 구분
-  const [sectionNum, setSectionNum] = useState(null);
-
-  // 선택된 설문지 (상세 조회)
-  const [selectedSurveyId, setSelectedSurveyId] = useState(null);
 
   // 워크스페이스 이름 변경 이벤트
   useEffect(() => {
@@ -96,6 +79,34 @@ export default function Main() {
         });
 
         setSurveyList([...copy]);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  // 워크스페이스 포커스 잃었을때 핸들러
+  const handleChangeWorkspaceName = (event, changeName) => {
+    event.preventDefault();
+    if (event && originWorkspaceName === changeWorkspaceName) {
+      return;
+    }
+    if (!event && originWorkspaceName === changeName) {
+      return;
+    }
+
+    let newName = changeName ? changeName : changeWorkspaceName;
+
+    modifyWorkspace(selectedWorkspaceId, newName)
+      .then((data) => {
+        let copy = workspaceList.map((workspace) => {
+          if (workspace.id === selectedWorkspaceId) {
+            workspace.workspaceName = newName;
+          }
+          return workspace;
+        });
+        setOriginWorkspaceName(newName);
+        setWorkspaceList(copy);
       })
       .catch((error) => {
         console.error(error);
@@ -139,9 +150,12 @@ export default function Main() {
       keyword: "",
     };
 
+    console.log("들어옴");
+
     getContactList(listRequest)
       .then((data) => {
         setContactList(data);
+        console.log("들어옴", data);
       })
       .catch((error) => {
         console.error(error);
@@ -160,7 +174,6 @@ export default function Main() {
         }
         let workspace = workspaceList.find((workspace) => workspace.id === selectedWorkspaceId);
         setOriginWorkspaceName(workspace.workspaceName);
-        // document.getElementById("workspaceName").value = workspace.workspaceName;
       })
       .catch((error) => {
         console.error(error);
@@ -170,35 +183,6 @@ export default function Main() {
   /////////////////////////////////////////////////////////////
   ///////////////////////// useEffect /////////////////////////
   /////////////////////////////////////////////////////////////
-  // 폼 최초 로딩 시
-  useEffect(() => {
-    // 로그인 이후 계정정보 불러옴
-    getUserInfo()
-      .then((info) => {
-        if (!info) {
-          return;
-        }
-        switch (info.planSubscribe) {
-          case "COMPANY_SUBSCRIBE":
-            info.icon = "🏅";
-            break;
-          case "NORMAL_SUBSCRIBE":
-            info.icon = "🏅";
-            break;
-          default:
-            info.icon = "🎟️";
-            break;
-        }
-
-        setUserInfo(info);
-      })
-      .catch((error) => {
-        console.error(error);
-        console.log(error);
-      });
-    // 관리자 목록 조회 및 저장
-  }, []);
-
   // 공유 모달 설정
   useEffect(() => {
     if (!selectedSurvey.surveyId) {
@@ -217,7 +201,6 @@ export default function Main() {
     getSurveyState();
     getAdminState();
     getContactState();
-    setSectionNum(0);
     setSelectedSurveyId(0);
   }, [selectedWorkspaceId]);
 
@@ -234,17 +217,16 @@ export default function Main() {
       });
   };
 
-  // 워크스페이스 이름 엔터 이벤트
-  const handleInputKeyDown = (event) => {
+  // 디바운싱된 handleChange 함수
+  const debouncedHandleChange = _.debounce((event) => {
     if (event.key === "Enter") {
-      event.preventDefault();
       event.target.blur();
     }
-  };
+  }, 100);
 
-  // 워크스페이스 모달
-  const closeWorkspaceModal = () => {
-    setWorkspaceModalState(false);
+  // 워크스페이스 이름 엔터 이벤트
+  const handleInputKeyDown = (event) => {
+    debouncedHandleChange(event);
   };
 
   // open 공유 모달
@@ -265,186 +247,87 @@ export default function Main() {
     });
   };
 
-  // 워크스페이스 포커스 잃었을때 핸들러
-  const handleChangeWorkspaceName = (event, changeName) => {
-    if (event && originWorkspaceName === changeWorkspaceName) {
-      return;
-    }
-    if (!event && originWorkspaceName === changeName) {
-      return;
-    }
-
-    let newName = changeName ? changeName : changeWorkspaceName;
-    modifyWorkspace(selectedWorkspaceId, newName)
-      .then((data) => {
-        let copy = workspaceList.map((workspace) => {
-          if (workspace.id === selectedWorkspaceId) {
-            workspace.workspaceName = newName;
-          }
-          return workspace;
-        });
-        setOriginWorkspaceName(newName);
-        setWorkspaceList(copy);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const managedValues = {
+    owner,
+    setOwner,
+    adminList,
+    setAdminList,
+    adminWaitList,
+    setAdminWaitList,
+    contactList,
+    setContactList,
   };
-
-  const handleClickCard = (id) => {
-    setSelectedSurveyId(id);
-  };
-
-  useEffect(() => {
-    console.log("selectedSurveyId: ", selectedSurveyId);
-    if (selectedSurveyId) {
-      setSectionNum(3);
-    } else {
-      setSectionNum(null);
-    }
-  }, [selectedSurveyId]);
 
   return (
     <div id={style.SectionBody}>
       {/* Loader */}
       {loader ? <Loader /> : null}
       {/* modal */}
-      <WorkspaceContext.Provider
-        value={{
-          selectedWorkspaceId,
-          contactList,
-          setLoader,
-        }}
-      >
-        <ShareModal
-          isOpen={shareModal}
-          onClose={closeShareModal}
-          survey={selectedSurvey}
-          title={""}
-        />
-      </WorkspaceContext.Provider>
-      <WorkspaceModal
-        isOpen={workspaceModalState}
-        onClose={closeWorkspaceModal}
-        workspaceList={workspaceList}
-        setWorkspaceList={setWorkspaceList}
-        pageNum={workspaceModalNum}
-        handleChangeWorkspaceName={handleChangeWorkspaceName}
-        handleChangeSurveyName={handleChangeSurveyName}
+      <ShareModal
+        isOpen={shareModal}
+        onClose={closeShareModal}
+        survey={selectedSurvey}
+        contactList={contactList}
+        title={""}
       />
-      {/* Navbar */}
-      <WorkspaceContext.Provider
-        value={{
-          selectedWorkspaceId,
-          setSelectedWorkspaceId,
-          workspaceList,
-          setWorkspaceList,
-          userInfo,
-        }}
-      >
-        <Navbar
+
+      {
+        <WorkspaceModal
+          isOpen={workspaceModalState}
           setWorkspaceModalState={setWorkspaceModalState}
-          setWorkspaceModalNum={setWorkspaceModalNum}
+          pageNum={workspaceModalNum}
+          handleClickSubmitBtn={
+            workspaceModalNum === 1 ? handleChangeWorkspaceName : handleChangeSurveyName
+          }
         />
-      </WorkspaceContext.Provider>
+      }
       <div className={style.sectionWrap}>
         {/* section */}
         <div className={style.section}>
-          {(() => {
-            if (!sectionNum) {
-              return (
-                <>
-                  {/* title */}
-                  <div className={style.inputWrap}>
-                    <input
-                      className={style.inputTitle}
-                      onBlur={(e) => handleChangeWorkspaceName(e)}
-                      onKeyDown={handleInputKeyDown}
-                      value={changeWorkspaceName}
-                      onChange={(e) => {
-                        setChangeWorkspaceName(e.target.value);
-                      }}
-                      // id="workspaceName"
-                    />
+          {/* title */}
+          <div className={style.inputWrap}>
+            <input
+              className={style.inputTitle}
+              onBlur={(e) => handleChangeWorkspaceName(e)}
+              onKeyDown={handleInputKeyDown}
+              value={changeWorkspaceName}
+              onChange={(e) => {
+                e.preventDefault();
+                setChangeWorkspaceName(e.target.value);
+              }}
+            />
 
-                    {/* group box */}
-                    <div className={style.groupBox}>
-                      {/* admin Box */}
-                      <ProfileContainer />
-                      <WorkspaceContext.Provider
-                        value={{
-                          selectedWorkspaceId,
-                          setSelectedWorkspaceId,
-                          workspaceList,
-                          setWorkspaceList,
-                          contactList,
-                          setContactList,
-                          adminList,
-                          setAdminList,
-                          adminWaitList,
-                          setAdminWaitList,
-                          owner,
-                          setOwner,
-                        }}
-                      >
-                        <MoreMenu
-                          setWorkspaceModalState={setWorkspaceModalState}
-                          setWorkspaceModalNum={setWorkspaceModalNum}
-                        />
-                      </WorkspaceContext.Provider>
-                    </div>
-                  </div>
-                  {/* cardContainer */}
-                  <div className={style.cardContainer}>
-                    <WorkspaceContext.Provider
-                      value={{
-                        sectionNum,
-                        setSectionNum,
-                      }}
-                    >
-                      <DefaultCard />
-                    </WorkspaceContext.Provider>
-
-                    {surveyList.map((survey) => {
-                      return (
-                        <SurveyCard
-                          key={survey.surveyId}
-                          // type={"🗒️"}
-                          type={survey.type === "NORMAL" ? "🗒️" : "📝"}
-                          surveyId={survey.surveyId}
-                          title={survey.title}
-                          onOpenModal={openShareModal}
-                          onClose={closeShareModal}
-                          handleRemoveBtnClick={handleRemoveBtnClick}
-                          handleClickCard={handleClickCard}
-                          setWorkspaceModalState={setWorkspaceModalState}
-                          setWorkspaceModalNum={setWorkspaceModalNum}
-                          setChageModalSurveyId={setChageModalSurveyId}
-                          className={style.cardItem}
-                        />
-                      );
-                    })}
-                  </div>
-                </>
-              );
-            } else if (sectionNum === 1) {
+            {/* group box */}
+            <div className={style.groupBox}>
+              {/* admin Box */}
+              <ProfileContainer owner={owner} adminList={adminList} />
+              <MoreMenu
+                setWorkspaceModalState={setWorkspaceModalState}
+                setWorkspaceModalNum={setWorkspaceModalNum}
+                managedValues={managedValues}
+              />
+            </div>
+          </div>
+          {/* cardContainer */}
+          <div className={style.cardContainer}>
+            <DefaultCard />
+            {surveyList.map((survey) => {
               return (
-                <CreateSurveyPage
-                  selectedWorkspaceId={selectedWorkspaceId}
-                  setSectionNum={setSectionNum}
+                <SurveyCard
+                  key={survey.surveyId}
+                  survey={survey}
+                  onOpenModal={openShareModal}
+                  onClose={closeShareModal}
+                  handleRemoveBtnClick={handleRemoveBtnClick}
+                  setWorkspaceModalState={setWorkspaceModalState}
+                  setWorkspaceModalNum={setWorkspaceModalNum}
+                  setChageModalSurveyId={setChageModalSurveyId}
+                  setSelectedSurveyId={setSelectedSurveyId}
+                  className={style.cardItem}
                 />
               );
-            } else if (sectionNum === 2) {
-              return (
-                <CreateScoreSurveyPage
-                  selectedWorkspaceId={selectedWorkspaceId}
-                  setSectionNum={setSectionNum}
-                />
-              );
-            } else if (sectionNum === 3) {
-              return <SurveyInfoPage selectedSurveyId={selectedSurveyId} />;
-            }
-          })()}
+            })}
+          </div>
         </div>
       </div>
     </div>

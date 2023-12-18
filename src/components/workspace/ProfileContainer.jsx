@@ -1,29 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import style from "../../style/workspace/ProfileContainer.module.css";
 
-const ProfileContainer = () => {
-  const profileImages = [
-    "https://via.placeholder.com/45X45",
-    "https://ui-avatars.com/api/?name=won-sik&background=random",
-    // "https://ui-avatars.com/api/?name=s-y&background=random",
-    "https://ui-avatars.com/api/?name=123&background=random",
-  ];
-  const [profiles, setProfiles] = useState(profileImages);
+const ProfileContainer = ({ owner, adminList }) => {
+  const profileImages = ["https://via.placeholder.com/45X45"];
+
+  let temp = [{ ...owner }, ...adminList];
 
   return (
     <div className={style.ProfileContainer}>
-      {profiles.map((image, index) => (
-        <img
-          key={index}
-          src={image}
-          alt={`Profile ${index + 1}`}
-          className={style.profilePicture}
-          style={{
-            position: "absolute",
-            right: `${index * 35}px`,
-            zIndex: index + 1,
-          }}
-        />
+      {temp.map((admin, index) => (
+        <div className={style.imgBox}>
+          <img
+            key={index}
+            src={
+              admin.profileUrl ||
+              "https://ui-avatars.com/api/?name=" + admin.email + "&background=random"
+            }
+            alt={`Profile ${index + 1}`}
+            className={style.profilePicture}
+            style={{
+              position: "absolute",
+              right: `${index * 35}px`,
+              zIndex: index + 1,
+            }}
+          ></img>
+          <div
+            className={style.description}
+            style={{
+              position: "absolute",
+              top: 45,
+              left: index * -35 - 45,
+            }}
+          >
+            {admin.nickName}
+          </div>
+        </div>
       ))}
     </div>
   );
