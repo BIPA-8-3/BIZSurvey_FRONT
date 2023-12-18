@@ -56,10 +56,6 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
   });
 
   useEffect(() => {
-    console.log(resultData);
-  }, [resultData]);
-
-  useEffect(() => {
     // 설문 게시물 참가자 목록
     if (nickname !== 0) {
       switch (sharedType) {
@@ -78,7 +74,6 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
         case "EXTERNAL":
           getdPersonalScoreResult(nickname)
             .then((data) => {
-              console.log("여기", data);
               handleMergeAnswers(data, (newData) => {
                 setResultData(newData);
               });
@@ -193,7 +188,13 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
   if (nickname === 0) {
     return (
       <>
-        <UserList userList={userList} setUser={handleSetUser} />
+        {userList.length !== 0 ? (
+          <UserList
+            userList={userList}
+            setUser={handleSetUser}
+            sharedType={sharedType}
+          />
+        ) : null}
 
         <div className={style.selectPost}>
           <p>응답자를 선택해주세요.</p>

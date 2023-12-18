@@ -198,7 +198,7 @@ function AdminDashboard() {
                          <td>
                              {index + 1}
                          </td>
-                         <td>{communityitem.title}</td>
+                         <td style={{whiteSpace:'nowrap', maxWidth:'150px', overflow:'hidden', textOverflow: 'ellipsis'}}>{communityitem.title}</td>
                          <td>{communityitem.nickname}</td>
                          <td>{communityitem.createDate}</td>
                      </tr>
@@ -215,7 +215,7 @@ function AdminDashboard() {
                             <td>
                                 {index + 1}
                             </td>
-                            <td>{communityitem.title}</td>
+                            <td style={{whiteSpace:'nowrap', maxWidth:'150px', overflow:'hidden', textOverflow: 'ellipsis'}}>{communityitem.title}</td>
                             <td>{communityitem.nickname}</td>
                             <td>{communityitem.createTime}</td>
                         </tr>

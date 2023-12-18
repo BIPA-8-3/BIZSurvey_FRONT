@@ -59,12 +59,7 @@ export default function PostResult({ sharedType, sharedId }) {
 
   useEffect(() => {
     handleProcessData();
-    console.log(result);
   }, [result]);
-
-  useEffect(() => {
-    console.log("processed", processed);
-  }, [processed]);
 
   const handleGetData = async () => {
     // 데이터 받아오는 곳
@@ -183,43 +178,51 @@ export default function PostResult({ sharedType, sharedId }) {
     );
   }
 
+  // if (processed.length === 0) {
+  //   console.log("prooooooooooooooooooo", processed.length);
+  //   return null;
+  // }
+
   return (
     <>
-      <div
-        style={{
-          width: "700px",
-          margin: "0 auto",
-          textAlign: "right",
-          marginBottom: "3px",
-        }}
-      >
-        <a
-          href={
-            "http://localhost:8080/survey/result/file/" +
-            sharedType +
-            "/" +
-            sharedId
-          }
+      {processed.length !== 0 ? (
+        <div
+          style={{
+            width: "700px",
+            margin: "0 auto",
+            textAlign: "right",
+            marginBottom: "3px",
+          }}
         >
-          <Button
-            // onClick={handleDownloadExcel}
-            variant="text"
-            startIcon={<IoMdDownload />}
-            sx={[
-              {
-                color: "#0171d1",
-              },
-              {
-                ":hover": {
-                  backgroundColor: "#f5fbff",
-                },
-              },
-            ]}
+          <a
+            href={
+              "http://localhost:8080/survey/result/file/" +
+              sharedType +
+              "/" +
+              sharedId
+            }
           >
-            엑셀 다운받기
-          </Button>
-        </a>
-      </div>
+            <Button
+              // onClick={handleDownloadExcel}
+              variant="text"
+              startIcon={<IoMdDownload />}
+              sx={[
+                {
+                  color: "#0171d1",
+                },
+                {
+                  ":hover": {
+                    backgroundColor: "#f5fbff",
+                  },
+                },
+              ]}
+            >
+              엑셀 다운받기
+            </Button>
+          </a>
+        </div>
+      ) : null}
+
       {survey.questions.map((question, index) => {
         const matchingQuestion = processed.find(
           (pro) => pro.questionId === question.questionId

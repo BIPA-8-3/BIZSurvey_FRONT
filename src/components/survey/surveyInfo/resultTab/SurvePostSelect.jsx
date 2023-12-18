@@ -34,8 +34,16 @@ export default function SurveyPostSelect({
       >
         <FormControl>
           <RadioGroup row value={sharedType} onChange={handleSharedChange}>
-            <FormControlLabel value="INTERNAL" control={<Radio />} label="커뮤니티 공유" />
-            <FormControlLabel value="EXTERNAL" control={<Radio />} label="외부 공유" />
+            <FormControlLabel
+              value="INTERNAL"
+              control={<Radio />}
+              label="커뮤니티 공유"
+            />
+            <FormControlLabel
+              value="EXTERNAL"
+              control={<Radio />}
+              label="외부 공유"
+            />
           </RadioGroup>
         </FormControl>
         <FormControl sx={{ minWidth: 700 }}>
@@ -52,7 +60,9 @@ export default function SurveyPostSelect({
             </MenuItem>
             {sharedUnit.map((unit) => (
               <MenuItem key={unit.id} value={unit.id}>
-                {sharedType === "EXTERNAL" ? createExternalItem(unit) : createInternalItem(unit)}
+                {sharedType === "EXTERNAL"
+                  ? createExternalItem(unit)
+                  : createInternalItem(unit)}
               </MenuItem>
             ))}
           </Select>
@@ -78,7 +88,9 @@ function createExternalItem(unit) {
       <span style={{ marginRight: "10px" }}>
         공유: {unit.regDate && formattedDate.format(new Date(unit.regDate))}
       </span>
-      <span>마감: {unit.dueDate && formattedDate.format(new Date(unit.dueDate))}</span>
+      <span>
+        마감: {unit.dueDate && formattedDate.format(new Date(unit.dueDate))}
+      </span>
     </>
   );
 }
