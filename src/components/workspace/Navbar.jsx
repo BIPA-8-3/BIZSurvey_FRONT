@@ -3,38 +3,65 @@ import Item from "./Item";
 import ButtonItem from "./ButtonItem";
 import style from "../../style/workspace/Navbar.module.css";
 import { useContext, useEffect, useState } from "react";
-import { getWorkspaceList } from "../../pages/workspace/api.js";
-import { WorkspaceContext } from "../../pages/workspace/Main";
-import { Link } from "react-router-dom";
+import { createWorkspace, getWorkspaceList } from "../../pages/workspace/api.js";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useWorkspaceContext } from "../../pages/workspace/WorkspaceContext";
+import { LoginContext } from "../../App";
+import { WorkspaceModal } from "./WorkspaceModal";
 
-function Navbar({ setWorkspaceModalState, setWorkspaceModalNum }) {
+function Navbar() {
+  const navigate = useNavigate();
   // workspaceList
-  const { workspaceList, setWorkspaceList, userInfo } = useContext(WorkspaceContext);
+  const {
+    workspaceList,
+    setWorkspaceList,
+    selectedWorkspaceId,
+    setSelectedWorkspaceId,
+    setSelectedSurveyId,
+  } = useWorkspaceContext();
+  const userInfo = useContext(LoginContext);
+  const [workspaceModalState, setWorkspaceModalState] = useState(false);
 
   // workspace List 불러옴
   useEffect(() => {
     getWorkspaceList()
       .then((data) => {
-        setWorkspaceList(data);
+        console.log("workspaceList data", data);
+        if (!data) {
+          setWorkspaceList([]);
+        } else {
+          setWorkspaceList(data);
+        }
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
 
-  // 모달 오픈
-  const openModal = () => {
-    setWorkspaceModalNum(0);
-    setWorkspaceModalState(true);
-  };
+  useEffect(() => {
+    navigate("/workspace");
+  }, [selectedWorkspaceId]);
 
   // 클릭한 workspace id 저장
-  let { selectedWorkspaceId, setSelectedWorkspaceId } = useContext(WorkspaceContext);
-
   const changeWorkspace = (workspaceId) => {
     setSelectedWorkspaceId(workspaceId);
+    setSelectedSurveyId(0);
   };
 
+  const handleCreateWorkspaceBtnClick = () => {
+    const workspaceName = document.getElementById("input_name").value;
+
+    createWorkspace(workspaceName)
+      .then((data) => {
+        let copy = [...workspaceList];
+        copy.push(data);
+        setWorkspaceList(copy);
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log("Response from server:", error.response);
+      });
+  };
   useEffect(() => {
     // 선택한 워크스페이스 ID가 없을 경우, 첫 번째 워크스페이스의 ID를 선택
     if (!selectedWorkspaceId && workspaceList.length > 0) {
@@ -44,13 +71,19 @@ function Navbar({ setWorkspaceModalState, setWorkspaceModalNum }) {
 
   return (
     <div id={style.Navbar}>
+      <WorkspaceModal
+        isOpen={workspaceModalState}
+        setWorkspaceModalState={setWorkspaceModalState}
+        pageNum={0}
+        handleClickSubmitBtn={handleCreateWorkspaceBtnClick}
+      />
       {/* header start */}
       <div className={style.NavbarHeader}>
         <div className={style.HeaderProfile}>
           <img src="https://via.placeholder.com/45X45" className={style.profileRadius}></img>
           <div className={style.profileInfo}>
             <span className={style.profileName}>
-              <span style={{ marginRight: "3px" }}>{userInfo.icon}</span>
+              <span style={{ marginRight: "3px" }}>{getIcon(userInfo.planSubscribe)}</span>
               {userInfo.nickname}
             </span>
             <span className={style.profileEmail}> {userInfo.email}</span>
@@ -63,14 +96,12 @@ function Navbar({ setWorkspaceModalState, setWorkspaceModalNum }) {
             <AddIcon
               className={style.addIcon}
               onClick={() => {
-                openModal();
+                setWorkspaceModalState(true);
               }}
             />
           </span>
         </div>
       </div>
-      {/* header end */}
-
       {/* body start */}
       <div className={style.NavbarBody}>
         {workspaceList.map((workspace) => {
@@ -87,7 +118,7 @@ function Navbar({ setWorkspaceModalState, setWorkspaceModalNum }) {
         })}
         <div
           onClick={() => {
-            openModal();
+            setWorkspaceModalState(true);
           }}
         >
           <ButtonItem />
@@ -110,4 +141,14 @@ function Navbar({ setWorkspaceModalState, setWorkspaceModalNum }) {
   );
 }
 
+function getIcon(planSubscribe) {
+  switch (planSubscribe) {
+    case "COMPANY_SUBSCRIBE":
+      return "🏅";
+    case "NORMAL_SUBSCRIBE":
+      return "🏅";
+    default:
+      return "🎟️";
+  }
+}
 export default Navbar;

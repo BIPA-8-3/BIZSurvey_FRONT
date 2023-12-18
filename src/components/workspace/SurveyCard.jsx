@@ -3,18 +3,20 @@ import style from "../../style/workspace/SurveyCard.module.css";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 
 export default function SurveyCard({
-  type,
-  surveyId,
-  title,
+  survey,
   onOpenModal,
-  onClose,
   handleRemoveBtnClick,
-  handleClickCard,
   setWorkspaceModalState,
   setWorkspaceModalNum,
   setChageModalSurveyId,
+  setSelectedSurveyId,
 }) {
+  const { type, surveyId, title } = survey;
   const cotainerRef = useRef(null);
+
+  const handleClickCard = (id) => {
+    setSelectedSurveyId(id);
+  };
 
   // 더보기 상태
   let [moreMenu, setMoreMenu] = useState(false);
@@ -50,11 +52,12 @@ export default function SurveyCard({
       id={style.Container}
       ref={cotainerRef}
       onClick={(e) => {
+        e.preventDefault();
         handleClickCard(surveyId);
       }}
     >
       <div className={style.cardHeader}>
-        {type}
+        {type === "NORMAL" ? "🗒️" : "📝"}
         <div className={style.menuContainer}>
           <span>
             <BiDotsHorizontalRounded

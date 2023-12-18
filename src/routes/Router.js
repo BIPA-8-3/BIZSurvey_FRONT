@@ -4,6 +4,8 @@ import SurveyInfoPage from "../pages/survey/SurveyInfoPage";
 import SurveyResultPage from "../pages/survey/SurveyResultPage";
 import EditSurveyPage from "../pages/survey/EditSurveyPage";
 import SharedSurvey from "../pages/workspace/SharedSurvey";
+import CreateScoreSurveyPage from '../pages/survey/CreateScoreSurveyPage';
+import CreateSurveyPage from '../pages/survey/CreateSurveyPage';
 
 const FullLayout = lazy(() => import("../pages/Layout"));
 
@@ -137,8 +139,25 @@ const ThemeRoutes = [
         exact: true,
         element: <SurveyCommunityWrite />,
       },
+      // 워크스페이스
       { path: "/workspace", exact: true, element: <Main /> },
+      { path: "/workspace/create", exact: true, element: <CreateSurveyPage /> },
+      { path: "/workspace/createscore", exact: true, element: <CreateScoreSurveyPage /> },
+      { path: "/workspace/info", exact: true, element: <SurveyInfoPage /> },
+      { path: "/workspace/edit", exact: true, element: <EditSurvey /> },
+      { path: "/workspace/editscore", exact: true, element: <EditScoreSurvey /> },
 
+      {
+        path: "/authorization/:type/:token",
+        exact: true,
+        element: <Authorization />,
+      },
+      {
+        path: "/survey/participate/external",
+        exact: true,
+        element: <SharedSurvey />,
+      },
+      //
       {
         path: "/login/oauth2/kakao",
         exact: true,
@@ -178,17 +197,6 @@ const ThemeRoutes = [
         exact: true,
         element: <CommunitySearchResult />,
       },
-      {
-        path: "/authorization/:type/:token",
-        exact: true,
-        element: <Authorization />,
-      },
-      {
-        path: "/survey/participate/external",
-        exact: true,
-        element: <SharedSurvey />,
-      },
-
       {
         path: "/surveyCommunitySearchResult",
         exact: true,

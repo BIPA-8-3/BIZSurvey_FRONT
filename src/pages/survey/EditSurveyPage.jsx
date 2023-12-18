@@ -73,8 +73,7 @@ export default function EditSurveyPage() {
           ...question,
           step: index + 1,
           answers:
-            question.answerType === "SINGLE_CHOICE" ||
-            question.answerType === "MULTIPLE_CHOICE"
+            question.answerType === "SINGLE_CHOICE" || question.answerType === "MULTIPLE_CHOICE"
               ? question.answers
               : [],
         };
@@ -86,8 +85,7 @@ export default function EditSurveyPage() {
             ...question,
             step: index + 1,
             answers:
-              question.answerType === "SINGLE_CHOICE" ||
-              question.answerType === "MULTIPLE_CHOICE"
+              question.answerType === "SINGLE_CHOICE" || question.answerType === "MULTIPLE_CHOICE"
                 ? question.answers
                 : [],
           });
@@ -110,7 +108,7 @@ export default function EditSurveyPage() {
       .then((response) => {
         console.log(response);
         alert(response.data);
-        navigate("/surveyInfo");
+        navigate("/workspace/info");
       })
       .catch((error) => console.log(error));
   };
@@ -193,22 +191,11 @@ export default function EditSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id
-          ? { ...question, isRequired: !question.isRequired }
-          : question
+        index === id ? { ...question, isRequired: !question.isRequired } : question
       );
       return result;
     });
   };
-
-  // const handleOption = (id, options) => {
-  //   setQuestions((pre) => {
-  //     const result = pre.map((question, index) =>
-  //       index === id ? { ...question, answers: options } : question
-  //     );
-  //     return result;
-  //   });
-  // };
 
   const changeSurveyTitle = (text) => {
     setFormData((pre) => ({ ...pre, title: text }));
@@ -274,77 +261,67 @@ export default function EditSurveyPage() {
 
   return (
     <>
-      <div className={style.container}>
-        <div className={style.wrapContent}>
-          <EditSurveyTitle
-            title={formData.title}
-            content={formData.content}
-            changeSurveyTitle={changeSurveyTitle}
-            changeSurveyContent={changeSurveyContent}
-          />
+      {/* <div className={style.container}> */}
+      <div className={style.wrapContent}>
+        <EditSurveyTitle
+          title={formData.title}
+          content={formData.content}
+          changeSurveyTitle={changeSurveyTitle}
+          changeSurveyContent={changeSurveyContent}
+        />
 
-          <DragDropContext onDragEnd={handleOnDragEnd}>
-            <Droppable droppableId="createQuestions">
-              {(provided) => (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className={style.questionList}
-                >
-                  {questions.map((questionData, index) => (
-                    <Draggable
-                      key={index}
-                      draggableId={`question-${index}`}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                        >
-                          <div className={style.question}>
-                            <QuestionComp
-                              key={index}
-                              index={index}
-                              questionInfo={questionData}
-                              changeTitle={changeQuestionTitle}
-                              changeContent={changeQuestionContent}
-                              changeOption={changeOption}
-                              deleteQuestion={deleteQuestion}
-                              changeRequired={changeRequired}
-                              provided={provided}
-                              addAnswer={handleAddOption}
-                              deleteAnswer={handleDeleteOption}
-                              changeAnswerText={handleChangeOptionText}
-                            />
-                          </div>
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+          <Droppable droppableId="createQuestions">
+            {(provided) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className={style.questionList}
+              >
+                {questions.map((questionData, index) => (
+                  <Draggable key={index} draggableId={`question-${index}`} index={index}>
+                    {(provided) => (
+                      <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <div className={style.question}>
+                          <QuestionComp
+                            key={index}
+                            index={index}
+                            questionInfo={questionData}
+                            changeTitle={changeQuestionTitle}
+                            changeContent={changeQuestionContent}
+                            changeOption={changeOption}
+                            deleteQuestion={deleteQuestion}
+                            changeRequired={changeRequired}
+                            provided={provided}
+                            addAnswer={handleAddOption}
+                            deleteAnswer={handleDeleteOption}
+                            changeAnswerText={handleChangeOptionText}
+                          />
                         </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
 
-          <IconButton aria-label="delete" size="medium" onClick={addQuestion}>
-            <FaPlus />
-          </IconButton>
+        <IconButton aria-label="delete" size="medium" onClick={addQuestion}>
+          <FaPlus />
+        </IconButton>
 
-          <div className={style.wrapButton}>
-            <Button variant="outlined" onClick={handleGoBack}>
-              취소
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => handleUpdateSurvey(surveyId)}
-            >
-              완료
-            </Button>
-          </div>
+        <div className={style.wrapButton}>
+          <Button variant="outlined" onClick={handleGoBack}>
+            취소
+          </Button>
+          <Button variant="contained" onClick={() => handleUpdateSurvey(surveyId)}>
+            완료
+          </Button>
         </div>
       </div>
+      {/* </div> */}
     </>
   );
 }

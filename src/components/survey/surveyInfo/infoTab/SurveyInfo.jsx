@@ -39,7 +39,7 @@ export default function SurveyInfo() {
         <div className={style.wrapButton}>
           <div style={{ marginTop: "7px" }}>
             <IconButton>
-              <IoArrowBackSharp />
+              <IoArrowBackSharp onClick={(e) => navigate("/workspace")} />
             </IconButton>
           </div>
 
@@ -56,7 +56,7 @@ export default function SurveyInfo() {
                 업로드
               </Button>
             </Link>
-            <Button
+            {/* <Button
               variant="contained"
               sx={{
                 backgroundColor: "#243579",
@@ -64,22 +64,16 @@ export default function SurveyInfo() {
               }}
             >
               공유
-            </Button>
+            </Button> */}
             {surveyType === "NORMAL" ? (
-              <Link to={"/editSurvey"} state={{ surveyId: surveyId }}>
-                <Button
-                  variant="outlined"
-                  sx={{ color: "#243579", borderColor: "#243579" }}
-                >
+              <Link to={"/workspace/edit"} state={{ surveyId: surveyId }}>
+                <Button variant="outlined" sx={{ color: "#243579", borderColor: "#243579" }}>
                   수정
                 </Button>
               </Link>
             ) : (
-              <Link to={"/editScoreSurvey"} state={{ surveyId: surveyId }}>
-                <Button
-                  variant="outlined"
-                  sx={{ color: "#243579", borderColor: "#243579" }}
-                >
+              <Link to={"/workspace/editscore"} state={{ surveyId: surveyId }}>
+                <Button variant="outlined" sx={{ color: "#243579", borderColor: "#243579" }}>
                   수정
                 </Button>
               </Link>

@@ -8,3 +8,26 @@
   object-fit: conver;
   border-radius: 50%;
 }
+
+.imgBox:hover .description {
+  opacity: 1;
+}
+
+.description {
+  font-size: 8px;
+  width: 30px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.imgBox {
+  position: relative;
+  width: 100%;
+}
