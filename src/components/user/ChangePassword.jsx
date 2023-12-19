@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import back from '../../assets/img/back.png'
 import { useLocation, useNavigate } from "react-router-dom";
 import useFadeIn from '../../style/useFadeIn';
+import call from '../../pages/workspace/api';
 import axios from 'axios';
 
 
@@ -11,12 +12,16 @@ function FindPassword() {
   const fadeIn = useFadeIn();
   const navigate = useNavigate();
   const location = useLocation();
-  const email = location.state?.email || ''; 
+  const [email, setEmail] = useState('');
 
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+useEffect(() => {
+  setEmail(location.state?.email || '')
+}, [])
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -28,8 +33,9 @@ function FindPassword() {
     setConfirmPasswordError('');
   };
 
+
   const handleSubmit = async () => {
-    
+    alert(email)
     const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
     if (!passwordRegex.test(password)) {
       setPasswordError('비밀번호는 8-16자리 사이, 소문자, 숫자, 특수문자를 포함해야 합니다.');
@@ -40,18 +46,17 @@ function FindPassword() {
       setConfirmPasswordError('비밀번호가 일치하지 않습니다.');
       return;
     }
-
-    try{
-        const response = await axios.patch(`/password`, {
-            email : email,
-            password : password
-        });
-        alert(response.data)
-        navigate('/login');
-    }catch{
-        alert('플랜 변경 중 오류가 발생했습니다.');
-    }
-  }
+    call(`/password`, "PATCH", {
+      email : email,
+      password : password
+    }).then((response) => {
+      alert(response)
+      navigate('/login');
+    }).catch((error)=>{
+      console.log(error);
+    })
+   
+}
 
 
 

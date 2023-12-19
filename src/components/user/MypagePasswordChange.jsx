@@ -5,6 +5,7 @@ import useFadeIn from '../../style/useFadeIn';
 import Button from '@mui/material/Button';
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
+import call from '../../pages/workspace/api';
 
 function MypagePasswordChange({userData, setEditState}) {
   const fadeIn = useFadeIn();
@@ -41,16 +42,17 @@ function MypagePasswordChange({userData, setEditState}) {
       return;
     }
 
-    try{
-        const response = await axios.patch(`/password`, {
-            email : userData.email,
-            password : password
-        });
-        alert(response.data)
-        navigate('/mypage');
-    }catch{
-        alert('플랜 변경 중 오류가 발생했습니다.');
-    }
+
+    call("/password", "patch", {
+        email : userData.email,
+        password : password
+    }).then((response) => {
+      alert(response)
+      navigate('/mypage');
+    }).catch((error) => {
+      console.log(error)
+    })
+    
   }
   
 

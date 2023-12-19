@@ -15,7 +15,7 @@ import { BiComment } from 'react-icons/bi';
 import { IoPersonOutline } from 'react-icons/io5';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { MdDateRange } from 'react-icons/md';
-import useApiCall from '../api/ApiCall'; 
+import call from '../../pages/workspace/api';
 
 function MypageCommunityList({userData, setEditState}) {
   const fadeIn = useFadeIn();
@@ -24,7 +24,6 @@ function MypageCommunityList({userData, setEditState}) {
     setEditState(true);
   }
 
-  const { call } = useApiCall();
   const [communityList, setCommunityList] = useState([]);
 
   useEffect(() => {

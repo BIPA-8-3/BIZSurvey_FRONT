@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import style from "../../style/user/MypagePlanDetail.module.css";
 import useFadeIn from "../../style/useFadeIn";
-import useApiCall from "../api/ApiCall";
+import call from '../../pages/workspace/api';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { GiCheckMark } from "react-icons/gi";
@@ -11,7 +11,6 @@ import Loader from "../../pages/loader/Loader";
 import IconWithText from "../common/IconWithText";
 
 export default function MypagePlanDetail() {
-  const { call } = useApiCall();
   const [userInfo, setUserInfo] = useState({ plan: "", nickname: "" });
   const [loading, setLoading] = useState(false);
 

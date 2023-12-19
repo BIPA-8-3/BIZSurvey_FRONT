@@ -15,12 +15,11 @@ import { BiComment } from 'react-icons/bi';
 import { IoPersonOutline } from 'react-icons/io5';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { MdDateRange } from 'react-icons/md';
-import useApiCall from '../api/ApiCall'; 
+import call from '../../pages/workspace/api';
 
 function MypageSurveyList({userData, setEditState}) {
   const fadeIn = useFadeIn();
 
-  const { call } = useApiCall();
   const [communityList, setCommunityList] = useState([]);
 
   useEffect(() => {
