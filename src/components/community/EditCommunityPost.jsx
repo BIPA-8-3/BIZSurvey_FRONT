@@ -76,9 +76,9 @@ export default function CommunityWrite() {
     setVoteId(voteId);
   };
 
-  const handleDeleteVote = () => {
-    const response = call("/community", "DELETE");
-    console.log(response);
+  const handleDeleteVote = async () => {
+    const response = await call(`/community/deleteVote/${voteId}`, "DELETE");
+    console.log("여기삭제들어옴", response);
     setVoteTitle("");
     setVoteOptions([""]);
     setVoteId(0);
@@ -163,7 +163,7 @@ export default function CommunityWrite() {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
-        const data = call("/community/showPost/" + postId, "GET");
+        const data = await call(`/community/showPost/${postId}`, "GET");
 
         if (data.reported === 1) {
           alert("신고당한 게시물입니다.");
@@ -184,15 +184,17 @@ export default function CommunityWrite() {
         //   ]
         // }
 
-        if (data.voteId !== null) {
-          const vote = call(
-            `/community/${postId}/showVoteAnswer/${data.voteId}`
+        if (data.voteId !== null || data.voteId !== undefined) {
+          const vote = await call(
+            `/community/${postId}/showVoteAnswer/${data.voteId}`,
+            "GET"
           );
           setVoteTitle(vote.voteTitle);
           let newArr = [];
           vote.answerList.map((option) => {
             return newArr.push(option.answer);
           });
+          setVoteId(data.voteId);
           setVoteOptions(newArr);
           setHasVote(true);
         }
@@ -233,6 +235,25 @@ export default function CommunityWrite() {
 
     alert(JSON.stringify(title));
     alert(JSON.stringify(content));
+
+    if (voteId !== 0) {
+      call(`/community/updatePost/${postId}`, "PATCH", {
+        title: title,
+        content: content,
+        voteId: voteId,
+        imgUrlList: imageSrcArray,
+      })
+        .then((data) => setVoteId(0))
+        .catch((error) => console.log(error));
+    } else {
+      call(`/community/updatePost/${postId}`, "PATCH", {
+        title: title,
+        content: content,
+        imgUrlList: imageSrcArray,
+      })
+        .then((data) => console.log(data))
+        .catch((error) => console.log(error));
+    }
 
     // axios
     //   .post("http://localhost:8080/community/updatePost", {
@@ -317,7 +338,7 @@ export default function CommunityWrite() {
             <>
               <IoIosCloseCircle
                 className={style.voteCloseBtn}
-                onClick={handleDeleteVote}
+                onClick={() => setHasVote(false)}
               />
               <RegisterVote voteTitle={voteTitle} voteOptions={voteOptions} />
             </>
