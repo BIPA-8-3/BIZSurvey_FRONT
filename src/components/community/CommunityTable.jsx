@@ -39,6 +39,16 @@ function CommunityTable({props}) {
       }
   }
 
+  function renderProfil(profile){
+    if(profile === null){
+      return logo;
+    }else{
+      let prefix = "https://";
+      console.log("프로필 : " + prefix + profile)
+      return prefix + profile;
+    }
+  }
+
 
 
   return (
@@ -67,7 +77,7 @@ function CommunityTable({props}) {
               <td style={{width:'10%'}}>
                 <div className={style.profil}>
                   <span className={style.photo}>
-                    <img className='' src={logo}/>
+                    <img className='' src={renderProfil(item.profile)}/> {/* */}
                   </span>
                   <span className={style.nickname}>{item.nickname}</span>
                 </div>

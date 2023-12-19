@@ -41,6 +41,17 @@ function SurveyCard({ data }) {
       }
   }
 
+  function renderProfil(profile){
+    if(profile === null){
+      return logo;
+    }else{
+      let prefix = "https://";
+      console.log("프로필 : " + prefix + profile)
+      return prefix + profile;
+    }
+  }
+
+
   const renderCard = (cardData) => (
     <Grid item xs={12} md={6} lg={3} key={cardData.postId}>
       <Link to={'/surveyCommunityDetail'} state={{postId : cardData.postId}}>
@@ -66,7 +77,7 @@ function SurveyCard({ data }) {
           >
             <div className={style.profil}>
               <span className={style.photo}>
-                <img className="" src={logo} />
+                <img className="" src={renderProfil(cardData.profile)} />
               </span>
               <span className={style.nickname}>{cardData.nickname}</span>
             </div>
