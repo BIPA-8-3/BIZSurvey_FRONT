@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import useFadeIn from "../../style/useFadeIn";
 import Axios from "axios";
 import BizModal from "../common/BizModal";
-import useApiCall from "../api/ApiCall";
+import useApiCall, { login } from "../api/ApiCall";
 import { LoginContext, LoginFunContext } from "../../App";
 
 function Login() {
@@ -45,34 +45,17 @@ function Login() {
 
   //일반 로그인
   const handleSubmit = async () => {
-    try {
-      const response = await Axios.post("/login", formData);
-      if (response.status === 200) {
-        const headers = response.headers;
-        const authorization = headers["authorization"];
-        const refreshAuthorization = headers["refreshauthorization"];
-
-        saveAccessTokenToLocalStorage(authorization);
-        saveRefreshTokenToLocalStorage(refreshAuthorization);
-
-        try {
-          const data = await call("/user/info", "GET");
-          console.log(data);
+    login(formData).then((data) => {
+      call("/user/info", "GET")
+        .then((data) => {
           setUserInfo(data);
-        } catch (error) {
+          navigate("/");
+        })
+        .catch((error) => {
           console.error("사용자 정보 가져오기 실패:", error);
-        }
-
-        navigate("/");
-      }
-    } catch (error) {
-      console.log("실패");
-      if (error.response.data.errorCode === 403) {
-        alert(error.response.data.errorMessage);
-      } else {
-        handleOpenModal();
-      }
-    }
+          return;
+        });
+    });
   };
 
   //카카오 로그인
