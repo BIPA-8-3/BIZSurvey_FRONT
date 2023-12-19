@@ -56,25 +56,31 @@ function MypageCommunityList({userData, setEditState}) {
                         <span>커뮤니티</span>
                     </div>
                 </li>
-                {communityList.map((communityItem) => (
-                  <Link to={'/communityDetail'} state={{postId : communityItem.postId}}>
-                    <li className={style.MypageSurveyLi}>
-                        <div className={style.MypageSurveyTitle}>{communityItem.title}</div>
-                        <div className={style.MypageSurveyDate}>
-                            <div className={style.MypageSurveyDate}>
-                                <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
-                                    <MdOutlineRemoveRedEye />
-                                    <span style={{ margin: '0 5px 0 5px' }}>00</span>
-                                </div>
-                                <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', marginLeft:'15px'}}>
-                                    <MdDateRange />
-                                    <span style={{ margin: '0 5px 0 5px', display:'inline-block', width:'65px'}}>{formatDateTime(communityItem.createTime)}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                  </Link>
-                ))}
+                {communityList.length > 0 ? (
+                  communityList.map((communityItem) => (
+                    <Link to={'/communityDetail'} state={{postId : communityItem.postId}}>
+                      <li className={style.MypageSurveyLi}>
+                          <div className={style.MypageSurveyTitle}>{communityItem.title}</div>
+                          <div className={style.MypageSurveyDate}>
+                              <div className={style.MypageSurveyDate}>
+                                  <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
+                                      <MdOutlineRemoveRedEye />
+                                      <span style={{ margin: '0 5px 0 5px' }}>00</span>
+                                  </div>
+                                  <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', marginLeft:'15px'}}>
+                                      <MdDateRange />
+                                      <span style={{ margin: '0 5px 0 5px', display:'inline-block', width:'65px'}}>{formatDateTime(communityItem.createTime)}</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </li>
+                    </Link>
+                  ))
+                ):(
+                  <li className={style.MypageSurveyLi}>
+                      내역이 없습니다.
+                  </li>
+                )}
             </ul>
           </div>
       </div>

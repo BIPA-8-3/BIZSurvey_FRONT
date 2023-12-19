@@ -88,7 +88,7 @@ function AdminSurveyList() {
         </thead>
         <tbody>
           {communityList.map((communityitem, index) => (
-              <tr onClick={handleRowClick}>
+              <tr>
                   <td>{communityitem.postId}</td>
                   <td>{communityitem.title}</td>
                   <td>{communityitem.nickname}</td>
@@ -96,7 +96,7 @@ function AdminSurveyList() {
                   <td>{communityitem.startDateTime}</td>
                   <td>{communityitem.endDateTime}</td>
                   <td>{communityitem.createDate}</td>
-                  <td><Link to={'/communityDetail'} target='_blank' state={{postId : communityitem.postId}}>< button>바로가기</button></Link></td>
+                  <td><Link to={'/communityDetail'} state={{postId : communityitem.postId}}>< button>바로가기</button></Link></td>
                   <td><button>삭제</button></td>
               </tr>
             ))}  

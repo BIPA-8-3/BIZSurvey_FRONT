@@ -43,7 +43,8 @@ function MypageSurveyList({userData, setEditState}) {
                         <span>설문 커뮤니티</span>
                     </div>
                 </li>
-                {communityList.map((communityItem) => (
+                {communityList.length > 0 ? (
+                communityList.map((communityItem) => (
                 <Link to={'/surveyCommunityDetail'} state={{postId : communityItem.postId}}>
                     <li key={communityItem.postId} className={style.MypageSurveyLi}>
                         <div className={style.MypageSurveyTitle}>{communityItem.title}</div>
@@ -61,7 +62,12 @@ function MypageSurveyList({userData, setEditState}) {
                         </div>
                     </li>
                 </Link>
-                ))}
+                ))
+                ) : (
+                <li className={style.MypageSurveyLi}>
+                    내역이 없습니다.
+                </li>
+                )}
             </ul>
           </div>
       </div>
