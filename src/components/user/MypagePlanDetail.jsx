@@ -54,12 +54,10 @@ export default function MypagePlanDetail() {
       });
   }, []);
 
-
   // 로컬 스토리지에 엑세스 토큰 저장
   const saveAccessTokenToLocalStorage = (token) => {
     localStorage.setItem("accessToken", token);
   };
-
 
   const handleSubscribe = (planName) => {
     const con = window.confirm(planName + "으로 변경하시겠습니까?");
@@ -69,7 +67,6 @@ export default function MypagePlanDetail() {
 
     setLoading(true);
 
-    
     if (userInfo.plan === "커뮤니티 회원") {
       // get
       console.log("여기ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ");
@@ -79,24 +76,28 @@ export default function MypagePlanDetail() {
           console.log("asssssssssssss", data);
           if (!data) {
             const newData = {
-              workspaceName: userInfo.nickname + "님 워크스페이스",
+              workspaceName: "내 워크스페이스",
               workspaceType: "PERSONAL",
             };
             return call("/workspace", "POST", newData);
           }
           return null;
         })
-        .then(async(data) => {
+        .then(async (data) => {
           const name =
             planName === "개인 플랜" ? "NORMAL_SUBSCRIBE" : "COMPANY_SUBSCRIBE";
 
-          try{
-            const response = await axios.patch(`/plan/${name}`, {}, {
+          try {
+            const response = await axios.patch(
+              `/plan/${name}`,
+              {},
+              {
                 headers: {
-                  Authorization: localStorage.getItem("accessToken")
-                }
-            });
-      
+                  Authorization: localStorage.getItem("accessToken"),
+                },
+              }
+            );
+
             if (response.status === 200) {
               const headers = response.headers;
               const authorization = headers["authorization"];
@@ -104,8 +105,8 @@ export default function MypagePlanDetail() {
               window.location.reload();
               // navigate("/");
             }
-          }catch(error){
-              alert(error)
+          } catch (error) {
+            alert(error);
           }
         })
         .catch((error) => console.log(error))
@@ -113,43 +114,44 @@ export default function MypagePlanDetail() {
     } else {
       const name =
         planName === "개인 플랜" ? "NORMAL_SUBSCRIBE" : "COMPANY_SUBSCRIBE";
-        console.log("name,,,,,,,,,", name);
 
-        axios.patch(`/plan/${name}`, {}, {
+      axios
+        .patch(
+          `/plan/${name}`,
+          {},
+          {
             headers: {
-              Authorization: localStorage.getItem("accessToken")
-            }
-        }).then((response) => {
-                const headers = response.headers;
-                const authorization = headers["authorization"];
-                saveAccessTokenToLocalStorage(authorization);
-                window.location.reload();
+              Authorization: localStorage.getItem("accessToken"),
+            },
+          }
+        )
+        .then((response) => {
+          const headers = response.headers;
+          const authorization = headers["authorization"];
+          saveAccessTokenToLocalStorage(authorization);
+          window.location.reload();
         });
-  
     }
     setLoading(false);
   };
 
-  const handleCancelPlan = async() => {
+  const handleCancelPlan = async () => {
     const con = window.confirm("구독을 취소하시겠습니까?");
     if (!con) {
       return;
     }
     setLoading(true);
-    // call("/plan/COMMUNITY", "PATCH")
-    //   .then((data) => console.log(data))
-    //   .catch((error) => console.log(error))
-    //   .finally(() => {
-    //     setLoading(false);
-    //     window.location.reload();
-    //   });
 
-    try{
-      const response = await axios.patch(`/plan/COMMUNITY`, {}, {
+    try {
+      const response = await axios.patch(
+        `/plan/COMMUNITY`,
+        {},
+        {
           headers: {
-            Authorization: localStorage.getItem("accessToken")
-          }
-      });
+            Authorization: localStorage.getItem("accessToken"),
+          },
+        }
+      );
 
       if (response.status === 200) {
         const headers = response.headers;
@@ -157,8 +159,8 @@ export default function MypagePlanDetail() {
         saveAccessTokenToLocalStorage(authorization);
         window.location.reload();
       }
-    }catch(error){
-        alert(error)
+    } catch (error) {
+      alert(error);
     }
   };
 

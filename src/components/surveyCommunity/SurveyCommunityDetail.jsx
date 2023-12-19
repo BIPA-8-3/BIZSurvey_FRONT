@@ -100,11 +100,11 @@ export default function CommunityPost() {
     console.log("Selected Reasons:", selectedReasons);
   };
 
-  const removePTags = (html) => {
-    // 정규식을 사용하여 <p></p> 태그를 제거합니다.
-    const withoutPTags = html.replace(/<p>/g, "").replace(/<\/p>/g, "");
-    return withoutPTags;
-  };
+  // const removePTags = (html) => {
+  //   // 정규식을 사용하여 <p></p> 태그를 제거합니다.
+  //   const withoutPTags = html.replace(/<p>/g, "").replace(/<\/p>/g, "");
+  //   return withoutPTags;
+  // };
 
   function renderAccess() {
     if (data.canAccess === "대기") {
@@ -153,7 +153,7 @@ export default function CommunityPost() {
           </div>
         </div>
         <div className={style.content}>
-          <p dangerouslySetInnerHTML={{ __html: removePTags(data.content) }} />
+          <p dangerouslySetInnerHTML={{ __html: data.content }} />
           <div className={style.surveyBtnWrap}>
             {isAvailable ? (
               <Link to={"/communitySurveyWrite"} state={{ postId: postId }}>

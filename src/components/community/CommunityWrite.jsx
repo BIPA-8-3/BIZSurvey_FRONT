@@ -201,22 +201,6 @@ export default function CommunityWrite() {
         .then((data) => console.log(data))
         .catch((error) => console.log(error));
     }
-
-    // axios
-    //   .post("http://localhost:8080/community/createPost", {
-    //     title: title,
-    //     content: content,
-    //     imageUrlList: imageSrcArray,
-    //   })
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     let postId = response.data;
-
-    //     navigate("/communityDetail", { state: { postId: postId } });
-    //   })
-    //   .catch((error) => {
-    //     console.error("생성 실패", error);
-    //   });
   };
 
   const formats = [

@@ -57,8 +57,8 @@ const VoteResult = ({ chartData }) => {
                   }}
                 >
                   {item.rank === 1
-                    ? `${item.rank}등: ${item.name} (${item.value}%) 👑`
-                    : `${item.rank}등: ${item.name} (${item.value}%)`}
+                    ? `${item.rank}등: ${item.name} 👑`
+                    : `${item.rank}등: ${item.name}`}
                 </h2>
               </div>
             ))}
@@ -66,7 +66,7 @@ const VoteResult = ({ chartData }) => {
         </div>
         {/* 구분선 */}
         <Divider sx={{ my: 2, width: "100%" }} />
-        <SaveButton></SaveButton>
+        {/* <SaveButton></SaveButton> */}
       </Paper>
     </Container>
   );

@@ -18,10 +18,6 @@ import { useNavigate } from "react-router-dom";
 import { login, call } from "../../pages/survey/Login";
 import SurveyForm from "./survey/SurveyForm";
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
 export default function CommunityPost() {
   const fadeIn = useFadeIn();
   const navigate = useNavigate();
@@ -64,11 +60,6 @@ export default function CommunityPost() {
   ]);
 
   const [pass, setPass] = useState([]);
-
-  useEffect(() => {
-    console.log("!!!!!!!!!!!!!!!!!!");
-    console.log(answers);
-  }, [answers]);
 
   useEffect(() => {
     call("/s-community/survey/" + postId, "GET")

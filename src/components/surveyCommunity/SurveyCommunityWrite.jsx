@@ -4,7 +4,7 @@ import "../../style/Common.css";
 import useFadeIn from "../../style/useFadeIn";
 import back from "../../assets/img/back.png";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import SurveyListModal from "./SurveyListModal";
@@ -24,9 +24,32 @@ export default function CommunityWrite() {
   const [selectedSurvey, setSurvey] = useState(null);
   const [selectedFile, setSelectedFile] = useState("");
   const fileInputRef = useRef();
-
+  const navigate = useNavigate();
   const location = useLocation();
   let surveyId = location.state ? location.state.surveyId : 0;
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [maxParticipants, setMaxParticipants] = useState("");
+
+  useEffect(() => {
+    // 데이터를 가져오는 비동기 함수
+    const fetchData = async () => {
+      try {
+        call("/s-community/survey/list", "GET").then((response) => {
+          setData(response);
+        });
+      } catch (error) {
+        console.error("데이터 가져오기 실패:", error);
+      }
+    };
+
+    // fetchData 함수 실행
+    fetchData();
+  }, []);
 
   useEffect(() => {
     console.log(data);
@@ -35,6 +58,27 @@ export default function CommunityWrite() {
       setSurvey(surveyData);
     }
   }, [data]);
+
+  const handleSaveClick = () => {
+    const data = {
+      title: title,
+      content: content,
+      startDateTime: selectedStartDate + "T00:00:00",
+      endDateTime: selectedEndDate + "T00:00:00",
+      maxMember: maxParticipants,
+      surveyId: selectedSurvey.surveyId,
+      thumbImageUrl: selectedFile,
+    };
+
+    call("/s-community/createPost", "POST", data)
+      .then((data) => {
+        alert("게시글 등록이 완료되었습니다.");
+        navigate("/surveyCommunityDetail", { state: { postId: data } });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const handleUpload = () => {
     fileInputRef.current.click();
@@ -68,22 +112,6 @@ export default function CommunityWrite() {
       console.log("실패했어요ㅠ");
     }
   };
-
-  useEffect(() => {
-    // 데이터를 가져오는 비동기 함수
-    const fetchData = async () => {
-      try {
-        call("/s-community/survey/list", "GET").then((response) => {
-          setData(response);
-        });
-      } catch (error) {
-        console.error("데이터 가져오기 실패:", error);
-      }
-    };
-
-    // fetchData 함수 실행
-    fetchData();
-  }, []);
 
   function renderModal() {
     if (selectedSurvey === null) {
@@ -251,32 +279,6 @@ export default function CommunityWrite() {
   //   const data = editorRef.current.getInstance().getHTML();
   //   console.log(data); // 에디터에 입력한 데이터
   // };
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [selectedStartDate, setSelectedStartDate] = useState(null);
-  const [selectedEndDate, setSelectedEndDate] = useState(null);
-  const [maxParticipants, setMaxParticipants] = useState("");
-
-  const handleSaveClick = () => {
-    const data = {
-      title: title,
-      content: content,
-      startDateTime: selectedStartDate + "T00:00:00",
-      endDateTime: selectedEndDate + "T00:00:00",
-      maxMember: maxParticipants,
-      surveyId: selectedSurvey.surveyId,
-      thumbImageUrl: selectedFile,
-    };
-
-    call("/s-community/createPost", "POST", data)
-      .then((data) => {
-        alert("넘어온 데이터 :" + data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
