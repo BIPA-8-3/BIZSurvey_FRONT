@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import style from "../../style/workspace/SurveyCard.module.css";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 
