@@ -29,6 +29,30 @@ export default function CommunityPost() {
   const navigate = useNavigate();
   const userInfo = useContext(LoginContext);
   const [isAuthor, setIsAuthor] = useState(false);
+  const [isResult, setIsResult] = useState(false);
+  const [voteResult, setVoteResult] = useState([]);
+  const [voteSubmit, setVoteSubmit] = useState(false);
+
+  useEffect(() => {
+    const submitVote = async () => {
+      setLoading(true);
+      try {
+        if (voteSubmit) {
+          const voteResult = await call(
+            `/community/${data.voteId}/showPercentage`,
+            "GET"
+          );
+          setVoteResult(voteResult);
+          setIsResult(true);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    submitVote();
+  }, [voteSubmit]);
 
   useEffect(() => {
     // 데이터를 가져오는 함수
@@ -62,6 +86,33 @@ export default function CommunityPost() {
     fetchData(); // 함수 호출
   }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
 
+  useEffect(() => {
+    const checkVote = async () => {
+      try {
+        if (data.voteId != null) {
+          const voteCheckResult = await call(
+            `/community/checkVote/${data.voteId}`,
+            "GET"
+          );
+          if (voteCheckResult === "cheked") {
+            const result = await call(
+              `/community/${data.voteId}/showPercentage`,
+              "GET"
+            );
+            setVoteResult(result);
+            setIsResult(true);
+          } else {
+            setIsResult(false);
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    checkVote();
+  }, [data]);
+
   if (loading) {
     return (
       <>
@@ -72,24 +123,13 @@ export default function CommunityPost() {
 
   let votePostId = data.postId;
 
-  const renderVote = async (isVote) => {
-    console.log("isVOTE?" + isVote);
-    console.log("isPOST?" + votePostId);
+  // const renderVote = async (isVote) => {
+  //   console.log("isVOTE?" + isVote);
+  //   console.log("isPOST?" + votePostId);
 
-    if (isVote !== null) {
-      try {
-        const voteCheckResult = await call(`/community/checkVote/${isVote}`);
-        if (voteCheckResult === "checked") {
-          const voteResult = await call(`/community/{voteId}/showPercentage`);
-          return <VoteResult data={voteResult} />;
-        } else {
-          return <VoteWrite voteId={isVote} postId={votePostId} />;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
+  //   if (isVote !== null) {
+  //   }
+  // };
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -152,7 +192,16 @@ export default function CommunityPost() {
         <div className={style.content}>
           <p dangerouslySetInnerHTML={{ __html: removePTags(data.content) }} />
 
-          {renderVote(data.voteId)}
+          {isResult ? (
+            <VoteResult data={voteResult} />
+          ) : (
+            <VoteWrite
+              voteId={data.voteId}
+              postId={votePostId}
+              setSubmit={setVoteSubmit}
+            />
+          )}
+          {/* {renderVote(data.voteId)} */}
 
           <p
             style={{
@@ -212,9 +261,11 @@ export default function CommunityPost() {
           </p>
         </div>
         <Comment props={{ postId: postId, type: "co" }} />
-        <ParentsComment
-          props={{ postId: postId, commentList: data.commentList }}
-        />
+        {data.commentList ? (
+          <ParentsComment
+            props={{ postId: postId, commentList: data.commentList }}
+          />
+        ) : null}
       </div>
       <div style={{ textAlign: "center" }}>
         <Link to={"/community"}>

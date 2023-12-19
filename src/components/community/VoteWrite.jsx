@@ -13,7 +13,7 @@ import axios from "axios";
 import { FormGroup } from "@mui/material";
 import call from "../../pages/workspace/api";
 
-export default function VoteWrite({ postId, voteId }) {
+export default function VoteWrite({ postId, voteId, setSubmit }) {
   let vId = voteId;
   let pId = postId;
 
@@ -35,7 +35,9 @@ export default function VoteWrite({ postId, voteId }) {
       `/community/${pId}/${vId}/choseAnswer/${value.selectedKey}`,
       "GET"
     )
-      .then((data) => console.log(data))
+      .then((data) => {
+        setSubmit(true);
+      })
       .catch((error) => console.error(error));
   };
 
