@@ -25,10 +25,9 @@ export const WorkspaceProvider = ({ children }) => {
     useEffect(() => {
         checkPermissions()
             .then((data) => {
-                console.log('sadf', data);
                 setPermission(true);
             }).catch((error) => {
-                alert(error.response.data);
+                alert('접근 권한이 없습니다.');
                 navigate("/");
             })
     }, [])
