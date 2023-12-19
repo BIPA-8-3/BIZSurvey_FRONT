@@ -2,7 +2,7 @@
   "name": "bizsurvey_front",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://bizsurvey.shop/api",
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@babel/runtime": "^7.23.4",
     "@emotion/react": "^11.11.1",

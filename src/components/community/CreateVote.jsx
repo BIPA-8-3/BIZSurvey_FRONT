@@ -14,22 +14,10 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import SaveButton from "../common/SaveButton";
 import style from "../../style/community/CommunityWrite.module.css";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
 
-const CreateVote = ({
-  handleClose,
-  setTitle,
-  setOptions,
-  voteTitle,
-  voteOptions,
-  setVote,
-}) => {
-  // const [voteTitle, setVoteTitle] = useState('');
-  // const [voteOptions, setVoteOptions] = useState(['']);
-
+const CreateVote = ({ handleClose, setTitle, setOptions, voteTitle, voteOptions, setVote }) => {
   const [pass, setPass] = useState(true);
 
   const handleTitleChange = (e) => {
@@ -61,6 +49,7 @@ const CreateVote = ({
       return;
     }
     setVote(true);
+    handleClose();
   };
 
   const handleBlurTitle = () => {
@@ -115,11 +104,7 @@ const CreateVote = ({
 
       {/* 투표 항목 추가 버튼 */}
       <div style={{ width: "100%", textAlign: "center" }}>
-        <IconButton
-          onClick={handleAddOption}
-          color="primary"
-          sx={{ textAlign: "center" }}
-        >
+        <IconButton onClick={handleAddOption} color="primary" sx={{ textAlign: "center" }}>
           <AddIcon />
         </IconButton>
       </div>
@@ -141,58 +126,52 @@ const CreateVote = ({
 
       <div style={{ width: "100%", textAlign: "center" }}>
         <div className={style.btnWrap}>
-          <Link to={"/communityWrite"}>
-            <Button
-              variant="outlined"
-              href="#contained-buttons"
-              onClick={handleClose}
-              sx={[
-                {
-                  padding: "11px 30px",
-                  backgroundColor: "#fff",
-                  color: "#243579",
-                  border: "1px solid #243579",
-                  fontWeight: "bold",
-                  marginBottom: "10px",
-                  marginRight: "5px",
+          <Button
+            variant="outlined"
+            onClick={handleClose}
+            sx={[
+              {
+                padding: "11px 30px",
+                backgroundColor: "#fff",
+                color: "#243579",
+                border: "1px solid #243579",
+                fontWeight: "bold",
+                marginBottom: "10px",
+                marginRight: "5px",
+              },
+              {
+                ":hover": {
+                  backgroundColor: "#f8f8f8",
                 },
-                {
-                  ":hover": {
-                    backgroundColor: "#f8f8f8",
-                  },
-                },
-              ]}
-            >
-              취소
-            </Button>
-          </Link>
-          <Link to={"/communityWrite"}>
-            <Button
-              onClick={handleVoteSubmit}
-              variant="contained"
-              href="#contained-buttons"
-              disabled={!pass}
-              sx={[
-                {
-                  padding: "11px 30px",
-                  backgroundColor: "#243579",
-                  fontWeight: "bold",
-                  marginBottom: "10px",
-                  border: { borderStyle },
+              },
+            ]}
+          >
+            취소
+          </Button>
+          <Button
+            onClick={handleVoteSubmit}
+            variant="contained"
+            disabled={!pass}
+            sx={[
+              {
+                padding: "11px 30px",
+                backgroundColor: "#243579",
+                fontWeight: "bold",
+                marginBottom: "10px",
+                border: { borderStyle },
+                boxShadow: 0,
+                marginLeft: "5px",
+              },
+              {
+                ":hover": {
+                  border: "1px solid #1976d2",
                   boxShadow: 0,
-                  marginLeft: "5px",
                 },
-                {
-                  ":hover": {
-                    border: "1px solid #1976d2",
-                    boxShadow: 0,
-                  },
-                },
-              ]}
-            >
-              저장
-            </Button>
-          </Link>
+              },
+            ]}
+          >
+            저장
+          </Button>
         </div>
       </div>
     </Container>
