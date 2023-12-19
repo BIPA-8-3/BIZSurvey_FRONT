@@ -74,6 +74,7 @@ export default function CommunityWrite() {
     const voteId = await call(`/community/createVote`, "POST", data);
     console.log(voteId);
     setVoteId(voteId);
+    // handleClose();
   };
 
   const handleDeleteVote = async () => {

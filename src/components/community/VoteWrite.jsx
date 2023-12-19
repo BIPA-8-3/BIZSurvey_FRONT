@@ -17,6 +17,19 @@ export default function VoteWrite({ postId, voteId, setSubmit }) {
   let vId = voteId;
   let pId = postId;
 
+  const fadeIn = useFadeIn();
+
+  const [voteData, setVoteData] = useState({
+    voteTitle: "",
+    answerList: [
+      {
+        voteAnswerId: 0,
+        answer: "",
+      },
+    ],
+  });
+  const [loading, setLoading] = useState(false);
+
   console.log("(투표)postId : " + pId + " (투표)voteId" + vId);
 
   const [value, setValue] = React.useState({ selectedKey: 0 });
@@ -41,26 +54,19 @@ export default function VoteWrite({ postId, voteId, setSubmit }) {
       .catch((error) => console.error(error));
   };
 
-  const fadeIn = useFadeIn();
-
-  const [voteData, setVoteData] = useState({
-    voteTitle: "",
-    answerList: [],
-  });
-  const [loading, setLoading] = useState(true);
-
   //localhost:8080/community/30/showVoteAnswer/2
 
   useEffect(() => {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/community/" + pId + "/showVoteAnswer/" + vId
+        const response = await call(
+          `/community/${pId}/showVoteAnswer/${vId}`,
+          "GET"
         );
-        console.log(response.data);
+        console.log("여기투표데이터!!!!!!!!!", response);
 
-        setVoteData(response.data);
+        setVoteData(response);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -78,59 +84,62 @@ export default function VoteWrite({ postId, voteId, setSubmit }) {
       </>
     ); // 데이터 로딩 중에는 로딩 표시
   }
+  if (voteData) {
+    return (
+      <>
+        <div className={style.voteWriteWrap}>
+          <div className={style.voteTitleWrap}>
+            <h2>
+              <span className={style.voteSpan}>투표</span>
+              {voteData.voteTitle}
+            </h2>
+          </div>
 
-  return (
-    <div className={style.voteWriteWrap}>
-      <div className={style.voteTitleWrap}>
-        <h2>
-          <span className={style.voteSpan}>투표</span>
-          {voteData.voteTitle}
-        </h2>
-      </div>
-
-      <div className={style.voteContentWrap}>
-        <FormControl>
-          <RadioGroup
-            aria-labelledby="demo-controlled-radio-buttons-group"
-            name="controlled-radio-buttons-group"
-          >
-            {voteData.answerList.map((item) => (
-              <FormControlLabel
-                value={item.voteAnswerId}
-                control={<Radio onChange={handleChange} />}
-                label={item.answer}
-                key={item.voteAnswerId}
-              />
-            ))}
-          </RadioGroup>
-        </FormControl>
-      </div>
-      <div className={style.btnWrap}>
-        <Button
-          variant="contained"
-          type="submit"
-          onClick={boxOnClick}
-          sx={[
-            {
-              padding: "8px 20px",
-              backgroundColor: "#243579",
-              fontWeight: "bold",
-              marginBottom: "10px",
-              border: "1px solid #243579",
-              boxShadow: 0,
-              marginLeft: "5px",
-            },
-            {
-              ":hover": {
-                border: "1px solid #1976d2",
-                boxShadow: 0,
-              },
-            },
-          ]}
-        >
-          투표하기
-        </Button>
-      </div>
-    </div>
-  );
+          <div className={style.voteContentWrap}>
+            <FormControl>
+              <RadioGroup
+                aria-labelledby="demo-controlled-radio-buttons-group"
+                name="controlled-radio-buttons-group"
+              >
+                {voteData.answerList.map((item) => (
+                  <FormControlLabel
+                    value={item.voteAnswerId}
+                    control={<Radio onChange={handleChange} />}
+                    label={item.answer}
+                    key={item.voteAnswerId}
+                  />
+                ))}
+              </RadioGroup>
+            </FormControl>
+          </div>
+          <div className={style.btnWrap}>
+            <Button
+              variant="contained"
+              type="submit"
+              onClick={boxOnClick}
+              sx={[
+                {
+                  padding: "8px 20px",
+                  backgroundColor: "#243579",
+                  fontWeight: "bold",
+                  marginBottom: "10px",
+                  border: "1px solid #243579",
+                  boxShadow: 0,
+                  marginLeft: "5px",
+                },
+                {
+                  ":hover": {
+                    border: "1px solid #1976d2",
+                    boxShadow: 0,
+                  },
+                },
+              ]}
+            >
+              투표하기
+            </Button>
+          </div>
+        </div>
+      </>
+    );
+  }
 }

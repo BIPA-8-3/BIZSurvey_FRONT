@@ -61,7 +61,6 @@ const CreateVote = ({
       return;
     }
     setVote(true);
-    handleClose();
   };
 
   const handleBlurTitle = () => {

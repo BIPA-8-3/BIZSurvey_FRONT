@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import ClaimReasonModal from "../common/ClaimReasonModal";
 
 const ParentsComment = ({ props }) => {
-  const data = props.commentList;
+  const data = props.commentList || [];
   let postId = props.postId;
   let type = props.type;
 

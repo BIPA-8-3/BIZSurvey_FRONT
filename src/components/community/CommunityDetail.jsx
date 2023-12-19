@@ -68,11 +68,6 @@ export default function CommunityPost() {
           }
 
           if (userInfo.nickname === data.nickname) {
-            console.log(
-              userInfo.nickname,
-              "aaaaaaaaaaaaaaaaaa!!!!!!!!!!!",
-              data.nickname
-            );
             setIsAuthor(true);
           }
         });
@@ -87,6 +82,7 @@ export default function CommunityPost() {
   }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
 
   useEffect(() => {
+    console.log("voteid!!!!!!!!!!!!!!!!!!!!!!!!!!!!", data.voteId);
     const checkVote = async () => {
       try {
         if (data.voteId != null) {
@@ -191,16 +187,20 @@ export default function CommunityPost() {
         </div>
         <div className={style.content}>
           <p dangerouslySetInnerHTML={{ __html: removePTags(data.content) }} />
+          {data.voteId ? (
+            <>
+              {isResult ? (
+                <VoteResult chartData={voteResult} />
+              ) : (
+                <VoteWrite
+                  voteId={data.voteId}
+                  postId={votePostId}
+                  setSubmit={setVoteSubmit}
+                />
+              )}
+            </>
+          ) : null}
 
-          {isResult ? (
-            <VoteResult data={voteResult} />
-          ) : (
-            <VoteWrite
-              voteId={data.voteId}
-              postId={votePostId}
-              setSubmit={setVoteSubmit}
-            />
-          )}
           {/* {renderVote(data.voteId)} */}
 
           <p

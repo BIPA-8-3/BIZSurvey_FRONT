@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Paper, Typography, Divider } from "@mui/material";
 import SaveButton from "../common/SaveButton";
 import Chart from "../common/Chart";
 
-const VoteResult = ({ data }) => {
-  const chartData = [
-    { value: 15, name: "산책하자" },
-    { value: 40, name: "하지말자" },
-    { value: 20, name: "집에가자" },
-    { value: 20, name: "미쳤다" },
-  ];
+const VoteResult = ({ chartData }) => {
+  // const chartData = [
+  //   { value: 15, name: "산책하자" },
+  //   { value: 40, name: "하지말자" },
+  //   { value: 20, name: "집에가자" },
+  //   { value: 20, name: "미쳤다" },
+  // ];
+
+  // const [chartData, setChartData] = useState([]);
+
+  // useEffect(() => {
+  //   setChartData(data);
+  // }, []);
 
   // 등수 계산 및 정렬
   const sortedChartData = chartData.slice().sort((a, b) => b.value - a.value);
