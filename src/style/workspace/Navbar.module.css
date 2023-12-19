@@ -8,6 +8,7 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  /* flex-wrap: wrap; */
 }
 
 /* header */
@@ -86,6 +87,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  /* flex-direction: column; */
 }
 
 /* event */
@@ -106,6 +108,7 @@
 }
 .planText {
   font-size: 11px;
+  /* margin-top: 5px; */
   color: #6b778c;
 }
 

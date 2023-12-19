@@ -1,5 +1,13 @@
 import axios from 'axios';
 
+let URI = '';
+
+if (process.env.NODE_ENV === 'development') {
+    URI = 'http://www.localhost:8080';
+} else {
+    URI = 'http://www.bizsurvey.shop/api';
+}
+
 // sse
 const instanceOfSse = axios.create({
     headers: {
@@ -28,9 +36,6 @@ const acceptInviteSSE = (workspaceId) => {
     })
 }
 
-
-
-
 // 일반 api
 // 공유 API
 const shareURI = '/workspace/shared-survey';
@@ -53,7 +58,7 @@ const instance = axios.create({
 export default async function call(api, method, request) {
     try {
         const config = {
-            url: api,
+            url: URI + api,
             method: method,
             headers: {},
         };
@@ -77,21 +82,6 @@ export default async function call(api, method, request) {
     } catch (error) {
         throw error;
     }
-}
-
-export const login = async () => {
-    const loginData = {
-        email: '404444@naver.com',
-        password: "qkrthdud6032!",
-    };
-
-    call("/login", 'POST', loginData)
-        .then(data => {
-            localStorage.setItem("ACCESS_TOKEN", data.token);
-            localStorage.setItem("REFRESH_TOKEN", data.refreshToken);
-        }).catch(error => {
-            console.error(error);
-        });
 }
 
 export const createWorkspace = (workspaceName) => {

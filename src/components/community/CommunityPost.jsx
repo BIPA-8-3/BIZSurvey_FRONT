@@ -1,4 +1,4 @@
-import React, { useState, useEffect }  from 'react';
+import React, { useState, useEffect, useContext }  from 'react';
 import axios from 'axios';
 import style from"../../style/community/CommunityPost.module.css"
 import '../../style/Common.css'
@@ -16,34 +16,30 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import Loader from "../../pages/loader/Loader"
 import { useNavigate } from "react-router-dom";
+import { LoginContext } from "../../App";
 
 
 
 export default function CommunityPost() {
-  const [dataFromLocalStorage, setDataFromLocalStorage] = useState('');
   const [data, setData] = useState([]);
   console.log("데이타"+data)
   console.log("총 페이지 수"+data.totalPages)
   const [loading, setLoading] = useState(true);
   const fadeIn = useFadeIn();
   const navigate = useNavigate();
+  const userInfo = useContext(LoginContext);
 
 
   // 유저 정보 불러오기
-  useEffect(() => {
-    const storedData = localStorage.getItem('userInfo'); 
-    const parsedData = JSON.parse(storedData);
-    setDataFromLocalStorage(parsedData);
-    alert(JSON.stringify(parsedData));
-  }, []); 
   
   useEffect(() => {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:8080/community');
-        console.log(response);
+      
         setData(response.data);
+
         console.log(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -81,7 +77,7 @@ export default function CommunityPost() {
 
 
   const handleButtonClick = () => {
-    if(dataFromLocalStorage === null){
+    if(userInfo === null){
         alert('로그인을 먼저 해야 글을 쓰실 수 있습니다.')
         navigate('/login')
     }else{

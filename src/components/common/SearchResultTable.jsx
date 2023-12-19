@@ -13,6 +13,7 @@ import useFadeIn from '../../style/useFadeIn';
 import back from '../../assets/img/back.png'
 import CommunityTable from '../community/CommunityTable';
 import Button from '@mui/material/Button';
+import logo from "../../assets/img/avatar.png"
 import Loader from "../../pages/loader/Loader"
 
 

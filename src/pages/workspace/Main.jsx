@@ -279,9 +279,7 @@ export default function Main() {
         />
       }
       <div className={style.sectionWrap}>
-        {/* section */}
         <div className={style.section}>
-          {/* title */}
           <div className={style.inputWrap}>
             <input
               className={style.inputTitle}
@@ -305,7 +303,6 @@ export default function Main() {
               />
             </div>
           </div>
-          {/* cardContainer */}
           <div className={style.cardContainer}>
             <DefaultCard />
             {surveyList.map((survey) => {

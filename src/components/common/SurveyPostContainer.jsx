@@ -6,7 +6,6 @@ import back from "../../assets/img/back.png";
 import SurveyCard from "./SurveyCard";
 import useFadeIn from "../../style/useFadeIn";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { useInView } from "react-intersection-observer";
 import axios from "axios";
@@ -26,29 +25,15 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function SurveyPostContainer() {
   const navigate = useNavigate();
-  const [dataFromLocalStorage, setDataFromLocalStorage] = useState("");
+  
   const [page, setPage] = useState(0); // 현재 페이지 번호 (페이지네이션)
   const [ref, inView] = useInView();
+  const userInfo = useContext(LoginContext);
   const [data, setData] = useState({
     content: [],
   });
 
-  useEffect(() => {
-    acceptInvite();
-    const storedData = localStorage.getItem("userInfo");
-    const parsedData = JSON.parse(storedData);
-    setDataFromLocalStorage(parsedData);
-    alert(JSON.stringify(parsedData));
-  }, []);
-
-  const handleButtonClick = () => {
-    if (dataFromLocalStorage === null) {
-      alert("로그인을 먼저 해야 글을 쓰실 수 있습니다.");
-      navigate("/login");
-    } else {
-      navigate("/surveyCommunityWrite");
-    }
-  };
+ 
 
   const dataFetch = () => {
     console.log("토탈 페이지스" + data.totalPages);
@@ -68,6 +53,18 @@ function SurveyPostContainer() {
         .catch((err) => {
           console.log(err);
         });
+    }
+  };
+
+  const handleButtonClick = () => {
+
+    alert("로그인 여부"+JSON.stringify(userInfo))
+
+    if (userInfo === null) {
+      alert("로그인을 먼저 해야 글을 쓰실 수 있습니다.");
+      navigate("/login");
+    } else {
+      navigate("/surveyCommunityWrite");
     }
   };
 

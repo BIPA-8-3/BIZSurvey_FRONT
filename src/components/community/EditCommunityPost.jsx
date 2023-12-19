@@ -54,15 +54,11 @@ export default function CommunityWrite() {
       formData.append("domain", "COMMUNITY");
       // 백엔드 multer라우터에 이미지를 보낸다.
       try {
-        const result = await axios.post(
-          "http://localhost:8080/storage/",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        const result = await axios.post("http://localhost:8080/storage/", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
         console.log("성공 시, 백엔드가 보내주는 데이터", result.data.url);
         const HEAD_IMG_URL = "https://";
@@ -102,7 +98,7 @@ export default function CommunityWrite() {
         },
       },
     };
-  });
+  }, []);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -112,9 +108,7 @@ export default function CommunityWrite() {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/community/showPost/" + postId
-        );
+        const response = await axios.get("http://localhost:8080/community/showPost/" + postId);
 
         if (response.data.reported === 1) {
           alert("신고당한 게시물입니다.");
@@ -179,27 +173,22 @@ export default function CommunityWrite() {
       });
   };
 
-  const formats = [
-    "header",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "blockquote",
-    "image",
-  ];
+  const formats = ["header", "bold", "italic", "underline", "strike", "blockquote", "image"];
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
+  const handleTitleChange = (e) => {
+    e.preventDefault();
+    setTitle(e.target.value);
+  };
+
+  const handleValueChange = (e) => {
+    setContent(e);
   };
 
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.titleWrap}>
         <h1 className="textCenter title textBold">커뮤니티</h1>
-        <p className="textCenter subTitle">
-          쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.
-        </p>
+        <p className="textCenter subTitle">쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
       </div>
       <div className={style.writeWrap}>
         <div style={{ textAlign: "center" }}>
@@ -207,15 +196,15 @@ export default function CommunityWrite() {
             type="text"
             className={style.title}
             placeholder="제목을 입력해주세요."
-            onChange={handleTitleChange}
+            onChange={(e) => {
+              handleTitleChange(e);
+            }}
             value={title}
           />{" "}
           {/*제목*/}
         </div>
         <div className={style.editorWrap}>
-          <div
-            style={{ width: "1000px", margin: "0 auto", marginBottom: "100px" }}
-          >
+          <div style={{ width: "1000px", margin: "0 auto", marginBottom: "100px" }}>
             <ReactQuill
               style={{ width: "1000px", height: "300px" }}
               placeholder="내용을 입력헤주세요."
@@ -224,14 +213,13 @@ export default function CommunityWrite() {
               value={content}
               modules={modules}
               formats={formats}
+              onChange={handleValueChange}
             />
           </div>
         </div>
         <div className={style.voteWrap}>
           <p>비즈서베이의 투표 기능을 이용해보세요!</p>
-          <p>
-            원하는 투표 내용을 직접 만들어 회원들의 의견을 확인할 수 있습니다
-          </p>
+          <p>원하는 투표 내용을 직접 만들어 회원들의 의견을 확인할 수 있습니다</p>
           {/* 투표가 만들어 졌을때 컴포넌트 */}
           <IoIosCloseCircle className={style.voteCloseBtn} />
           <RegisterVote />
@@ -241,23 +229,13 @@ export default function CommunityWrite() {
           </button>
         </div>
       </div>
-      <div
-        className={`${style.modalWrap} ${open ? style.fadeIn : ""}`}
-        onClick={handleClose}
-      >
+      <div className={`${style.modalWrap} ${open ? style.fadeIn : ""}`} onClick={handleClose}>
         <div className={style.modal} onClick={(e) => e.stopPropagation()}>
           <p className={style.title}>투표 추가하기</p>
           <CreateVote handleClose={handleClose} />
         </div>
       </div>
-      <div
-        style={{
-          textAlign: "center",
-          width: "1000px",
-          margin: "0 auto",
-          paddingTop: "80px",
-        }}
-      >
+      <div style={{ textAlign: "center", width: "1000px", margin: "0 auto", paddingTop: "80px" }}>
         <Link to={"/community"}>
           <Button
             variant="outlined"
