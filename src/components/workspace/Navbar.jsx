@@ -80,7 +80,10 @@ function Navbar() {
       {/* header start */}
       <div className={style.NavbarHeader}>
         <div className={style.HeaderProfile}>
-          <img src="https://via.placeholder.com/45X45" className={style.profileRadius}></img>
+          <img
+            src={(userInfo.profile && userInfo.profile) || "https://via.placeholder.com/45X45"}
+            className={style.profileRadius}
+          ></img>
           <div className={style.profileInfo}>
             <span className={style.profileName}>
               <span style={{ marginRight: "3px" }}>{getIcon(userInfo.planSubscribe)}</span>
