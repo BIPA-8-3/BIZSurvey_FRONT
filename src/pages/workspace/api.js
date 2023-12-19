@@ -55,7 +55,7 @@ const instance = axios.create({
     }
 });
 
-export default async function call(api, method, request) {
+export default async function call(api, method, request, file) {
     try {
         const config = {
             url: URI + api,
@@ -74,6 +74,12 @@ export default async function call(api, method, request) {
         const accessToken = localStorage.getItem("accessToken");
         if (accessToken) {
             config.headers.Authorization = "Bearer " + accessToken;
+        }
+
+        if (file) {
+            instance.headers = {
+                "Content-Type": "multipart/form-data",
+            }
         }
 
         const response = await instance(config);
