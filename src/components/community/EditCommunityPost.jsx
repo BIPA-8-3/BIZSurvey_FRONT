@@ -163,10 +163,6 @@ export default function CommunityWrite() {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
-        // const response = await axios.get(
-        //   "http://localhost:8080/community/showPost/" + postId
-        // );
-
         const data = call("/community/showPost/" + postId, "GET");
 
         if (data.reported === 1) {
@@ -265,8 +261,13 @@ export default function CommunityWrite() {
     "image",
   ];
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
+  const handleTitleChange = (e) => {
+    e.preventDefault();
+    setTitle(e.target.value);
+  };
+
+  const handleValueChange = (e) => {
+    setContent(e);
   };
 
   return (
@@ -283,7 +284,9 @@ export default function CommunityWrite() {
             type="text"
             className={style.title}
             placeholder="제목을 입력해주세요."
-            onChange={handleTitleChange}
+            onChange={(e) => {
+              handleTitleChange(e);
+            }}
             value={title}
           />{" "}
           {/*제목*/}
@@ -300,6 +303,7 @@ export default function CommunityWrite() {
               value={content}
               modules={modules}
               formats={formats}
+              onChange={handleValueChange}
             />
           </div>
         </div>
