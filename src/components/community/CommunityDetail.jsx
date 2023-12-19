@@ -16,7 +16,8 @@ import ChildComment from './ChildComment';
 import axios from 'axios'
 import ClaimReasonModal from "../common/ClaimReasonModal";
 import { LoginContext } from "../../App";
-import { call } from "../../pages/survey/Login";
+import call from '../../pages/workspace/api';
+import VoteResult from './VoteResult';
 
 
 export default function CommunityPost() {
@@ -211,6 +212,7 @@ export default function CommunityPost() {
             </div>
             <Comment props={{postId: postId, type: 'co' }} />
             <ParentsComment props={{ postId: postId, commentList: data.commentList }} />
+            
         </div>
         <div style={{textAlign:'center'}}>
             <Link to={'/community'}>

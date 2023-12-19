@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 import Loader from "../../pages/loader/Loader"
 import { useNavigate } from "react-router-dom";
 import { LoginContext } from "../../App";
+import call from '../../pages/workspace/api';
 
 
 
@@ -36,11 +37,11 @@ export default function CommunityPost() {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/community');
-      
-        setData(response.data);
-
-        console.log(response.data);
+        call('/community', "GET")
+        .then((data) => {
+          setData(data);
+        });
+        
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -57,21 +58,17 @@ export default function CommunityPost() {
     </>; // 데이터 로딩 중에는 로딩 표시
   }
 
-  
-
 
 
 
   const handlePage = (event) => {
     const nowPageInt = parseInt(event.target.outerText)
     // page에 해당하는 페이지로 GET 요청을 보냄
-    axios.get(`http://localhost:8080/community?page=${nowPageInt-1}`)
-      .then(response => {
-        setData(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
+    call(`/community?page=${nowPageInt-1}`, "GET")
+        .then((data) => {
+          setData(data);
+          
+        });
   };
 
 
