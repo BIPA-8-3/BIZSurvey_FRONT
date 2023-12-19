@@ -1,0 +1,78 @@
+.userListWrap{
+    width: 100%;
+}
+
+.titleWrap{
+    width: 120px;
+    background-color: #0476D9;
+    height: 45px;
+    margin-bottom: 0px;
+    border-radius: 10px 10px 0px 0px;
+    color: #fff;
+    text-align: center;
+    line-height: 45px;
+    font-size: 14px;
+}
+
+.adminTable{
+    width: 1200px;
+    margin-top: 10px;
+}
+
+.adminTable thead{
+    background-color: #0476D9;
+    text-align: center;
+    color: #fff;
+}
+.adminTable thead tr td {
+    padding: 6px 0px;
+    font-weight: bold;
+    font-size: 14px;
+    border: 1px solid #fff;
+}
+.adminTable tbody tr{
+    cursor: pointer;
+}
+.adminTable tbody tr td{
+    background-color: #ddd;
+    border: 1px solid #fff;
+    padding: 6px 2px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.adminSearchWrap{
+    width: 1182px;
+    padding: 15px 0px 17px 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.adminSearchWrap input{
+    width: 200px;
+    border: 1px solid lightgrey;
+    height: 20px;
+
+}
+
+.adminSearchWrap button{
+    margin-left: 10px;
+}
+
+.adminSearchWrap{
+    background: #eaf6ff !important; 
+    border: 1px solid #81c0f0;
+}
+.infoBox{
+    font-size:12px; line-height:23px; width: 170px; height: 25px; background: #f1f1f1; border: 1px solid #cccccc; padding-left: 5px; text-align: left; color: #222; font-weight: bold; margin-left: 8px; font-weight: normal;
+}
+
+.infoFirstBox{
+    font-size:12px; line-height:23px; width: 125px; height: 25px; background: #eaf6ff; border: 1px solid #c6e7ff; padding-right: 5px; text-align: right; color: #222; font-weight: bold;
+}
+
+.breadcrumb{
+    width: 1000px;
+}
+
+

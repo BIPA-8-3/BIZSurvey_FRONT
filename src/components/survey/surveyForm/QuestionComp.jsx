@@ -11,18 +11,24 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import * as React from "react";
 import style from "../../../style/survey/QuestionComp.module.css";
+import { MdDragIndicator } from "react-icons/md";
+import ScoreOptionSelect from "./score/ScoreOptionSelect";
+import IconWithText from "../../common/IconWithText";
+import { LuCheckSquare } from "react-icons/lu";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 export default function QuestionComp({
   index,
   questionInfo,
-  handleOption,
   changeTitle,
   changeOption,
-  changeContent,
   deleteQuestion,
   changeRequired,
+  provided,
+  addAnswer,
+  deleteAnswer,
+  changeAnswerText,
 }) {
-  const [option, setOption] = useState("");
   const {
     surveyQuestion,
     answerType,
@@ -33,9 +39,11 @@ export default function QuestionComp({
     content,
   } = questionInfo;
 
-  useEffect(() => {
-    console.log("changeOPtion!!!!");
-  }, [option]);
+  const handleBlur = (text) => {
+    if (text.trim() === "") {
+      changeTitle(index, "질문");
+    }
+  };
 
   return (
     <>
@@ -43,7 +51,9 @@ export default function QuestionComp({
         {/*ㅇㅕ긴 선택 버튼들*/}
         <div className={style.wrapTopButton}>
           <Stack direction="row" alignItems="center" spacing={1}>
-            <span className={style.stepText}>{step}</span>
+            <span className={style.dragButton} {...provided.dragHandleProps}>
+              <MdDragIndicator />
+            </span>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
             <span>
@@ -73,12 +83,13 @@ export default function QuestionComp({
               value={surveyQuestion}
               id="filled-basic"
               variant="filled"
-              placeholder={"제목"}
+              placeholder={"질문"}
               inputProps={{
                 style: { fontWeight: "bold", padding: "12px 13px" },
               }}
               sx={{ width: 600 }}
               onChange={(e) => changeTitle(index, e.target.value)}
+              onBlur={(e) => handleBlur(e.target.value)}
             />
           </div>
         </div>
@@ -89,19 +100,28 @@ export default function QuestionComp({
             {answerType ? (
               <>
                 {/* 원하는 조건에 따른 옵션을 렌더링 */}
-                {answerType === "객관식(택1)" && (
+                {answerType === "SINGLE_CHOICE" && (
                   <ChoiceOption
                     single
-                    handleOption={handleOption}
-                    index={index}
+                    qid={index}
+                    answers={answers}
+                    addAnswer={addAnswer}
+                    deleteAnswer={deleteAnswer}
+                    changeAnswerText={changeAnswerText}
                   />
                 )}
-                {answerType === "객관식(복수선택)" && (
-                  <ChoiceOption handleOption={handleOption} index={index} />
+                {answerType === "MULTIPLE_CHOICE" && (
+                  <ChoiceOption
+                    qid={index}
+                    answers={answers}
+                    addAnswer={addAnswer}
+                    deleteAnswer={deleteAnswer}
+                    changeAnswerText={changeAnswerText}
+                  />
                 )}
-                {answerType === "주관식" && <TextOption />}
-                {answerType === "날짜" && <DateOption />}
-                {answerType === "파일" && <FileOption />}
+                {answerType === "TEXT" && <TextOption />}
+                {answerType === "CALENDAR" && <DateOption />}
+                {answerType === "FILE" && <FileOption />}
               </>
             ) : (
               <></>
@@ -109,11 +129,15 @@ export default function QuestionComp({
           </div>
         </div>
 
-        {/*푸터*/}
+        {/*필수체크 버튼*/}
 
         <div className={style.footer}>
           <span className={style.requiredButton}>
-            <RequiredButton index={index} changeRequired={changeRequired} />
+            <RequiredButton
+              required={isRequired}
+              index={index}
+              changeRequired={changeRequired}
+            />
           </span>
         </div>
       </div>

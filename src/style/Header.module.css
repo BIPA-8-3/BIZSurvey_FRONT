@@ -27,6 +27,7 @@
 
 .headerMenu ul{
     display: flex;
+    align-items: center;
 }
 
 .headerMenu ul li{
@@ -83,6 +84,21 @@
     padding-bottom: 30px;
 }
 
+.photo{
+    width: 30px;
+    height: 30px;
+    background-color: #ddd;
+    border-radius: 50%;
+    display: inline-block;
+    overflow: hidden;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.photo img{
+    width:30px;
+    height:100%;
+    object-fit:cover;
+}
  
 /* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px)*/ 
 @media all and (min-width:1024px) and (max-width:1279px) { 

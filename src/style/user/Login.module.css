@@ -90,6 +90,10 @@
         font-size: 22px;
         margin-bottom: 20px;
     }
+
+    .input{
+        width: 100% !important;
+    }
 } 
 
 /* 모바일 세로 (해상도 ~ 479px)*/ 
@@ -104,5 +108,11 @@
     .kakaoLogin{
         width: 100%;
         height: auto;
+    }
+
+    .input{
+        width: 100% !important;
+        box-sizing: border-box;
+        padding: 22.5px 10px !important;
     }
 }

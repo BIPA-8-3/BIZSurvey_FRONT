@@ -3,7 +3,7 @@
   margin-top: 50px;
   width: 254px;
   height: 100vh;
-  border: 2px solid rgb(238, 238, 238);
+  border-right: 2px solid rgb(238, 238, 238);
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -48,12 +48,12 @@
   padding: 0 10px;
   justify-content: space-between;
   display: flex;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 .headerWorkspaceFont {
   color: #6b778c;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: bold;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -62,6 +62,7 @@
 .addIcon {
   font-size: 23px;
   color: grey;
+  margin-top: 4px;
   border-radius: 15px;
 }
 
@@ -69,13 +70,15 @@
 .NavbarBody {
   overflow: auto;
   /* Main에서 Top 조절 안하려면 해당 주석 해제 */
-  height: calc(100vh - 225px);
+  height: calc(100vh - 220px);
   /* height: calc(100vh - 285px); */
   padding: 0 12px 10px;
+  overflow-x: hidden;
 }
 
 /* footer */
 .NavbarFooter {
+  box-sizing: border-box;
   height: 35px;
   width: 254px;
   border-top: 1px solid #eeeeee;

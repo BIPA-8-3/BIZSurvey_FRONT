@@ -1,0 +1,67 @@
+.userListWrap{
+    width: 100%;
+}
+
+.titleWrap{
+    width: 120px;
+    background-color: #0476D9;
+    height: 45px;
+    margin-bottom: 0px;
+    border-radius: 10px 10px 0px 0px;
+    color: #fff;
+    text-align: center;
+    line-height: 45px;
+    font-size: 14px;
+}
+
+.adminTable{
+    width: 1200px;
+    margin-top: 10px;
+}
+
+.adminTable thead{
+    background-color: #0476D9;
+    text-align: center;
+    color: #fff;
+}
+.adminTable thead tr td {
+    padding: 6px 0px;
+    font-weight: bold;
+    font-size: 14px;
+    border: 1px solid #fff;
+}
+.adminTable tbody tr{
+    cursor: pointer;
+}
+.adminTable tbody tr td{
+    background-color: #ddd;
+    border: 1px solid #fff;
+    padding: 6px 2px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.adminSearchWrap{
+    width: 1182px;
+    padding: 15px 0px 17px 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.adminSearchWrap input{
+    width: 200px;
+    border: 1px solid lightgrey;
+    height: 20px;
+
+}
+
+.adminSearchWrap button{
+    margin-left: 10px;
+}
+
+.adminSearchWrap{
+    background: #eaf6ff !important; 
+    border: 1px solid #81c0f0;
+}
+
+

@@ -7,6 +7,7 @@ import ChoiceField from "../../fields/ChoiceField";
 import TextOption from "../../surveyForm/options/TextOption";
 import DateOption from "../../surveyForm/options/DateOption";
 import FileOption from "../../surveyForm/options/FileOption";
+import { TextField } from "@mui/material";
 
 export default function QuestionInfo({ info }) {
   const {
@@ -22,31 +23,19 @@ export default function QuestionInfo({ info }) {
   return (
     <>
       <QuestionBox>
-        <QuestionTitle title={"제목"} />
+        <QuestionTitle title={surveyQuestion} />
         <OptionBox>
-          <ChoiceField single text={"옵션1"} />
-          <ChoiceField single text={"옵션1"} />
-        </OptionBox>
-      </QuestionBox>
-
-      <QuestionBox>
-        <QuestionTitle title={"제목"} />
-        <OptionBox>
-          <TextOption />
-        </OptionBox>
-      </QuestionBox>
-
-      <QuestionBox>
-        <QuestionTitle title={"제목"} />
-        <OptionBox>
-          <DateOption />
-        </OptionBox>
-      </QuestionBox>
-
-      <QuestionBox>
-        <QuestionTitle title={"제목"} />
-        <OptionBox>
-          <FileOption />
+          {answerType === "SINGLE_CHOICE" &&
+            answers.map((answer, index) => (
+              <ChoiceField key={index} single text={answer.surveyAnswer} />
+            ))}
+          {answerType === "MULTIPLE_CHOICE" &&
+            answers.map((answer, index) => (
+              <ChoiceField key={index} text={answer.surveyAnswer} />
+            ))}
+          {answerType === "TEXT" && <TextOption />}
+          {answerType === "CALENDAR" && <DateOption />}
+          {answerType === "FILE" && <FileOption />}
         </OptionBox>
       </QuestionBox>
     </>

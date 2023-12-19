@@ -1,0 +1,52 @@
+/* button */
+.callMoreMenuBtn {
+  font-size: 36px;
+  margin-left: 20px;
+  padding-top: 2px;
+}
+
+/* menu */
+.menuContainer {
+  position: relative;
+  box-sizing: border-box;
+}
+
+.menu {
+  position: absolute;
+  left: -80px;
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  font-size: 16px;
+  font-weight: 400;
+  border-radius: 0.75em;
+  box-sizing: border-box;
+  border: 1px solid rgb(205, 210, 215);
+
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: opacity 100ms cubic-bezier(0.4, 0, 0.2, 1), height 100ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.visible {
+  opacity: 1;
+  height: 190px;
+}
+
+.menu li {
+  height: 45px;
+  width: 150px;
+  padding: 8px;
+  border-radius: 0.45em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.menu li:hover {
+  background-color: #eee;
+}

@@ -5,14 +5,20 @@ import logo from "../../assets/img/logo-2.png";
 import { IoMenu } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { MdExitToApp } from "react-icons/md";
+import { useWorkspaceContext } from "../../pages/workspace/WorkspaceContext";
 
 const navItems = ["설문 참여", "플랜", "커뮤니티", "워크스페이스", "Sign In"];
 
 function WorkspaceHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const bestRef = useRef();
+  const { permission } = useWorkspaceContext();
 
   useEffect(() => {
+    if (!permission) {
+      return;
+    }
+
     if (bestRef.current) {
       if (isMenuOpen) {
         bestRef.current.classList.add(style.slideIn);

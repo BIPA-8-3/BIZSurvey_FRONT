@@ -1,22 +1,18 @@
-import * as React from "react";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import "../../../style/Common.css";
+import * as React from "react";
 import { FaListOl } from "react-icons/fa";
-import { IoPersonOutline } from "react-icons/io5";
-import IconWithText from "../../common/IconWithText";
 import { GrTextAlignFull } from "react-icons/gr";
-import { MdDateRange } from "react-icons/md";
 import { IoMdCloudUpload } from "react-icons/io";
+import { MdDateRange } from "react-icons/md";
+import "../../../style/Common.css";
 import style from "../../../style/survey/OptionSelect.module.css";
+import IconWithText from "../../common/IconWithText";
 
 export default function OptionSelect({ option, setOption, idx }) {
-  const handleChange = (event) => {
-    setOption(idx, event.target.value);
-    console.log(option);
+  const handleChange = (event, type) => {
+    setOption(idx, type);
   };
 
   const menuItemStyle = {
@@ -30,15 +26,16 @@ export default function OptionSelect({ option, setOption, idx }) {
     <FormControl sx={{ m: 1, minWidth: 100, height: 35, padding: 0 }}>
       <Select
         value={option}
-        onChange={handleChange}
+        onChange={(e) => handleChange(e, e.target.value)}
         displayEmpty
+        defaultValue={option}
         inputProps={{ "aria-label": "Without label" }}
         sx={menuItemStyle}
       >
-        <MenuItem value="" sx={{ fontSize: 12 }}>
+        {/* <MenuItem value="" sx={{ fontSize: 12 }}>
           <p style={{ fontSize: "13px" }}>옵션</p>
-        </MenuItem>
-        <MenuItem value={"객관식(택1)"} sx={{ width: 150, padding: 1.5 }}>
+        </MenuItem> */}
+        <MenuItem value={"SINGLE_CHOICE"} sx={{ width: 150, padding: 1.5 }}>
           <div className={style.singleChoiceIcon}>
             <IconWithText
               text={"객관식"}
@@ -50,7 +47,7 @@ export default function OptionSelect({ option, setOption, idx }) {
             </IconWithText>
           </div>
         </MenuItem>
-        <MenuItem value={"객관식(복수선택)"} sx={{ width: 150, padding: 1.5 }}>
+        <MenuItem value={"MULTIPLE_CHOICE"} sx={{ width: 150, padding: 1.5 }}>
           <div className={style.multipleChoiceIcon}>
             <IconWithText
               text={"객관식(다중선택)"}
@@ -62,7 +59,7 @@ export default function OptionSelect({ option, setOption, idx }) {
             </IconWithText>
           </div>
         </MenuItem>
-        <MenuItem value={"주관식"} sx={{ width: 150, padding: 1.5 }}>
+        <MenuItem value={"TEXT"} sx={{ width: 150, padding: 1.5 }}>
           <div className={style.textIcon}>
             <IconWithText
               text={"주관식"}
@@ -74,7 +71,7 @@ export default function OptionSelect({ option, setOption, idx }) {
             </IconWithText>
           </div>
         </MenuItem>
-        <MenuItem value={"날짜"} sx={{ width: 150, padding: 1.5 }}>
+        <MenuItem value={"CALENDAR"} sx={{ width: 150, padding: 1.5 }}>
           <div className={style.dateIcon}>
             <IconWithText
               text={"날짜"}
@@ -86,7 +83,7 @@ export default function OptionSelect({ option, setOption, idx }) {
             </IconWithText>
           </div>
         </MenuItem>
-        <MenuItem value={"파일"} sx={{ width: 150, padding: 1.5 }}>
+        <MenuItem value={"FILE"} sx={{ width: 150, padding: 1.5 }}>
           <div className={style.fileIcon}>
             <IconWithText
               text={"파일"}

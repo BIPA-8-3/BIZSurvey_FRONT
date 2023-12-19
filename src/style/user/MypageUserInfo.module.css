@@ -1,0 +1,62 @@
+.mypageUserInfoWrap{
+    padding: 50px 50px 50px 50px;
+}
+
+.mypageUserInfo{
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    
+}
+.mypageUserInfo li{
+    padding: 17px;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+}
+
+.mypageUserInfo li span:not(:first-child){
+    padding-left: 15px;
+}
+
+.mypageUserInfo li:first-child{
+    background-color: blue;
+    background: rgb(17,159,179);
+    background: linear-gradient(90deg, rgba(17,159,179,1) 0%, rgba(1,113,209,1) 100%);
+    color: #fff;
+    font-weight: 900 !important;
+    font-size: 16px;
+    padding: 15px 17px;
+    padding-top: 17px;
+}
+
+.mypageUserInfo li:last-child{
+    border-bottom: 0px;
+}
+
+.mypageUserInfo li div{
+    display: flex;
+    align-items: center;
+}
+
+.mypageUserInfo li div button{
+    background-color: rgba(212,216,229);
+    border-radius: 3px;
+    border: solid 1px rgb(212,216,229);
+    color: gray;
+    padding: 5px 8px;
+    cursor: pointer;
+}
+
+.mypageUserInfo li div button:hover{
+    background-color: rgba(212,216,229,0.9);
+}
+.mypageUserInfo li div span input{
+    border: 0px;
+    border-bottom: 1px solid #ddd;
+}
+.mypageUserInfo li div span input:focus {
+    outline: none;
+  }

@@ -3,6 +3,7 @@
   width: 600px;
   margin: "10px 0 10px 0";
   height: 40px;
+  padding-top: 5px;
 }
 
 .rounded {
@@ -22,6 +23,12 @@
 
 .select {
   border-color: #0171d1;
+  background-color: #0171d1;
+}
+
+.scoreSelect {
+  background-color: #119fb3;
+  border-color: #119fb3;
 }
 
 .text {
@@ -36,6 +43,15 @@
   font-size: 15px;
   width: 550px;
   color: #0171d1;
+  height: 20px;
+  padding-top: 7px;
+}
+
+.scoreText {
+  font-weight: bold;
+  font-size: 15px;
+  width: 550px;
+  color: #119fb3;
   height: 20px;
   padding-top: 7px;
 }
