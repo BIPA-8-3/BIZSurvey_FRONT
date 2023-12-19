@@ -13,6 +13,7 @@ import CreateVote from "./CreateVote";
 import RegisterVote from "./RegisterVote";
 import { useNavigate, useLocation } from "react-router-dom";
 import Loader from "../../pages/loader/Loader";
+import call from "../../pages/workspace/api";
 
 // 가상의 서버 통신 함수 (실제로는 서버와의 통신을 구현해야 함)
 
@@ -27,11 +28,61 @@ export default function CommunityWrite() {
   const location = useLocation();
   let postId = location.state.postId;
 
+  const [voteTitle, setVoteTitle] = useState("");
+  const [voteOptions, setVoteOptions] = useState([""]);
+  const [hasVote, setHasVote] = useState(false);
+  const [voteId, setVoteId] = useState(0);
+
   //   const changeTitle = (e) => {
   //     quillRef = quillRef.current;
 
   //     setContent(e.target.value);
   //   }
+
+  useEffect(() => {
+    return () => {
+      if (voteId !== 0) {
+        call("/community/", "DELETE")
+          .then((data) => console.log(data))
+          .catch((error) => console.log(error));
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (hasVote) {
+      handleSubmitVote();
+    } else {
+      if (voteId !== 0) {
+        handleDeleteVote();
+      }
+    }
+  }, [hasVote]);
+
+  const handleSubmitVote = async () => {
+    let newAnswers = [];
+    voteOptions.map((option, index) => {
+      let ans = { answer: option };
+      return newAnswers.push(ans);
+    });
+
+    const data = {
+      voteQuestion: voteTitle,
+      voteAnswer: newAnswers,
+    };
+
+    const voteId = await call(`/community/createVote`, "POST", data);
+    console.log(voteId);
+    setVoteId(voteId);
+  };
+
+  const handleDeleteVote = () => {
+    const response = call("/community", "DELETE");
+    console.log(response);
+    setVoteTitle("");
+    setVoteOptions([""]);
+    setVoteId(0);
+  };
 
   const imageHandler = () => {
     console.log("에디터에서 이미지 버튼을 클릭하면 이 핸들러가 시작됩니다!");
@@ -102,7 +153,7 @@ export default function CommunityWrite() {
         },
       },
     };
-  });
+  }, []);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -112,18 +163,43 @@ export default function CommunityWrite() {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/community/showPost/" + postId
-        );
+        // const response = await axios.get(
+        //   "http://localhost:8080/community/showPost/" + postId
+        // );
 
-        if (response.data.reported === 1) {
+        const data = call("/community/showPost/" + postId, "GET");
+
+        if (data.reported === 1) {
           alert("신고당한 게시물입니다.");
           navigate("/community");
         }
 
-        console.log("리스폰스 : " + JSON.stringify(response.data));
-        setTitle(response.data.title);
-        setContent(response.data.content);
+        console.log("리스폰스 : " + JSON.stringify(data));
+        setTitle(data.title);
+        setContent(data.content);
+
+        // {
+        //   voteTitle:'',
+        //   answerList: [
+        //     {
+        //       voteAnswerId:0,
+        //       answer:'',
+        //     }
+        //   ]
+        // }
+
+        if (data.voteId !== null) {
+          const vote = call(
+            `/community/${postId}/showVoteAnswer/${data.voteId}`
+          );
+          setVoteTitle(vote.voteTitle);
+          let newArr = [];
+          vote.answerList.map((option) => {
+            return newArr.push(option.answer);
+          });
+          setVoteOptions(newArr);
+          setHasVote(true);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -162,21 +238,21 @@ export default function CommunityWrite() {
     alert(JSON.stringify(title));
     alert(JSON.stringify(content));
 
-    axios
-      .post("http://localhost:8080/community/createPost", {
-        title: title,
-        content: content,
-        imageUrlList: imageSrcArray,
-      })
-      .then((response) => {
-        console.log(response.data);
-        let postId = response.data;
+    // axios
+    //   .post("http://localhost:8080/community/updatePost", {
+    //     title: title,
+    //     content: content,
+    //     imageUrlList: imageSrcArray,
+    //   })
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     let postId = response.data;
 
-        navigate("/communityDetail", { state: { postId: postId } });
-      })
-      .catch((error) => {
-        console.error("생성 실패", error);
-      });
+    //     navigate("/communityDetail", { state: { postId: postId } });
+    //   })
+    //   .catch((error) => {
+    //     console.error("생성 실패", error);
+    //   });
   };
 
   const formats = [
@@ -233,8 +309,15 @@ export default function CommunityWrite() {
             원하는 투표 내용을 직접 만들어 회원들의 의견을 확인할 수 있습니다
           </p>
           {/* 투표가 만들어 졌을때 컴포넌트 */}
-          <IoIosCloseCircle className={style.voteCloseBtn} />
-          <RegisterVote />
+          {hasVote ? (
+            <>
+              <IoIosCloseCircle
+                className={style.voteCloseBtn}
+                onClick={handleDeleteVote}
+              />
+              <RegisterVote voteTitle={voteTitle} voteOptions={voteOptions} />
+            </>
+          ) : null}
           {/* 투표가 만들어 졌을때 컴포넌트 */}
           <button onClick={handleOpen} style={{ cursor: "pointer" }}>
             투표 만들기
@@ -247,7 +330,14 @@ export default function CommunityWrite() {
       >
         <div className={style.modal} onClick={(e) => e.stopPropagation()}>
           <p className={style.title}>투표 추가하기</p>
-          <CreateVote handleClose={handleClose} />
+          <CreateVote
+            setVote={setHasVote}
+            handleClose={handleClose}
+            setTitle={setVoteTitle}
+            setOptions={setVoteOptions}
+            voteTitle={voteTitle}
+            voteOptions={voteOptions}
+          />
         </div>
       </div>
       <div
