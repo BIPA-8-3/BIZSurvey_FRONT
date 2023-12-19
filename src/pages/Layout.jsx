@@ -7,7 +7,9 @@ import Navbar from "../components/workspace/Navbar";
 import { WorkspaceProvider } from "./workspace/WorkspaceContext";
 
 const Layout = () => {
+  // 현재 경로 정보를 가져옵니다.
   const location = useLocation();
+  // 현재 경로가 '/mypage'인 경우 Header를 숨깁니다.
 
   const isWorkspace = location.pathname.startsWith("/workspace");
   const isMyPage =
@@ -62,7 +64,7 @@ const Layout = () => {
           <div className="container">
             <Outlet />
           </div>
-          <Footer />
+          <Footer></Footer>
         </>
       )}
     </div>

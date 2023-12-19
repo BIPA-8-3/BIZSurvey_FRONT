@@ -16,7 +16,6 @@
     box-shadow: 5px 1px 8px 0 rgba(0,0,0,.06);
     border-left: 1px solid rgba(0,0,0,.08);
     padding: 20px ;
-    z-index: 9999;
 }
 
 .mypageUser{
@@ -87,7 +86,7 @@
 }
 
 .mypageMenu ul li{
-    font-size: 18px;
+    font-size: 20px;
     padding: 16px 0px;
     cursor: pointer;
 }

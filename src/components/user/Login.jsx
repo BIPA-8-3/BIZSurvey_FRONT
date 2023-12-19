@@ -16,8 +16,8 @@ function Login() {
   const [open, setOpen] = useState(false);
   const handleOpenModal = () => setOpen(true);
   const handleCloseModal = () => setOpen(false);
-  const userInfo = useContext(LoginContext)
-  const {setUserInfo} = useContext(LoginFunContext)
+  const userInfo = useContext(LoginContext);
+  const { setUserInfo } = useContext(LoginFunContext);
   const [formData, setFromData] = useState({
     email: "",
     password: "",
@@ -62,7 +62,7 @@ function Login() {
         } catch (error) {
           console.error("사용자 정보 가져오기 실패:", error);
         }
-        
+
         navigate("/");
       }
     } catch (error) {
