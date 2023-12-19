@@ -44,21 +44,23 @@ function MypageSurveyList({userData, setEditState}) {
                     </div>
                 </li>
                 {communityList.map((communityItem) => (
-                <li key={communityItem.postId} className={style.MypageSurveyLi}>
-                    <div className={style.MypageSurveyTitle}>{communityItem.title}</div>
-                    <div className={style.MypageSurveyDate}>
+                <Link to={'/surveyCommunityDetail'} state={{postId : communityItem.postId}}>
+                    <li key={communityItem.postId} className={style.MypageSurveyLi}>
+                        <div className={style.MypageSurveyTitle}>{communityItem.title}</div>
                         <div className={style.MypageSurveyDate}>
-                            <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
-                                <MdOutlineRemoveRedEye />
-                                <span style={{ margin: '0 5px 0 5px' }}>{communityItem.count}</span>
-                            </div>
-                            <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', marginLeft:'15px'}}>
-                                <MdDateRange />
-                                <span style={{ margin: '0 5px 0 5px' }}>{communityItem.createDate}</span>
+                            <div className={style.MypageSurveyDate}>
+                                <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
+                                    <MdOutlineRemoveRedEye />
+                                    <span style={{ margin: '0 5px 0 5px' }}>{communityItem.count}</span>
+                                </div>
+                                <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', marginLeft:'15px'}}>
+                                    <MdDateRange />
+                                    <span style={{ margin: '0 5px 0 5px' }}>{communityItem.createDate}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                </Link>
                 ))}
             </ul>
           </div>

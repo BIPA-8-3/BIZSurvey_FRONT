@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import style from '../../style/admin/AdminHeader.module.css'
 import useFadeIn from '../../style/useFadeIn';
 import Button from '@mui/material/Button';
-import { useLocation, useNavigatem, Link } from "react-router-dom";
+import { useLocation, useNavigatem, Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import logo from '../../assets/img/logo.png';
 import { FaUserCircle } from "react-icons/fa";
@@ -10,6 +10,7 @@ import { FaFolderOpen } from "react-icons/fa6";
 import { MdArrowForwardIos } from "react-icons/md";
 import AdminUserList from './AdminUserList';
 import AdminUserInfo from './AdminUserInfo';
+import { LoginContext, LoginFunContext } from "../../App";
 
 const getLinkStyle = (currentPage, path) => {
     return {
@@ -19,9 +20,34 @@ const getLinkStyle = (currentPage, path) => {
     };
   };
 
+  
+
 function AdminHeader() {
+    const navigate = useNavigate();
     const location = useLocation();
     const currentPage = location.pathname;
+    const {setUserInfo} = useContext(LoginFunContext);
+
+    const handleLogout = () => {
+    
+        if(window.confirm("로그아웃 하시겠습니까?")){
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          setUserInfo({
+            birthdate: "",
+            email:"", 
+            gender: "",
+            id:0,
+            name: "",
+            nickname: "",
+            planSubscribe: "",
+            profile: ""
+    
+          })
+          localStorage.removeItem("userInfo");
+          navigate('/admin/login');
+        }
+      }
   return (
       <div className={style.AdminHeaderWrap}>
         <Link to={'/admin/main'}>
@@ -36,7 +62,7 @@ function AdminHeader() {
                 <span>관리자</span>
             </div>
             <div>
-                <span className={style.adminLogout}>로그아웃</span>
+                <span className={style.adminLogout} onClick={handleLogout}>로그아웃</span>
             </div>
         </div>
         <div className={style.shadowBox} style={{marginBottom:'10px'}}></div>
