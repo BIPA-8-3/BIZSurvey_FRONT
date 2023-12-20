@@ -9,7 +9,7 @@ import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import SurveyListModal from "./SurveyListModal";
 import axios from "axios";
-import call from "./checkLogin.js";
+import call from "../../pages/workspace/api";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Divider, TextField, Input } from "@mui/material";
@@ -107,6 +107,7 @@ export default function CommunityWrite() {
       const HEAD_IMG_URL = "https://";
       const IMG_URL = HEAD_IMG_URL + result.data;
 
+      alert(JSON.stringify(IMG_URL));
       setSelectedFile(IMG_URL);
     } catch (error) {
       console.log("실패했어요ㅠ");
@@ -272,6 +273,10 @@ export default function CommunityWrite() {
           [{ color: [] }, { background: [] }],
           [{ align: [] }, "link", "image"],
         ],
+        handlers: {
+          // 이미지 처리는 우리가 직접 imageHandler라는 함수로 처리할 것이다.
+          image: imageHandler,
+        },
       },
     };
   }, []);

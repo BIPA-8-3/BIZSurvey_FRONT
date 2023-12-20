@@ -1,5 +1,13 @@
 import axios from 'axios';
 
+let URI = '';
+
+if (process.env.NODE_ENV === 'development') {
+    URI = 'http://www.localhost:8080';
+} else {
+    URI = 'http://www.bizsurvey.shop/api';
+}
+
 // sse
 const instanceOfSse = axios.create({
     headers: {
@@ -28,9 +36,6 @@ const acceptInviteSSE = (workspaceId) => {
     })
 }
 
-
-
-
 // 일반 api
 // 공유 API
 const shareURI = '/workspace/shared-survey';
@@ -50,10 +55,10 @@ const instance = axios.create({
     }
 });
 
-export default async function call(api, method, request) {
+export default async function call(api, method, request, file) {
     try {
         const config = {
-            url: api,
+            url: URI + api,
             method: method,
             headers: {},
         };
@@ -69,6 +74,12 @@ export default async function call(api, method, request) {
         const accessToken = localStorage.getItem("accessToken");
         if (accessToken) {
             config.headers.Authorization = "Bearer " + accessToken;
+        }
+
+        if (file) {
+            instance.headers = {
+                "Content-Type": "multipart/form-data",
+            }
         }
 
         const response = await instance(config);

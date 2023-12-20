@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import SearchResult from "./SearchResult";
 import { useNavigate, Link } from "react-router-dom";
+import call from "../../pages/workspace/api";
 
 function Search() {
   const [title, setTitle] = useState(""); // 검색할 데이터
@@ -54,13 +55,12 @@ function Search() {
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
 
-    axios
-      .post("http://localhost:8080/community/findPostTitle", {
+      call("/community/findPostTitle", "POST", {
         keyword: e.target.value,
       })
-      .then((response) => {
-        console.log("Search Result:", response.data);
-        setFindTitles(response.data); // Update the search results state
+      .then((data) => {
+        console.log("Search Result:", data);
+        setFindTitles(data); // Update the search results state
       })
       .catch((error) => {
         console.error("Error searching posts:", error);
@@ -71,18 +71,17 @@ function Search() {
 
   const searchPosts = () => {
     
-    axios
-      .get(`http://localhost:8080/community/search?keyword=${title}`)
-      .then((response) => {
-        console.log("검색 결과!!!!(<Search />):", response.data);
+      call(`/community/search?keyword=${title}`, "GET")
+      .then((data) => {
+        console.log("검색 결과!!!!(<Search />):", data);
         
-        console.log(response.data);
+        console.log(data);
         
-        let data = {keyword:title, result:response.data}
+        let newData = {keyword:title, result:data}
 
-        console.log( "보내는 데이터 : "+JSON.stringify(data))
+        console.log( "보내는 데이터 : "+JSON.stringify(newData))
         
-        navigate('/communitySearchResult', {state: data}) 
+        navigate('/communitySearchResult', {state: newData}) 
         
       })
       .catch((error) => {
@@ -96,12 +95,11 @@ function Search() {
   const clickSearchPosts = (e) => {
     setTitle(e)
 
-    axios
-      .get(`http://localhost:8080/community/search?keyword=${e}`)
-      .then((response) => {
-        let data = { keyword: e, result: response.data };
+      call(`/community/search?keyword=${e}`, "GET")
+      .then((data) => {
+        let newData = { keyword: e, result: data };
         setTitle(e)
-        navigate('/communitySearchResult', { state: data });
+        navigate('/communitySearchResult', { state: newData });
       })
       .catch((error) => {
         console.error("Error searching posts:", error);

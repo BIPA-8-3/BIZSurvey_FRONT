@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import SCommunitySearch from "./SCommunitySearch";
 import { acceptInvite } from "../../pages/workspace/authenticationApi";
 import { LoginContext } from "../../App";
+import call from '../../pages/workspace/api';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -37,13 +38,12 @@ function SurveyPostContainer() {
     console.log("토탈 페이지스" + data.totalPages);
 
     if (page < data.totalPages || data.totalPages === undefined) {
-      axios
-        .get(`http://localhost:8080/s-community?page=${page}`)
-        .then((res) => {
+        call(`/s-community?page=${page}`, "GET")
+        .then((data) => {
           setData((prevData) => {
             return {
-              ...res.data,
-              content: [...prevData.content, ...res.data.content],
+              ...data,
+              content: [...prevData.content, ...data.content],
             };
           });
           setPage((prevPage) => prevPage + 1);
@@ -55,6 +55,7 @@ function SurveyPostContainer() {
   };
 
   const handleButtonClick = () => {
+
     if (userInfo.id === 0) {
       const re = window.confirm(
         "로그인을 하시면 게시글을 작성할 수 있습니다. \n로그인 페이지로 이동하시겠습니까?"
@@ -73,9 +74,7 @@ function SurveyPostContainer() {
       } else {
         return;
       }
-    } else {
-      navigate("/surveyCommunityWrite");
-    }
+
   };
 
   useEffect(() => {

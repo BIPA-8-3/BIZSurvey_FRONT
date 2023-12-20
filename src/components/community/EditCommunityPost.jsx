@@ -15,6 +15,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Loader from "../../pages/loader/Loader";
 import call from "../../pages/workspace/api";
 
+
 // 가상의 서버 통신 함수 (실제로는 서버와의 통신을 구현해야 함)
 
 export default function CommunityWrite() {

@@ -16,7 +16,7 @@ import ChildComment from "./ChildComment";
 import axios from "axios";
 import ClaimReasonModal from "../common/ClaimReasonModal";
 import { LoginContext } from "../../App";
-import { call } from "../../pages/survey/Login";
+import call from "../../pages/workspace/api";
 import VoteResult from "./VoteResult";
 
 export default function CommunityPost() {
@@ -162,127 +162,202 @@ export default function CommunityPost() {
   };
 
   return (
-    <div className={`fade-in ${fadeIn ? "active" : ""}`}>
-      <div className={style.contentWrap} style={{ marginTop: "30px" }}>
-        <div style={{ backgroundColor: "rgba(209, 232, 248, 0.1)" }}>
-          <div className={style.title}>
-            <h1>{data.title}</h1>
-            <p style={{ display: "flex" }}>
-              <p style={{ textAlign: "center" }}>
-                <div className={style.profil} style={{ textAlign: "center" }}>
-                  <span className={style.photo}>
-                    <img className="" src={logo} />
-                  </span>
-                  <span className={style.nickname}>{data.nickname}</span>
+    <>
+      <div className={`fade-in ${fadeIn ? "active" : ""}`}>
+        <div className={style.contentWrap} style={{ marginTop: "30px" }}>
+          <div style={{ backgroundColor: "rgba(209, 232, 248, 0.1)" }}>
+            <div className={style.title}>
+              <h1>{data.title}</h1>
+              <p style={{ display: "flex" }}>
+                <p style={{ textAlign: "center" }}>
+                  <div className={style.profil} style={{ textAlign: "center" }}>
+                    <span className={style.photo}>
+                      <img className="" src={logo} />
+                    </span>
+                    <span className={style.nickname}>{data.nickname}</span>
+                  </div>
+                </p>
+                <div style={{ marginTop: "16px" }}>
+                  <span className={style.bar}> | </span>
+                  <span>COMMUNITY</span>
+                  <span className={style.bar}> | </span>
+                  <span>{data.createTime}</span>
                 </div>
               </p>
-              <div style={{ marginTop: "16px" }}>
-                <span className={style.bar}> | </span>
-                <span>COMMUNITY</span>
-                <span className={style.bar}> | </span>
-                <span>{data.createTime}</span>
+            </div>
+
+            {/* </div> */}
+            <div className={style.content}>
+              <p
+                dangerouslySetInnerHTML={{ __html: removePTags(data.content) }}
+              />
+
+              {renderVote(data.voteId)}
+
+              <p
+                style={{
+                  marginTop: "100px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div>
+                  조회수{" "}
+                  <span style={{ fontWeight: "bold" }}>{data.count}</span>
+                  <span style={{ color: "#ddd" }}> | </span>
+                  댓글{" "}
+                  <span style={{ fontWeight: "bold" }}>{data.commentSize}</span>
+                </div>
+
+                <div>
+                  {isAuthor ? (
+                    <>
+                      <Link
+                        to={"/editCommunityPost"}
+                        state={{ surveyId: data.surveyId, postId: postId }}
+                      >
+                        <span
+                          style={{ cursor: "pointer", fontSize: "14px" }}
+                          onClick={handleOpenModal}
+                        >
+                          수정
+                        </span>
+                      </Link>
+                      <span> | </span>
+                      <span
+                        style={{ cursor: "pointer", fontSize: "14px" }}
+                        onClick={handleDeletePost}
+                      >
+                        삭제
+                      </span>
+                      <span> | </span>
+                    </>
+                  ) : null}
+                  <span
+                    style={{ cursor: "pointer", fontSize: "14px" }}
+                    onClick={handleOpenModal}
+                  >
+                    신고
+                  </span>
+                  {/* 모달 */}
+                  {isModalOpen && (
+                    <ClaimReasonModal
+                      onSelect={handleSelectReasons}
+                      onClose={handleCloseModal}
+                      isModalOpen={isModalOpen}
+                      props={"post"}
+                      id={postId}
+                    />
+                  )}
+                </div>
+              </p>
+            </div>
+            <Comment props={{ postId: postId, type: "co" }} />
+            <ParentsComment
+              props={{ postId: postId, commentList: data.commentList }}
+            />
+          </div>
+          <div className={style.content}>
+            <p
+              dangerouslySetInnerHTML={{ __html: removePTags(data.content) }}
+            />
+            {data.voteId ? (
+              <>
+                {isResult ? (
+                  <VoteResult chartData={voteResult} />
+                ) : (
+                  <VoteWrite
+                    voteId={data.voteId}
+                    postId={votePostId}
+                    setSubmit={setVoteSubmit}
+                  />
+                )}
+              </>
+            ) : null}
+
+            {/* {renderVote(data.voteId)} */}
+
+            <p
+              style={{
+                marginTop: "100px",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <div>
+                조회수 <span style={{ fontWeight: "bold" }}>{data.count}</span>
+                <span style={{ color: "#ddd" }}> | </span>
+                댓글{" "}
+                <span style={{ fontWeight: "bold" }}>{data.commentSize}</span>
+              </div>
+
+              <div>
+                {isAuthor ? (
+                  <>
+                    <Link
+                      to={"/editCommunityPost"}
+                      state={{ surveyId: data.surveyId, postId: postId }}
+                    >
+                      <span
+                        style={{ cursor: "pointer", fontSize: "14px" }}
+                        onClick={handleOpenModal}
+                      >
+                        수정
+                      </span>
+                    </Link>
+                    <span> | </span>
+                    <span
+                      style={{ cursor: "pointer", fontSize: "14px" }}
+                      onClick={handleDeletePost}
+                    >
+                      삭제
+                    </span>
+                    <span> | </span>
+                  </>
+                ) : null}
+                <span
+                  style={{ cursor: "pointer", fontSize: "14px" }}
+                  onClick={handleOpenModal}
+                >
+                  신고
+                </span>
+                {/* 모달 */}
+                {isModalOpen && (
+                  <ClaimReasonModal
+                    onSelect={handleSelectReasons}
+                    onClose={handleCloseModal}
+                    isModalOpen={isModalOpen}
+                    props={"post"}
+                    id={postId}
+                  />
+                )}
               </div>
             </p>
           </div>
-        </div>
-        <div className={style.content}>
-          <p dangerouslySetInnerHTML={{ __html: removePTags(data.content) }} />
-          {data.voteId ? (
-            <>
-              {isResult ? (
-                <VoteResult chartData={voteResult} />
-              ) : (
-                <VoteWrite
-                  voteId={data.voteId}
-                  postId={votePostId}
-                  setSubmit={setVoteSubmit}
-                />
-              )}
-            </>
+          <Comment props={{ postId: postId, type: "co" }} />
+          {data.commentList ? (
+            <ParentsComment
+              props={{ postId: postId, commentList: data.commentList }}
+            />
           ) : null}
-
-          {/* {renderVote(data.voteId)} */}
-
-          <p
-            style={{
-              marginTop: "100px",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <div>
-              조회수 <span style={{ fontWeight: "bold" }}>{data.count}</span>
-              <span style={{ color: "#ddd" }}> | </span>
-              댓글{" "}
-              <span style={{ fontWeight: "bold" }}>{data.commentSize}</span>
-            </div>
-
-            <div>
-              {isAuthor ? (
-                <>
-                  <Link
-                    to={"/editCommunityPost"}
-                    state={{ surveyId: data.surveyId, postId: postId }}
-                  >
-                    <span
-                      style={{ cursor: "pointer", fontSize: "14px" }}
-                      onClick={handleOpenModal}
-                    >
-                      수정
-                    </span>
-                  </Link>
-                  <span> | </span>
-                  <span
-                    style={{ cursor: "pointer", fontSize: "14px" }}
-                    onClick={handleDeletePost}
-                  >
-                    삭제
-                  </span>
-                  <span> | </span>
-                </>
-              ) : null}
-              <span
-                style={{ cursor: "pointer", fontSize: "14px" }}
-                onClick={handleOpenModal}
-              >
-                신고
-              </span>
-              {/* 모달 */}
-              {isModalOpen && (
-                <ClaimReasonModal
-                  onSelect={handleSelectReasons}
-                  onClose={handleCloseModal}
-                  isModalOpen={isModalOpen}
-                  props={"post"}
-                  id={postId}
-                />
-              )}
-            </div>
-          </p>
         </div>
-        <Comment props={{ postId: postId, type: "co" }} />
-        {data.commentList ? (
-          <ParentsComment
-            props={{ postId: postId, commentList: data.commentList }}
-          />
-        ) : null}
+        <div style={{ textAlign: "center" }}>
+          <Link to={"/community"}>
+            <Button
+              variant="contained"
+              href="#contained-buttons"
+              sx={{
+                padding: "11.5px 30px",
+                backgroundColor: "#243579",
+                fontWeight: "bold",
+              }}
+            >
+              목록으로
+            </Button>
+          </Link>
+        </div>
+        <img src={back} alt="배경" className={style.back} />
       </div>
-      <div style={{ textAlign: "center" }}>
-        <Link to={"/community"}>
-          <Button
-            variant="contained"
-            href="#contained-buttons"
-            sx={{
-              padding: "11.5px 30px",
-              backgroundColor: "#243579",
-              fontWeight: "bold",
-            }}
-          >
-            목록으로
-          </Button>
-        </Link>
-      </div>
-      <img src={back} alt="배경" className={style.back} />
-    </div>
+    </>
   );
 }
