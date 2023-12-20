@@ -7,7 +7,7 @@ let URI = '';
 
 if (process.env.NODE_ENV === 'development') {
   console.log('NODE_EVN: ' + process.env.NODE_ENV);
-  URI = 'http://www.localhost:8080';
+  URI = 'http://localhost:8080';
 } else {
   console.log('NODE_EVN: ' + process.env.NODE_ENV);
   URI = 'http://bizsurvey.shop/api';
