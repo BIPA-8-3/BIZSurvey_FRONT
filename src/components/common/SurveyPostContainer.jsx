@@ -25,15 +25,13 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function SurveyPostContainer() {
   const navigate = useNavigate();
-  
+
   const [page, setPage] = useState(0); // 현재 페이지 번호 (페이지네이션)
   const [ref, inView] = useInView();
   const userInfo = useContext(LoginContext);
   const [data, setData] = useState({
     content: [],
   });
-
- 
 
   const dataFetch = () => {
     console.log("토탈 페이지스" + data.totalPages);
@@ -57,12 +55,24 @@ function SurveyPostContainer() {
   };
 
   const handleButtonClick = () => {
-
-    alert("로그인 여부"+JSON.stringify(userInfo))
-
-    if (userInfo === null) {
-      alert("로그인을 먼저 해야 글을 쓰실 수 있습니다.");
-      navigate("/login");
+    if (userInfo.id === 0) {
+      const re = window.confirm(
+        "로그인을 하시면 게시글을 작성할 수 있습니다. \n로그인 페이지로 이동하시겠습니까?"
+      );
+      if (re) {
+        navigate("/login");
+      } else {
+        return;
+      }
+    } else if (userInfo.planSubscribe === "COMMUNITY") {
+      const res = window.confirm(
+        "플랜을 신청하면 게시글을 작성할 수 있습니다. \n플랜을 변경하시겠습니까?"
+      );
+      if (res) {
+        navigate("/mypagePlan");
+      } else {
+        return;
+      }
     } else {
       navigate("/surveyCommunityWrite");
     }
@@ -81,7 +91,9 @@ function SurveyPostContainer() {
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.titleWrap}>
         <h1 className="textCenter title textBold">설문 참여</h1>
-        <p className="textCenter subTitle">쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
+        <p className="textCenter subTitle">
+          쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.
+        </p>
       </div>
       <SCommunitySearch />
       <div style={{ textAlign: "right" }}>

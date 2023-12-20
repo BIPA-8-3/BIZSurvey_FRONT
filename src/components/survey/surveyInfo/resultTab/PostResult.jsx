@@ -52,7 +52,8 @@ export default function PostResult({ sharedType, sharedId }) {
   const [processed, setProcessed] = useState([]);
 
   useEffect(() => {
-    if (sharedId) {
+    console.log("sharedIdddddddddddd", sharedId);
+    if (sharedId && sharedId != 0) {
       handleGetData();
     }
   }, [sharedId]);
@@ -149,11 +150,11 @@ export default function PostResult({ sharedType, sharedId }) {
     return textArr;
   };
 
-  const handleDownloadExcel = () => {
-    call(`/survey/result/file/${sharedType}/${sharedId}`, "GET")
-      .then((data) => console.log(data))
-      .catch((error) => console.log(error));
-  };
+  // const handleDownloadExcel = () => {
+  //   call(`/survey/result/file/${sharedType}/${sharedId}`, "GET")
+  //     .then((data) => console.log(data))
+  //     .catch((error) => console.log(error));
+  // };
 
   if (sharedId === 0) {
     return (
@@ -185,7 +186,7 @@ export default function PostResult({ sharedType, sharedId }) {
 
   return (
     <>
-      {processed.length !== 0 ? (
+      {processed.length !== 0 && sharedId != 0 ? (
         <div
           style={{
             width: "700px",

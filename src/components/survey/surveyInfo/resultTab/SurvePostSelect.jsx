@@ -13,6 +13,7 @@ export default function SurveyPostSelect({
   setSharedType,
 }) {
   const handleChange = (event) => {
+    console.log("post선택!!!!!!!!!!!!!!1", event.target.value);
     setSharedId(event.target.value);
   };
 
