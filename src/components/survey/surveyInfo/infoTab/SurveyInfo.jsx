@@ -15,6 +15,7 @@ import IconButton from "@mui/material/IconButton";
 
 export default function SurveyInfo() {
   const { survey } = useContext(SurveyContext);
+
   const navigate = useNavigate();
 
   const { surveyId, title, content, surveyType, questions } = survey;

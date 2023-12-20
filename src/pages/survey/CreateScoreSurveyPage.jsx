@@ -84,8 +84,8 @@ export default function CreateScoreSurveyPage({
     surveyData.questions = questionData;
 
     console.log(surveyData);
-
-    call("/survey/" + selectedWorkspaceId, "POST", surveyData);
+    console.log("여기워크스페이스아이디!!!", selectedWorkspaceId);
+    // call("/survey/" + selectedWorkspaceId, "POST", surveyData);
   };
 
   const changeQuestionTitle = (id, text) => {
