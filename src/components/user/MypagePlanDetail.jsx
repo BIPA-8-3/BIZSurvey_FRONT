@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "../../style/user/MypagePlanDetail.module.css";
 import useFadeIn from "../../style/useFadeIn";
-import call from '../../pages/workspace/api';
+import call from "../../pages/workspace/api";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { GiCheckMark } from "react-icons/gi";
@@ -11,7 +11,7 @@ import { LuCheck } from "react-icons/lu";
 import Loader from "../../pages/loader/Loader";
 import IconWithText from "../common/IconWithText";
 import { LoginContext, LoginFunContext } from "../../App";
-import useApiCall, {planUpdate} from "../api/ApiCall";
+import useApiCall, { planUpdate } from "../api/ApiCall";
 
 export default function MypagePlanDetail() {
   const navigate = useNavigate();
@@ -59,12 +59,10 @@ export default function MypagePlanDetail() {
       });
   }, []);
 
-
   // 로컬 스토리지에 엑세스 토큰 저장
   const saveAccessTokenToLocalStorage = (token) => {
     localStorage.setItem("accessToken", token);
   };
-
 
   const handleSubscribe = (planName) => {
     const con = window.confirm(planName + "으로 변경하시겠습니까?");
@@ -74,91 +72,80 @@ export default function MypagePlanDetail() {
 
     setLoading(true);
 
-    
     if (userInfos.plan === "커뮤니티 회원") {
       call("/workspace/personal", "GET")
         .then((data) => {
           if (!data) {
             const newData = {
-              workspaceName: userInfos.nickname + "님 워크스페이스",
+              workspaceName: "내 워크스페이스",
               workspaceType: "PERSONAL",
             };
             return call("/workspace", "POST", newData);
           }
           return null;
         })
-        .then(async(data) => {
+        .then(async (data) => {
           const name =
             planName === "개인 플랜" ? "NORMAL_SUBSCRIBE" : "COMPANY_SUBSCRIBE";
-            planUpdate(name).then(() => {
-              call("/user/info", "GET")
+          planUpdate(name).then(() => {
+            call("/user/info", "GET")
               .then((data) => {
-                console.log(data)
+                console.log(data);
                 setUserInfo(data);
-                navigate("/mypagePlan")
+                navigate("/mypagePlan");
               })
               .catch((error) => {
                 console.error("사용자 정보 가져오기 실패:", error);
                 return;
               });
-            })
+          });
         })
         .catch((error) => console.log(error))
         .finally(() => window.location.reload());
     } else {
       const name =
         planName === "개인 플랜" ? "NORMAL_SUBSCRIBE" : "COMPANY_SUBSCRIBE";
-        planUpdate(name).then(() => {
-          call("/user/info", "GET")
+      planUpdate(name).then(() => {
+        call("/user/info", "GET")
           .then((data) => {
-            console.log(data)
+            console.log(data);
             setUserInfo(data);
-            navigate("/mypagePlan")
+            navigate("/mypagePlan");
           })
           .catch((error) => {
             console.error("사용자 정보 가져오기 실패:", error);
             return;
           });
-        })
-  
+      });
     }
     setLoading(false);
   };
-
 
   // useEffect(() => {
   //   window.location.reload();
   // }, [userInfo])
 
-  const handleCancelPlan = async() => {
+  const handleCancelPlan = async () => {
     const con = window.confirm("구독을 취소하시겠습니까?");
     if (!con) {
       return;
     }
     setLoading(true);
-    // call("/plan/COMMUNITY", "PATCH")
-    //   .then((data) => console.log(data))
-    //   .catch((error) => console.log(error))
-    //   .finally(() => {
-    //     setLoading(false);
-    //     window.location.reload();
-    //   });
 
     planUpdate("COMMUNITY").then(() => {
       call("/user/info", "GET")
-      .then((data) => {
-        console.log(data)
-        setUserInfo(data);
-        setLoading(false);
-        navigate("/mypagePlan")
-      }).then(() =>{
-        
-      })
-      .catch((error) => {
-        console.error("사용자 정보 가져오기 실패:", error);
-        return;
-      });
-    })
+        .then((data) => {
+          console.log(data);
+          setUserInfo(data);
+          setLoading(false);
+          navigate("/mypagePlan");
+        })
+        .then(() => {})
+        .catch((error) => {
+          console.error("사용자 정보 가져오기 실패:", error);
+          return;
+        });
+    });
   };
 
   return (
@@ -185,8 +172,8 @@ export default function MypagePlanDetail() {
                   <p className={style.planTitle}>개인 플랜</p>
                   <div className={style.textWrap}>
                     <Grid container spacing={1}>
-                      {personal.map((text) => (
-                        <Grid item xs={6} md={6} lg={6}>
+                      {personal.map((text, index) => (
+                        <Grid item xs={6} md={6} lg={6} key={index}>
                           <IconWithText
                             text={text}
                             fontsize={"12px"}

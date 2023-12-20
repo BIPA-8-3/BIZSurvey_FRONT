@@ -1,5 +1,6 @@
-import style from "../../../style/survey/ButtonTab.module.css";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import style from "../../../style/survey/ButtonTab.module.css";
+
 export default function ButtonTab({ handleChangeTab, page, first, second }) {
   return (
     <>

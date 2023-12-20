@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import style from "../../style/community/CommunityWrite.module.css";
 import "../../style/Common.css";
 import useFadeIn from "../../style/useFadeIn";
@@ -12,6 +12,8 @@ import axios from "axios";
 import CreateVote from "./CreateVote";
 import RegisterVote from "./RegisterVote";
 import { useNavigate } from "react-router-dom";
+import call from "../../pages/workspace/api";
+// import { setOptions } from "react-chartjs-2/dist/utils";
 
 // 가상의 서버 통신 함수 (실제로는 서버와의 통신을 구현해야 함)
 
@@ -19,13 +21,70 @@ export default function CommunityWrite() {
   const quillRef = useRef();
   const [content, setContent] = useState("");
   const fadeIn = useFadeIn();
-
+  const [voteTitle, setVoteTitle] = useState("");
+  const [voteOptions, setVoteOptions] = useState([""]);
+  const [hasVote, setHasVote] = useState(false);
+  const [voteId, setVoteId] = useState(0);
   const imageSrcArray = [];
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    console.log("titleleeeeeeeeeeee", voteTitle);
+  }, [voteTitle]);
+
+  useEffect(() => {
+    console.log("optionsssssssssssssleeeeeeeeeeee", voteOptions);
+  }, [voteOptions]);
+
+  useEffect(() => {
+    return () => {
+      // 컴포넌트가 언마운트될 때 실행되는 코드
+      if (voteId !== 0) {
+        call("/community/", "DELETE")
+          .then((data) => console.log(data))
+          .catch((error) => console.log(error));
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (hasVote) {
+      handleSubmitVote();
+    } else {
+      if (voteId !== 0) {
+        handleDeleteVote();
+      }
+    }
+  }, [hasVote]);
+
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
+  };
+
+  const handleSubmitVote = async () => {
+    let newAnswers = [];
+    voteOptions.map((option, index) => {
+      let ans = { answer: option };
+      return newAnswers.push(ans);
+    });
+
+    const data = {
+      voteQuestion: voteTitle,
+      voteAnswer: newAnswers,
+    };
+
+    const voteId = await call(`/community/createVote`, "POST", data);
+    console.log(voteId);
+    setVoteId(voteId);
+  };
+
+  const handleDeleteVote = () => {
+    const response = call(`/community/deleteVote/${voteId}`, "DELETE");
+    console.log(response);
+    setVoteTitle("");
+    setVoteOptions([""]);
+    setVoteId(0);
   };
 
   const imageHandler = () => {
@@ -124,21 +183,24 @@ export default function CommunityWrite() {
     alert(JSON.stringify(title));
     alert(JSON.stringify(content));
 
-    axios
-      .post("http://localhost:8080/community/createPost", {
+    if (voteId !== 0) {
+      call("/community/createPost", "POST", {
+        title: title,
+        content: content,
+        voteId: voteId,
+        imageUrlList: imageSrcArray,
+      })
+        .then((data) => setVoteId(0))
+        .catch((error) => console.log(error));
+    } else {
+      call("/community/createPost", "POST", {
         title: title,
         content: content,
         imageUrlList: imageSrcArray,
       })
-      .then((response) => {
-        console.log(response.data);
-        let postId = response.data;
-
-        navigate("/communityDetail", { state: { postId: postId } });
-      })
-      .catch((error) => {
-        console.error("생성 실패", error);
-      });
+        .then((data) => console.log(data))
+        .catch((error) => console.log(error));
+    }
   };
 
   const formats = [
@@ -190,8 +252,17 @@ export default function CommunityWrite() {
             원하는 투표 내용을 직접 만들어 회원들의 의견을 확인할 수 있습니다
           </p>
           {/* 투표가 만들어 졌을때 컴포넌트 */}
-          <IoIosCloseCircle className={style.voteCloseBtn} />
-          <RegisterVote />
+
+          {hasVote ? (
+            <>
+              <IoIosCloseCircle
+                className={style.voteCloseBtn}
+                onClick={handleDeleteVote}
+              />
+              <RegisterVote voteTitle={voteTitle} voteOptions={voteOptions} />
+            </>
+          ) : null}
+
           {/* 투표가 만들어 졌을때 컴포넌트 */}
           <button onClick={handleOpen} style={{ cursor: "pointer" }}>
             투표 만들기
@@ -204,7 +275,14 @@ export default function CommunityWrite() {
       >
         <div className={style.modal} onClick={(e) => e.stopPropagation()}>
           <p className={style.title}>투표 추가하기</p>
-          <CreateVote handleClose={handleClose} />
+          <CreateVote
+            setVote={setHasVote}
+            handleClose={handleClose}
+            setTitle={setVoteTitle}
+            setOptions={setVoteOptions}
+            voteTitle={voteTitle}
+            voteOptions={voteOptions}
+          />
         </div>
       </div>
       <div

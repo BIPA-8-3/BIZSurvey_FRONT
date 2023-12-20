@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import SurveyInfo from "../../components/survey/surveyInfo/infoTab/SurveyInfo";
-import axios from "axios";
 import ButtonTab from "../../components/survey/surveyInfo/ButtonTab";
 import ResultView from "../../components/survey/surveyInfo/resultTab/ResultView";
 import Loader from "../loader/Loader";
 import { createContext } from "react";
 import { useWorkspaceContext } from "../workspace/WorkspaceContext";
+import { call } from "../workspace/api";
 
 export const SurveyContext = createContext();
 
@@ -70,7 +70,7 @@ export default function SurveyInfoPage() {
     setLoading(true); // 데이터 로딩 시작
 
     try {
-      const response = await axios.get("/survey/" + selectedSurveyId);
+      const response = await call(`/survey/${selectedSurveyId}`, "GET");
       setSurvey(response.data);
       console.log(response.data);
     } catch (error) {

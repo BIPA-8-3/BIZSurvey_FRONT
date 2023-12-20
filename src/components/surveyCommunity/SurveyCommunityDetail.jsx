@@ -15,7 +15,7 @@ import Loader from "../../pages/loader/Loader";
 import axios from "axios";
 import BizModal from "../common/BizModal";
 import ClaimReasonModal from "../common/ClaimReasonModal";
-import call from '../../pages/workspace/api';
+import call from "../../pages/workspace/api";
 import { LoginContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 
@@ -56,8 +56,7 @@ export default function CommunityPost() {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
-        call("/s-community/showPost/" + postId, "GET")
-        .then((data) => {
+        call("/s-community/showPost/" + postId, "GET").then((data) => {
           console.log("리스폰스 : " + JSON.stringify(data));
           if (data.reported === 1) {
             alert("신고당한 게시물입니다.");
@@ -65,7 +64,6 @@ export default function CommunityPost() {
           }
           setData(data);
         });
-        
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -98,15 +96,21 @@ export default function CommunityPost() {
     console.log("Selected Reasons:", selectedReasons);
   };
 
-  const removePTags = (html) => {
-    // html이 유효한 값이 아니면 빈 문자열 반환
-    if (html === undefined || html === null) {
-      return "";
-    }
-  
-    const withoutPTags = html.replace(/<p>/g, "").replace(/<\/p>/g, "");
-    return withoutPTags;
-  };
+  // const removePTags = (html) => {
+  //   // 정규식을 사용하여 <p></p> 태그를 제거합니다.
+  //   const withoutPTags = html.replace(/<p>/g, "").replace(/<\/p>/g, "");
+  //   return withoutPTags;
+  // };
+
+  // const removePTags = (html) => {
+  //   // html이 유효한 값이 아니면 빈 문자열 반환
+  //   if (html === undefined || html === null) {
+  //     return "";
+  //   }
+
+  //   const withoutPTags = html.replace(/<p>/g, "").replace(/<\/p>/g, "");
+  //   return withoutPTags;
+  // };
 
   function renderAccess() {
     if (data.canAccess === "대기") {
@@ -155,7 +159,7 @@ export default function CommunityPost() {
           </div>
         </div>
         <div className={style.content}>
-          <p dangerouslySetInnerHTML={{ __html: removePTags(data.content) }} />
+          <p dangerouslySetInnerHTML={{ __html: data.content }} />
           <div className={style.surveyBtnWrap}>
             {isAvailable ? (
               <Link to={"/communitySurveyWrite"} state={{ postId: postId }}>

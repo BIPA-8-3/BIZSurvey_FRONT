@@ -1,4 +1,3 @@
-import IconWithText from "../../../common/IconWithText";
 import { MdDateRange } from "react-icons/md";
 
 export default function DateInfo({ value }) {

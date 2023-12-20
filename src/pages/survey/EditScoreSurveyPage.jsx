@@ -1,15 +1,14 @@
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import { useState } from "react";
-import { FaPlus } from "react-icons/fa6";
-import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle";
-import QuestionComp from "../../components/survey/surveyForm/QuestionComp";
-import style from "../../style/survey/EditSurveyPage.module.css";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { FaPlus } from "react-icons/fa6";
+import { useLocation, useNavigate } from "react-router-dom";
+import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle";
 import ScoreQuestion from "../../components/survey/surveyForm/ScoreQuestion";
+import style from "../../style/survey/EditSurveyPage.module.css";
+import { call } from "../workspace/api";
 
 export default function EditScoreSurveyPage() {
   const navigate = useNavigate();
@@ -67,7 +66,7 @@ export default function EditScoreSurveyPage() {
 
   const handleGetSurvey = async (surveyId) => {
     try {
-      const response = await axios.get("/survey/" + surveyId);
+      const response = await call(`/survey/${surveyId}`, "GET");
       setFormData(response.data);
       setQuestions(response.data.questions);
       console.log(response);
@@ -107,10 +106,8 @@ export default function EditScoreSurveyPage() {
       createQuestions: createQuestion,
     };
 
-    await axios
-      .patch("/survey/" + surveyId, surveyData)
+    await call(`/survey/${surveyId}`, "PATCH", surveyData)
       .then((response) => {
-        console.log(response);
         alert(response.data);
         navigate("/surveyInfo");
       })
@@ -186,15 +183,6 @@ export default function EditScoreSurveyPage() {
       return result;
     });
   };
-
-  // const handleOption = (id, options) => {
-  //   setQuestions((pre) => {
-  //     const result = pre.map((question, index) =>
-  //       index === id ? { ...question, answers: options } : question
-  //     );
-  //     return result;
-  //   });
-  // };
 
   const changeSurveyTitle = (text) => {
     setFormData((pre) => ({ ...pre, title: text }));

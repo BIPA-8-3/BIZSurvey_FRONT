@@ -1,17 +1,17 @@
-import UserList from "./UserList";
-import OptionBox from "./totalOptions/OptionBox";
-import { Text } from "./totalOptions/TextList";
-import QuestionBox from "../QuestionBox";
-import QuestionTitle from "../QuestionTitle";
-import ChoiceField from "../../fields/ChoiceField";
-import { File } from "./totalOptions/FileList";
 import { useContext, useEffect, useState } from "react";
-import { call } from "../../../../pages/survey/Login";
+import { call } from "../../../../pages/workspace/api";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import {
   getPersonalResult,
   getSharedContactList,
 } from "../../../../pages/workspace/api";
+import ChoiceField from "../../fields/ChoiceField";
+import QuestionBox from "../QuestionBox";
+import QuestionTitle from "../QuestionTitle";
+import UserList from "./UserList";
+import { File } from "./totalOptions/FileList";
+import OptionBox from "./totalOptions/OptionBox";
+import { Text } from "./totalOptions/TextList";
 
 export default function PersonalResult({ sharedType, sharedId }) {
   const { survey } = useContext(SurveyContext);
