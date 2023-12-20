@@ -1,13 +1,8 @@
-import { FaFileDownload } from "react-icons/fa";
-import IconWithText from "../../../../common/IconWithText";
-import { Hidden } from "@mui/material";
-import style from "../../../../../style/survey/FileLIst.module.css";
-import { call } from "../../../../../pages/survey/Login";
 import Button from "@mui/material/Button";
-
+import { FaFileDownload } from "react-icons/fa";
+import style from "../../../../../style/survey/FileLIst.module.css";
+import IconWithText from "../../../../common/IconWithText";
 import { IoMdDownload } from "react-icons/io";
-
-import axios from "axios";
 
 export default function FileList({ files, surveyId, questionId }) {
   const zipURL =
@@ -65,11 +60,8 @@ export default function FileList({ files, surveyId, questionId }) {
 }
 
 export function File({ filename, url }) {
-  console.log("url!!!!!!!!", url);
-
   const handleDownload = async (e, url) => {
     e.preventDefault();
-    console.log("여기파일!!!!!!!!", url);
     const link = document.createElement("a");
     link.href = "http://localhost:8080/storage/file/" + url;
     document.body.appendChild(link);

@@ -1,15 +1,13 @@
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { FaPlus } from "react-icons/fa6";
 import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle";
 import ScoreQuestion from "../../components/survey/surveyForm/ScoreQuestion";
 import style from "../../style/survey/CreatePage.module.css";
-import axios from "axios";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useEffect } from "react";
-import { login, call } from "./Login";
+import { call } from "../workspace/api";
 
 export default function CreateScoreSurveyPage({
   selectedWorkspaceId,

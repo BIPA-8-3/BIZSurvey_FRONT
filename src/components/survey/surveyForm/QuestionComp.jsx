@@ -1,21 +1,16 @@
-import OptionSelect from "./OptionSelect";
-import RequiredButton from "./RequiredButton";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
-import { useEffect, useState } from "react";
-import ChoiceOption from "./options/ChoiceOption";
-import TextOption from "./options/TextOption";
-import FileOption from "./options/FileOption";
-import DateOption from "./options/DateOption";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
 import * as React from "react";
-import style from "../../../style/survey/QuestionComp.module.css";
 import { MdDragIndicator } from "react-icons/md";
-import ScoreOptionSelect from "./score/ScoreOptionSelect";
-import IconWithText from "../../common/IconWithText";
-import { LuCheckSquare } from "react-icons/lu";
-import { isDisabled } from "@testing-library/user-event/dist/utils";
+import style from "../../../style/survey/QuestionComp.module.css";
+import OptionSelect from "./OptionSelect";
+import RequiredButton from "./RequiredButton";
+import ChoiceOption from "./options/ChoiceOption";
+import DateOption from "./options/DateOption";
+import FileOption from "./options/FileOption";
+import TextOption from "./options/TextOption";
 
 export default function QuestionComp({
   index,

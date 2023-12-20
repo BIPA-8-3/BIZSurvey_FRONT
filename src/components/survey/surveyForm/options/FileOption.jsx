@@ -1,6 +1,6 @@
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 export default function FileOption() {
   const VisuallyHiddenInput = styled("input")({

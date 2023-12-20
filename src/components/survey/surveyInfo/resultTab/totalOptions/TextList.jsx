@@ -1,9 +1,3 @@
-import { useState } from "react";
-import { TextField } from "@mui/material/TextField";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import { FixedSizeList } from "react-window";
 import style from "../../../../../style/survey/TextList.module.css";
 
 export default function TextList({ values }) {

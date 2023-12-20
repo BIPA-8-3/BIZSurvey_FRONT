@@ -83,6 +83,8 @@ export default function SurveyPostContainer() {
       } else {
         return;
       }
+    } else {
+      navigate("/surveyCommunityWrite");
     }
   };
   return (

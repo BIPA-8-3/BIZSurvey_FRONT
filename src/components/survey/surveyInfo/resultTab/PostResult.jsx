@@ -1,17 +1,14 @@
-import style from "../../../../style/survey/PostResult.module.css";
+import Button from "@mui/material/Button";
 import * as React from "react";
-import { useState } from "react";
-import OptionBox from "./totalOptions/OptionBox";
-import TextList from "./totalOptions/TextList";
+import { useEffect, useState } from "react";
+import { IoMdDownload } from "react-icons/io";
+import { call } from "../../../../pages/workspace/api";
+import Chart from "../../../common/Chart";
 import QuestionBox from "../QuestionBox";
 import QuestionTitle from "../QuestionTitle";
-import Chart from "../../../common/Chart";
 import FileList from "./totalOptions/FileList";
-import { call } from "../../../../pages/survey/Login";
-import { useEffect } from "react";
-import Button from "@mui/material/Button";
-import { IoMdDownload } from "react-icons/io";
-
+import OptionBox from "./totalOptions/OptionBox";
+import TextList from "./totalOptions/TextList";
 import { useContext } from "react";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import { getSharedSurveyResult } from "../../../../pages/workspace/api";
@@ -149,12 +146,6 @@ export default function PostResult({ sharedType, sharedId }) {
     console.log(textArr);
     return textArr;
   };
-
-  // const handleDownloadExcel = () => {
-  //   call(`/survey/result/file/${sharedType}/${sharedId}`, "GET")
-  //     .then((data) => console.log(data))
-  //     .catch((error) => console.log(error));
-  // };
 
   if (sharedId === 0) {
     return (

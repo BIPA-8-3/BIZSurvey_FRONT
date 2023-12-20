@@ -1,13 +1,11 @@
 import * as React from "react";
-import QuestionBox from "../QuestionBox";
-import QuestionTitle from "../QuestionTitle";
-import ChoiceInfo from "../infoOptions/ChoiceInfo";
-import OptionBox from "../resultTab/totalOptions/OptionBox";
 import ChoiceField from "../../fields/ChoiceField";
-import TextOption from "../../surveyForm/options/TextOption";
 import DateOption from "../../surveyForm/options/DateOption";
 import FileOption from "../../surveyForm/options/FileOption";
-import { TextField } from "@mui/material";
+import TextOption from "../../surveyForm/options/TextOption";
+import QuestionBox from "../QuestionBox";
+import QuestionTitle from "../QuestionTitle";
+import OptionBox from "../resultTab/totalOptions/OptionBox";
 
 export default function QuestionInfo({ info }) {
   const {

@@ -7,7 +7,7 @@ import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle"
 import QuestionComp from "../../components/survey/surveyForm/QuestionComp";
 import style from "../../style/survey/CreatePage.module.css";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { login, call } from "./Login";
+import { call } from "../workspace/api";
 import { useWorkspaceContext } from "../workspace/WorkspaceContext";
 import { useNavigate } from "react-router-dom";
 
@@ -54,7 +54,8 @@ export default function CreateSurveyPage() {
       ...question,
       step: index + 1,
       answers:
-        question.answerType === "SINGLE_CHOICE" || question.answerType === "MULTIPLE_CHOICE"
+        question.answerType === "SINGLE_CHOICE" ||
+        question.answerType === "MULTIPLE_CHOICE"
           ? question.answers.map((answer, answerIndex) => ({
               ...answer,
               step: answerIndex + 1,
@@ -130,7 +131,9 @@ export default function CreateSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id ? { ...question, isRequired: !question.isRequired } : question
+        index === id
+          ? { ...question, isRequired: !question.isRequired }
+          : question
       );
       return result;
     });
@@ -229,9 +232,16 @@ export default function CreateSurveyPage() {
                   className={style.questionList}
                 >
                   {questions.map((questionData, index) => (
-                    <Draggable key={index} draggableId={`question-${index}`} index={index}>
+                    <Draggable
+                      key={index}
+                      draggableId={`question-${index}`}
+                      index={index}
+                    >
                       {(provided) => (
-                        <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                        >
                           <div className={style.question}>
                             <QuestionComp
                               key={index}
