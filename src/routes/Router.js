@@ -1,11 +1,10 @@
 import { lazy } from "react";
 import { Navigate } from "react-router-dom";
 import SurveyInfoPage from "../pages/survey/SurveyInfoPage";
-import SurveyResultPage from "../pages/survey/SurveyResultPage";
 import EditSurveyPage from "../pages/survey/EditSurveyPage";
 import SharedSurvey from "../pages/workspace/SharedSurvey";
-import CreateScoreSurveyPage from '../pages/survey/CreateScoreSurveyPage';
-import CreateSurveyPage from '../pages/survey/CreateSurveyPage';
+import CreateScoreSurveyPage from "../pages/survey/CreateScoreSurveyPage";
+import CreateSurveyPage from "../pages/survey/CreateSurveyPage";
 
 const FullLayout = lazy(() => import("../pages/Layout"));
 
@@ -25,8 +24,9 @@ const CommunityWrite = lazy(() =>
   import("../components/community/CommunityWrite")
 );
 
-const EditCommunityPost = lazy(() => import("../components/community/EditCommunityPost"))
-
+const EditCommunityPost = lazy(() =>
+  import("../components/community/EditCommunityPost")
+);
 
 const SurveyCommunityDetail = lazy(() =>
   import("../components/surveyCommunity/SurveyCommunityDetail")
@@ -116,7 +116,7 @@ const ThemeRoutes = [
       {
         path: "/editCommunityPost",
         exact: true,
-        element: <EditCommunityPost />
+        element: <EditCommunityPost />,
       },
       {
         path: "/editSurveyCommunity",
@@ -151,10 +151,18 @@ const ThemeRoutes = [
       // 워크스페이스
       { path: "/workspace", exact: true, element: <Main /> },
       { path: "/workspace/create", exact: true, element: <CreateSurveyPage /> },
-      { path: "/workspace/createscore", exact: true, element: <CreateScoreSurveyPage /> },
+      {
+        path: "/workspace/createscore",
+        exact: true,
+        element: <CreateScoreSurveyPage />,
+      },
       { path: "/workspace/info", exact: true, element: <SurveyInfoPage /> },
       { path: "/workspace/edit", exact: true, element: <EditSurvey /> },
-      { path: "/workspace/editscore", exact: true, element: <EditScoreSurvey /> },
+      {
+        path: "/workspace/editscore",
+        exact: true,
+        element: <EditScoreSurvey />,
+      },
 
       {
         path: "/authorization/:type/:token",

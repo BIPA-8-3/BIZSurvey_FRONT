@@ -6,7 +6,7 @@ import QuestionTitle from "../QuestionTitle";
 import OptionBox from "./totalOptions/OptionBox";
 import Button from "@mui/material/Button";
 import { useEffect } from "react";
-import { call } from "../../../../pages/workspace/api";
+import call from "../../../../pages/workspace/api";
 import { useContext } from "react";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import { getSharedSurveyScoreResult } from "../../../../pages/workspace/api";

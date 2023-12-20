@@ -4,7 +4,7 @@ import * as React from "react";
 import { useContext } from "react";
 import { IoArrowBackSharp } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
-import { call } from "../../../../pages/workspace/api";
+import call from "../../../../pages/workspace/api";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import style from "../../../../style/survey/SurveyInfo.module.css";
 import SurveyTitle from "../SurveyTitle";

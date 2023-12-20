@@ -6,7 +6,7 @@ import ResultView from "../../components/survey/surveyInfo/resultTab/ResultView"
 import Loader from "../loader/Loader";
 import { createContext } from "react";
 import { useWorkspaceContext } from "../workspace/WorkspaceContext";
-import { call } from "../workspace/api";
+import call from "../workspace/api";
 
 export const SurveyContext = createContext();
 

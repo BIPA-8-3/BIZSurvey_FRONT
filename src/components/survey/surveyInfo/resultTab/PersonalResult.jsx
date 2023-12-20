@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { call } from "../../../../pages/workspace/api";
+import call from "../../../../pages/workspace/api";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import {
   getPersonalResult,

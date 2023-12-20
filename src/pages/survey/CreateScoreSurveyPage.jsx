@@ -7,7 +7,7 @@ import { FaPlus } from "react-icons/fa6";
 import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle";
 import ScoreQuestion from "../../components/survey/surveyForm/ScoreQuestion";
 import style from "../../style/survey/CreatePage.module.css";
-import { call } from "../workspace/api";
+import call from "../workspace/api";
 
 export default function CreateScoreSurveyPage({
   selectedWorkspaceId,
