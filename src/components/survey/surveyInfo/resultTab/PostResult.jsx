@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { IoMdDownload } from "react-icons/io";
-import call from "../../../../pages/workspace/api";
+import call, { getURI } from "../../../../pages/workspace/api";
 import Chart from "../../../common/Chart";
 import QuestionBox from "../QuestionBox";
 import QuestionTitle from "../QuestionTitle";
@@ -188,10 +188,7 @@ export default function PostResult({ sharedType, sharedId }) {
         >
           <a
             href={
-              "http://localhost:8080/survey/result/file/" +
-              sharedType +
-              "/" +
-              sharedId
+              getURI() + "/survey/result/file/" + sharedType + "/" + sharedId
             }
           >
             <Button
