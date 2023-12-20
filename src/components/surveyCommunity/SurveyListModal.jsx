@@ -58,16 +58,16 @@ const SurveyListModal = ({ props }) => {
           sx={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
         >
           {/* 목차 표시 */}
-          <ListItemText primary={`제목`} />
+          <ListItemText primary={`설문지 이름`}  sx={{width:'350px', fontWeight:'bold'}}/>
           <ListItemText primary={`워크스페이스 이름`} />
         </List>
         <Divider />
         {/* 목록 표시 */}
-        <List sx={{ width: "500px", overflowY: "auto", maxHeight: "400px" }}>
+        <List sx={{ width: "700px", overflowY: "auto", maxHeight: "400px" }}>
           {data.map((survey) => (
             <ListItem key={survey.surveyId} divider>
               {/* 스키마 표시 */}
-              <ListItemText primary={survey.title} />
+              <ListItemText primary={survey.title} sx={{width:'350px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}/>
               <ListItemText primary={survey.workspaceName} />
               {/* 선택 체크박스 */}
               <Checkbox

@@ -3,7 +3,6 @@ import style from '../../style/admin/AdminUserInfo.module.css'
 import useFadeIn from '../../style/useFadeIn';
 import Button from '@mui/material/Button';
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from 'axios';
 import logo from '../../assets/img/logo.png';
 import { FaUserCircle } from "react-icons/fa";
 import { FaFolderOpen } from "react-icons/fa6";

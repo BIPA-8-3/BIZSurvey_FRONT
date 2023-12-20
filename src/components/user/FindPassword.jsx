@@ -4,13 +4,11 @@ import Button from '@mui/material/Button';
 import back from '../../assets/img/back.png'
 import { Link } from "react-router-dom";
 import useFadeIn from '../../style/useFadeIn';
-import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import useApiCall from '../api/ApiCall'; 
+import call from '../../pages/workspace/api';
 
 function FindPassword() {
-  const { call } = useApiCall();
   const fadeIn = useFadeIn();
   const [isEmail, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
@@ -27,6 +25,7 @@ function FindPassword() {
       const request = {email: isEmail}
       const response = await call("/check-email", "POST", request);
 
+      
     }catch(error){
       console.error("error:", error);
     }

@@ -11,6 +11,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Axios from "axios";
 
 import { useForm } from "react-hook-form";
+import call from "../../pages/workspace/api";
 
 function Join({
   onSubmit = async (data) => {
@@ -79,10 +80,12 @@ function Join({
   const [loading, setLoading] = useState(false);
   const handleVerificationCodeSend = async () => {
     const emailValue = getValues("email");
-    try {
-      setLoading(true);
 
-      const response = await Axios.post("/signup/send-email", {
+   
+
+      setLoading(true);
+      
+      call("/signup/send-email", "POST", {
         email: emailValue,
       }).then((data) => {
         // 전송 성공 시 카운트다운 시작
@@ -91,65 +94,63 @@ function Join({
         setIsInputDisabled(true); // 인증번호 전송 후 입력 필드 비활성화
         setIsButtonDisabled(false);
         setLoading(false);
-      });
-    } catch (error) {
-      if (error.response.data.errorCode === 600) {
-        alert(error.response.data.errorMessage);
-        setIsCounting(false);
-        setIsInputDisabled(true); // 전송 실패 시 다시 입력 필드 활성화
-      }
-    }
+      }).catch ((error) => {
+        if (error.response.data.errorCode === 600) {
+          setLoading(false);
+          alert(error.response.data.errorMessage);
+          setIsCounting(false);
+          setIsInputDisabled(true); // 전송 실패 시 다시 입력 필드 활성화
+      }})
   };
   const [isNumberCheck, setNumberCheck] = useState(false);
   const handleCode = async () => {
     const emailValue = getValues("email");
     const emailNumber = (getValues("number") ?? "").trim();
 
-    try {
       if (emailNumber != "") {
-        const response = await Axios.post("/signup/check-authnumber", {
+        call("/signup/check-authnumber", "POST", {
           email: emailValue,
           authNumber: emailNumber,
-        });
-        setIsButtonDisabled(true);
-        setNumberCheck(true);
-        setIsCounting(false);
-        setIsInputDisabled(true);
-        alert("인증되었습니다.");
+        }).then((data) => {
+          setIsButtonDisabled(true);
+          setNumberCheck(true);
+          setIsCounting(false);
+          setIsInputDisabled(true);
+          alert("인증되었습니다.");
+        }).catch ((error) => {
+          if (error.response.data.errorCode === 600) {
+            setError("number", {
+              type: "manual",
+              message: "인증번호를 확인해주세요",
+            });
+            setNumberCheck(false);
+          }
+        })
       } else {
         alert("인증번호를 입력해주세요.");
       }
-    } catch (error) {
-      if (error.response.data.errorCode === 600) {
-        setError("number", {
-          type: "manual",
-          message: "인증번호를 확인해주세요",
-        });
-        setNumberCheck(false);
-      }
-    }
   };
   const [isNinknameCheck, setNinknameCheck] = useState(false);
   const handleNickname = async () => {
     const getNickname = (getValues("nickname") ?? "").trim();
-    try {
-      if (getNickname != "") {
-        const response = await Axios.post("/signup/check-nickname", {
-          nickname: getNickname,
-        });
 
-        alert(response.data);
-        setNinknameCheck(true);
+    
+      if (getNickname != "") {
+        call("/signup/check-nickname", "POST", {
+          nickname: getNickname,
+        }).then((response) => {
+          alert(response);
+          setNinknameCheck(true);
+        }).catch ((error) => {
+          if (error.response.data.errorCode === 600) {
+            setError("nickname", {
+              type: "manual",
+              message: "이미 사용중인 닉네임입니다.",
+            });
+            setNinknameCheck(false);
+          }
+        })
       }
-    } catch (error) {
-      if (error.response.data.errorCode === 600) {
-        setError("nickname", {
-          type: "manual",
-          message: "이미 사용중인 닉네임입니다.",
-        });
-        setNinknameCheck(false);
-      }
-    }
   };
 
   const navigate = useNavigate();
@@ -169,17 +170,16 @@ function Join({
         message: "닉네임 중복확인을 해주세요",
       });
     } else {
-      try {
-        const response = await Axios.post("/signup", data);
-        alert(response.data);
-        navigate("/login");
-      } catch (error) {
-        if (error.response.data.errorCode === 600) {
-          alert("xx");
-        }
+        call("/signup", "POST", data).then((response)=>{
+          alert(response);
+          navigate("/login");
+        }).catch ((error) => {
+          if (error.response.data.errorCode === 600) {
+            alert("xx");
+          }
+        })
       }
-    }
-  });
+    });
 
   const handleNicknameEdit = () => {
     setNinknameCheck(false);

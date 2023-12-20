@@ -3,19 +3,17 @@ import style from '../../style/admin/AdminDashboard.module.css'
 import useFadeIn from '../../style/useFadeIn';
 import Button from '@mui/material/Button';
 import { useLocation, useNavigate, useHistory } from "react-router-dom";
-import axios from 'axios';
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import AdminChart from './AdminPieChart';
 import AdminLineChart from './AdminLineChart';
-import useApiCall from '../api/ApiCall'; 
+import call from '../../pages/workspace/api';
 import { set } from 'react-hook-form';
 function AdminDashboard() {
     const navigate = useNavigate();
 
-    const { call } = useApiCall();
     const [chartData, setChartData] = useState([]);
     const [community, setCommunity] = useState(0);
     const [normal, setNormal] = useState(0);
