@@ -2,14 +2,13 @@ import React, {useState, useEffect} from 'react';
 import style from '../../style/user/MypageSurveyList.module.css'
 import back from '../../assets/img/back.png'
 import useFadeIn from '../../style/useFadeIn';
-import useApiCall from '../api/ApiCall'; 
+import call from '../../pages/workspace/api';
 
 import MypageHeader from './MypageHeader';
 import MypageUserInfo from './MypageUserInfo';
 import MypageSurveyList from './MypageSurveyList';
 function MypageSurveyCommunity() {
   const fadeIn = useFadeIn();
-  const { call } = useApiCall();
   const [userData, setUserData] = useState({});
   const [editState, setEditState] = useState(false);
 

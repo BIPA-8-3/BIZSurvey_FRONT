@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import style from "../../style/user/MypagePlanDetail.module.css";
 import useFadeIn from "../../style/useFadeIn";
-import useApiCall from "../api/ApiCall";
+import call from '../../pages/workspace/api';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { GiCheckMark } from "react-icons/gi";
@@ -9,11 +10,14 @@ import axios from "axios";
 import { LuCheck } from "react-icons/lu";
 import Loader from "../../pages/loader/Loader";
 import IconWithText from "../common/IconWithText";
+import { LoginContext, LoginFunContext } from "../../App";
 
 export default function MypagePlanDetail() {
-  const { call } = useApiCall();
-  const [userInfo, setUserInfo] = useState({ plan: "", nickname: "" });
+  const navigate = useNavigate();
+  const [userInfo, setUserInfos] = useState({ plan: "", nickname: "" });
   const [loading, setLoading] = useState(false);
+  const userInfoCon = useContext(LoginContext);
+  const { setUserInfo } = useContext(LoginFunContext);
 
   const personal = [
     "개인 워크스페이스",
@@ -44,7 +48,7 @@ export default function MypagePlanDetail() {
         } else {
           userPlan = "커뮤니티 회원";
         }
-        setUserInfo({
+        setUserInfos({
           plan: userPlan,
           nickname: data.nickname,
         });
@@ -101,7 +105,19 @@ export default function MypagePlanDetail() {
               const headers = response.headers;
               const authorization = headers["authorization"];
               saveAccessTokenToLocalStorage(authorization);
-              window.location.reload();
+              
+              localStorage.removeItem("userInfo");
+              call("/user/info", "GET")
+                .then((data) => {
+                  
+                  setUserInfo(data);
+                  //navigate("/");
+                })
+                .catch((error) => {
+                  console.error("사용자 정보 가져오기 실패:", error);
+                  return;
+                });
+              //window.location.reload();
               // navigate("/");
             }
           }catch(error){
@@ -123,7 +139,19 @@ export default function MypagePlanDetail() {
                 const headers = response.headers;
                 const authorization = headers["authorization"];
                 saveAccessTokenToLocalStorage(authorization);
-                window.location.reload();
+                
+                localStorage.removeItem("userInfo");
+                call("/user/info", "GET")
+                .then((data) => {
+                  
+                  setUserInfo(data);
+                  //navigate("/");
+                })
+                .catch((error) => {
+                  console.error("사용자 정보 가져오기 실패:", error);
+                  return;
+                });
+                //window.location.reload();
         });
   
     }
@@ -155,7 +183,18 @@ export default function MypagePlanDetail() {
         const headers = response.headers;
         const authorization = headers["authorization"];
         saveAccessTokenToLocalStorage(authorization);
-        window.location.reload();
+        localStorage.removeItem("userInfo");
+          call("/user/info", "GET")
+                .then((data) => {
+                  
+                  setUserInfo(data);
+                  //navigate("/");
+                })
+                .catch((error) => {
+                  console.error("사용자 정보 가져오기 실패:", error);
+                  return;
+                });
+        //window.location.reload();
       }
     }catch(error){
         alert(error)

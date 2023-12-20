@@ -6,6 +6,7 @@ import ParentsComment from './ParentsComment';
 import axios from "axios";
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import call from '../../pages/workspace/api';
 
 export default function ChildCommentForm({props}) {
 
@@ -22,11 +23,13 @@ export default function ChildCommentForm({props}) {
 
     const handleSaveClick = async () => {
         try {
-          const response = await axios.post(`http://localhost:8080/community/${getCommentId}/createChildComment`, {
+          const response = call(`/community/${getCommentId}/createChildComment`, "POST",{
             content: childComment,
+          }).then((data)=>{
+            console.log('Comment created:', data);
+            window.location.reload();
           });
-          console.log('Comment created:', response.data);
-          window.location.reload();
+          
           if(type === 'sc'){
             navigate('/surveyCommunityDetail', { state: { postId: getPostId } });
           }

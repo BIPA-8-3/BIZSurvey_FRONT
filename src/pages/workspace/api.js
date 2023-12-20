@@ -49,13 +49,13 @@ const adminURI = '/workspace/admin';
 
 const workspaceURI = '/workspace';
 
-const instance = axios.create({
+let instance = axios.create({
     headers: {
         "Content-Type": "application/json",
     }
 });
 
-export default async function call(api, method, request) {
+export default async function call(api, method, request, file) {
     try {
         const config = {
             url: URI + api,
@@ -74,6 +74,12 @@ export default async function call(api, method, request) {
         const accessToken = localStorage.getItem("accessToken");
         if (accessToken) {
             config.headers.Authorization = "Bearer " + accessToken;
+        }
+
+        if (file) {
+            config.headers = {
+                "Content-Type": "multipart/form-data",
+            }
         }
 
         const response = await instance(config);
