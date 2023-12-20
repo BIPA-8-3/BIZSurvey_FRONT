@@ -13,12 +13,8 @@ import call from "../workspace/api";
 export default function EditScoreSurveyPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  let surveyId = location.state.surveyId || 0;
-
-  useEffect(() => {
-    console.log(surveyId);
-    handleGetSurvey(surveyId);
-  }, []);
+  // let surveyId = location.state.surveyId || 0;
+  const [surveyId, setSurveyId] = useState(0);
 
   const [formData, setFormData] = useState({
     surveyId: 0,
@@ -47,8 +43,18 @@ export default function EditScoreSurveyPage() {
   ]);
 
   useEffect(() => {
-    console.log(questions);
-  }, [questions]);
+    const id = location.state ? location.state.surveyId : 0;
+    if (id !== 0) {
+      setSurveyId(id);
+    }
+    console.log(surveyId);
+  }, []);
+
+  useEffect(() => {
+    if (surveyId !== 0) {
+      handleGetSurvey(surveyId);
+    }
+  }, [surveyId]);
 
   const handleGoBack = () => {
     navigate(-1);
@@ -67,8 +73,8 @@ export default function EditScoreSurveyPage() {
   const handleGetSurvey = async (surveyId) => {
     try {
       const response = await call(`/survey/${surveyId}`, "GET");
-      setFormData(response.data);
-      setQuestions(response.data.questions);
+      setFormData(response);
+      setQuestions(response.questions);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -108,8 +114,8 @@ export default function EditScoreSurveyPage() {
 
     await call(`/survey/${surveyId}`, "PATCH", surveyData)
       .then((response) => {
-        alert(response.data);
-        navigate("/surveyInfo");
+        alert(response);
+        navigate("/workspace/info");
       })
       .catch((error) => console.log(error));
   };
@@ -176,7 +182,9 @@ export default function EditScoreSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id ? { ...question, isRequired: !question.isRequired } : question
+        index === id
+          ? { ...question, isRequired: !question.isRequired }
+          : question
       );
       return result;
     });
@@ -297,9 +305,16 @@ export default function EditScoreSurveyPage() {
                   className={style.questionList}
                 >
                   {questions.map((questionData, index) => (
-                    <Draggable key={index} draggableId={`question-${index}`} index={index}>
+                    <Draggable
+                      key={index}
+                      draggableId={`question-${index}`}
+                      index={index}
+                    >
                       {(provided) => (
-                        <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                        >
                           <div className={style.question}>
                             <ScoreQuestion
                               key={index}
@@ -336,7 +351,10 @@ export default function EditScoreSurveyPage() {
             <Button variant="outlined" onClick={handleGoBack}>
               취소
             </Button>
-            <Button variant="contained" onClick={() => handleUpdateSurvey(surveyId)}>
+            <Button
+              variant="contained"
+              onClick={() => handleUpdateSurvey(surveyId)}
+            >
               완료
             </Button>
           </div>
