@@ -63,6 +63,7 @@ export default function CommunityWrite() {
   };
 
   const handleSubmitVote = async () => {
+    console.log("여기들어오나요..?");
     let newAnswers = [];
     voteOptions.map((option, index) => {
       let ans = { answer: option };
@@ -79,9 +80,11 @@ export default function CommunityWrite() {
     setVoteId(voteId);
   };
 
-  const handleDeleteVote = () => {
-    const response = call(`/community/deleteVote/${voteId}`, "DELETE");
-    console.log(response);
+  const handleDeleteVote = async () => {
+    console.log("삭제리스폰스");
+    const response = await call(`/community/deleteVote/${voteId}`, "DELETE");
+
+    setHasVote(false);
     setVoteTitle("");
     setVoteOptions([""]);
     setVoteId(0);

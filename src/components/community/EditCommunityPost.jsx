@@ -15,7 +15,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Loader from "../../pages/loader/Loader";
 import call from "../../pages/workspace/api";
 
-
 // 가상의 서버 통신 함수 (실제로는 서버와의 통신을 구현해야 함)
 
 export default function CommunityWrite() {
@@ -81,6 +80,7 @@ export default function CommunityWrite() {
   const handleDeleteVote = async () => {
     const response = await call(`/community/deleteVote/${voteId}`, "DELETE");
     console.log("여기삭제들어옴", response);
+    setHasVote(false);
     setVoteTitle("");
     setVoteOptions([""]);
     setVoteId(0);
@@ -107,11 +107,15 @@ export default function CommunityWrite() {
       formData.append("domain", "COMMUNITY");
       // 백엔드 multer라우터에 이미지를 보낸다.
       try {
-        const result = await axios.post("http://localhost:8080/storage/", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const result = await axios.post(
+          "http://localhost:8080/storage/",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
 
         console.log("성공 시, 백엔드가 보내주는 데이터", result.data.url);
         const HEAD_IMG_URL = "https://";
@@ -183,7 +187,10 @@ export default function CommunityWrite() {
         // }
 
         if (data.voteId !== null || data.voteId !== undefined) {
-          const vote = await call(`/community/${postId}/showVoteAnswer/${data.voteId}`, "GET");
+          const vote = await call(
+            `/community/${postId}/showVoteAnswer/${data.voteId}`,
+            "GET"
+          );
           setVoteTitle(vote.voteTitle);
           let newArr = [];
           vote.answerList.map((option) => {
@@ -267,7 +274,15 @@ export default function CommunityWrite() {
     //   });
   };
 
-  const formats = ["header", "bold", "italic", "underline", "strike", "blockquote", "image"];
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "image",
+  ];
 
   const handleTitleChange = (e) => {
     e.preventDefault();
@@ -282,7 +297,9 @@ export default function CommunityWrite() {
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.titleWrap}>
         <h1 className="textCenter title textBold">커뮤니티</h1>
-        <p className="textCenter subTitle">쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
+        <p className="textCenter subTitle">
+          쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.
+        </p>
       </div>
       <div className={style.writeWrap}>
         <div style={{ textAlign: "center" }}>
@@ -298,7 +315,9 @@ export default function CommunityWrite() {
           {/*제목*/}
         </div>
         <div className={style.editorWrap}>
-          <div style={{ width: "1000px", margin: "0 auto", marginBottom: "100px" }}>
+          <div
+            style={{ width: "1000px", margin: "0 auto", marginBottom: "100px" }}
+          >
             <ReactQuill
               style={{ width: "1000px", height: "300px" }}
               placeholder="내용을 입력헤주세요."
@@ -313,11 +332,16 @@ export default function CommunityWrite() {
         </div>
         <div className={style.voteWrap}>
           <p>비즈서베이의 투표 기능을 이용해보세요!</p>
-          <p>원하는 투표 내용을 직접 만들어 회원들의 의견을 확인할 수 있습니다</p>
+          <p>
+            원하는 투표 내용을 직접 만들어 회원들의 의견을 확인할 수 있습니다
+          </p>
           {/* 투표가 만들어 졌을때 컴포넌트 */}
           {hasVote ? (
             <>
-              <IoIosCloseCircle className={style.voteCloseBtn} onClick={() => setHasVote(false)} />
+              <IoIosCloseCircle
+                className={style.voteCloseBtn}
+                onClick={() => setHasVote(false)}
+              />
               <RegisterVote voteTitle={voteTitle} voteOptions={voteOptions} />
             </>
           ) : null}
@@ -327,7 +351,10 @@ export default function CommunityWrite() {
           </button>
         </div>
       </div>
-      <div className={`${style.modalWrap} ${open ? style.fadeIn : ""}`} onClick={handleClose}>
+      <div
+        className={`${style.modalWrap} ${open ? style.fadeIn : ""}`}
+        onClick={handleClose}
+      >
         <div className={style.modal} onClick={(e) => e.stopPropagation()}>
           <p className={style.title}>투표 추가하기</p>
           <CreateVote
