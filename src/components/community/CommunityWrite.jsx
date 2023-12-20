@@ -253,7 +253,7 @@ export default function CommunityWrite() {
           </p>
           {/* 투표가 만들어 졌을때 컴포넌트 */}
 
-          {hasVote ? (
+          {hasVote && voteTitle !== "" ? (
             <>
               <IoIosCloseCircle
                 className={style.voteCloseBtn}
@@ -264,9 +264,11 @@ export default function CommunityWrite() {
           ) : null}
 
           {/* 투표가 만들어 졌을때 컴포넌트 */}
-          <button onClick={handleOpen} style={{ cursor: "pointer" }}>
-            투표 만들기
-          </button>
+          {hasVote ? null : (
+            <button onClick={handleOpen} style={{ cursor: "pointer" }}>
+              투표 만들기
+            </button>
+          )}
         </div>
       </div>
       <div
