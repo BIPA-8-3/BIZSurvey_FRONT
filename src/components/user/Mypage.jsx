@@ -18,9 +18,8 @@ function Mypage() {
       .then((data) => {
         console.log(data);
         setUserData(data);
-      })
-      .catch((error) => {
-        console.log(error);
+      }).catch((error) => {
+        setUserData({}); 
       });
   }, []);
   return (

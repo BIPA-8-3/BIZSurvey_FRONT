@@ -55,6 +55,28 @@ let instance = axios.create({
     }
 });
 
+const RefreshRequest = async () => {
+    const saveAccessTokenToLocalStorage = (token) => {
+      localStorage.setItem('accessToken', token);
+    };
+
+    try{
+        const response = await axios.get(URI + '/refresh', {
+            headers: {
+                refreshAuthorization: localStorage.getItem("refreshToken"),
+            },
+        });
+    
+        const headers = response.headers;
+        const authorization = headers['authorization'];
+        saveAccessTokenToLocalStorage(authorization);
+        return true;
+    }catch(error){
+        console.error("Error refreshing token:", error);
+        return false;
+    }
+  };
+
 export default async function call(api, method, request, file) {
     try {
         const config = {
@@ -86,8 +108,18 @@ export default async function call(api, method, request, file) {
 
         return response.data;
     } catch (error) {
-        throw error;
+        if (error.response.data.errorCode === 402) {
+            const refreshTokenSuccess = await RefreshRequest();
+            if (refreshTokenSuccess) {
+                return call(api, method, request, file);
+            } else {
+                throw new Error("Failed to refresh token.");
+            }
+        }else{
+            throw error;
+        }
     }
+    
 }
 
 export const createWorkspace = (workspaceName) => {
