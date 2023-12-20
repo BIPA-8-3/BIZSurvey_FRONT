@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'development') {
   URI = 'http://www.localhost:8080';
 } else {
   console.log('NODE_EVN: ' + process.env.NODE_ENV);
-  URI = 'http://www.bizsurvey.shop/api';
+  URI = 'http://bizsurvey.shop/api';
 }
 
 
@@ -203,7 +203,7 @@ export const adminLogin = async (formdata) => {
 }
 
 export const planUpdate = async (name) =>{
-  axios.patch(URI + `/plan/${name}`, {}, {
+  await axios.patch(URI + `/plan/${name}`, {}, {
       headers: {
         Authorization: localStorage.getItem("accessToken")
       }
@@ -212,6 +212,5 @@ export const planUpdate = async (name) =>{
           const authorization = headers["authorization"];
           saveAccessTokenToLocalStorage(authorization);
           
-          localStorage.removeItem("userInfo");
   });
 }
