@@ -4,7 +4,6 @@ import logo from '../../assets/img/logo.png'
 import useFadeIn from '../../style/useFadeIn';
 import Button from '@mui/material/Button';
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from 'axios';
 import call from '../../pages/workspace/api';
 
 function MypagePasswordChange({userData, setEditState}) {
