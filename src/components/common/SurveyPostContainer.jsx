@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import SCommunitySearch from "./SCommunitySearch";
 import { acceptInvite } from "../../pages/workspace/authenticationApi";
 import { LoginContext } from "../../App";
-import call from '../../pages/workspace/api';
+import call from "../../pages/workspace/api";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -24,7 +24,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-function SurveyPostContainer() {
+export default function SurveyPostContainer() {
   const navigate = useNavigate();
 
   const [page, setPage] = useState(0); // 현재 페이지 번호 (페이지네이션)
@@ -34,11 +34,21 @@ function SurveyPostContainer() {
     content: [],
   });
 
+  useEffect(() => {
+    // inView가 true 일때만 실행한다.
+    if (inView) {
+      console.log(inView, "무한 스크롤 요청 🎃");
+      dataFetch();
+    }
+  }, [inView]);
+
+  const fadeIn = useFadeIn();
+
   const dataFetch = () => {
     console.log("토탈 페이지스" + data.totalPages);
 
     if (page < data.totalPages || data.totalPages === undefined) {
-        call(`/s-community?page=${page}`, "GET")
+      call(`/s-community?page=${page}`, "GET")
         .then((data) => {
           setData((prevData) => {
             return {
@@ -55,7 +65,6 @@ function SurveyPostContainer() {
   };
 
   const handleButtonClick = () => {
-
     if (userInfo.id === 0) {
       const re = window.confirm(
         "로그인을 하시면 게시글을 작성할 수 있습니다. \n로그인 페이지로 이동하시겠습니까?"
@@ -74,18 +83,8 @@ function SurveyPostContainer() {
       } else {
         return;
       }
-
-  };
-
-  useEffect(() => {
-    // inView가 true 일때만 실행한다.
-    if (inView) {
-      console.log(inView, "무한 스크롤 요청 🎃");
-      dataFetch();
     }
-  }, [inView]);
-
-  const fadeIn = useFadeIn();
+  };
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.titleWrap}>
@@ -118,5 +117,3 @@ function SurveyPostContainer() {
     </div>
   );
 }
-
-export default SurveyPostContainer;

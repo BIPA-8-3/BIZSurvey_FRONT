@@ -188,8 +188,8 @@ export default function MypagePlanDetail() {
                   <p className={style.planTitle}>개인 플랜</p>
                   <div className={style.textWrap}>
                     <Grid container spacing={1}>
-                      {personal.map((text) => (
-                        <Grid item xs={6} md={6} lg={6}>
+                      {personal.map((text, index) => (
+                        <Grid item xs={6} md={6} lg={6} key={index}>
                           <IconWithText
                             text={text}
                             fontsize={"12px"}

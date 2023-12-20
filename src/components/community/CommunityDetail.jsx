@@ -187,12 +187,26 @@ export default function CommunityPost() {
             </div>
 
             {/* </div> */}
+
             <div className={style.content}>
               <p
                 dangerouslySetInnerHTML={{ __html: removePTags(data.content) }}
               />
+              {data.voteId ? (
+                <>
+                  {isResult ? (
+                    <VoteResult chartData={voteResult} />
+                  ) : (
+                    <VoteWrite
+                      voteId={data.voteId}
+                      postId={votePostId}
+                      setSubmit={setVoteSubmit}
+                    />
+                  )}
+                </>
+              ) : null}
 
-              {renderVote(data.voteId)}
+              {/* {renderVote(data.voteId)} */}
 
               <p
                 style={{
@@ -253,110 +267,29 @@ export default function CommunityPost() {
               </p>
             </div>
             <Comment props={{ postId: postId, type: "co" }} />
-            <ParentsComment
-              props={{ postId: postId, commentList: data.commentList }}
-            />
-          </div>
-          <div className={style.content}>
-            <p
-              dangerouslySetInnerHTML={{ __html: removePTags(data.content) }}
-            />
-            {data.voteId ? (
-              <>
-                {isResult ? (
-                  <VoteResult chartData={voteResult} />
-                ) : (
-                  <VoteWrite
-                    voteId={data.voteId}
-                    postId={votePostId}
-                    setSubmit={setVoteSubmit}
-                  />
-                )}
-              </>
+            {data.commentList ? (
+              <ParentsComment
+                props={{ postId: postId, commentList: data.commentList }}
+              />
             ) : null}
-
-            {/* {renderVote(data.voteId)} */}
-
-            <p
-              style={{
-                marginTop: "100px",
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              <div>
-                조회수 <span style={{ fontWeight: "bold" }}>{data.count}</span>
-                <span style={{ color: "#ddd" }}> | </span>
-                댓글{" "}
-                <span style={{ fontWeight: "bold" }}>{data.commentSize}</span>
-              </div>
-
-              <div>
-                {isAuthor ? (
-                  <>
-                    <Link
-                      to={"/editCommunityPost"}
-                      state={{ surveyId: data.surveyId, postId: postId }}
-                    >
-                      <span
-                        style={{ cursor: "pointer", fontSize: "14px" }}
-                        onClick={handleOpenModal}
-                      >
-                        수정
-                      </span>
-                    </Link>
-                    <span> | </span>
-                    <span
-                      style={{ cursor: "pointer", fontSize: "14px" }}
-                      onClick={handleDeletePost}
-                    >
-                      삭제
-                    </span>
-                    <span> | </span>
-                  </>
-                ) : null}
-                <span
-                  style={{ cursor: "pointer", fontSize: "14px" }}
-                  onClick={handleOpenModal}
-                >
-                  신고
-                </span>
-                {/* 모달 */}
-                {isModalOpen && (
-                  <ClaimReasonModal
-                    onSelect={handleSelectReasons}
-                    onClose={handleCloseModal}
-                    isModalOpen={isModalOpen}
-                    props={"post"}
-                    id={postId}
-                  />
-                )}
-              </div>
-            </p>
           </div>
-          <Comment props={{ postId: postId, type: "co" }} />
-          {data.commentList ? (
-            <ParentsComment
-              props={{ postId: postId, commentList: data.commentList }}
-            />
-          ) : null}
+          <div style={{ textAlign: "center" }}>
+            <Link to={"/community"}>
+              <Button
+                variant="contained"
+                href="#contained-buttons"
+                sx={{
+                  padding: "11.5px 30px",
+                  backgroundColor: "#243579",
+                  fontWeight: "bold",
+                }}
+              >
+                목록으로
+              </Button>
+            </Link>
+          </div>
+          <img src={back} alt="배경" className={style.back} />
         </div>
-        <div style={{ textAlign: "center" }}>
-          <Link to={"/community"}>
-            <Button
-              variant="contained"
-              href="#contained-buttons"
-              sx={{
-                padding: "11.5px 30px",
-                backgroundColor: "#243579",
-                fontWeight: "bold",
-              }}
-            >
-              목록으로
-            </Button>
-          </Link>
-        </div>
-        <img src={back} alt="배경" className={style.back} />
       </div>
     </>
   );
