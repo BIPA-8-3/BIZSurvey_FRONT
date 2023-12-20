@@ -7,7 +7,7 @@ import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle"
 import QuestionComp from "../../components/survey/surveyForm/QuestionComp";
 import style from "../../style/survey/CreatePage.module.css";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { call } from "../workspace/api";
+import call from "../workspace/api";
 import { useWorkspaceContext } from "../workspace/WorkspaceContext";
 import { useNavigate } from "react-router-dom";
 

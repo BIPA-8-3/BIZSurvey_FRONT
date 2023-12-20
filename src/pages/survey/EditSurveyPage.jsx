@@ -8,7 +8,7 @@ import style from "../../style/survey/EditSurveyPage.module.css";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { call } from "../workspace/api";
+import call from "../workspace/api";
 
 export default function EditSurveyPage() {
   const navigate = useNavigate();

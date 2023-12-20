@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import SurveyTitle from "../SurveyTitle";
 import SurveyPostSelect from "./SurvePostSelect";
 import { useEffect } from "react";
-import { call } from "../../../../pages/workspace/api";
+import call from "../../../../pages/workspace/api";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import { getSharedSurveyHistory } from "../../../../pages/workspace/api";
 import PersonalResult from "./PersonalResult";

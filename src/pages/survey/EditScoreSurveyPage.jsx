@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle";
 import ScoreQuestion from "../../components/survey/surveyForm/ScoreQuestion";
 import style from "../../style/survey/EditSurveyPage.module.css";
-import { call } from "../workspace/api";
+import call from "../workspace/api";
 
 export default function EditScoreSurveyPage() {
   const navigate = useNavigate();
