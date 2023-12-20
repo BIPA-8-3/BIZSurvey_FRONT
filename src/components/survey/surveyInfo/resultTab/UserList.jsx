@@ -1,9 +1,4 @@
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import { FixedSizeList } from "react-window";
 import style from "../../../../style/survey/UserLIst.module.css";
-import { useState } from "react";
 
 export default function UserList({ userList, setUser, sharedType }) {
   return (

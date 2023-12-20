@@ -15,7 +15,7 @@ import Loader from "../../pages/loader/Loader";
 import axios from "axios";
 import BizModal from "../common/BizModal";
 import ClaimReasonModal from "../common/ClaimReasonModal";
-import call from '../../pages/workspace/api';
+import call from "../../pages/workspace/api";
 import { LoginContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 
@@ -23,13 +23,42 @@ export default function CommunityPost() {
   const fadeIn = useFadeIn();
   const [isAvailable, setIsAvailable] = useState(true);
   const location = useLocation();
-  let postId = location.state.postId;
+  // let postId = location.state.postId;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const userInfo = useContext(LoginContext);
   const [isAuthor, setIsAuthor] = useState(false);
+  const [postId, setPostId] = useState(0);
+
+  useEffect(() => {
+    // 데이터를 가져오는 함수
+    const post = location.state.postId;
+    setPostId(post);
+  }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        call("/s-community/showPost/" + postId, "GET").then((data) => {
+          console.log("리스폰스 : " + JSON.stringify(data));
+          if (data.reported === 1) {
+            alert("신고당한 게시물입니다.");
+            navigate("/");
+          }
+          setData(data);
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false); // 데이터 로딩이 끝났음을 표시
+      }
+    };
+    if (postId != 0) {
+      fetchData(); // 함수 호출
+    }
+  }, [postId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,29 +80,6 @@ export default function CommunityPost() {
 
     fetchData();
   }, [data]);
-
-  useEffect(() => {
-    // 데이터를 가져오는 함수
-    const fetchData = async () => {
-      try {
-        call("/s-community/showPost/" + postId, "GET")
-        .then((data) => {
-          console.log("리스폰스 : " + JSON.stringify(data));
-          if (data.reported === 1) {
-            alert("신고당한 게시물입니다.");
-            navigate("/");
-          }
-          setData(data);
-        });
-        
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false); // 데이터 로딩이 끝났음을 표시
-      }
-    };
-    fetchData(); // 함수 호출
-  }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
 
   if (loading) {
     return (
@@ -98,15 +104,21 @@ export default function CommunityPost() {
     console.log("Selected Reasons:", selectedReasons);
   };
 
-  const removePTags = (html) => {
-    // html이 유효한 값이 아니면 빈 문자열 반환
-    if (html === undefined || html === null) {
-      return "";
-    }
-  
-    const withoutPTags = html.replace(/<p>/g, "").replace(/<\/p>/g, "");
-    return withoutPTags;
-  };
+  // const removePTags = (html) => {
+  //   // 정규식을 사용하여 <p></p> 태그를 제거합니다.
+  //   const withoutPTags = html.replace(/<p>/g, "").replace(/<\/p>/g, "");
+  //   return withoutPTags;
+  // };
+
+  // const removePTags = (html) => {
+  //   // html이 유효한 값이 아니면 빈 문자열 반환
+  //   if (html === undefined || html === null) {
+  //     return "";
+  //   }
+
+  //   const withoutPTags = html.replace(/<p>/g, "").replace(/<\/p>/g, "");
+  //   return withoutPTags;
+  // };
 
   function renderAccess() {
     if (data.canAccess === "대기") {
@@ -155,7 +167,7 @@ export default function CommunityPost() {
           </div>
         </div>
         <div className={style.content}>
-          <p dangerouslySetInnerHTML={{ __html: removePTags(data.content) }} />
+          <p dangerouslySetInnerHTML={{ __html: data.content }} />
           <div className={style.surveyBtnWrap}>
             {isAvailable ? (
               <Link to={"/communitySurveyWrite"} state={{ postId: postId }}>

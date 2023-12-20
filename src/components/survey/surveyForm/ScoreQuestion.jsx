@@ -1,21 +1,13 @@
-import OptionSelect from "./OptionSelect";
-import RequiredButton from "./RequiredButton";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
-import { useEffect, useState } from "react";
-import ScoreChoiceOption from "./score/ScoreChoiceOption";
-import TextOption from "./options/TextOption";
-import FileOption from "./options/FileOption";
-import DateOption from "./options/DateOption";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
 import * as React from "react";
-import style from "../../../style/survey/QuestionComp.module.css";
 import { MdDragIndicator } from "react-icons/md";
+import style from "../../../style/survey/QuestionComp.module.css";
+import RequiredButton from "./RequiredButton";
+import ScoreChoiceOption from "./score/ScoreChoiceOption";
 import ScoreOptionSelect from "./score/ScoreOptionSelect";
-import IconWithText from "../../common/IconWithText";
-import { LuCheckSquare } from "react-icons/lu";
-import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 export default function ScoreQuestion({
   index,

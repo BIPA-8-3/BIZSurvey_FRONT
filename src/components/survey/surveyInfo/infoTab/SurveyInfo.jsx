@@ -1,21 +1,21 @@
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useContext } from "react";
+import { IoArrowBackSharp } from "react-icons/io5";
+import { Link, useNavigate } from "react-router-dom";
+import call from "../../../../pages/workspace/api";
+import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import style from "../../../../style/survey/SurveyInfo.module.css";
+import SurveyTitle from "../SurveyTitle";
 import QuestionInfo from "./QuestionInfo";
 import ScoreQuestionInfo from "./ScoreQuestionInfo";
-import SurveyTitle from "../SurveyTitle";
-import { Link, useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
-import { call } from "../../../../pages/survey/Login";
-import { IoArrowBackSharp } from "react-icons/io5";
 
 import IconButton from "@mui/material/IconButton";
 
 export default function SurveyInfo() {
   const { survey } = useContext(SurveyContext);
+
   const navigate = useNavigate();
 
   const { surveyId, title, content, surveyType, questions } = survey;
@@ -67,13 +67,19 @@ export default function SurveyInfo() {
             </Button> */}
             {surveyType === "NORMAL" ? (
               <Link to={"/workspace/edit"} state={{ surveyId: surveyId }}>
-                <Button variant="outlined" sx={{ color: "#243579", borderColor: "#243579" }}>
+                <Button
+                  variant="outlined"
+                  sx={{ color: "#243579", borderColor: "#243579" }}
+                >
                   수정
                 </Button>
               </Link>
             ) : (
               <Link to={"/workspace/editscore"} state={{ surveyId: surveyId }}>
-                <Button variant="outlined" sx={{ color: "#243579", borderColor: "#243579" }}>
+                <Button
+                  variant="outlined"
+                  sx={{ color: "#243579", borderColor: "#243579" }}
+                >
                   수정
                 </Button>
               </Link>

@@ -13,6 +13,7 @@ import CreateVote from "./CreateVote";
 import RegisterVote from "./RegisterVote";
 import { useNavigate, useLocation } from "react-router-dom";
 import Loader from "../../pages/loader/Loader";
+import call from "../../pages/workspace/api";
 
 
 // 가상의 서버 통신 함수 (실제로는 서버와의 통신을 구현해야 함)
@@ -28,11 +29,62 @@ export default function CommunityWrite() {
   const location = useLocation();
   let postId = location.state.postId;
 
+  const [voteTitle, setVoteTitle] = useState("");
+  const [voteOptions, setVoteOptions] = useState([""]);
+  const [hasVote, setHasVote] = useState(false);
+  const [voteId, setVoteId] = useState(0);
+
   //   const changeTitle = (e) => {
   //     quillRef = quillRef.current;
 
   //     setContent(e.target.value);
   //   }
+
+  useEffect(() => {
+    return () => {
+      if (voteId !== 0) {
+        call("/community/", "DELETE")
+          .then((data) => console.log(data))
+          .catch((error) => console.log(error));
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (hasVote) {
+      handleSubmitVote();
+    } else {
+      if (voteId !== 0) {
+        handleDeleteVote();
+      }
+    }
+  }, [hasVote]);
+
+  const handleSubmitVote = async () => {
+    let newAnswers = [];
+    voteOptions.map((option, index) => {
+      let ans = { answer: option };
+      return newAnswers.push(ans);
+    });
+
+    const data = {
+      voteQuestion: voteTitle,
+      voteAnswer: newAnswers,
+    };
+
+    const voteId = await call(`/community/createVote`, "POST", data);
+    console.log(voteId);
+    setVoteId(voteId);
+    // handleClose();
+  };
+
+  const handleDeleteVote = async () => {
+    const response = await call(`/community/deleteVote/${voteId}`, "DELETE");
+    console.log("여기삭제들어옴", response);
+    setVoteTitle("");
+    setVoteOptions([""]);
+    setVoteId(0);
+  };
 
   const imageHandler = () => {
     console.log("에디터에서 이미지 버튼을 클릭하면 이 핸들러가 시작됩니다!");
@@ -109,16 +161,38 @@ export default function CommunityWrite() {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/community/showPost/" + postId);
+        const data = await call(`/community/showPost/${postId}`, "GET");
 
-        if (response.data.reported === 1) {
+        if (data.reported === 1) {
           alert("신고당한 게시물입니다.");
           navigate("/community");
         }
 
-        console.log("리스폰스 : " + JSON.stringify(response.data));
-        setTitle(response.data.title);
-        setContent(response.data.content);
+        console.log("리스폰스 : " + JSON.stringify(data));
+        setTitle(data.title);
+        setContent(data.content);
+
+        // {
+        //   voteTitle:'',
+        //   answerList: [
+        //     {
+        //       voteAnswerId:0,
+        //       answer:'',
+        //     }
+        //   ]
+        // }
+
+        if (data.voteId !== null || data.voteId !== undefined) {
+          const vote = await call(`/community/${postId}/showVoteAnswer/${data.voteId}`, "GET");
+          setVoteTitle(vote.voteTitle);
+          let newArr = [];
+          vote.answerList.map((option) => {
+            return newArr.push(option.answer);
+          });
+          setVoteId(data.voteId);
+          setVoteOptions(newArr);
+          setHasVote(true);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -157,21 +231,40 @@ export default function CommunityWrite() {
     alert(JSON.stringify(title));
     alert(JSON.stringify(content));
 
-    axios
-      .post("http://localhost:8080/community/createPost", {
+    if (voteId !== 0) {
+      call(`/community/updatePost/${postId}`, "PATCH", {
         title: title,
         content: content,
-        imageUrlList: imageSrcArray,
+        voteId: voteId,
+        imgUrlList: imageSrcArray,
       })
-      .then((response) => {
-        console.log(response.data);
-        let postId = response.data;
+        .then((data) => setVoteId(0))
+        .catch((error) => console.log(error));
+    } else {
+      call(`/community/updatePost/${postId}`, "PATCH", {
+        title: title,
+        content: content,
+        imgUrlList: imageSrcArray,
+      })
+        .then((data) => console.log(data))
+        .catch((error) => console.log(error));
+    }
 
-        navigate("/communityDetail", { state: { postId: postId } });
-      })
-      .catch((error) => {
-        console.error("생성 실패", error);
-      });
+    // axios
+    //   .post("http://localhost:8080/community/updatePost", {
+    //     title: title,
+    //     content: content,
+    //     imageUrlList: imageSrcArray,
+    //   })
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     let postId = response.data;
+
+    //     navigate("/communityDetail", { state: { postId: postId } });
+    //   })
+    //   .catch((error) => {
+    //     console.error("생성 실패", error);
+    //   });
   };
 
   const formats = ["header", "bold", "italic", "underline", "strike", "blockquote", "image"];
@@ -222,8 +315,12 @@ export default function CommunityWrite() {
           <p>비즈서베이의 투표 기능을 이용해보세요!</p>
           <p>원하는 투표 내용을 직접 만들어 회원들의 의견을 확인할 수 있습니다</p>
           {/* 투표가 만들어 졌을때 컴포넌트 */}
-          <IoIosCloseCircle className={style.voteCloseBtn} />
-          <RegisterVote />
+          {hasVote ? (
+            <>
+              <IoIosCloseCircle className={style.voteCloseBtn} onClick={() => setHasVote(false)} />
+              <RegisterVote voteTitle={voteTitle} voteOptions={voteOptions} />
+            </>
+          ) : null}
           {/* 투표가 만들어 졌을때 컴포넌트 */}
           <button onClick={handleOpen} style={{ cursor: "pointer" }}>
             투표 만들기
@@ -233,10 +330,24 @@ export default function CommunityWrite() {
       <div className={`${style.modalWrap} ${open ? style.fadeIn : ""}`} onClick={handleClose}>
         <div className={style.modal} onClick={(e) => e.stopPropagation()}>
           <p className={style.title}>투표 추가하기</p>
-          <CreateVote handleClose={handleClose} />
+          <CreateVote
+            setVote={setHasVote}
+            handleClose={handleClose}
+            setTitle={setVoteTitle}
+            setOptions={setVoteOptions}
+            voteTitle={voteTitle}
+            voteOptions={voteOptions}
+          />
         </div>
       </div>
-      <div style={{ textAlign: "center", width: "1000px", margin: "0 auto", paddingTop: "80px" }}>
+      <div
+        style={{
+          textAlign: "center",
+          width: "1000px",
+          margin: "0 auto",
+          paddingTop: "80px",
+        }}
+      >
         <Link to={"/community"}>
           <Button
             variant="outlined"

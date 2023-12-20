@@ -1,19 +1,14 @@
 import { useContext, useState } from "react";
 import SurveyTitle from "../SurveyTitle";
 import SurveyPostSelect from "./SurvePostSelect";
-import IconWithText from "../../../common/IconWithText";
-import { IoArrowBackSharp } from "react-icons/io5";
-import { IoMdDownload } from "react-icons/io";
-import Button from "@mui/material/Button";
-
 import { useEffect } from "react";
+import call from "../../../../pages/workspace/api";
+import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
+import { getSharedSurveyHistory } from "../../../../pages/workspace/api";
 import PersonalResult from "./PersonalResult";
 import PostResult from "./PostResult";
-import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
-import { call } from "../../../../pages/survey/Login";
-import ScorePostResult from "./ScorePostResult";
 import ScorePersonalResult from "./ScorePersonalResult";
-import { getSharedSurveyHistory } from "../../../../pages/workspace/api";
+import ScorePostResult from "./ScorePostResult";
 
 export default function ResultView() {
   const { survey } = useContext(SurveyContext);

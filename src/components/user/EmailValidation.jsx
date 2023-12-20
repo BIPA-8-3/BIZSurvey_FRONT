@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import call from '../../pages/workspace/api';
 

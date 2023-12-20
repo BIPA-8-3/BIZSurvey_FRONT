@@ -8,7 +8,6 @@ import { FaPen } from 'react-icons/fa';
 import CircularProgress from '@mui/material/CircularProgress';
 import { LoginContext, LoginFunContext } from "../../App";
 import call from '../../pages/workspace/api';
-import axios from 'axios';
 const getLinkStyle = (currentPage, path) => {
   return {
     fontWeight: currentPage === path ? 'bold' : 'normal',

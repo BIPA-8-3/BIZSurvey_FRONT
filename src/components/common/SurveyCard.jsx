@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "../../style/Card.module.css";
 import "../../style/Common.css";
 import { styled } from "@mui/material/styles";
@@ -22,6 +22,9 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function SurveyCard({ data }) {
+  useEffect(() => {
+    console.log("여기야!!!!!!!!!!!!!!!!!!!!", data);
+  }, [data]);
 
   const [hoveredCard, setHoveredCard] = useState(null);
 
@@ -33,28 +36,28 @@ function SurveyCard({ data }) {
     setHoveredCard(null);
   };
 
-  function returnImgUrl(imageUrl){// cardData.thumbImageUrl
-      if(imageUrl === "" || imageUrl === null){
-        return logo1;
-      }else{
-        return imageUrl;
-      }
+  function returnImgUrl(imageUrl) {
+    // cardData.thumbImageUrl
+    if (imageUrl === "" || imageUrl === null) {
+      return logo1;
+    } else {
+      return imageUrl;
+    }
   }
 
-  function renderProfil(profile){
-    if(profile === null){
+  function renderProfil(profile) {
+    if (profile === null) {
       return logo;
-    }else{
+    } else {
       let prefix = "https://";
-      console.log("프로필 : " + prefix + profile)
+      console.log("프로필 : " + prefix + profile);
       return prefix + profile;
     }
   }
 
-
   const renderCard = (cardData) => (
     <Grid item xs={12} md={6} lg={3} key={cardData.postId}>
-      <Link to={'/surveyCommunityDetail'} state={{postId : cardData.postId}}>
+      <Link to={"/surveyCommunityDetail"} state={{ postId: cardData.postId }}>
         <div
           key={cardData.postId}
           className={`${style.cardWrap}`}
@@ -82,27 +85,63 @@ function SurveyCard({ data }) {
               <span className={style.nickname}>{cardData.nickname}</span>
             </div>
             <h1>{cardData.title}</h1>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div className={style.count}>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
-                        <BiComment />
-                        <span style={{ margin: '0 5px 0 5px' }}>{cardData.commentSize}</span>
-                    </div>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
-                        <IoPersonOutline />
-                        <span style={{ margin: '0 5px 0 5px' }}>{cardData.participateCount}</span>
-                    </div>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
-                        <MdOutlineRemoveRedEye />
-                        <span style={{ margin: '0 5px 0 5px' }}>{cardData.count}</span>
-                    </div>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div className={style.count}>
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "12px",
+                  }}
+                >
+                  <BiComment />
+                  <span style={{ margin: "0 5px 0 5px" }}>
+                    {cardData.commentSize}
+                  </span>
                 </div>
-                <div className={style.count}>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
-                        <MdDateRange />
-                        <span style={{ margin: '0 5px 0 5px' }}>{cardData.canAccess}</span>
-                    </div>
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "12px",
+                  }}
+                >
+                  <IoPersonOutline />
+                  <span style={{ margin: "0 5px 0 5px" }}>
+                    {cardData.participateCount}
+                  </span>
                 </div>
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "12px",
+                  }}
+                >
+                  <MdOutlineRemoveRedEye />
+                  <span style={{ margin: "0 5px 0 5px" }}>
+                    {cardData.count}
+                  </span>
+                </div>
+              </div>
+              <div className={style.count}>
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "12px",
+                  }}
+                >
+                  <MdDateRange />
+                  <span style={{ margin: "0 5px 0 5px" }}>
+                    {cardData.canAccess}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -111,7 +150,7 @@ function SurveyCard({ data }) {
   );
   return (
     <Grid container spacing={4}>
-      {data.map(renderCard)}
+      {data && data.map(renderCard)}
     </Grid>
   );
 }

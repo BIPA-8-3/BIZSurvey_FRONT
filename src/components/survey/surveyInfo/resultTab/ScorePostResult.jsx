@@ -1,23 +1,16 @@
-import style from "../../../../style/survey/PostResult.module.css";
 import * as React from "react";
 import { useState } from "react";
-import OptionBox from "./totalOptions/OptionBox";
-import TextList from "./totalOptions/TextList";
+import { IoMdDownload } from "react-icons/io";
 import QuestionBox from "../QuestionBox";
 import QuestionTitle from "../QuestionTitle";
-import Chart from "../../../common/Chart";
-import { IoMdDownload } from "react-icons/io";
-
-import FileList from "./totalOptions/FileList";
-import { call } from "../../../../pages/survey/Login";
-import { useEffect } from "react";
+import OptionBox from "./totalOptions/OptionBox";
 import Button from "@mui/material/Button";
-
+import { useEffect } from "react";
+import call from "../../../../pages/workspace/api";
 import { useContext } from "react";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
-import SurveyQuestion from "../../../surveyCommunity/survey/SurveyQuestion";
-import BarChart from "../../../common/BarChart";
 import { getSharedSurveyScoreResult } from "../../../../pages/workspace/api";
+import BarChart from "../../../common/BarChart";
 
 export default function ScorePostResult({ sharedId, sharedType }) {
   const { survey } = useContext(SurveyContext);

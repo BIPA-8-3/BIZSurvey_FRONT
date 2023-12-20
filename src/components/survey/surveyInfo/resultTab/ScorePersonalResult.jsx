@@ -1,20 +1,16 @@
-import UserList from "./UserList";
-import OptionBox from "./totalOptions/OptionBox";
-import TextList, { Text } from "./totalOptions/TextList";
-import QuestionBox from "../QuestionBox";
-import QuestionTitle from "../QuestionTitle";
-import ChoiceField from "../../fields/ChoiceField";
-import { File } from "./totalOptions/FileList";
-import DateInfo from "../infoOptions/DateInfo";
 import { useContext, useEffect, useState } from "react";
-import { call } from "../../../../pages/survey/Login";
+import call from "../../../../pages/workspace/api";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
-import ScoreResultOption from "./personalOption/ScoreResultOption";
-import style from "../../../../style/survey/ScorePersonalResult.module.css";
 import {
   getSharedContactList,
   getdPersonalScoreResult,
 } from "../../../../pages/workspace/api";
+import style from "../../../../style/survey/ScorePersonalResult.module.css";
+import QuestionBox from "../QuestionBox";
+import QuestionTitle from "../QuestionTitle";
+import UserList from "./UserList";
+import ScoreResultOption from "./personalOption/ScoreResultOption";
+import OptionBox from "./totalOptions/OptionBox";
 
 export default function ScorePersonalResult({ sharedId, sharedType }) {
   const { survey } = useContext(SurveyContext);

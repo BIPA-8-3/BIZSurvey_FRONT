@@ -1,7 +1,4 @@
-import { useState } from "react";
 import style from "../../../style/survey/SurveyTitle.module.css";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import ButtonTab from "./ButtonTab";
 
 export default function SurveyTitle({

@@ -7,9 +7,8 @@ import FormControl from '@mui/material/FormControl';
 import back from '../../assets/img/back.png';
 import useFadeIn from '../../style/useFadeIn';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Axios from 'axios';
 import call from '../../pages/workspace/api';
-
+import useApiCall, { additional } from "../api/ApiCall";
 function AdditionalJoin() {
   const [isNinknameCheck, setNinknameCheck] = useState(false);
   const [nickname, setNickname] = useState('');
@@ -42,7 +41,7 @@ function AdditionalJoin() {
     call('/signup/check-nickname', 'POST', {
       nickname: nickname
     }).then((response) => {
-      setNicknameSuccess(response.data)
+      setNicknameSuccess(response)
       setNicknameError('');
       setNinknameCheck(true)
     }).catch((error) =>{
@@ -68,30 +67,15 @@ function AdditionalJoin() {
     e.preventDefault(); 
     
     if(isNinknameCheck){
-      try{
-        const response = await Axios.patch('/signup/additional', {
-          id : data.id,
-          email : data.email,
-          nickname : nickname,
-          birthdate : birthdate,
-          planSubscribe : data.planSubscribe
-        })
-
-        if (response.status === 200) {
-          const headers = response.headers;
-          const authorization = headers['authorization'];
-          const refreshAuthorization = headers['refreshauthorization'];
-    
-          saveAccessTokenToLocalStorage(authorization);
-          saveRefreshTokenToLocalStorage(refreshAuthorization);
-          navigate('/')
-        }
-
-        alert(response.data)
-      }catch(error){
-
-      }
-      
+      additional({
+        id : data.id,
+        email : data.email,
+        nickname : nickname,
+        birthdate : birthdate,
+        planSubscribe : data.planSubscribe
+      }).then(() => {
+        navigate("/")
+      })
     }
     else if(nickname == ""){
       setNicknameError("필수 정보입니다.")
