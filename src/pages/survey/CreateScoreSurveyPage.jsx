@@ -8,11 +8,13 @@ import EditSurveyTitle from "../../components/survey/surveyForm/EditSurveyTitle"
 import ScoreQuestion from "../../components/survey/surveyForm/ScoreQuestion";
 import style from "../../style/survey/CreatePage.module.css";
 import call from "../workspace/api";
+import { useWorkspaceContext } from "../workspace/WorkspaceContext";
+import { useNavigate } from "react-router-dom";
 
-export default function CreateScoreSurveyPage({
-  selectedWorkspaceId,
-  setSectionNum,
-}) {
+export default function CreateScoreSurveyPage() {
+  const { selectedWorkspaceId } = useWorkspaceContext();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     title: "제목",
     content: "설명",
@@ -84,8 +86,10 @@ export default function CreateScoreSurveyPage({
     surveyData.questions = questionData;
 
     console.log(surveyData);
-    console.log("여기워크스페이스아이디!!!", selectedWorkspaceId);
-    // call("/survey/" + selectedWorkspaceId, "POST", surveyData);
+
+    call("/survey/" + selectedWorkspaceId, "POST", surveyData).then((e) => {
+      navigate("/workspace");
+    });
   };
 
   const changeQuestionTitle = (id, text) => {
@@ -149,9 +153,7 @@ export default function CreateScoreSurveyPage({
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id
-          ? { ...question, isRequired: !question.isRequired }
-          : question
+        index === id ? { ...question, isRequired: !question.isRequired } : question
       );
       return result;
     });
@@ -284,16 +286,9 @@ export default function CreateScoreSurveyPage({
                   className={style.questionList}
                 >
                   {questions.map((questionData, index) => (
-                    <Draggable
-                      key={index}
-                      draggableId={`question-${index}`}
-                      index={index}
-                    >
+                    <Draggable key={index} draggableId={`question-${index}`} index={index}>
                       {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                        >
+                        <div ref={provided.innerRef} {...provided.draggableProps}>
                           <div className={style.question}>
                             <ScoreQuestion
                               key={index}
@@ -335,7 +330,7 @@ export default function CreateScoreSurveyPage({
                 variant="outlined"
                 sx={{ color: "#243579", borderColor: "#243579" }}
                 onClick={(e) => {
-                  setSectionNum(0);
+                  navigate("/workspace");
                 }}
               >
                 취소
