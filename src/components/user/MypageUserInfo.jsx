@@ -23,7 +23,6 @@ function MypageUserInfo({userData, setEditState}) {
   
 
   return (
-    
       <div className={style.mypageUserInfoWrap}>
           <div>
             <ul className={style.mypageUserInfo}>

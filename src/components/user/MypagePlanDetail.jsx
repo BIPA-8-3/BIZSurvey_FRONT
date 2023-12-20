@@ -11,6 +11,7 @@ import { LuCheck } from "react-icons/lu";
 import Loader from "../../pages/loader/Loader";
 import IconWithText from "../common/IconWithText";
 import { LoginContext, LoginFunContext } from "../../App";
+import useApiCall, {planUpdate} from "../api/ApiCall";
 
 export default function MypagePlanDetail() {
   const navigate = useNavigate();
@@ -75,12 +76,8 @@ export default function MypagePlanDetail() {
 
     
     if (userInfos.plan === "커뮤니티 회원") {
-      // get
-      console.log("여기ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ");
-
       call("/workspace/personal", "GET")
         .then((data) => {
-          console.log("asssssssssssss", data);
           if (!data) {
             const newData = {
               workspaceName: userInfos.nickname + "님 워크스페이스",
@@ -93,67 +90,36 @@ export default function MypagePlanDetail() {
         .then(async(data) => {
           const name =
             planName === "개인 플랜" ? "NORMAL_SUBSCRIBE" : "COMPANY_SUBSCRIBE";
-
-          try{
-            const response = await axios.patch(`/plan/${name}`, {}, {
-                headers: {
-                  Authorization: localStorage.getItem("accessToken")
-                }
-            });
-      
-            if (response.status === 200) {
-              const headers = response.headers;
-              const authorization = headers["authorization"];
-              saveAccessTokenToLocalStorage(authorization);
-              
-              localStorage.removeItem("userInfo");
+            planUpdate(name).then(() => {
               call("/user/info", "GET")
-                .then((data) => {
-                  
-                  setUserInfo(data);
-                  //navigate("/");
-                })
-                .catch((error) => {
-                  console.error("사용자 정보 가져오기 실패:", error);
-                  return;
-                });
-              
-              // navigate("/");
-            }
-          }catch(error){
-              alert(error)
-          }
+              .then((data) => {
+                console.log(data)
+                setUserInfo(data);
+                navigate("/mypagePlan")
+              })
+              .catch((error) => {
+                console.error("사용자 정보 가져오기 실패:", error);
+                return;
+              });
+            })
         })
         .catch((error) => console.log(error))
         .finally(() => window.location.reload());
     } else {
       const name =
         planName === "개인 플랜" ? "NORMAL_SUBSCRIBE" : "COMPANY_SUBSCRIBE";
-        console.log("name,,,,,,,,,", name);
-
-        axios.patch(`/plan/${name}`, {}, {
-            headers: {
-              Authorization: localStorage.getItem("accessToken")
-            }
-        }).then((response) => {
-                const headers = response.headers;
-                const authorization = headers["authorization"];
-                saveAccessTokenToLocalStorage(authorization);
-                
-                localStorage.removeItem("userInfo");
-                call("/user/info", "GET")
-                .then((data) => {
-                  
-                  setUserInfo(data);
-                  
-                  //navigate("/");
-                })
-                .catch((error) => {
-                  console.error("사용자 정보 가져오기 실패:", error);
-                  return;
-                });
-                
-        });
+        planUpdate(name).then(() => {
+          call("/user/info", "GET")
+          .then((data) => {
+            console.log(data)
+            setUserInfo(data);
+            navigate("/mypagePlan")
+          })
+          .catch((error) => {
+            console.error("사용자 정보 가져오기 실패:", error);
+            return;
+          });
+        })
   
     }
     setLoading(false);
@@ -178,33 +144,21 @@ export default function MypagePlanDetail() {
     //     window.location.reload();
     //   });
 
-    try{
-      const response = await axios.patch(`/plan/COMMUNITY`, {}, {
-          headers: {
-            Authorization: localStorage.getItem("accessToken")
-          }
+    planUpdate("COMMUNITY").then(() => {
+      call("/user/info", "GET")
+      .then((data) => {
+        console.log(data)
+        setUserInfo(data);
+        setLoading(false);
+        navigate("/mypagePlan")
+      }).then(() =>{
+        
+      })
+      .catch((error) => {
+        console.error("사용자 정보 가져오기 실패:", error);
+        return;
       });
-
-      if (response.status === 200) {
-        const headers = response.headers;
-        const authorization = headers["authorization"];
-        saveAccessTokenToLocalStorage(authorization);
-        localStorage.removeItem("userInfo");
-          call("/user/info", "GET")
-                .then((data) => {
-                  
-                  setUserInfo(data);
-                  // window.location.reload();
-                  //navigate("/");
-                })
-                .catch((error) => {
-                  console.error("사용자 정보 가져오기 실패:", error);
-                  return;
-                });
-      }
-    }catch(error){
-        alert(error)
-    }
+    })
   };
 
   return (
