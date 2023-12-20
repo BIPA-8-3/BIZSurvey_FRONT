@@ -50,6 +50,18 @@ const ParentsComment = ({ props }) => {
     console.log("Selected Reasons:", selectedReasons);
   };
 
+  function renderProfil(profile){
+    if(profile === null){
+      return logo;
+    }else{
+      let prefix = "https://";
+      console.log("프로필 : " + prefix + profile)
+      return prefix + profile;
+    }
+  }
+
+
+
   const renderChildComment = (childCommentList) => {
     if (childCommentList && childCommentList.length > 0) {
       return (
@@ -64,7 +76,7 @@ const ParentsComment = ({ props }) => {
                   <div className={style.writeWrap}>
                     <div className={style.writer}>
                       <div>
-                        <img src={logo} />
+                        <img src={renderProfil(childItem.thumbImageUrl)} />
                       </div>
                     </div>
                     <div className={style.commentFormWrap}>
@@ -111,7 +123,7 @@ const ParentsComment = ({ props }) => {
 
   const renderChildCommentForm = (commentId, postId) => {
     if (showChildCommentForm[commentId]) {
-      alert(commentId + ", " + postId);
+      
       return (
         <ChildCommentForm
           props={{ postId: postId, commentId: commentId, type: type }}
@@ -135,7 +147,7 @@ const ParentsComment = ({ props }) => {
           <div className={style.writeWrap}>
             <div className={style.writer}>
               <div>
-                <img src={logo} alt="Profile" />
+                <img src={renderProfil(item.thumbImageUrl)} alt="Profile" />
               </div>
             </div>
             <div className={style.commentFormWrap}>

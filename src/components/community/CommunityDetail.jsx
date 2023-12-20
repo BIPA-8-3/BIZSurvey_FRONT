@@ -161,6 +161,16 @@ export default function CommunityPost() {
     }
   };
 
+  function renderProfil(profile){
+    if(profile === null){
+      return logo;
+    }else{
+      let prefix = "https://";
+      console.log("프로필 : " + prefix + profile)
+      return prefix + profile;
+    }
+  }
+
   return (
     <>
       <div className={`fade-in ${fadeIn ? "active" : ""}`}>
@@ -172,7 +182,7 @@ export default function CommunityPost() {
                 <p style={{ textAlign: "center" }}>
                   <div className={style.profil} style={{ textAlign: "center" }}>
                     <span className={style.photo}>
-                      <img className="" src={logo} />
+                      <img className="" src={renderProfil(data.thumbImageUrl)} />
                     </span>
                     <span className={style.nickname}>{data.nickname}</span>
                   </div>
