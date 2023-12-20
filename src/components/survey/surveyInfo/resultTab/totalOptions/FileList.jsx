@@ -3,10 +3,12 @@ import { FaFileDownload } from "react-icons/fa";
 import style from "../../../../../style/survey/FileLIst.module.css";
 import IconWithText from "../../../../common/IconWithText";
 import { IoMdDownload } from "react-icons/io";
+import { getURI } from "../../../../../pages/workspace/api";
 
 export default function FileList({ files, surveyId, questionId }) {
   const zipURL =
-    "http://localhost:8080/storage/folder/bizsurvey-bucket.s3.ap-northeast-2.amazonaws.com/survey/" +
+    getURI() +
+    "/storage/folder/bizsurvey-bucket.s3.ap-northeast-2.amazonaws.com/survey/" +
     surveyId +
     "/internal-1/" +
     questionId +
@@ -63,7 +65,7 @@ export function File({ filename, url }) {
   const handleDownload = async (e, url) => {
     e.preventDefault();
     const link = document.createElement("a");
-    link.href = "http://localhost:8080/storage/file/" + url;
+    link.href = getURI() + "/storage/file/" + url;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

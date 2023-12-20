@@ -6,7 +6,7 @@ import QuestionTitle from "../QuestionTitle";
 import OptionBox from "./totalOptions/OptionBox";
 import Button from "@mui/material/Button";
 import { useEffect } from "react";
-import call from "../../../../pages/workspace/api";
+import call, { getURI } from "../../../../pages/workspace/api";
 import { useContext } from "react";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
 import { getSharedSurveyScoreResult } from "../../../../pages/workspace/api";
@@ -124,12 +124,7 @@ export default function ScorePostResult({ sharedId, sharedType }) {
         }}
       >
         <a
-          href={
-            "http://localhost:8080/survey/result/file/" +
-            sharedType +
-            "/" +
-            sharedId
-          }
+          href={getURI() + "/survey/result/file/" + sharedType + "/" + sharedId}
         >
           <Button
             // onClick={handleDownloadExcel}
