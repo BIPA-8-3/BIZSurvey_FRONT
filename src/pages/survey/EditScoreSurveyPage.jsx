@@ -176,9 +176,7 @@ export default function EditScoreSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id
-          ? { ...question, isRequired: !question.isRequired }
-          : question
+        index === id ? { ...question, isRequired: !question.isRequired } : question
       );
       return result;
     });
@@ -299,16 +297,9 @@ export default function EditScoreSurveyPage() {
                   className={style.questionList}
                 >
                   {questions.map((questionData, index) => (
-                    <Draggable
-                      key={index}
-                      draggableId={`question-${index}`}
-                      index={index}
-                    >
+                    <Draggable key={index} draggableId={`question-${index}`} index={index}>
                       {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                        >
+                        <div ref={provided.innerRef} {...provided.draggableProps}>
                           <div className={style.question}>
                             <ScoreQuestion
                               key={index}
@@ -345,10 +336,7 @@ export default function EditScoreSurveyPage() {
             <Button variant="outlined" onClick={handleGoBack}>
               취소
             </Button>
-            <Button
-              variant="contained"
-              onClick={() => handleUpdateSurvey(surveyId)}
-            >
+            <Button variant="contained" onClick={() => handleUpdateSurvey(surveyId)}>
               완료
             </Button>
           </div>

@@ -46,20 +46,6 @@ function WorkspaceHeader() {
         </Link>
         <div className={style.headerMenu}>
           <ul>
-            <Link to={"/login"}>
-              <li>
-                <div className={style.navTextBox}>
-                  <span className={style.navText}>관리자</span>
-                </div>
-              </li>
-            </Link>
-            <Link to={"/"}>
-              <li>
-                <div className={style.navTextBox}>
-                  <span className={style.navText}>연락처</span>
-                </div>
-              </li>
-            </Link>
             <Link to={"/"}>
               <li>
                 <div className={style.navIconBox}>

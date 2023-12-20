@@ -34,6 +34,12 @@ export default function SurveyPostContainer() {
     content: [],
   });
 
+  // !!!!! 삭제 X !!!!!
+  useEffect(() => {
+    acceptInvite();
+  }, []);
+  // !!!!!!!!!!!!!!!!!
+
   useEffect(() => {
     // inView가 true 일때만 실행한다.
     if (inView) {
@@ -91,9 +97,7 @@ export default function SurveyPostContainer() {
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.titleWrap}>
         <h1 className="textCenter title textBold">설문 참여</h1>
-        <p className="textCenter subTitle">
-          쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.
-        </p>
+        <p className="textCenter subTitle">쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
       </div>
       <SCommunitySearch />
       <div style={{ textAlign: "right" }}>

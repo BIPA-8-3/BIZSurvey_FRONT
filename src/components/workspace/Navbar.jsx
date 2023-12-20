@@ -62,11 +62,14 @@ function Navbar() {
         console.log("Response from server:", error.response);
       });
   };
+
   useEffect(() => {
     // 선택한 워크스페이스 ID가 없을 경우, 첫 번째 워크스페이스의 ID를 선택
     if (!selectedWorkspaceId && workspaceList.length > 0) {
       setSelectedWorkspaceId(workspaceList[0].id);
     }
+
+    console.log("여기여기: ", selectedWorkspaceId);
   }, [selectedWorkspaceId, workspaceList.length]); // workspaceList.length를 직접 의존성 배열에 추가
 
   return (
