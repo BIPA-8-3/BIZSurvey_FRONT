@@ -49,7 +49,7 @@ const adminURI = '/workspace/admin';
 
 const workspaceURI = '/workspace';
 
-const instance = axios.create({
+let instance = axios.create({
     headers: {
         "Content-Type": "application/json",
     }
@@ -77,7 +77,7 @@ export default async function call(api, method, request, file) {
         }
 
         if (file) {
-            instance.headers = {
+            config.headers = {
                 "Content-Type": "multipart/form-data",
             }
         }

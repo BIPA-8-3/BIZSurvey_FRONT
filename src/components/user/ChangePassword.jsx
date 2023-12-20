@@ -5,7 +5,6 @@ import back from '../../assets/img/back.png'
 import { useLocation, useNavigate } from "react-router-dom";
 import useFadeIn from '../../style/useFadeIn';
 import call from '../../pages/workspace/api';
-import axios from 'axios';
 
 
 function FindPassword() {
