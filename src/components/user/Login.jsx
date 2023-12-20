@@ -6,7 +6,6 @@ import Button from "@mui/material/Button";
 import back from "../../assets/img/back.png";
 import { Link } from "react-router-dom";
 import useFadeIn from "../../style/useFadeIn";
-import Axios from "axios";
 import BizModal from "../common/BizModal";
 import useApiCall, { login } from "../api/ApiCall";
 import { LoginContext, LoginFunContext } from "../../App";
@@ -60,12 +59,10 @@ function Login() {
 
   //카카오 로그인
   const loginKaKao = async () => {
-    try {
-      const respons = await Axios.get("/kakao/clientId");
-      const KakaoLoginAPI = `https://kauth.kakao.com/oauth/authorize?client_id=${respons.data.clientId}&redirect_uri=${respons.data.redirectUri}&response_type=code`;
-
+    call("/kakao/clientId", "GET").then((data)=>{
+      const KakaoLoginAPI = `https://kauth.kakao.com/oauth/authorize?client_id=${data.clientId}&redirect_uri=${data.redirectUri}&response_type=code`;
       window.location.href = KakaoLoginAPI;
-    } catch (error) {}
+    })
   };
 
   const fadeIn = useFadeIn();

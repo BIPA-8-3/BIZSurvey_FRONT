@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "../../style/admin/AdminLogin.module.css"
 import back from "../../assets/img/back.png";
-import Axios from "axios";
+import useApiCall, { adminLogin } from "../../components/api/ApiCall";
 
 export default function AdminLoginPage() {
   const navigate = useNavigate();
@@ -17,39 +17,12 @@ export default function AdminLoginPage() {
       [name]: value,
     });
   };
-
-    // 로컬 스토리지에 엑세스 토큰 저장
-    const saveAccessTokenToLocalStorage = (token) => {
-      localStorage.setItem("accessToken", token);
-    };
-  
-    // 리프레시 토큰을 로컬 스토리지에 저장
-    const saveRefreshTokenToLocalStorage = (token) => {
-      localStorage.setItem("refreshToken", token);
-    };
   
 
   const handleSubmit = async () => {
-    try {
-      const response = await Axios.post("/admin/login", formData);
-      if (response.status === 200) {
-        const headers = response.headers;
-        const authorization = headers["authorization"];
-        const refreshAuthorization = headers["refreshauthorization"];
-
-        saveAccessTokenToLocalStorage(authorization);
-        saveRefreshTokenToLocalStorage(refreshAuthorization);
-
+      adminLogin(formData).then((data) => {
         navigate("/admin/main");
-      }
-    } catch (error) {
-      console.log("실패");
-      if (error.response.data.errorCode === 403) {
-        alert(error.response.data.errorMessage);
-      } else {
-        alert("계정을 확인해주세요")
-      }
-    }
+      })
   };
   return (
     <div>
