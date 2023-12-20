@@ -7,7 +7,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaPen } from 'react-icons/fa';
 import CircularProgress from '@mui/material/CircularProgress';
 import { LoginContext, LoginFunContext } from "../../App";
-import useApiCall from "../api/ApiCall";
+import call from '../../pages/workspace/api';
 import axios from 'axios';
 const getLinkStyle = (currentPage, path) => {
   return {
@@ -24,52 +24,38 @@ function MypageHeader({ userData }) {
   const userInfo = useContext(LoginContext)
   const location = useLocation();
   const currentPage = location.pathname;
-  const { call } = useApiCall();
+
   
   const handleImageChange = async (event) => {
     setLoading(true);
     const file = event.target.files[0];
 
     
+    
 
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setSelectedImage(imageUrl);
 
-      try {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('domain', 'USER');
-      
-        await axios.post('/storage/', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
-        }).then(async(data) => {
-
-          await axios.patch('/user/profile/', {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('domain', 'USER');
+        
+        
+      call("/storage/", "POST", formData, true).then((data) =>{
+          call("/user/profile/", "patch", {
             userId : userData.id,
-            profile : data.data
-          },
-          {
-            headers: {
-              Authorization: localStorage.getItem('accessToken'),
-            },
-          }).then((data) => {
-            call("/user/info", "GET").then((data)=>{
-              console.log(data);
-              setUserInfo(data);
-            });
-            
+            profile : data
+          }).then(() =>{
+              call("/user/info", "GET").then((data)=>{
+                console.log(data);
+                setUserInfo(data);
+              });
+
+              setLoading(false);
           })
-        })
-          
-      } catch (error) {
-        console.error('클라이언트에서 오류 발생:', error);
-      } finally {
-        setLoading(false);
-        alert('프로필을 수정하였습니다');
-      }
+      })
+        
     }
   };
 

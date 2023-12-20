@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import style from '../../style/admin/AdminClaimInfo.module.css'
 import { useParams, useNavigate } from "react-router-dom";
-import axios from 'axios';
 import { IoIosArrowDropdownCircle } from "react-icons/io";
-import useApiCall from '../api/ApiCall'; 
+import call from '../../pages/workspace/api';
 function AdminClaimInfo() {
   const { id } = useParams();
   const [claimdata, setClaim] = useState({});
-  const { call } = useApiCall();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,17 +35,10 @@ function AdminClaimInfo() {
 
   const handleClaimFalse = async() => {
     if(window.confirm("신고를 반려 처리 하시겠습니까?")){
-        const response = await axios.patch(`/admin/claim/unprocessing`, 
-        {
+        call(`/admin/claim/unprocessing`, "patch", {
           claimId: claimdata.claim.id,
           postId: claimdata.claim.logicalKey,
-        },
-        {
-          headers: {
-            Authorization: localStorage.getItem('accessToken'),
-          },
-        }
-        ).then(() => {
+        }).then(() => {
           navigate('/admin/claimList');
         })
       }

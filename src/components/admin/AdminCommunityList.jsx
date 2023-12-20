@@ -3,9 +3,8 @@ import style from '../../style/admin/AdminSurveyList.module.css'
 import useFadeIn from '../../style/useFadeIn';
 import Button from '@mui/material/Button';
 import { useLocation, useNavigate, useHistory, Link } from "react-router-dom";
-import axios from 'axios';
 import { IoIosArrowDropdownCircle } from "react-icons/io";
-import useApiCall from '../api/ApiCall'; 
+import call from '../../pages/workspace/api';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -13,7 +12,6 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 function AdminCommunityList() {
     const navigate = useNavigate();
 
-    const { call } = useApiCall();
 
     const [communityList, setCommunityList] = useState([]);
     const [total, setTotal] = useState(0);

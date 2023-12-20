@@ -8,6 +8,7 @@ import back from '../../assets/img/back.png';
 import useFadeIn from '../../style/useFadeIn';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Axios from 'axios';
+import call from '../../pages/workspace/api';
 
 function AdditionalJoin() {
   const [isNinknameCheck, setNinknameCheck] = useState(false);
@@ -37,22 +38,20 @@ function AdditionalJoin() {
   }
 
   const handleNicknameCheck = async () => {
-      try {
-        if(nickname != ""){
-          const response = await Axios.post('/signup/check-nickname', {
-            nickname: nickname
-          });
-          setNicknameSuccess(response.data)
-          setNicknameError('');
-          setNinknameCheck(true)
-      }
-    }catch (error) {
+
+    call('/signup/check-nickname', 'POST', {
+      nickname: nickname
+    }).then((response) => {
+      setNicknameSuccess(response.data)
+      setNicknameError('');
+      setNinknameCheck(true)
+    }).catch((error) =>{
       if (error.response.data.errorCode === 600) {
         setNicknameError(error.response.data.errorMessage)
         setNicknameSuccess('')
         setNinknameCheck(false)
       }
-    }
+    })
   }
   
   // 로컬 스토리지에 엑세스 토큰 저장

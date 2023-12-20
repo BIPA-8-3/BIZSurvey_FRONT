@@ -84,15 +84,24 @@ function AdminClaimList() {
             </tr>
         </thead>
         <tbody>
-          {claimList.map((claimItem, index) => (
+        {claimList.length > 0 ? (
+          claimList.map((claimItem, index) => (
             <tr onClick={() => handleRowClick(`${claimItem.id}`)}>
-                <td style={{padding:'6px 2px'}}>{claimItem.id}</td>
-                <td>{claimItem.claimType}</td>
-                <td>{claimItem.claimReason}</td>
-                <td>{claimItem.userName}</td>
-                <td>{claimItem.regDate}</td>
+              <td style={{padding:'6px 2px'}}>{claimItem.id}</td>
+              <td>{claimItem.claimType}</td>
+              <td>{claimItem.claimReason}</td>
+              <td>{claimItem.userName}</td>
+              <td>{claimItem.regDate}</td>
             </tr>
-          ))}
+          ))
+        ) : (
+          <tr>
+            <td colSpan="5" style={{ textAlign: "center", padding: "10px" }}>
+              신고 내역이 없습니다.
+            </td>
+          </tr>
+        )}
+
         </tbody>
       </table>
       <div style={{width:'1200px', display:'flex', justifyContent:'center', marginTop:'50px'}}>
