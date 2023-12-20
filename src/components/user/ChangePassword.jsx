@@ -34,7 +34,6 @@ useEffect(() => {
 
 
   const handleSubmit = async () => {
-    alert(email)
     const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
     if (!passwordRegex.test(password)) {
       setPasswordError('비밀번호는 8-16자리 사이, 소문자, 숫자, 특수문자를 포함해야 합니다.');
@@ -68,13 +67,13 @@ useEffect(() => {
       <p></p>
 
       <label style={{fontSize: '10px'}}>비밀번호</label>
-      <input type='text' 
+      <input type='password'
              className={style.input}
              onChange={handlePasswordChange}/>
       {passwordError && <p style={{color:'red', fontSize:'12px', marginTop:'5px'}}>{passwordError}</p>}
       <div style={{width:'10px', height:'15px'}}></div>
       <label style={{fontSize: '10px'}}>비밀번호 확인</label>
-      <input type='text' 
+      <input type='password' 
              className={style.input}
              onChange={handleConfirmPasswordChange}/>
       {confirmPasswordError && <p style={{color:'red', fontSize:'12px', marginTop:'5px'}}>{confirmPasswordError}</p>}      
