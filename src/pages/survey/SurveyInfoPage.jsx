@@ -43,7 +43,7 @@ export default function SurveyInfoPage() {
   }, []);
 
   useEffect(() => {
-    console.log(survey);
+    console.log("aaaaaaaaaaaaaaaaaaaaaaa", survey);
   }, [survey]);
 
   useEffect(() => {
@@ -71,8 +71,8 @@ export default function SurveyInfoPage() {
 
     try {
       const response = await call(`/survey/${selectedSurveyId}`, "GET");
-      setSurvey(response.data);
-      console.log(response.data);
+      setSurvey(response);
+      console.log(response);
     } catch (error) {
       console.log(error);
     } finally {

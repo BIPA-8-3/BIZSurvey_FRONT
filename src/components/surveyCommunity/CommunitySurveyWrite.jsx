@@ -15,14 +15,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-import { login, call } from "../../pages/survey/Login";
+import call from "../../pages/workspace/api";
 import SurveyForm from "./survey/SurveyForm";
 
 export default function CommunityPost() {
   const fadeIn = useFadeIn();
   const navigate = useNavigate();
   const location = useLocation();
-  const postId = location.state?.postId || 0;
+  const postId = location.state ? location.state.postId : 0;
 
   // 설문지 데이터
   const [survey, setSurvey] = useState({
