@@ -15,7 +15,7 @@ import CommunityTable from '../community/CommunityTable';
 import Button from '@mui/material/Button';
 import logo from "../../assets/img/avatar.png"
 import Loader from "../../pages/loader/Loader"
-
+import call from '../../pages/workspace/api';
 
 export default function SearchResultTable(){
     // let location = useLocation(); // 넘어온 결과 
@@ -45,9 +45,9 @@ export default function SearchResultTable(){
     const handlePage = (event) => {
         const nowPageInt = parseInt(event.target.outerText)
         // page에 해당하는 페이지로 GET 요청을 보냄
-        axios.get(`http://localhost:8080/community/search?keyword=${keyword}&page=${nowPageInt-1}`)
-          .then(response => {
-            setData(response.data);
+        call(`/community/search?keyword=${keyword}&page=${nowPageInt-1}`, "GET")
+          .then(data => {
+            setData(data);
           })
           .catch(error => {
             console.error('Error fetching data:', error);

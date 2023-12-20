@@ -6,7 +6,7 @@ import ParentsComment from './ParentsComment';
 import axios from 'axios'
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-
+import call from '../../pages/workspace/api';
 
 
 export default function Comment({props}) {
@@ -24,11 +24,14 @@ export default function Comment({props}) {
 
   const handleSaveClick = async () => {
     try {
-      const response = await axios.post(`http://localhost:8080/community/${postId}/createComment`, {
+        call(`/community/${postId}/createComment`, "POST", {
         content: comment,
+      }).then((data)=> {
+        console.log('Comment created:', data);
+        window.location.reload();
       });
-      console.log('Comment created:', response.data);
-      window.location.reload();
+     
+     
       if(type === 'sc'){
         navigate('/surveyCommunityDetail', { state: { postId: postId } });
       }
