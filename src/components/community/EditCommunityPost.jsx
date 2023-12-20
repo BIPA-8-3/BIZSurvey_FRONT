@@ -219,8 +219,6 @@ export default function CommunityWrite() {
   }
 
   const handleSaveClick = () => {
-    alert(JSON.stringify(content));
-
     const parser = new DOMParser();
     const doc = parser.parseFromString(content, "text/html");
 
@@ -235,9 +233,6 @@ export default function CommunityWrite() {
       alert("배열 확인" + JSON.stringify(imageSrcArray));
     });
 
-    alert(JSON.stringify(title));
-    alert(JSON.stringify(content));
-
     if (voteId !== 0) {
       call(`/community/updatePost/${postId}`, "PATCH", {
         title: title,
@@ -245,7 +240,10 @@ export default function CommunityWrite() {
         voteId: voteId,
         imgUrlList: imageSrcArray,
       })
-        .then((data) => setVoteId(0))
+        .then((data) => {
+          setVoteId(0);
+          navigate("/communityDetail", { state: { postId: data } });
+        })
         .catch((error) => console.log(error));
     } else {
       call(`/community/updatePost/${postId}`, "PATCH", {
@@ -253,7 +251,9 @@ export default function CommunityWrite() {
         content: content,
         imgUrlList: imageSrcArray,
       })
-        .then((data) => console.log(data))
+        .then((data) => {
+          navigate("/communityDetail", { state: { postId: data } });
+        })
         .catch((error) => console.log(error));
     }
 
