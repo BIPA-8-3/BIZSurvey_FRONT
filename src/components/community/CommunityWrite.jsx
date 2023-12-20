@@ -79,9 +79,9 @@ export default function CommunityWrite() {
     setVoteId(voteId);
   };
 
-  const handleDeleteVote = () => {
-    const response = call(`/community/deleteVote/${voteId}`, "DELETE");
-    console.log(response);
+  const handleDeleteVote = async () => {
+    const response = await call(`/community/deleteVote/${voteId}`, "DELETE");
+    setHasVote(false);
     setVoteTitle("");
     setVoteOptions([""]);
     setVoteId(0);
@@ -164,8 +164,6 @@ export default function CommunityWrite() {
   const handleClose = () => setOpen(false);
 
   const handleSaveClick = () => {
-    alert(JSON.stringify(content));
-
     const parser = new DOMParser();
     const doc = parser.parseFromString(content, "text/html");
 
@@ -180,9 +178,6 @@ export default function CommunityWrite() {
       alert("배열 확인" + JSON.stringify(imageSrcArray));
     });
 
-    alert(JSON.stringify(title));
-    alert(JSON.stringify(content));
-
     if (voteId !== 0) {
       call("/community/createPost", "POST", {
         title: title,
@@ -190,7 +185,10 @@ export default function CommunityWrite() {
         voteId: voteId,
         imageUrlList: imageSrcArray,
       })
-        .then((data) => setVoteId(0))
+        .then((data) => {
+          setVoteId(0);
+          navigate("/communityDetail", { state: { postId: data } });
+        })
         .catch((error) => console.log(error));
     } else {
       call("/community/createPost", "POST", {
@@ -198,7 +196,9 @@ export default function CommunityWrite() {
         content: content,
         imageUrlList: imageSrcArray,
       })
-        .then((data) => console.log(data))
+        .then((data) => {
+          navigate("/communityDetail", { state: { postId: data } });
+        })
         .catch((error) => console.log(error));
     }
   };
