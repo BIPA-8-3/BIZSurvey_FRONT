@@ -7,7 +7,8 @@ import FormControl from '@mui/material/FormControl';
 import back from '../../assets/img/back.png';
 import useFadeIn from '../../style/useFadeIn';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Axios from 'axios';
+import call from '../../pages/workspace/api';
+import useApiCall, {userInfoUpdate} from '../api/ApiCall';
 
 function UserInfoEditForm({userData,setEditState, setUserData}) {
   const [isNinknameCheck, setNinknameCheck] = useState(true);
@@ -42,28 +43,25 @@ function UserInfoEditForm({userData,setEditState, setUserData}) {
   }
 
   const handleNicknameCheck = async () => {
-      try {
         if(nickname != ""){
           if(nickname !== userData.nickname){
-            const response = await Axios.post('/signup/check-nickname', {
+            call('/signup/check-nickname', "POST", {
               nickname: nickname
-            });
-            setNicknameSuccess(response.data)
-            setNicknameError('');
-            setNinknameCheck(true)
+            }).then((data) => {
+              setNicknameSuccess(data)
+              setNicknameError('');
+              setNinknameCheck(true)
+            }).catch((error) => {
+              setNicknameError(error.response.data.errorMessage)
+              setNicknameSuccess('')
+              setNinknameCheck(false)
+            })
           }else{
             setNicknameError('');
             setNicknameSuccess('이전 닉네임과 동일합니다.');
             setNinknameCheck(true)
           }
       }
-    }catch (error) {
-      if (error.response.data.errorCode === 600) {
-        setNicknameError(error.response.data.errorMessage)
-        setNicknameSuccess('')
-        setNinknameCheck(false)
-      }
-    }
   }
   
   // 로컬 스토리지에 엑세스 토큰 저장
@@ -77,41 +75,22 @@ function UserInfoEditForm({userData,setEditState, setUserData}) {
     e.preventDefault();
   
     if (isNinknameCheck) {
-      try {
-        const response = await Axios.patch(
-          '/user/info',
-          {
-            id: userData.id,
-            nickname: nickname,
-            birthdate: birthdate,
-          },
-          {
-            headers: {
-              Authorization: localStorage.getItem('accessToken'),
-            },
-          }
-        );
-  
-        if (response.status === 200) {
-          const headers = response.headers;
-          const authorization = headers['authorization'];
-          saveAccessTokenToLocalStorage(authorization);
+      userInfoUpdate({
+        id: userData.id,
+        nickname: nickname,
+        birthdate: birthdate,
+      }).then((data) =>{
+          console.log("data : " + data);
+
           const updatedUserData = {
             ...userData,
-            nickname : nickname,
-            birthdate : birthdate
+            nickname: nickname,
+            birthdate: birthdate,
           };
-          alert("회원 정보가 수정되었습니다.")
           setUserData(updatedUserData)
-          setEditState(false); // 여기서 editState를 업데이트합니다.
-        }
-  
-        // alert(response.data)
-      } catch (error) {
-        // 에러 처리
-      } finally {
-        // 정리 코드
-      }
+          setEditState(false); 
+      })
+     
     } else if (nickname === '' && nickname !== userData.nickname) {
       setNicknameError('필수 정보입니다.');
       nicknameInputRef.current.focus();

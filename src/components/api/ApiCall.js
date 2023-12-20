@@ -133,3 +133,85 @@ export const loginKaKao = async () => {
     window.location.href = KakaoLoginAPI;
   } catch (error) { }
 };
+
+
+export const additional = async (formData) => {
+  try{
+    const response = await axios.patch(URI + '/signup/additional', formData)
+    if (response.status === 200) {
+      const headers = response.headers;
+      const authorization = headers['authorization'];
+      const refreshAuthorization = headers['refreshauthorization'];
+
+      saveAccessTokenToLocalStorage(authorization);
+      saveRefreshTokenToLocalStorage(refreshAuthorization);
+    }
+
+  }catch(error){
+
+  }
+}
+
+export const userInfoUpdate = async (formdata) => {
+  try {
+    const response = await axios.patch(
+      URI + '/user/info', formdata,
+      {
+        headers: {
+          Authorization: localStorage.getItem('accessToken'),
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      const headers = response.headers;
+      const authorization = headers['authorization'];
+      saveAccessTokenToLocalStorage(authorization);
+      
+    }
+
+    alert(response.data)
+  } catch (error) {
+    // 에러 처리
+  } finally {
+    // 정리 코드
+  }
+}
+
+
+export const adminLogin = async (formdata) => {
+  try {
+    const response = await axios.post("/admin/login", formdata);
+    if (response.status === 200) {
+      const headers = response.headers;
+      const authorization = headers["authorization"];
+      const refreshAuthorization = headers["refreshauthorization"];
+
+      saveAccessTokenToLocalStorage(authorization);
+      saveRefreshTokenToLocalStorage(refreshAuthorization);
+
+      
+    }
+  } catch (error) {
+    console.log("실패");
+    if (error.response.data.errorCode === 403) {
+      alert(error.response.data.errorMessage);
+    } else {
+      alert("계정을 확인해주세요")
+    }
+  }
+}
+
+export const planUpdate = async (name) =>{
+  axios.patch(URI + `/plan/${name}`, {}, {
+      headers: {
+        Authorization: localStorage.getItem("accessToken")
+      }
+  }).then((response) => {
+          const headers = response.headers;
+          const authorization = headers["authorization"];
+          saveAccessTokenToLocalStorage(authorization);
+          
+          localStorage.removeItem("userInfo");
+  });
+}
