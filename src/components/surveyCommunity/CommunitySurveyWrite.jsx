@@ -22,7 +22,7 @@ export default function CommunityPost() {
   const fadeIn = useFadeIn();
   const navigate = useNavigate();
   const location = useLocation();
-  const postId = location.state ? location.state.postId : 0;
+  // const postId = location.state ? location.state.postId : 0;
 
   // 설문지 데이터
   const [survey, setSurvey] = useState({
@@ -60,20 +60,28 @@ export default function CommunityPost() {
   ]);
 
   const [pass, setPass] = useState([]);
+  const [postId, setPostId] = useState(0);
 
   useEffect(() => {
-    call("/s-community/survey/" + postId, "GET")
-      .then((data) => {
-        setSurvey(data);
-      })
-      .then(() => {
-        const newPassArray = Array(survey.questions.length).fill(true);
-        setPass(newPassArray);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const post = location.state ? location.state.postId : 0;
+    setPostId(post);
   }, []);
+
+  useEffect(() => {
+    if (postId != 0) {
+      call("/s-community/survey/" + postId, "GET")
+        .then((data) => {
+          setSurvey(data);
+        })
+        .then(() => {
+          const newPassArray = Array(survey.questions.length).fill(true);
+          setPass(newPassArray);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [postId]);
 
   const handleSetAnswer = (questionId, userAnswer, answerType, url) => {
     setAnswers((pre) => {
@@ -101,7 +109,7 @@ export default function CommunityPost() {
 
   const handleSubmitAnswer = async () => {
     const res = handleCheckAnswer();
-
+    console.log("확인.........", postId);
     if (!res) {
       alert("필수 질문에 응답해주세요.");
       return;

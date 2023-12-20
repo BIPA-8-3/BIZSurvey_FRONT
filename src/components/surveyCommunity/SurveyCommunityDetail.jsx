@@ -23,13 +23,42 @@ export default function CommunityPost() {
   const fadeIn = useFadeIn();
   const [isAvailable, setIsAvailable] = useState(true);
   const location = useLocation();
-  let postId = location.state.postId;
+  // let postId = location.state.postId;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const userInfo = useContext(LoginContext);
   const [isAuthor, setIsAuthor] = useState(false);
+  const [postId, setPostId] = useState(0);
+
+  useEffect(() => {
+    // 데이터를 가져오는 함수
+    const post = location.state.postId;
+    setPostId(post);
+  }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        call("/s-community/showPost/" + postId, "GET").then((data) => {
+          console.log("리스폰스 : " + JSON.stringify(data));
+          if (data.reported === 1) {
+            alert("신고당한 게시물입니다.");
+            navigate("/");
+          }
+          setData(data);
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false); // 데이터 로딩이 끝났음을 표시
+      }
+    };
+    if (postId != 0) {
+      fetchData(); // 함수 호출
+    }
+  }, [postId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,27 +80,6 @@ export default function CommunityPost() {
 
     fetchData();
   }, [data]);
-
-  useEffect(() => {
-    // 데이터를 가져오는 함수
-    const fetchData = async () => {
-      try {
-        call("/s-community/showPost/" + postId, "GET").then((data) => {
-          console.log("리스폰스 : " + JSON.stringify(data));
-          if (data.reported === 1) {
-            alert("신고당한 게시물입니다.");
-            navigate("/");
-          }
-          setData(data);
-        });
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false); // 데이터 로딩이 끝났음을 표시
-      }
-    };
-    fetchData(); // 함수 호출
-  }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
 
   if (loading) {
     return (
