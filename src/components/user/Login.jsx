@@ -74,7 +74,7 @@ function Login() {
       </div>
       <p></p>
       <img src={kakao} alt="카카오 로그인" className={`${style.kakaoLogin}`} onClick={loginKaKao} />
-      <label style={{ fontSize: "10px" }}>이메일</label>
+      <label style={{ fontSize: "10pt" }}>이메일</label>
       <input
         type="text"
         className={style.input}
@@ -82,7 +82,7 @@ function Login() {
         name="email"
         onChange={handleInputChange}
       />
-      <label>패스워드</label>
+      <label style={{ fontSize: "10pt" }}>패스워드</label>
       <input type="password" className={style.input} name="password" onChange={handleInputChange} />
       <p className={style.searchPw}>
         <Link to={"/findPassword"}>비밀번호를 잊으셨나요?</Link>
