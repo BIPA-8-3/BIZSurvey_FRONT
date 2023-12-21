@@ -33,7 +33,23 @@ export default function CommunityWrite() {
   const handleClose = () => setOpen(false);
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
-  const [maxParticipants, setMaxParticipants] = useState("");
+
+  const [error, setError] = useState({
+    selectedSurvey: "",
+    title: "",
+    content: "",
+    startDate: "",
+    endDate: "",
+  });
+
+  const titleInputRef = useRef();
+  const contentInputRef = useRef();
+  const startDateInputRef = useRef();
+  const endDateInputRef = useRef();
+  const titleErrorRef = useRef();
+  const contentErrorRef = useRef();
+  const startDateErrorRef = useRef();
+  const endDateErrorRef = useRef();
 
   useEffect(() => {
     // 데이터를 가져오는 비동기 함수
@@ -60,15 +76,73 @@ export default function CommunityWrite() {
   }, [data]);
 
   const handleSaveClick = () => {
+
+    if(!selectedSurvey){
+      setError((prevError) => ({ ...prevError, selectedSurvey: "설문을 등록해주세요." }));
+      return;
+    }else{
+      setError((prevError) => ({ ...prevError, selectedSurvey: "" }));
+    }
+
+    if (!title) {
+      setError((prevError) => ({ ...prevError, title: "제목을 입력해주세요." }));
+      titleInputRef.current.focus();
+      return;
+    }else{
+      setError((prevError) => ({ ...prevError, title: "" }));
+      contentInputRef.current.focus();
+    }
+      
+
+    if (!content) {
+      setError((prevError) => ({ ...prevError, content: "내용을 입력해주세요." }));
+      return;
+    }else{
+      setError((prevError) => ({ ...prevError, content: "" }));
+    }
+
+    if (!selectedStartDate) {
+      setError((prevError) => ({ ...prevError, startDate: "시작일을 입력해주세요." }));
+      return;
+    }else{
+      setError((prevError) => ({ ...prevError, startDate: "" }));
+    }
+
+    if (!selectedEndDate) {
+      setError((prevError) => ({ ...prevError, endDate: "종료일을 입력해주세요." }));
+      return;
+    }else{
+      setError((prevError) => ({ ...prevError, endDate: "" }));
+    }
+
+    const startDate = new Date(selectedStartDate);
+    const endDate = new Date(selectedEndDate);
+
+    if (endDate <= startDate) {
+      setError((prevError) => ({
+        ...prevError,
+        endDate: "종료일은 시작일보다 하루 이상 뒤여야 합니다.",
+      }));
+      endDateInputRef.current.focus(); // Assuming you have a ref for the end date input field
+      return;
+    } else {
+      setError((prevError) => ({ ...prevError, endDate: "" }));
+    }
+
+
     const data = {
       title: title,
       content: content,
       startDateTime: selectedStartDate + "T00:00:00",
       endDateTime: selectedEndDate + "T00:00:00",
-      maxMember: maxParticipants,
       surveyId: selectedSurvey.surveyId,
       thumbImageUrl: selectedFile,
-    };
+    };  
+
+        // 유효성 검사
+        
+        
+
 
     call("/s-community/createPost", "POST", data)
       .then((data) => {
@@ -76,7 +150,7 @@ export default function CommunityWrite() {
         navigate("/surveyCommunityDetail", { state: { postId: data } });
       })
       .catch((error) => {
-        console.error(error);
+        alert(error);
       });
   };
 
@@ -289,18 +363,6 @@ export default function CommunityWrite() {
     setTitle(event.target.value);
   };
 
-  const handleMaxParticipantsChange = (event) => {
-    const num = event.target.value;
-
-    setMaxParticipants(num);
-  };
-
-  const handleMaxParticipantsBlur = (event) => {
-    const text = event.target.value;
-    if (isNaN(text) || text < 1) {
-      setMaxParticipants(1);
-    }
-  };
 
   // 시작일 관리
   const handleDateChange = (event) => {
@@ -329,7 +391,9 @@ export default function CommunityWrite() {
             className={style.title}
             placeholder="제목을 입력해주세요."
             onChange={handleTitleChange}
+            ref={titleInputRef}
           />
+          <p style={{ color: "red" }}>{error.title}</p>
         </div>
         <div className={style.editorWrap}>
           <div
@@ -345,27 +409,16 @@ export default function CommunityWrite() {
               modules={modules}
             />
           </div>
+          <p style={{ color: "red" }} ref={contentInputRef}>{error.content}</p>
         </div>
         {renderBox()}
 
         <div className={style.voteWrap}>
-          {renderModal()}
+          {renderModal()} {/*설문 등록*/}
+          <p style={{ color: "red" }}>{error.selectedSurvey}</p>
           <br />
           <br />
-          설문을 응시할 수 있는 최대 인원을 입력해주세요!
-          <br />
-          <br />
-          <Input
-            value={maxParticipants}
-            onChange={handleMaxParticipantsChange}
-            type="number"
-            defaultValue={1}
-            onBlur={(e) => handleMaxParticipantsBlur(e)}
-            inputProps={{ style: { textAlign: "center" } }} // 입력창 가운데 정렬
-          />
-          (명)
-          <br />
-          <br />
+         
           {renderImgForm()}
           <br />
           <br />
@@ -377,7 +430,9 @@ export default function CommunityWrite() {
             value={selectedStartDate || ""}
             onChange={handleDateChange}
             inputProps={{ min: new Date().toISOString().split("T")[0] }}
+            ref={startDateErrorRef}
           />
+          <p style={{ color: "red" }}>{error.startDate}</p>
           <br />
           <br />
           설문이 종료될 날짜를 입력해주세요!
@@ -389,7 +444,9 @@ export default function CommunityWrite() {
             onChange={handleEndDateChange}
             defaultValue={1}
             inputProps={{ min: new Date().toISOString().split("T")[0] }}
+            ref={endDateErrorRef}
           />
+           <p style={{ color: "red" }}>{error.endDate}</p>
         </div>
       </div>
 

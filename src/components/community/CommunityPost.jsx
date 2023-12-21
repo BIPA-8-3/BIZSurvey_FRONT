@@ -74,9 +74,9 @@ export default function CommunityPost() {
 
 
   const handleButtonClick = () => {
-    if(userInfo === null){
-        alert('로그인을 먼저 해야 글을 쓰실 수 있습니다.')
-        navigate('/login')
+    if(userInfo.id === undefined){
+      alert("게시물을 작성하기 위해서는 로그인을 먼저 해야합니다.")
+      navigate("/login")
     }else{
       navigate('/communityWrite')
     }

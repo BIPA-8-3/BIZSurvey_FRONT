@@ -141,6 +141,28 @@ export default function CommunityPost() {
         .catch((error) => console.error(error));
     }
   };
+  
+  function renderProfil(profile){
+    if(profile === null){
+      return logo;
+    }else{
+      let prefix = "https://";
+      console.log("프로필 : " + prefix + profile)
+      return prefix + profile;
+    }
+  }
+
+
+  const handleLinkClick = (e) => {
+    alert(JSON.stringify(userInfo))
+    
+    if(userInfo.id === undefined){
+      e.stopPropagation() // 이벤트 전파 막음 
+      alert("설문에 참여하기 위해서는 로그인을 먼저 해야합니다.")
+      navigate("/login")
+    } 
+  };
+
 
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
@@ -152,7 +174,7 @@ export default function CommunityPost() {
               <p style={{ textAlign: "center" }}>
                 <div className={style.profil} style={{ textAlign: "center" }}>
                   <span className={style.photo}>
-                    <img className="" src={logo} />
+                    <img className="" src={renderProfil(data.profile)} />
                   </span>
                   <span className={style.nickname}>{data.nickname}</span>
                 </div>
@@ -172,6 +194,7 @@ export default function CommunityPost() {
             {isAvailable ? (
               <Link to={"/communitySurveyWrite"} state={{ postId: postId }}>
                 <Button
+                  onClick={handleLinkClick}
                   variant="contained"
                   href="#contained-buttons"
                   sx={[
