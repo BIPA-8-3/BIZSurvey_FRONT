@@ -39,31 +39,30 @@ export default function SurveyInfoPage() {
   };
 
   useEffect(() => {
-    handleGetSurvey();
-  }, []);
+    console.log("여기 survey", survey);
+  }, [survey]);
 
   useEffect(() => {
-    console.log("aaaaaaaaaaaaaaaaaaaaaaa", survey);
-  }, [survey]);
+    handleGetSurvey();
+  }, []);
 
   useEffect(() => {
     if (page) {
       setElement(<ResultView />);
     } else {
-      setElement(
-        loading ? (
-          <>
-            <Loader />
-          </>
-        ) : (
-          <SurveyInfo />
-        )
-      );
+      setElement(<SurveyInfo />);
     }
-  }, [page, survey, loading]);
+  }, [page]);
+
+  // useEffect(() => {
+  //   if (page) {
+  //     setElement(<ResultView />);
+  //   } else {
+  //     setElement(<SurveyInfo />);
+  //   }
+  // }, [page, survey]);
 
   const handleGetSurvey = async () => {
-    console.log("handleGetSurvey: ", selectedSurveyId);
     if (!selectedSurveyId) {
       return;
     }
@@ -72,9 +71,8 @@ export default function SurveyInfoPage() {
     try {
       const response = await call(`/survey/${selectedSurveyId}`, "GET");
       setSurvey(response);
-      console.log(response);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false); // 데이터 로딩 완료
     }
@@ -87,6 +85,7 @@ export default function SurveyInfoPage() {
 
   return (
     <>
+      {loading ? <Loader /> : null}
       <SurveyContext.Provider value={contextValue}>
         <div style={{ paddingTop: "100px", paddingLeft: "254px" }}>
           <div style={{ width: "700px", margin: "0 auto" }}>

@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 export default function CreateScoreSurveyPage() {
   const { selectedWorkspaceId } = useWorkspaceContext();
   const navigate = useNavigate();
+  const [pass, setPass] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "제목",
@@ -39,30 +40,6 @@ export default function CreateScoreSurveyPage() {
     },
   ]);
 
-  const [pass, setPass] = useState(false);
-
-  // useEffect(() => {
-  //   login();
-  // }, []);
-
-  useEffect(() => {
-    console.log(questions);
-  }, [questions]);
-
-  // const handleCheckDuplication = (idx, text) => {
-  //   let isPass = true;
-  //   const question = questions.find((q, index) => index === idx);
-  //   const matchingAnswers = question.answers.filter(
-  //     (ans) => ans.surveyAnswer === text
-  //   );
-  //   console.log(matchingAnswers.surveyAnswer, "anssssssssssss");
-  //   if (matchingAnswers.length > 1) {
-  //     isPass = false;
-  //   }
-
-  //   return isPass;
-  // };
-
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
     const updatedQuestions = Array.from(questions);
@@ -85,8 +62,6 @@ export default function CreateScoreSurveyPage() {
     const surveyData = { ...formData };
     surveyData.questions = questionData;
 
-    console.log(surveyData);
-
     call("/survey/" + selectedWorkspaceId, "POST", surveyData).then((e) => {
       navigate("/workspace");
     });
@@ -100,15 +75,6 @@ export default function CreateScoreSurveyPage() {
       return result;
     });
   };
-
-  // const changeQuestionContent = (id, text) => {
-  //   setQuestions((pre) => {
-  //     const result = pre.map((question, index) =>
-  //       index === id ? { ...question, content: text } : question
-  //     );
-  //     return result;
-  //   });
-  // };
 
   const changeOption = (id, type) => {
     setQuestions((pre) => {
@@ -153,20 +119,13 @@ export default function CreateScoreSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id ? { ...question, isRequired: !question.isRequired } : question
+        index === id
+          ? { ...question, isRequired: !question.isRequired }
+          : question
       );
       return result;
     });
   };
-
-  // const handleOption = (id, options) => {
-  //   setQuestions((pre) => {
-  //     const result = pre.map((question, index) =>
-  //       index === id ? { ...question, answers: options } : question
-  //     );
-  //     return result;
-  //   });
-  // };
 
   const changeSurveyTitle = (text) => {
     setFormData((pre) => ({ ...pre, title: text }));
@@ -286,16 +245,22 @@ export default function CreateScoreSurveyPage() {
                   className={style.questionList}
                 >
                   {questions.map((questionData, index) => (
-                    <Draggable key={index} draggableId={`question-${index}`} index={index}>
+                    <Draggable
+                      key={index}
+                      draggableId={`question-${index}`}
+                      index={index}
+                    >
                       {(provided) => (
-                        <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                        >
                           <div className={style.question}>
                             <ScoreQuestion
                               key={index}
                               index={index}
                               questionInfo={questionData}
                               changeTitle={changeQuestionTitle}
-                              // changeContent={changeQuestionContent}
                               changeOption={changeOption}
                               deleteQuestion={deleteQuestion}
                               changeRequired={changeRequired}
@@ -305,7 +270,6 @@ export default function CreateScoreSurveyPage() {
                               changeAnswerText={handleChangeOptionText}
                               changeScore={handleChangeScore}
                               changeCorrect={handleChangeCorrect}
-                              // checkDuplication={handleCheckDuplication}
                             />
                           </div>
                         </div>

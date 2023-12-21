@@ -24,9 +24,13 @@ export default function QuestionInfo({ info }) {
         <QuestionTitle title={surveyQuestion} />
         <OptionBox>
           {answerType === "SINGLE_CHOICE" &&
-            answers.map((answer, index) => (
-              <ChoiceField key={index} single text={answer.surveyAnswer} />
-            ))}
+            answers.map((answer, index) => {
+              if (answer.answerId !== null) {
+                return (
+                  <ChoiceField key={index} single text={answer.surveyAnswer} />
+                );
+              }
+            })}
           {answerType === "MULTIPLE_CHOICE" &&
             answers.map((answer, index) => (
               <ChoiceField key={index} text={answer.surveyAnswer} />

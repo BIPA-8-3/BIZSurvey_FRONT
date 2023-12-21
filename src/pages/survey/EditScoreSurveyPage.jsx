@@ -43,6 +43,10 @@ export default function EditScoreSurveyPage() {
   ]);
 
   useEffect(() => {
+    console.log("여기 questionssssssssssssssssss", questions);
+  }, [questions]);
+
+  useEffect(() => {
     const id = location.state ? location.state.surveyId : 0;
     if (id !== 0) {
       setSurveyId(id);
@@ -72,10 +76,35 @@ export default function EditScoreSurveyPage() {
 
   const handleGetSurvey = async (surveyId) => {
     try {
-      const response = await call(`/survey/${surveyId}`, "GET");
-      setFormData(response);
-      setQuestions(response.questions);
-      console.log(response);
+      const data = await call(`/survey/${surveyId}`, "GET");
+      setFormData(data);
+
+      let newArr = [];
+      for (const question of data.questions) {
+        let modifiedAnswers = [];
+        modifiedAnswers = question.answers
+          .filter((answer) => answer.answerId !== null) // null이 아닌 것만 필터링
+          .map((answer) => ({
+            answerId: answer.answerId,
+            surveyAnswer: answer.surveyAnswer,
+            step: answer.step,
+            correct: answer.correct,
+          }));
+
+        // question 객체를 새로운 배열에 추가 (answers를 수정한 버전으로)
+        newArr.push({
+          questionId: question.questionId,
+          surveyQuestion: question.surveyQuestion,
+          answerType: question.answerType,
+          score: question.score,
+          step: question.step,
+          isRequired: question.isRequired,
+          answers: modifiedAnswers,
+        });
+      }
+
+      setQuestions(newArr);
+      console.log(data);
     } catch (error) {
       console.log(error);
     } finally {
