@@ -336,19 +336,21 @@ export default function CommunityWrite() {
             원하는 투표 내용을 직접 만들어 회원들의 의견을 확인할 수 있습니다
           </p>
           {/* 투표가 만들어 졌을때 컴포넌트 */}
-          {hasVote ? (
+          {hasVote && voteTitle !== "" ? (
             <>
               <IoIosCloseCircle
                 className={style.voteCloseBtn}
-                onClick={() => setHasVote(false)}
+                onClick={handleDeleteVote}
               />
               <RegisterVote voteTitle={voteTitle} voteOptions={voteOptions} />
             </>
           ) : null}
           {/* 투표가 만들어 졌을때 컴포넌트 */}
-          <button onClick={handleOpen} style={{ cursor: "pointer" }}>
-            투표 만들기
-          </button>
+          {hasVote ? null : (
+            <button onClick={handleOpen} style={{ cursor: "pointer" }}>
+              투표 만들기
+            </button>
+          )}
         </div>
       </div>
       <div
