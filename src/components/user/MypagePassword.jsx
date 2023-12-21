@@ -15,7 +15,6 @@ function MypagePassword() {
   useEffect(() => {
     call("/user/info", "GET")
     .then((data) => {
-      console.log(data)
       setUserData(data)
     }).catch((error) => {
       console.log(error)

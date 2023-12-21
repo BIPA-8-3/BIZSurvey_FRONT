@@ -5,19 +5,15 @@ import useFadeIn from "../../style/useFadeIn";
 import call from '../../pages/workspace/api';
 
 import MypageHeader from "./MypageHeader";
-import MypageUserInfo from "./MypageUserInfo";
-import MypageCommunityList from "./MypageCommunityList";
 import MypagePlanDetail from "./MypagePlanDetail";
 
 export default function MypagePlan() {
   const fadeIn = useFadeIn();
   const [userData, setUserData] = useState({});
-  const [editState, setEditState] = useState(false);
 
   useEffect(() => {
     const response = call("/user/info", "GET")
       .then((data) => {
-        console.log(data);
         setUserData(data);
       })
       .catch((error) => {

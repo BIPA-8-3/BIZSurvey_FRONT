@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import style from '../../style/user/MypageHeader.module.css';
 import logo from '../../assets/img/logo.png';
-import useFadeIn from '../../style/useFadeIn';
 import avatar from '../../assets/img/avatar.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaPen } from 'react-icons/fa';
 import CircularProgress from '@mui/material/CircularProgress';
 import { LoginContext, LoginFunContext } from "../../App";
 import call from '../../pages/workspace/api';
+
 const getLinkStyle = (currentPage, path) => {
   return {
     fontWeight: currentPage === path ? 'bold' : 'normal',
@@ -40,14 +40,12 @@ function MypageHeader({ userData }) {
       formData.append('file', file);
       formData.append('domain', 'USER');
         
-        
       call("/storage/", "POST", formData, true).then((data) =>{
           call("/user/profile/", "patch", {
             userId : userData.id,
             profile : data
           }).then(() =>{
               call("/user/info", "GET").then((data)=>{
-                console.log(data);
                 setUserInfo(data);
               });
 

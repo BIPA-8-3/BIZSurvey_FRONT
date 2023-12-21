@@ -1,24 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import style from '../../style/user/MypageSurveyList.module.css'
-import logo from '../../assets/img/logo.png'
 import useFadeIn from '../../style/useFadeIn';
-import avatar from '../../assets/img/avatar.png'
 import { Link } from "react-router-dom";
-import { FaPen } from "react-icons/fa";
-import { CiUser } from "react-icons/ci";
-import { FaRegUser } from "react-icons/fa";
-import IconWithText from '../common/IconWithText';
-import { IoIosMail } from "react-icons/io";
-import { CiMail } from "react-icons/ci";
-import { LuMailOpen } from "react-icons/lu";
-import { BiComment } from 'react-icons/bi';
-import { IoPersonOutline } from 'react-icons/io5';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { MdDateRange } from 'react-icons/md';
 import call from '../../pages/workspace/api';
 
 function MypageSurveyList({userData, setEditState}) {
-  const fadeIn = useFadeIn();
 
   const [communityList, setCommunityList] = useState([]);
 
