@@ -9,7 +9,7 @@ import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import SurveyListModal from "./SurveyListModal";
 import axios from "axios";
-import call from "../../pages/workspace/api";
+import call, {getURI} from "../../pages/workspace/api";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Divider, TextField, Input } from "@mui/material";
@@ -169,7 +169,7 @@ export default function CommunityWrite() {
     // 백엔드 multer라우터에 이미지를 보낸다.
     try {
       const result = await axios.post(
-        "http://localhost:8080/storage/",
+        getURI() + "/storage/",
         formData,
         {
           headers: {
@@ -305,7 +305,7 @@ export default function CommunityWrite() {
       // 백엔드 multer라우터에 이미지를 보낸다.
       try {
         const result = await axios.post(
-          "http://localhost:8080/storage/",
+          getURI() + "/storage/",
           formData,
           {
             headers: {

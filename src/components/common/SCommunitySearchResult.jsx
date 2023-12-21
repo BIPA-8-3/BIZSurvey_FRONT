@@ -14,6 +14,7 @@ import axios from 'axios'
 import Loader from "../../pages/loader/Loader"
 import { useLocation } from "react-router-dom";
 import SCommunitySearch from "./SCommunitySearch";
+import call, { getURI } from "../../pages/workspace/api";
 
 
 
@@ -49,7 +50,7 @@ function SurveyCommunitySearchResult(){
   const dataFetch = () => {
     if (page < data.totalPages || data.totalPages === undefined) {
       axios
-        .get(`http://localhost:8080/s-community/search?keyword=${keyword}&page=${page}`)
+        .get(`${getURI()}/s-community/search?keyword=${keyword}&page=${page}`)
         .then((res) => {
           // 기존 데이터에 새로운 데이터를 더해주는 것이 아니라 새로운 데이터로 설정
           setData({
