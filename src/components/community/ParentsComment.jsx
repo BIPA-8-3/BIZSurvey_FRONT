@@ -6,6 +6,10 @@ import React, { useState, useContext } from "react";
 import ClaimReasonModal from "../common/ClaimReasonModal";
 import { LoginContext } from "../../App";
 import { useNavigate } from "react-router-dom";
+import call from "../../pages/workspace/api";
+import Comment from "./Comment";
+import EdditComment from "./EditComment";
+import EdditChildComment from "./EditChildComment";
 
 const ParentsComment = ({ props }) => {
   const userInfo = useContext(LoginContext);
@@ -19,6 +23,14 @@ const ParentsComment = ({ props }) => {
   const [showChildCommentForm, setShowChildCommentForm] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [childIsModalOpen, setChildIsModalOpen] = useState({});
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [isEditFormVisible, setEditFormVisible] = useState(false);
+
+  // 대댓글 
+  const [editChildCommentId, setEditingChildCommentId] = useState(null);
+  const [isChildEditFormVisible, setChildEditFormVisible] = useState(false);
+
+  
 
   // 댓글
   const handleOpenModal = () => {
@@ -74,9 +86,109 @@ const ParentsComment = ({ props }) => {
     }
   }
 
+  // 댓글 
+  const handleEditParentClick = (commentId) => {
+    
+    if (editingCommentId === commentId) {
+      // 이미 열려있는 수정 폼을 닫을 때
+      setEditingCommentId(null);
+      setEditFormVisible(false);
+    } else {
+      // 수정 폼을 열 때
+      setEditingCommentId(commentId);
+      setEditFormVisible(true);
+    }
+    
+  };
 
 
-  const renderChildComment = (childCommentList) => {
+  const handleDeleteClick = (commentId) => {
+
+    call(`/community/${postId}/deleteComment/${commentId}`, "DELETE")
+      .then((data)=> {
+      console.log('Comment DELETED:', data);
+      window.location.reload();
+    });
+    
+  };
+
+  function renderUpdateAndDelButton(nickname, commentId){
+
+    if(nickname === userInfo.nickname){
+
+        return(
+          <>
+            |<span onClick={() => handleEditParentClick(commentId)}> 수정 </span> 
+            |<span onClick={() => handleDeleteClick(commentId)}> 삭제 </span>
+            {renderEditCommentForm(commentId)}
+          </>
+        );
+    }
+  }
+
+  const renderEditCommentForm = (commentId) => {
+    if (commentId !== null && editingCommentId === commentId && isEditFormVisible) {
+
+      alert("넘겨주는 댓글 ID!!!" +  commentId)
+      return (
+        <>
+          <EdditComment props={{postId : postId, commentId: commentId, type : 'co'}} />
+        </>
+      );
+    }
+  }
+
+
+    // 대댓글 
+    const handleEditChildClick = (childCommentId) => {
+      if(editChildCommentId === childCommentId) {
+        setEditingChildCommentId(null);
+        setChildEditFormVisible(false);
+      }else{
+        setEditingChildCommentId(childCommentId);
+        setChildEditFormVisible(true);
+      }
+    }
+
+    const handleDeleteChildClick =(commentId, childCommentId) =>{
+      call(`/community/${commentId}/deleteChildComment/${childCommentId}`, "DELETE")
+      .then((data)=> {
+      console.log('CHILD Comment DELETED:', data);
+      window.location.reload();
+    });
+    }
+
+    const renderEditChildCommentId = (commentId, childCommentId) =>{
+        if(childCommentId !== null && editChildCommentId === childCommentId && isChildEditFormVisible){
+          return (
+            <>
+              <EdditChildComment props={{commentId : commentId, childCommentId: childCommentId}} />
+            </>
+          );
+        }
+    }
+
+
+
+    
+  function renderUpdateAndDelChildButton(nickname, commentId, childCommentId){
+    if(nickname === userInfo.nickname){
+      return(
+        <>
+          |<span onClick={() => {handleEditChildClick(childCommentId)}}> 수정 </span> 
+          |<span onClick={() => {handleDeleteChildClick(commentId, childCommentId)}}> 삭제 </span>
+          {renderEditChildCommentId(commentId, childCommentId)}
+        </>
+      );
+  }
+  }
+
+    
+
+
+
+
+  const renderChildComment = (childCommentList, commentId) => {
     if (childCommentList && childCommentList.length > 0) {
       return (
         <div>
@@ -86,7 +198,7 @@ const ParentsComment = ({ props }) => {
                 <div className={style.writer}>
                   <div></div>
                 </div>
-                <div className={style.childCommentWrap}>
+                <div className={style.childCommentWrap}  style={{width:'100%', paddingRight:'10px'}}>
                   <div className={style.writeWrap}>
                     <div className={style.writer}>
                       <div>
@@ -98,14 +210,8 @@ const ParentsComment = ({ props }) => {
                       <p>{childItem.content}</p>
                       <p>
                         <span>{childItem.createTime}</span>{" "}
-                        <span
-                          onClick={() =>
-                            childHandleOpen(childItem.childCommentId)
-                          }
-                        >
-                          {" "}
-                          신고{" "}
-                        </span>
+                        |<span onClick={() => childHandleOpen(childItem.childCommentId)}> 신고 </span>
+                        {renderUpdateAndDelChildButton(childItem.nickName, commentId, childItem.childCommentId)}
                       </p>
 
                       {childIsModalOpen[childItem.childCommentId] && (
@@ -155,9 +261,9 @@ const ParentsComment = ({ props }) => {
   };
 
   return (
-    <>
+    <div  style={{width:'100%', paddingRight:'10px'}}>
       {data.map((item) => (
-        <div key={item.commentId} className={style.commentWrap}>
+        <div key={item.commentId} className={style.commentWrap} >
           <div className={style.writeWrap}>
             <div className={style.writer}>
               <div>
@@ -168,11 +274,13 @@ const ParentsComment = ({ props }) => {
               <p>{item.nickName}</p>
               <p>{item.content}</p>
               <p>
-                <span>{item.createTime}</span> ・{" "}
+                <span>{item.createTime}</span> |{" "}
                 <span onClick={() => toggleChildCommentForm(item.commentId)}>
                   답글 달기
                 </span>{" "}
-                ・ <span onClick={handleOpenModal}> 신고 </span>
+                |<span onClick={handleOpenModal}> 신고 </span>
+                {renderUpdateAndDelButton(item.nickName, item.commentId)}
+
                 {isModalOpen && (
                   <ClaimReasonModal
                     onSelect={handleSelectReasons}
@@ -186,10 +294,10 @@ const ParentsComment = ({ props }) => {
             </div>
           </div>
           {renderChildCommentForm(item.commentId, postId)}
-          {renderChildComment(item.childCommentResponses)}
+          {renderChildComment(item.childCommentResponses, item.commentId)}
         </div>
       ))}
-    </>
+    </div>
   );
 };
 
