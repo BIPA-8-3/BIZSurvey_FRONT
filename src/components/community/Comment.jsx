@@ -4,12 +4,14 @@ import '../../style/Common.css'
 import logo from "../../assets/img/avatar.png"
 import ParentsComment from './ParentsComment';
 import axios from 'axios'
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import call from '../../pages/workspace/api';
+import { LoginContext } from "../../App";
 
 
 export default function Comment({props}) {
+  const userInfo = useContext(LoginContext);
   let postId = props.postId;
   let type = props.type;
   console.log("게시물 타입이야 : " + type)
@@ -23,6 +25,13 @@ export default function Comment({props}) {
   };
 
   const handleSaveClick = async () => {
+    if(userInfo.id === undefined){
+      alert("댓글을 작성하려면 로그인을 먼저 해야합니다.")
+      navigate("/login")
+      return;
+    } 
+
+
     try {
         call(`/community/${postId}/createComment`, "POST", {
         content: comment,

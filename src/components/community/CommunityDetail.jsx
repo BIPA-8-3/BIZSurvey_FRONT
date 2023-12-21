@@ -128,6 +128,11 @@ export default function CommunityPost() {
   // };
 
   const handleOpenModal = () => {
+    if(userInfo.id === undefined){
+     
+      alert("게시물 신고를 하려면 먼저 로그인을 해야 합니다.")
+      navigate("/login")
+    } 
     setIsModalOpen(true);
   };
 

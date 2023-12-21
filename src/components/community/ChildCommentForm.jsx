@@ -4,15 +4,17 @@ import '../../style/Common.css'
 import logo from "../../assets/img/avatar.png"
 import ParentsComment from './ParentsComment';
 import axios from "axios";
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import call from '../../pages/workspace/api';
+import { LoginContext } from "../../App";
 
 export default function ChildCommentForm({props}) {
-
+    const userInfo = useContext(LoginContext);
     let getCommentId = props.commentId;
     let getPostId = props.postId;
     let type = props.type;
+    
     const navigate = useNavigate();
 
     const [childComment, setChildComment] = useState('');
@@ -22,6 +24,13 @@ export default function ChildCommentForm({props}) {
     };
 
     const handleSaveClick = async () => {
+
+      if(userInfo.id === undefined){
+        alert("댓글을 작성하려면 로그인을 먼저 해야합니다.")
+        navigate("/login")
+        return;
+      } 
+
         try {
           const response = call(`/community/${getCommentId}/createChildComment`, "POST",{
             content: childComment,
