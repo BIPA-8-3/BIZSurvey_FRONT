@@ -9,7 +9,15 @@ import TextOption from "./TextOption";
 import { useEffect } from "react";
 
 export default function SurveyQuestion({ question, handleSetAnswer, pass }) {
-  const { questionId, surveyQuestion, answerType, score, step, isRequired, answers } = question;
+  const {
+    questionId,
+    surveyQuestion,
+    answerType,
+    score,
+    step,
+    isRequired,
+    answers,
+  } = question;
 
   // 파일 제외 응답
   const [userAnswer, setUserAnswer] = useState([]);
@@ -33,6 +41,8 @@ export default function SurveyQuestion({ question, handleSetAnswer, pass }) {
     }
   }, [fileAnswer]);
 
+  console.log("dddddlrjjjjjjjjjjjjjjjj", answers);
+
   return (
     <>
       <div className={`${pass === false ? style.questionRed : style.question}`}>
@@ -40,26 +50,37 @@ export default function SurveyQuestion({ question, handleSetAnswer, pass }) {
         <div className={style.title}>
           <p>
             <span>{surveyQuestion} </span>
-            <span style={{ color: "red" }}>{isRequired === true ? "*" : ""}</span>
+            <span style={{ color: "red" }}>
+              {isRequired === true ? "*" : ""}
+            </span>
           </p>
         </div>
         {/* 옵션 영역  */}
         <div className={style.option}>
-          {answerType === "SINGLE_CHOICE" && (
+          {answerType === "SINGLE_CHOICE" && answers[0].answerId !== null ? (
             <SingleOption answers={answers} setUserAnswer={setUserAnswer} />
+          ) : null}
+          {answerType === "MULTIPLE_CHOICE" && answers[0].answerId !== null > 0
+            ? answers.map((answer, index) => {
+                if (answer.answerId !== null) {
+                  return (
+                    <div style={{ marginBottom: "5px" }} key={index}>
+                      <MultipleOption
+                        answer={answer}
+                        userAnswer={userAnswer}
+                        setUserAnswer={setUserAnswer}
+                      />
+                    </div>
+                  );
+                }
+              })
+            : null}
+          {answerType === "TEXT" && (
+            <TextOption setUserAnswer={setUserAnswer} />
           )}
-          {answerType === "MULTIPLE_CHOICE" &&
-            answers.map((answer, index) => (
-              <div style={{ marginBottom: "5px" }} key={index}>
-                <MultipleOption
-                  answer={answer}
-                  userAnswer={userAnswer}
-                  setUserAnswer={setUserAnswer}
-                />
-              </div>
-            ))}
-          {answerType === "TEXT" && <TextOption setUserAnswer={setUserAnswer} />}
-          {answerType === "CALENDAR" && <DateOption setUserAnswer={setUserAnswer} />}
+          {answerType === "CALENDAR" && (
+            <DateOption setUserAnswer={setUserAnswer} />
+          )}
           {answerType === "FILE" && (
             <FileOption
               setFileAnswer={setFileAnswer}

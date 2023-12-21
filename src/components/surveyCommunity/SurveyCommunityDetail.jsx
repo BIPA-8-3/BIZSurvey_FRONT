@@ -79,17 +79,6 @@ export default function CommunityPost() {
     fetchData();
   }, [data]);
 
-  useEffect(() => {
-    // console.log("여기야 체크체크", postId);
-    // const fetchData = async () => {
-    //   if (localStorage.getItem("userInfo")) {
-    //   }
-    // };
-    // if (postId != 0) {
-    //   fetchData();
-    // }
-  }, [isAuthor]);
-
   if (loading) {
     return (
       <>
