@@ -32,9 +32,11 @@ export default function QuestionInfo({ info }) {
               }
             })}
           {answerType === "MULTIPLE_CHOICE" &&
-            answers.map((answer, index) => (
-              <ChoiceField key={index} text={answer.surveyAnswer} />
-            ))}
+            answers.map((answer, index) => {
+              if (answer.answerId !== null) {
+                return <ChoiceField key={index} text={answer.surveyAnswer} />;
+              }
+            })}
           {answerType === "TEXT" && <TextOption />}
           {answerType === "CALENDAR" && <DateOption />}
           {answerType === "FILE" && <FileOption />}
