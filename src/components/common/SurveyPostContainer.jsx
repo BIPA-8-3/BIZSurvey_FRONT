@@ -34,6 +34,12 @@ export default function SurveyPostContainer() {
     content: [],
   });
 
+  // !!!!! 삭제 X !!!!!
+  useEffect(() => {
+    acceptInvite();
+  }, []);
+  // !!!!!!!!!!!!!!!!!
+
   useEffect(() => {
     // inView가 true 일때만 실행한다.
     if (inView) {
@@ -65,16 +71,8 @@ export default function SurveyPostContainer() {
   };
 
   const handleButtonClick = () => {
-    if (userInfo.id === 0) {
-      const re = window.confirm(
-        "로그인을 하시면 게시글을 작성할 수 있습니다. \n로그인 페이지로 이동하시겠습니까?"
-      );
-      if (re) {
-        navigate("/login");
-      } else {
-        return;
-      }
-    } else if (userInfo.planSubscribe === "COMMUNITY") {
+    console.log(userInfo, "userIfo!!!!!!!");
+    if (userInfo && userInfo.planSubscribe === "COMMUNITY") {
       const res = window.confirm(
         "플랜을 신청하면 게시글을 작성할 수 있습니다. \n플랜을 변경하시겠습니까?"
       );
@@ -83,8 +81,21 @@ export default function SurveyPostContainer() {
       } else {
         return;
       }
-    } else {
+    } else if (
+      userInfo &&
+      (userInfo.planSubscribe === "NORMAL_SUBSCRIBE" ||
+        userInfo.planSubscribe === "COMPANY_SUBSCRIBE")
+    ) {
       navigate("/surveyCommunityWrite");
+    } else {
+      const re = window.confirm(
+        "로그인을 하시면 게시글을 작성할 수 있습니다. \n로그인 페이지로 이동하시겠습니까?"
+      );
+      if (re) {
+        navigate("/login");
+      } else {
+        return;
+      }
     }
   };
   return (

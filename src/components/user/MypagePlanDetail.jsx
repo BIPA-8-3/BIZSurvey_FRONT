@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "../../style/user/MypagePlanDetail.module.css";
 import useFadeIn from "../../style/useFadeIn";
-import call from '../../pages/workspace/api';
+import call from "../../pages/workspace/api";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { GiCheckMark } from "react-icons/gi";
@@ -10,7 +10,7 @@ import { LuCheck } from "react-icons/lu";
 import Loader from "../../pages/loader/Loader";
 import IconWithText from "../common/IconWithText";
 import { LoginContext, LoginFunContext } from "../../App";
-import useApiCall, {planUpdate} from "../api/ApiCall";
+import useApiCall, { planUpdate } from "../api/ApiCall";
 
 export default function MypagePlanDetail() {
   const navigate = useNavigate();
@@ -58,12 +58,10 @@ export default function MypagePlanDetail() {
       });
   }, []);
 
-
   // 로컬 스토리지에 엑세스 토큰 저장
   const saveAccessTokenToLocalStorage = (token) => {
     localStorage.setItem("accessToken", token);
   };
-
 
   const handleSubscribe = (planName) => {
     const con = window.confirm(planName + "으로 변경하시겠습니까?");
@@ -73,13 +71,12 @@ export default function MypagePlanDetail() {
 
     setLoading(true);
 
-    
     if (userInfos.plan === "커뮤니티 회원") {
       call("/workspace/personal", "GET")
         .then((data) => {
           if (!data) {
             const newData = {
-              workspaceName: userInfos.nickname + "님 워크스페이스",
+              workspaceName: "내 워크스페이스",
               workspaceType: "PERSONAL",
             };
             return call("/workspace", "POST", newData);
@@ -112,15 +109,14 @@ export default function MypagePlanDetail() {
         })
         .catch((error) => console.log(error))
         .finally(() => {
-          setLoading(false)
+          setLoading(false);
           window.location.reload();
         });
     }
     setLoading(false);
   };
 
-
-  const handleCancelPlan = async() => {
+  const handleCancelPlan = async () => {
     const con = window.confirm("구독을 취소하시겠습니까?");
     if (!con) {
       return;
@@ -128,17 +124,16 @@ export default function MypagePlanDetail() {
     setLoading(true);
 
     planUpdate("COMMUNITY")
-        .then(() => call("/user/info", "GET"))
-        .then((data) => {
-          console.log(data);
-          setUserInfo(data);
-        })
-        .catch((error) => console.log(error))
-        .finally(() => {
-          setLoading(false);
-          window.location.reload();
-        });
-    
+      .then(() => call("/user/info", "GET"))
+      .then((data) => {
+        console.log(data);
+        setUserInfo(data);
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        setLoading(false);
+        window.location.reload();
+      });
   };
 
   return (

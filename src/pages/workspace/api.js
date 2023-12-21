@@ -3,10 +3,91 @@ import axios from 'axios';
 let URI = '';
 
 if (process.env.NODE_ENV === 'development') {
-    URI = 'http://www.localhost:8080';
+    URI = 'http://localhost:8080';
 } else {
-    URI = 'http://www.bizsurvey.shop/api';
+    URI = 'http://bizsurvey.shop/api';
 }
+
+export default async function call(api, method, request, file) {
+    try {
+        const config = {
+            url: URI + api,
+            method: method,
+            headers: {},
+        };
+
+        if (method.toUpperCase() === 'GET') {
+            config.params = request;
+        } else {
+            config.data = request;
+        }
+
+        // token 추가
+        const accessToken = localStorage.getItem("accessToken");
+        if (accessToken) {
+            config.headers.Authorization = "Bearer " + accessToken;
+        }
+
+        if (file) {
+            config.headers = {
+                "Content-Type": "multipart/form-data",
+            }
+        }
+
+        const response = await instance(config);
+
+        return response.data;
+    } catch (error) {
+        if (error.response.data.errorCode === 402) {
+            const refreshTokenSuccess = await RefreshRequest();
+            if (refreshTokenSuccess) {
+                return call(api, method, request, file);
+            } else {
+                throw new Error("Failed to refresh token.");
+            }
+        } else {
+            throw error;
+        }
+    }
+}
+
+export function getURI() {
+    return URI;
+}
+
+
+let instance = axios.create({
+    headers: {
+        "Content-Type": "application/json",
+    }
+});
+
+const RefreshRequest = async () => {
+    const saveAccessTokenToLocalStorage = (token) => {
+        localStorage.setItem('accessToken', token);
+    };
+
+    try {
+        const response = await axios.get(URI + '/refresh', {
+            headers: {
+                refreshAuthorization: localStorage.getItem("refreshToken"),
+            },
+        });
+
+        const headers = response.headers;
+        const authorization = headers['authorization'];
+        saveAccessTokenToLocalStorage(authorization);
+        return true;
+    } catch (error) {
+        console.error("Error refreshing token:", error);
+        return false;
+    }
+};
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // sse
 const instanceOfSse = axios.create({
@@ -48,79 +129,6 @@ const contactURI = '/workspace/contact';
 const adminURI = '/workspace/admin';
 
 const workspaceURI = '/workspace';
-
-let instance = axios.create({
-    headers: {
-        "Content-Type": "application/json",
-    }
-});
-
-const RefreshRequest = async () => {
-    const saveAccessTokenToLocalStorage = (token) => {
-      localStorage.setItem('accessToken', token);
-    };
-
-    try{
-        const response = await axios.get(URI + '/refresh', {
-            headers: {
-                refreshAuthorization: localStorage.getItem("refreshToken"),
-            },
-        });
-    
-        const headers = response.headers;
-        const authorization = headers['authorization'];
-        saveAccessTokenToLocalStorage(authorization);
-        return true;
-    }catch(error){
-        console.error("Error refreshing token:", error);
-        return false;
-    }
-  };
-
-export default async function call(api, method, request, file) {
-    try {
-        const config = {
-            url: URI + api,
-            method: method,
-            headers: {},
-        };
-
-        if (method.toUpperCase() === 'GET') {
-            config.params = request;
-        } else {
-            config.data = request;
-        }
-
-        // token 추가
-        // const accessToken = localStorage.getItem("ACCESS_TOKEN");
-        const accessToken = localStorage.getItem("accessToken");
-        if (accessToken) {
-            config.headers.Authorization = "Bearer " + accessToken;
-        }
-
-        if (file) {
-            config.headers = {
-                "Content-Type": "multipart/form-data",
-            }
-        }
-
-        const response = await instance(config);
-
-        return response.data;
-    } catch (error) {
-        if (error.response.data.errorCode === 402) {
-            const refreshTokenSuccess = await RefreshRequest();
-            if (refreshTokenSuccess) {
-                return call(api, method, request, file);
-            } else {
-                throw new Error("Failed to refresh token.");
-            }
-        }else{
-            throw error;
-        }
-    }
-    
-}
 
 export const createWorkspace = (workspaceName) => {
     const data = {
