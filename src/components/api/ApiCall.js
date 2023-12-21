@@ -86,8 +86,6 @@ const useApiCall = () => {
 export default useApiCall;
 
 
-
-
 // 로컬 스토리지에 엑세스 토큰 저장
 const saveAccessTokenToLocalStorage = (token) => {
   localStorage.setItem("accessToken", token);
@@ -120,9 +118,29 @@ export const login = async (formData) => {
     } else {
       alert('아이디 비밀번호를 확인하세요');
     }
-    return;
+    return false;
   }
 };
+
+
+export const loginKaKaoCode = async (code) => {
+  try{
+    const response = await axios.get(URI + `/login/oauth2/code/kakao?code=${code}`)
+    return response;
+  }catch(error){
+    console.log(error)
+  }
+}
+
+export const loginKaKaoNicknameCheck = async (id) => {
+  try{
+    const checkResponse = await axios.get(URI+`/nickname/existence?id=${id}`);
+    return checkResponse;
+  }catch(error){
+    console.log(error)
+  }
+}
+
 
 //카카오 로그인
 export const loginKaKao = async () => {
@@ -181,7 +199,7 @@ export const userInfoUpdate = async (formdata) => {
 
 export const adminLogin = async (formdata) => {
   try {
-    const response = await axios.post("/admin/login", formdata);
+    const response = await axios.post(URI+"/admin/login", formdata);
     if (response.status === 200) {
       const headers = response.headers;
       const authorization = headers["authorization"];

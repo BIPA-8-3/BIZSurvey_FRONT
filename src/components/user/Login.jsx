@@ -45,7 +45,8 @@ function Login() {
   //일반 로그인
   const handleSubmit = async () => {
     login(formData).then((data) => {
-      call("/user/info", "GET")
+      if(data){
+        call("/user/info", "GET")
         .then((data) => {
           setUserInfo(data);
           navigate("/");
@@ -54,6 +55,7 @@ function Login() {
           console.error("사용자 정보 가져오기 실패:", error);
           return;
         });
+      }
     });
   };
 
