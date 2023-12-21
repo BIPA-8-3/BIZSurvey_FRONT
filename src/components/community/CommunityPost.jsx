@@ -64,6 +64,7 @@ export default function CommunityPost() {
   };
 
   const handleButtonClick = () => {
+
     if (localStorage.getItem("userInfo")) {
       navigate("/communityWrite");
     } else {
@@ -75,7 +76,7 @@ export default function CommunityPost() {
       } else {
         return;
       }
-    }
+
   };
 
   return (
