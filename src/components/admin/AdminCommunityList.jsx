@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import style from '../../style/admin/AdminSurveyList.module.css'
-import useFadeIn from '../../style/useFadeIn';
-import Button from '@mui/material/Button';
-import { useLocation, useNavigate, useHistory, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 import call from '../../pages/workspace/api';
 import Pagination from '@mui/material/Pagination';

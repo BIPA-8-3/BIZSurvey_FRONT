@@ -1,17 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "../../style/user/MypagePlanDetail.module.css";
-import useFadeIn from "../../style/useFadeIn";
 import call from "../../pages/workspace/api";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { GiCheckMark } from "react-icons/gi";
-import axios from "axios";
-import { LuCheck } from "react-icons/lu";
 import Loader from "../../pages/loader/Loader";
 import IconWithText from "../common/IconWithText";
 import { LoginContext, LoginFunContext } from "../../App";
-import useApiCall, { planUpdate } from "../api/ApiCall";
+import { planUpdate } from "../api/ApiCall";
 
 export default function MypagePlanDetail() {
   const navigate = useNavigate();
@@ -91,7 +88,6 @@ export default function MypagePlanDetail() {
         })
         .then(() => call("/user/info", "GET"))
         .then((data) => {
-          console.log(data);
           setUserInfo(data);
         })
         .catch((error) => console.log(error))
@@ -105,7 +101,6 @@ export default function MypagePlanDetail() {
       planUpdate(name)
         .then(() => call("/user/info", "GET"))
         .then((data) => {
-          console.log(data);
           setUserInfo(data);
         })
         .catch((error) => console.log(error))
@@ -127,7 +122,6 @@ export default function MypagePlanDetail() {
     planUpdate("COMMUNITY")
       .then(() => call("/user/info", "GET"))
       .then((data) => {
-        console.log(data);
         setUserInfo(data);
       })
       .catch((error) => console.log(error))
@@ -161,8 +155,8 @@ export default function MypagePlanDetail() {
                   <p className={style.planTitle}>개인 플랜</p>
                   <div className={style.textWrap}>
                     <Grid container spacing={1}>
-                      {personal.map((text) => (
-                        <Grid item xs={6} md={6} lg={6}>
+                      {personal.map((text, index) => (
+                        <Grid item key={index} xs={6} md={6} lg={6}>
                           <IconWithText
                             text={text}
                             fontsize={"12px"}
@@ -192,8 +186,8 @@ export default function MypagePlanDetail() {
                   <p className={style.planTitle}>그룹 플랜</p>
                   <div className={style.textWrap}>
                     <Grid container spacing={1}>
-                      {group.map((text) => (
-                        <Grid item xs={6} md={6} lg={6}>
+                      {group.map((text, index) => (
+                        <Grid item key={index} xs={6} md={6} lg={6}>
                           <IconWithText
                             text={text}
                             fontsize={"12px"}

@@ -5,17 +5,14 @@ import useFadeIn from '../../style/useFadeIn';
 import call from '../../pages/workspace/api';
 
 import MypageHeader from './MypageHeader';
-import MypageUserInfo from './MypageUserInfo';
 import MypageCommunityList from './MypageCommunityList';
 function MypageSurveyCommunity() {
   const fadeIn = useFadeIn();
   const [userData, setUserData] = useState({});
-  const [editState, setEditState] = useState(false);
 
   useEffect(() => {
     call("/user/info", "GET")
     .then((data) => {
-      console.log(data)
       setUserData(data)
     }).catch((error) => {
       console.log(error)

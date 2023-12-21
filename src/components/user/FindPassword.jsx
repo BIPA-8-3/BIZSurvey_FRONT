@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import style from '../../style/user/Login.module.css'
 import Button from '@mui/material/Button';
 import back from '../../assets/img/back.png'
-import { Link } from "react-router-dom";
 import useFadeIn from '../../style/useFadeIn';
 import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 import call from '../../pages/workspace/api';
 
 function FindPassword() {
@@ -16,7 +14,7 @@ function FindPassword() {
   const handlePasswordChange = async () => {
     if (!isEmail || !isValidEmail(isEmail)) {
       alert('이메일을 확인해주세요')
-      return;  // Stop execution if email is invalid
+      return;
     }
 
     setLoading(true)
