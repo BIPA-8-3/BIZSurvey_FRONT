@@ -16,7 +16,6 @@ function Mypage() {
   useEffect(() => {
     call("/user/info", "GET")
       .then((data) => {
-        console.log(data);
         setUserData(data);
       }).catch((error) => {
         setUserData({}); 
