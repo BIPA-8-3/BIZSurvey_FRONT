@@ -62,16 +62,14 @@ export default function CommunityPost() {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log(data, "data!!!!!!!!!");
       try {
-        if (userInfo.nickname === data.nickname) {
+        if (
+          userInfo.nickname === data.nickname &&
+          userInfo.nickname !== undefined
+        ) {
           console.log(userInfo.nickname, "aaaaaaaaaaaaaaaaaa", data.nickname);
           setIsAuthor(true);
-        }
-        const res = await call("/s-community/survey/check/" + postId, "GET");
-        setIsAvailable(!res);
-        const access = data.canAccess;
-        if (access === "대기" || access === "설문 종료") {
-          setIsAvailable(false);
         }
       } catch (error) {
         console.error(error);
@@ -80,6 +78,20 @@ export default function CommunityPost() {
 
     fetchData();
   }, [data]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (localStorage.getItem("userInfo")) {
+        const res = await call("/s-community/survey/check/" + postId, "GET");
+        setIsAvailable(!res);
+        const access = data.canAccess;
+        if (access === "대기" || access === "설문 종료") {
+          setIsAvailable(false);
+        }
+      }
+    };
+    fetchData();
+  }, [isAuthor]);
 
   if (loading) {
     return (
@@ -141,28 +153,41 @@ export default function CommunityPost() {
         .catch((error) => console.error(error));
     }
   };
-  
-  function renderProfil(profile){
-    if(profile === null){
+
+  function renderProfil(profile) {
+    if (profile === null) {
       return logo;
-    }else{
+    } else {
       let prefix = "https://";
-      console.log("프로필 : " + prefix + profile)
+      console.log("프로필 : " + prefix + profile);
       return prefix + profile;
     }
   }
 
-
   const handleLinkClick = (e) => {
+    alert(JSON.stringify(userInfo));
 
-    if(userInfo.id === undefined){
-      e.stopPropagation() // 이벤트 전파 막음 
-      alert("설문에 참여하기 위해서는 로그인을 먼저 해야합니다.")
-      navigate("/login")
+    if (userInfo.id === undefined) {
+      e.stopPropagation(); // 이벤트 전파 막음
+      alert("설문에 참여하기 위해서는 로그인을 먼저 해야합니다.");
+      navigate("/login");
     }
-       
   };
 
+  const handleButtonClick = () => {
+    if (localStorage.getItem("userInfo")) {
+      navigate("/communitySurveyWrite", { state: { postId: postId } });
+    } else {
+      const res = window.confirm(
+        "로그인을 하셔야 참여할 수 있습니다. \n로그인을 하시겠습니까?"
+      );
+      if (res) {
+        navigate("/login");
+      } else {
+        return;
+      }
+    }
+  };
 
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
@@ -192,33 +217,33 @@ export default function CommunityPost() {
           <p dangerouslySetInnerHTML={{ __html: data.content }} />
           <div className={style.surveyBtnWrap}>
             {isAvailable ? (
-              <Link to={"/communitySurveyWrite"} state={{ postId: postId }}>
-                <Button
-                  onClick={handleLinkClick}
-                  variant="contained"
-                  href="#contained-buttons"
-                  sx={[
-                    {
-                      padding: "11px 30px",
-                      backgroundColor: "#243579",
-                      fontWeight: "bold",
-                      marginBottom: "10px",
-                      border: "1px solid #243579",
+              // <Link to={"/communitySurveyWrite"} state={{ postId: postId }}>
+              <Button
+                onClick={handleButtonClick}
+                variant="contained"
+                href="#contained-buttons"
+                sx={[
+                  {
+                    padding: "11px 30px",
+                    backgroundColor: "#243579",
+                    fontWeight: "bold",
+                    marginBottom: "10px",
+                    border: "1px solid #243579",
+                    boxShadow: 0,
+                    marginLeft: "5px",
+                  },
+                  {
+                    ":hover": {
+                      border: "1px solid #1976d2",
                       boxShadow: 0,
-                      marginLeft: "5px",
                     },
-                    {
-                      ":hover": {
-                        border: "1px solid #1976d2",
-                        boxShadow: 0,
-                      },
-                    },
-                  ]}
-                >
-                  설문참여
-                </Button>
-              </Link>
+                  },
+                ]}
+              >
+                설문참여
+              </Button>
             ) : (
+              // </Link>
               <Button
                 variant="contained"
                 disabled={true}
