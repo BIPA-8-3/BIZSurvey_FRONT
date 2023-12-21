@@ -62,16 +62,14 @@ export default function CommunityPost() {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log(data, "data!!!!!!!!!");
       try {
-        if (userInfo.nickname === data.nickname) {
+        if (
+          userInfo.nickname === data.nickname &&
+          userInfo.nickname !== undefined
+        ) {
           console.log(userInfo.nickname, "aaaaaaaaaaaaaaaaaa", data.nickname);
           setIsAuthor(true);
-        }
-        const res = await call("/s-community/survey/check/" + postId, "GET");
-        setIsAvailable(!res);
-        const access = data.canAccess;
-        if (access === "대기" || access === "설문 종료") {
-          setIsAvailable(false);
         }
       } catch (error) {
         console.error(error);
@@ -80,6 +78,20 @@ export default function CommunityPost() {
 
     fetchData();
   }, [data]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (localStorage.getItem("userInfo")) {
+        const res = await call("/s-community/survey/check/" + postId, "GET");
+        setIsAvailable(!res);
+        const access = data.canAccess;
+        if (access === "대기" || access === "설문 종료") {
+          setIsAvailable(false);
+        }
+      }
+    };
+    fetchData();
+  }, [isAuthor]);
 
   if (loading) {
     return (
@@ -142,6 +154,21 @@ export default function CommunityPost() {
     }
   };
 
+  const handleButtonClick = () => {
+    if (localStorage.getItem("userInfo")) {
+      navigate("/communitySurveyWrite", { state: { postId: postId } });
+    } else {
+      const res = window.confirm(
+        "로그인을 하셔야 참여할 수 있습니다. \n로그인을 하시겠습니까?"
+      );
+      if (res) {
+        navigate("/login");
+      } else {
+        return;
+      }
+    }
+  };
+
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.contentWrap}>
@@ -170,32 +197,33 @@ export default function CommunityPost() {
           <p dangerouslySetInnerHTML={{ __html: data.content }} />
           <div className={style.surveyBtnWrap}>
             {isAvailable ? (
-              <Link to={"/communitySurveyWrite"} state={{ postId: postId }}>
-                <Button
-                  variant="contained"
-                  href="#contained-buttons"
-                  sx={[
-                    {
-                      padding: "11px 30px",
-                      backgroundColor: "#243579",
-                      fontWeight: "bold",
-                      marginBottom: "10px",
-                      border: "1px solid #243579",
+              // <Link to={"/communitySurveyWrite"} state={{ postId: postId }}>
+              <Button
+                onClick={handleButtonClick}
+                variant="contained"
+                href="#contained-buttons"
+                sx={[
+                  {
+                    padding: "11px 30px",
+                    backgroundColor: "#243579",
+                    fontWeight: "bold",
+                    marginBottom: "10px",
+                    border: "1px solid #243579",
+                    boxShadow: 0,
+                    marginLeft: "5px",
+                  },
+                  {
+                    ":hover": {
+                      border: "1px solid #1976d2",
                       boxShadow: 0,
-                      marginLeft: "5px",
                     },
-                    {
-                      ":hover": {
-                        border: "1px solid #1976d2",
-                        boxShadow: 0,
-                      },
-                    },
-                  ]}
-                >
-                  설문참여
-                </Button>
-              </Link>
+                  },
+                ]}
+              >
+                설문참여
+              </Button>
             ) : (
+              // </Link>
               <Button
                 variant="contained"
                 disabled={true}
