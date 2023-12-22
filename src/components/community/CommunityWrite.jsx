@@ -141,7 +141,7 @@ export default function CommunityWrite() {
             },
           }
         );
-
+        setLoading(true); // 
         console.log("성공 시, 백엔드가 보내주는 데이터", result.data.url);
         const HEAD_IMG_URL = "https://";
         const IMG_URL = HEAD_IMG_URL + result.data;

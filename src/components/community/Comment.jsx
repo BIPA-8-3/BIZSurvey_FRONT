@@ -25,12 +25,12 @@ export default function Comment({props}) {
   };
 
   const handleSaveClick = async () => {
-    if(userInfo.id === undefined){
+    if(!localStorage.getItem("userInfo")){
       alert("댓글을 작성하려면 로그인을 먼저 해야합니다.")
       navigate("/login")
       return;
     } 
-
+    
 
     try {
         call(`/community/${postId}/createComment`, "POST", {

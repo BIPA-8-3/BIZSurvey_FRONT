@@ -4,6 +4,7 @@ import { Divider, Paper, Checkbox, Button, Box } from "@mui/material";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -14,9 +15,17 @@ const SurveyListModal = ({ props }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedSurvey, setSelectedSurvey] = useState(null);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleOpenModal = () => {
-    setModalOpen(true);
+    if (props.list.length === 0) {
+      if(window.confirm("등록된 설문이 없네요! 사용자의 워크스페이스로 이동하시겠습니까?" +
+      "이동하시게 된다면 작성한 게시글 정보는 유지되지 않습니다.")){
+        navigate("/workspace");
+      }
+    }else{
+      setModalOpen(true);
+    };
   };
 
   const handleCloseModal = () => {

@@ -91,11 +91,11 @@ export default function CommunityWrite() {
         ...prevError,
         title: "제목을 입력해주세요.",
       }));
-      titleInputRef.current.focus();
+      
       return;
     } else {
       setError((prevError) => ({ ...prevError, title: "" }));
-      contentInputRef.current.focus();
+      
     }
 
   
@@ -128,7 +128,7 @@ export default function CommunityWrite() {
         ...prevError,
         endDate: "종료일은 시작일보다 하루 이상 뒤여야 합니다.",
       }));
-      endDateInputRef.current.focus(); // Assuming you have a ref for the end date input field
+      
       return;
     } else {
       setError((prevError) => ({ ...prevError, endDate: "" }));
@@ -141,6 +141,7 @@ export default function CommunityWrite() {
       endDateTime: selectedEndDate + "T00:00:00",
       surveyId: selectedSurvey.surveyId,
       thumbImageUrl: selectedFile,
+      imageUrlList: imageSrcArray,
     };
 
     // 유효성 검사
@@ -156,6 +157,12 @@ export default function CommunityWrite() {
   };
 
   const handleUpload = () => {
+
+    if(selectedSurvey === null){
+      alert("먼저 설문을 지정하셔야 설문 섬네일 이미지를 지정하실 수 있습니다!")
+      return;
+    }
+
     fileInputRef.current.click();
   };
 
