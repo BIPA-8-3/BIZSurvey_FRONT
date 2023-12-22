@@ -231,7 +231,19 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
                     text={answer.answer}
                     correct={answer.correct}
                   />
-                ) : null
+                ) : (
+                  <>
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        paddingTop: "10px",
+                        color: "grey",
+                      }}
+                    >
+                      사용자 응답이 없습니다.
+                    </p>
+                  </>
+                )
               )}
 
               {/* // ) : (
