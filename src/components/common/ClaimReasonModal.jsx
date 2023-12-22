@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import BizModal from "./BizModal";
 import { Divider, Checkbox, Button, Box, List, ListItem, ListItemText } from "@mui/material";
-import call from "../surveyCommunity/checkLogin";
+import call, { getURI } from "../../pages/workspace/api";
 import { json } from "react-router-dom";
 
 const ClaimReasonModal = ({ onSelect, onClose, props, id }) => {
