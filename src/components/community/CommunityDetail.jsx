@@ -247,7 +247,6 @@ export default function CommunityPost() {
                       >
                         <span
                           style={{ cursor: "pointer", fontSize: "14px" }}
-                          onClick={handleOpenModal}
                         >
                           수정
                         </span>
