@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "../../style/admin/AdminLogin.module.css"
-import back from "../../assets/img/back.png";
-import useApiCall, { adminLogin } from "../../components/api/ApiCall";
+import { adminLogin } from "../../components/api/ApiCall";
 
 export default function AdminLoginPage() {
   const navigate = useNavigate();

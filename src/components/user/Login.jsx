@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "../../style/user/Login.module.css";
 import kakao from "../../assets/img/user/kakaoLogin.png";
@@ -45,7 +45,8 @@ function Login() {
   //일반 로그인
   const handleSubmit = async () => {
     login(formData).then((data) => {
-      call("/user/info", "GET")
+      if(data){
+        call("/user/info", "GET")
         .then((data) => {
           setUserInfo(data);
           navigate("/");
@@ -54,6 +55,7 @@ function Login() {
           console.error("사용자 정보 가져오기 실패:", error);
           return;
         });
+      }
     });
   };
 
@@ -68,45 +70,47 @@ function Login() {
   const fadeIn = useFadeIn();
   return (
     <div id={style.loginWrap} className={`fade-in ${fadeIn ? "active" : ""}`}>
-      <div className={style.titleWrap}>
-        <h1 className="textCenter title textBold">로그인</h1>
-        <p className="textCenter subTitle">쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
-      </div>
-      <p></p>
-      <img src={kakao} alt="카카오 로그인" className={`${style.kakaoLogin}`} onClick={loginKaKao} />
-      <label style={{ fontSize: "10pt" }}>이메일</label>
-      <input
-        type="text"
-        className={style.input}
-        style={{ marginBottom: "20px" }}
-        name="email"
-        onChange={handleInputChange}
-      />
-      <label style={{ fontSize: "10pt" }}>패스워드</label>
-      <input type="password" className={style.input} name="password" onChange={handleInputChange} />
-      <p className={style.searchPw}>
-        <Link to={"/findPassword"}>비밀번호를 잊으셨나요?</Link>
-      </p>
-      <Button
-        variant="contained"
-        href="#contained-buttons"
-        onClick={handleSubmit}
-        sx={{
-          marginTop: "40px",
-          width: "100%",
-          padding: "11.5px 14px",
-          backgroundColor: "#243579",
-        }}
-      >
-        Login
-      </Button>
-      <p className={style.joinText}>
-        <Link to={"/join"}>아직 비즈서베이 회원이 아니신가요?</Link>
-      </p>
-      <img src={back} alt="배경" className={style.back} />
-      <BizModal isOpen={open} handleClose={handleCloseModal} title="로그인실패">
-        이메일과 비밀번호를 확인해주세요
-      </BizModal>
+      <form>
+        <div className={style.titleWrap}>
+          <h1 className="textCenter title textBold">로그인</h1>
+          <p className="textCenter subTitle">쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
+        </div>
+        <p></p>
+        <img src={kakao} alt="카카오 로그인" className={`${style.kakaoLogin}`} onClick={loginKaKao} />
+        <label style={{ fontSize: "10pt" }}>이메일</label>
+        <input
+          type="text"
+          className={style.input}
+          style={{ marginBottom: "20px" }}
+          name="email"
+          onChange={handleInputChange}
+        />
+        <label style={{ fontSize: "10pt" }}>패스워드</label>
+        <input type="password" className={style.input} name="password" onChange={handleInputChange} autoComplete="off"/>
+        <p className={style.searchPw}>
+          <Link to={"/findPassword"}>비밀번호를 잊으셨나요?</Link>
+        </p>
+        <Button
+          variant="contained"
+          href="#contained-buttons"
+          onClick={handleSubmit}
+          sx={{
+            marginTop: "40px",
+            width: "100%",
+            padding: "11.5px 14px",
+            backgroundColor: "#243579",
+          }}
+        >
+          Login
+        </Button>
+        <p className={style.joinText}>
+          <Link to={"/join"}>아직 비즈서베이 회원이 아니신가요?</Link>
+        </p>
+        <img src={back} alt="배경" className={style.back} />
+        <BizModal isOpen={open} handleClose={handleCloseModal} title="로그인실패">
+          이메일과 비밀번호를 확인해주세요
+        </BizModal>
+      </form>
     </div>
   );
 }
