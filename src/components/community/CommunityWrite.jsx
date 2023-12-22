@@ -13,6 +13,7 @@ import CreateVote from "./CreateVote";
 import RegisterVote from "./RegisterVote";
 import { useNavigate } from "react-router-dom";
 import call, { getURI } from "../../pages/workspace/api";
+import Loader from "../../pages/loader/Loader";
 // import { setOptions } from "react-chartjs-2/dist/utils";
 
 // 가상의 서버 통신 함수 (실제로는 서버와의 통신을 구현해야 함)
@@ -28,6 +29,29 @@ export default function CommunityWrite() {
   const imageSrcArray = [];
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
+  const [error, setError] = useState({
+    selectedSurvey: "",
+    title: "",
+    content: "",
+    startDate: "",
+    endDate: "",
+  });
+
+  
+
+  // 컴포넌트 언 마운트될 때 삭제 요청 상황 
+  useEffect( () => {
+      return () => {
+          alert("알림")
+
+         
+      }
+    }, []);
+
+    
+
 
   useEffect(() => {
     console.log("titleleeeeeeeeeeee", voteTitle);
@@ -117,7 +141,7 @@ export default function CommunityWrite() {
             },
           }
         );
-
+        setLoading(true); // 
         console.log("성공 시, 백엔드가 보내주는 데이터", result.data.url);
         const HEAD_IMG_URL = "https://";
         const IMG_URL = HEAD_IMG_URL + result.data;
@@ -136,7 +160,10 @@ export default function CommunityWrite() {
         editor.insertEmbed(range.index, "image", IMG_URL);
       } catch (error) {
         console.log("실패했어요ㅠ");
+      }finally {
+        setLoading(false); // 데이터 로딩이 끝났음을 표시
       }
+        
     });
   };
 
@@ -164,6 +191,14 @@ export default function CommunityWrite() {
   const handleClose = () => setOpen(false);
 
   const handleSaveClick = () => {
+
+    if (!title) {
+      setError((prevError) => ({ ...prevError, title: "제목을 입력해주세요." }));
+      return;
+    }else{
+      setError((prevError) => ({ ...prevError, title: "" }));
+    }
+
     const parser = new DOMParser();
     const doc = parser.parseFromString(content, "text/html");
 
@@ -229,6 +264,7 @@ export default function CommunityWrite() {
             placeholder="제목을 입력해주세요."
             onChange={handleTitleChange}
           />
+          <p style={{ color: "red" }}>{error.title}</p>
         </div>
         <div className={style.editorWrap}>
           <div
@@ -244,7 +280,9 @@ export default function CommunityWrite() {
               modules={modules}
               formats={formats}
             />
+           
           </div>
+          <p style={{ color: "red", margin: "0 auto", textAlign: 'center' }}>{error.content}</p>         
         </div>
         <div className={style.voteWrap}>
           <p>비즈서베이의 투표 기능을 이용해보세요!</p>
