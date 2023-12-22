@@ -50,6 +50,13 @@ export default function CommunityWrite() {
   const { surveyId } = location.state || {};
   const [postId, setPostId] = useState(0);
 
+  useEffect(() => {
+    const post = location.state ? location.state.postId : 0;
+    const survey = location.state ? location.state.surveyId : 0;
+
+    setPostId(post);
+  }, []);
+
   useEffect(() => {}, [loading]);
   useEffect(() => {
     console.log(data);
@@ -60,14 +67,8 @@ export default function CommunityWrite() {
   }, [data]);
 
   useEffect(() => {
-    const post = location.state ? location.state.postId : 0;
-    const survey = location.state ? location.state.surveyId : 0;
-
-    setPostId(post);
-  }, []);
-
-  useEffect(() => {
     console.log(postId, "postId야");
+    alert(postId);
     // 데이터를 가져오는 비동기 함수
     const fetchData = async () => {
       try {
