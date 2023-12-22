@@ -15,6 +15,7 @@ import Typography from "@mui/material/Typography";
 import { Divider, TextField, Input } from "@mui/material";
 import logo from "../../assets/img/설문 기본 사진.png";
 import { useLocation } from "react-router-dom";
+import Loader from "../../pages/loader/Loader";
 
 // import CreateVote from './CreateVote';
 // import RegisterVote from './RegisterVote'
@@ -33,6 +34,7 @@ export default function CommunityWrite() {
   const handleClose = () => setOpen(false);
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState({
     selectedSurvey: "",
@@ -179,6 +181,7 @@ export default function CommunityWrite() {
   };
 
   const handleFileChange = async (event) => {
+    setLoading(true);
     const file = event.target.files[0];
     // 파일 선택 후의 로직을 처리합니다.
     console.log("Selected File:", file); // 넘겨받은 이미지
@@ -197,10 +200,11 @@ export default function CommunityWrite() {
       const HEAD_IMG_URL = "https://";
       const IMG_URL = HEAD_IMG_URL + result.data;
 
-      alert(JSON.stringify(IMG_URL));
       setSelectedFile(IMG_URL);
     } catch (error) {
       console.log("실패했어요ㅠ");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -242,35 +246,38 @@ export default function CommunityWrite() {
     if (selectedSurvey !== null) {
       return (
         <>
-          <Box
-            sx={{
-              display: "flex",
-              border: "1px solid lightblue", // 항상 테두리를 표시
-              borderRadius: "8px", // 테두리를 둥글게 만들기
-              overflow: "hidden", // 테두리를 넘어가는 내용 숨김
-              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // 투영(튀어나온 효과) 추가
-              margin: "auto",
-              width: "700px",
-            }}
-          >
-            {/* 좌측 이미지 */}
+          <div>
             <Box
-              component="img"
-              src={returnImgUrl()}
-              sx={{ width: "200px", height: "auto" }}
-            />
+              sx={{
+                display: "flex",
+                border: "1px solid lightblue", // 항상 테두리를 표시
+                borderRadius: "8px", // 테두리를 둥글게 만들기
+                overflow: "hidden", // 테두리를 넘어가는 내용 숨김
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // 투영(튀어나온 효과) 추가
+                margin: "auto",
+                width: "700px",
+                maxHeight: "152px",
+              }}
+            >
+              {/* 좌측 이미지 */}
+              <Box
+                component="img"
+                src={returnImgUrl()}
+                sx={{ width: "200px", maxHeight: "152px" }}
+              />
 
-            {/* 나머지 내용 */}
-            <Box sx={{ p: 2 }}>
-              <Typography variant="h5" gutterBottom>
-                {selectedSurvey.title}
-              </Typography>
-              <Typography variant="body1">
-                워크스페이스 : {selectedSurvey.workspaceName} <Divider />
-                작성자 닉네임 : {selectedSurvey.nickname}
-              </Typography>
+              {/* 나머지 내용 */}
+              <Box sx={{ p: 2 }}>
+                <Typography variant="h5" gutterBottom>
+                  {selectedSurvey.title}
+                </Typography>
+                <Typography variant="body1">
+                  워크스페이스 : {selectedSurvey.workspaceName} <Divider />
+                  작성자 닉네임 : {selectedSurvey.nickname}
+                </Typography>
+              </Box>
             </Box>
-          </Box>
+          </div>
         </>
       );
     }
@@ -388,140 +395,146 @@ export default function CommunityWrite() {
   };
 
   return (
-    <div className={`fade-in ${fadeIn ? "active" : ""}`}>
-      <div className={style.titleWrap}>
-        <h1 className="textCenter title textBold">설문 등록</h1>
-        <p className="textCenter subTitle">
-          쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.
-        </p>
-      </div>
-      <div className={style.writeWrap}>
-        <div style={{ textAlign: "center" }}>
-          <input
-            type="text"
-            className={style.title}
-            placeholder="제목을 입력해주세요."
-            onChange={handleTitleChange}
-            ref={titleInputRef}
-          />
-          <p style={{ color: "red" }}>{error.title}</p>
-        </div>
-        <div className={style.editorWrap}>
-          <div
-            style={{ width: "1000px", margin: "0 auto", marginBottom: "100px" }}
-          >
-            <ReactQuill
-              style={{ width: "1000px", height: "300px" }}
-              placeholder="내용을 입력해주세요."
-              theme="snow"
-              ref={quillRef}
-              value={content}
-              onChange={setContent}
-              modules={modules}
-            />
-          </div>
-          <p style={{ color: "red" }} ref={contentInputRef}>
-            {error.content}
+    <>
+      {loading ? <Loader /> : null}
+      <div className={`fade-in ${fadeIn ? "active" : ""}`}>
+        <div className={style.titleWrap}>
+          <h1 className="textCenter title textBold">설문 등록</h1>
+          <p className="textCenter subTitle">
+            쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.
           </p>
         </div>
-        {renderBox()}
+        <div className={style.writeWrap}>
+          <div style={{ textAlign: "center" }}>
+            <input
+              type="text"
+              className={style.title}
+              placeholder="제목을 입력해주세요."
+              onChange={handleTitleChange}
+              ref={titleInputRef}
+            />
+            <p style={{ color: "red" }}>{error.title}</p>
+          </div>
+          <div className={style.editorWrap}>
+            <div
+              style={{
+                width: "1000px",
+                margin: "0 auto",
+                marginBottom: "100px",
+              }}
+            >
+              <ReactQuill
+                style={{ width: "1000px", height: "300px" }}
+                placeholder="내용을 입력해주세요."
+                theme="snow"
+                ref={quillRef}
+                value={content}
+                onChange={setContent}
+                modules={modules}
+              />
+            </div>
+            <p style={{ color: "red" }} ref={contentInputRef}>
+              {error.content}
+            </p>
+          </div>
+          {renderBox()}
 
-        <div className={style.voteWrap}>
-          {renderModal()} {/*설문 등록*/}
-          <p style={{ color: "red" }}>{error.selectedSurvey}</p>
-          <br />
-          <br />
-          {renderImgForm()}
-          <br />
-          <br />
-          설문이 시작될 날짜를 입력해주세요!
-          <br />
-          <br />
-          <Input
-            type="date"
-            value={selectedStartDate || ""}
-            onChange={handleDateChange}
-            inputProps={{ min: new Date().toISOString().split("T")[0] }}
-            ref={startDateErrorRef}
-          />
-          <p style={{ color: "red" }}>{error.startDate}</p>
-          <br />
-          <br />
-          설문이 종료될 날짜를 입력해주세요!
-          <br />
-          <br />
-          <Input
-            type="date"
-            value={selectedEndDate || ""}
-            onChange={handleEndDateChange}
-            defaultValue={1}
-            inputProps={{ min: new Date().toISOString().split("T")[0] }}
-            ref={endDateErrorRef}
-          />
-          <p style={{ color: "red" }}>{error.endDate}</p>
+          <div className={style.voteWrap}>
+            {renderModal()} {/*설문 등록*/}
+            <p style={{ color: "red" }}>{error.selectedSurvey}</p>
+            <br />
+            <br />
+            {renderImgForm()}
+            <br />
+            <br />
+            설문이 시작될 날짜를 입력해주세요!
+            <br />
+            <br />
+            <Input
+              type="date"
+              value={selectedStartDate || ""}
+              onChange={handleDateChange}
+              inputProps={{ min: new Date().toISOString().split("T")[0] }}
+              ref={startDateErrorRef}
+            />
+            <p style={{ color: "red" }}>{error.startDate}</p>
+            <br />
+            <br />
+            설문이 종료될 날짜를 입력해주세요!
+            <br />
+            <br />
+            <Input
+              type="date"
+              value={selectedEndDate || ""}
+              onChange={handleEndDateChange}
+              defaultValue={1}
+              inputProps={{ min: new Date().toISOString().split("T")[0] }}
+              ref={endDateErrorRef}
+            />
+            <p style={{ color: "red" }}>{error.endDate}</p>
+          </div>
         </div>
-      </div>
 
-      <div
-        style={{
-          textAlign: "center",
-          width: "1000px",
-          margin: "0 auto",
-          paddingTop: "80px",
-        }}
-      >
-        <Link to={"/community"}>
+        <div
+          style={{
+            textAlign: "center",
+            width: "1000px",
+            margin: "0 auto",
+            paddingTop: "80px",
+          }}
+        >
+          <Link to={"/community"}>
+            <Button
+              variant="outlined"
+              href="#contained-buttons"
+              sx={[
+                {
+                  padding: "11px 30px",
+                  backgroundColor: "#fff",
+                  color: "#243579",
+                  border: "1px solid #243579",
+                  fontWeight: "bold",
+                  marginBottom: "10px",
+                  marginRight: "5px",
+                },
+                {
+                  ":hover": {
+                    backgroundColor: "#f8f8f8",
+                  },
+                },
+              ]}
+            >
+              취소
+            </Button>
+          </Link>
+
           <Button
-            variant="outlined"
+            variant="contained"
             href="#contained-buttons"
+            onClick={handleSaveClick}
             sx={[
               {
                 padding: "11px 30px",
-                backgroundColor: "#fff",
-                color: "#243579",
-                border: "1px solid #243579",
+                backgroundColor: "#243579",
                 fontWeight: "bold",
                 marginBottom: "10px",
-                marginRight: "5px",
+                border: "1px solid #243579",
+                boxShadow: 0,
+                marginLeft: "5px",
               },
               {
                 ":hover": {
-                  backgroundColor: "#f8f8f8",
+                  border: "1px solid #1976d2",
+                  boxShadow: 0,
                 },
               },
             ]}
           >
-            취소
+            저장
           </Button>
-        </Link>
-
-        <Button
-          variant="contained"
-          href="#contained-buttons"
-          onClick={handleSaveClick}
-          sx={[
-            {
-              padding: "11px 30px",
-              backgroundColor: "#243579",
-              fontWeight: "bold",
-              marginBottom: "10px",
-              border: "1px solid #243579",
-              boxShadow: 0,
-              marginLeft: "5px",
-            },
-            {
-              ":hover": {
-                border: "1px solid #1976d2",
-                boxShadow: 0,
-              },
-            },
-          ]}
-        >
-          저장
-        </Button>
+        </div>
+        <img src={back} alt="배경" className={style.back} />
       </div>
-
-      <img src={back} alt="배경" className={style.back} />
-    </div>
+    </>
   );
 }
