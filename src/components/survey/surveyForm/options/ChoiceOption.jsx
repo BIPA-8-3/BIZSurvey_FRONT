@@ -28,16 +28,20 @@ export default function ChoiceOption({
   return (
     <>
       <div style={{ marginTop: "15px" }}>
-        {answers.map(({ step, surveyAnswer }, index) => (
-          <Option
-            key={index}
-            index={index}
-            onDelete={deleteOption}
-            changeText={changeText}
-            single={single}
-            text={surveyAnswer}
-          ></Option>
-        ))}
+        {answers.map(({ step, surveyAnswer }, index) => {
+          if (surveyAnswer !== null) {
+            return (
+              <Option
+                key={index}
+                index={index}
+                onDelete={deleteOption}
+                changeText={changeText}
+                single={single}
+                text={surveyAnswer}
+              ></Option>
+            );
+          }
+        })}
       </div>
 
       <div style={{ marginTop: "10px", paddingLeft: "45px" }}>

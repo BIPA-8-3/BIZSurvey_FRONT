@@ -11,15 +11,10 @@ import { useEffect } from "react";
 import call from "../workspace/api";
 
 export default function EditSurveyPage() {
+  // state
   const navigate = useNavigate();
   const location = useLocation();
   let surveyId = location.state.surveyId || 0;
-
-  useEffect(() => {
-    console.log(surveyId);
-    handleGetSurvey(surveyId);
-  }, []);
-
   const [formData, setFormData] = useState({
     surveyId: 0,
     title: "설문지 제목",
@@ -40,10 +35,18 @@ export default function EditSurveyPage() {
     },
   ]);
 
+  // effect
+  useEffect(() => {
+    console.log(surveyId);
+    handleGetSurvey(surveyId);
+  }, []);
+
+  // functions
   const handleGoBack = () => {
     navigate(-1);
   };
 
+  // 드래그 정렬
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
 
@@ -54,18 +57,43 @@ export default function EditSurveyPage() {
     setQuestions(items);
   };
 
+  // 설문 가져오기
   const handleGetSurvey = async (surveyId) => {
     try {
-      const response = await call(`/survey/${surveyId}`, "GET");
-      setFormData(response.data);
-      setQuestions(response.data.questions);
-      console.log(response);
+      const data = await call(`/survey/${surveyId}`, "GET");
+      setFormData(data);
+
+      let newArr = [];
+      for (const question of data.questions) {
+        let modifiedAnswers = [];
+        modifiedAnswers = question.answers
+          .filter((answer) => answer.answerId !== null) // null이 아닌 것만 필터링
+          .map((answer) => ({
+            answerId: answer.answerId,
+            surveyAnswer: answer.surveyAnswer,
+            step: answer.step,
+            correct: answer.correct,
+          }));
+
+        // question 객체를 새로운 배열에 추가 (answers를 수정한 버전으로)
+        newArr.push({
+          questionId: question.questionId,
+          surveyQuestion: question.surveyQuestion,
+          answerType: question.answerType,
+          score: question.score,
+          step: question.step,
+          isRequired: question.isRequired,
+          answers: modifiedAnswers,
+        });
+      }
+      setQuestions(newArr);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
     }
   };
 
+  // 설문 제출
   const handleUpdateSurvey = async (surveyId) => {
     const { createQuestion, updateQuestion } = questions.reduce(
       (acc, question, index) => {
@@ -108,12 +136,13 @@ export default function EditSurveyPage() {
     await call(`/survey/${surveyId}`, "PATCH", surveyData)
       .then((response) => {
         console.log(response);
-        alert(response.data);
+        alert(response);
         navigate("/workspace/info");
       })
       .catch((error) => console.log(error));
   };
 
+  // 질문 제목
   const changeQuestionTitle = (id, text) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
@@ -123,15 +152,7 @@ export default function EditSurveyPage() {
     });
   };
 
-  const changeQuestionContent = (id, text) => {
-    setQuestions((pre) => {
-      const result = pre.map((question, index) =>
-        index === id ? { ...question, content: text } : question
-      );
-      return result;
-    });
-  };
-
+  // 옵션 변경
   const changeOption = (id, type) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) => {
@@ -158,6 +179,7 @@ export default function EditSurveyPage() {
     });
   };
 
+  // 질문 삭제
   const deleteQuestion = (id) => {
     setQuestions((pre) => {
       const result = pre
@@ -167,6 +189,7 @@ export default function EditSurveyPage() {
     });
   };
 
+  // 질문 추가
   const addQuestion = () => {
     setQuestions((pre) => {
       return [
@@ -189,6 +212,7 @@ export default function EditSurveyPage() {
     });
   };
 
+  // 필수 여부
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
@@ -200,14 +224,17 @@ export default function EditSurveyPage() {
     });
   };
 
+  // 설문 제목
   const changeSurveyTitle = (text) => {
     setFormData((pre) => ({ ...pre, title: text }));
   };
 
+  // 설문 설명
   const changeSurveyContent = (text) => {
     setFormData((pre) => ({ ...pre, content: text }));
   };
 
+  // 옵션 추가
   const handleAddOption = (qid) => {
     setQuestions((prevQuestions) => {
       return prevQuestions.map((question, index) => {
@@ -229,6 +256,7 @@ export default function EditSurveyPage() {
     });
   };
 
+  // 옵션 제거
   const handleDeleteOption = (qid, aid) => {
     setQuestions((prevQuestions) => {
       return prevQuestions.map((question, index) => {
@@ -244,6 +272,7 @@ export default function EditSurveyPage() {
     });
   };
 
+  // 옵션 내용
   const handleChangeOptionText = (qid, aid, text) => {
     setQuestions((prevQuestions) => {
       return prevQuestions.map((question, index) => {
@@ -295,7 +324,6 @@ export default function EditSurveyPage() {
                             index={index}
                             questionInfo={questionData}
                             changeTitle={changeQuestionTitle}
-                            changeContent={changeQuestionContent}
                             changeOption={changeOption}
                             deleteQuestion={deleteQuestion}
                             changeRequired={changeRequired}
@@ -320,15 +348,28 @@ export default function EditSurveyPage() {
         </IconButton>
 
         <div className={style.wrapButton}>
-          <Button variant="outlined" onClick={handleGoBack}>
-            취소
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => handleUpdateSurvey(surveyId)}
-          >
-            완료
-          </Button>
+          <span style={{ marginRight: "8px" }}>
+            <Button
+              variant="outlined"
+              onClick={handleGoBack}
+              sx={{ color: "#243579", borderColor: "#243579" }}
+            >
+              취소
+            </Button>
+          </span>
+
+          <span>
+            <Button
+              sx={{
+                backgroundColor: "#243579",
+                height: "36.99px",
+              }}
+              variant="contained"
+              onClick={() => handleUpdateSurvey(surveyId)}
+            >
+              완료
+            </Button>
+          </span>
         </div>
       </div>
       {/* </div> */}

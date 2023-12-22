@@ -37,20 +37,24 @@ export default function ScoreChoiceOption({
   return (
     <>
       <div style={{ marginTop: "15px" }}>
-        {answers.map(({ correct, surveyAnswer }, index) => (
-          <Option
-            key={index}
-            index={index}
-            onDelete={deleteOption}
-            changeText={changeText}
-            single={single}
-            text={surveyAnswer}
-            changeOptionCorrect={changeOptionCorrect}
-            correct={correct}
-            qid={qid}
-            checkDuplication={checkDuplication}
-          ></Option>
-        ))}
+        {answers.map(({ correct, surveyAnswer, answerId }, index) => {
+          if (answerId !== null) {
+            return (
+              <Option
+                key={index}
+                index={index}
+                onDelete={deleteOption}
+                changeText={changeText}
+                single={single}
+                text={surveyAnswer}
+                changeOptionCorrect={changeOptionCorrect}
+                correct={correct}
+                qid={qid}
+                checkDuplication={checkDuplication}
+              ></Option>
+            );
+          }
+        })}
       </div>
 
       <div style={{ marginTop: "10px", paddingLeft: "45px" }}>

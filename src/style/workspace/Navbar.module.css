@@ -30,6 +30,8 @@
 
 .profileRadius {
   border-radius: 45px;
+  width: 45px;
+  height: 45px;
 }
 
 .profileName {
@@ -126,4 +128,10 @@
   background-color: #ffffff;
   /* background-color: #f7f9fa; */
   border-radius: 10px;
+}
+
+.disabled {
+  color: gray; /* 비활성화된 상태의 글자 색상 */
+  pointer-events: none; /* 이벤트를 비활성화하여 클릭이나 마우스 이벤트를 차단 */
+  cursor: not-allowed; /*마우스 커서를 비활성화된 상태로 변경 */
 }

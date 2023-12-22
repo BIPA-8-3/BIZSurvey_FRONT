@@ -1,13 +1,13 @@
 .wrapSurveyInfo {
   width: 700px;
   border-radius: 10px;
-  min-height: 120px;
+  min-height: 90px;
   border: 1px solid #d6d6d6;
   padding-top: 20px;
   border-top: 10px solid #243579;
   margin: 0 auto;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  padding-bottom: 15px;
+  padding-bottom: 25px;
   margin-bottom: 25px;
   box-sizing: bor;
 }
@@ -33,7 +33,7 @@
   font-size: 25px;
   font-weight: bold;
   margin: 0 auto;
-  padding-top: 30px;
+  padding-top: 15px;
 }
 
 .wrapContent {

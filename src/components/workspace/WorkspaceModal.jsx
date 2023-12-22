@@ -58,7 +58,7 @@ export const WorkspaceModal = ({
             />
             <button
               className={style.button}
-              onClick={() => {
+              onClick={(e) => {
                 if (pageNum === 0) {
                   handleClickSubmitBtn();
                 } else if (pageNum === 1) {

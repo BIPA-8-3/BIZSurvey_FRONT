@@ -10,6 +10,7 @@ export const WorkspaceProvider = ({ children }) => {
 
     // 선택된 워크스페이스
     const [selectedWorkspaceId, setSelectedWorkspaceId] = useState(null);
+    const [selectedWorkspaceType, setSelectedWorkspaceType] = useState(null);
 
     // 선택된 설문지 [context 안해도 될듯 ? 나중에보고 ㄱㄱ]
     const [selectedSurvey, setSelectedSurvey] = useState({
@@ -44,16 +45,24 @@ export const WorkspaceProvider = ({ children }) => {
     if (!permission) {
         return;
     }
+
+    const isPersonal = (method) => {
+        return selectedWorkspaceType === "PERSONAL";
+    };
+
     return (
         <WorkspaceContext.Provider value={{
             workspaceList,
             setWorkspaceList,
             selectedWorkspaceId,
             setSelectedWorkspaceId,
+            selectedWorkspaceType,
+            setSelectedWorkspaceType,
             selectedSurvey,
             setSelectedSurvey,
             selectedSurveyId,
             setSelectedSurveyId,
+            isPersonal,
         }}>
             {children}
         </WorkspaceContext.Provider >

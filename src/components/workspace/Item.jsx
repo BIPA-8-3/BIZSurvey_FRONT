@@ -6,7 +6,7 @@ function Item({ workspaceName, id, workspaceType, changeWorkspace, selectable })
       id={style.Item}
       className={`${style.workspaces} ${selectable ? style.active : ""}`}
       onClick={() => {
-        changeWorkspace(id);
+        changeWorkspace(id, workspaceType);
       }}
     >
       <span className={style.textFont}>{workspaceName}</span>

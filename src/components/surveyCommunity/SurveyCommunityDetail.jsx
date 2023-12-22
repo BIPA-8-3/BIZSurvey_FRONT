@@ -34,15 +34,15 @@ export default function CommunityPost() {
 
   useEffect(() => {
     // 데이터를 가져오는 함수
-    const post = location.state.postId;
+    const post = location.state ? location.state.postId : 0;
     setPostId(post);
   }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
 
   useEffect(() => {
+    console.log("여기 postId들어옴", postId);
     const fetchData = async () => {
       try {
         call("/s-community/showPost/" + postId, "GET").then((data) => {
-          console.log("리스폰스 : " + JSON.stringify(data));
           if (data.reported === 1) {
             alert("신고당한 게시물입니다.");
             navigate("/");
@@ -62,26 +62,11 @@ export default function CommunityPost() {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(data, "data!!!!!!!!!");
-      try {
-        if (
-          userInfo.nickname === data.nickname &&
-          userInfo.nickname !== undefined
-        ) {
-          console.log(userInfo.nickname, "aaaaaaaaaaaaaaaaaa", data.nickname);
+      let user = localStorage.getItem("userInfo");
+      if (user) {
+        if (user.nickname === data.nickname) {
           setIsAuthor(true);
         }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchData();
-  }, [data]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (localStorage.getItem("userInfo")) {
         const res = await call("/s-community/survey/check/" + postId, "GET");
         setIsAvailable(!res);
         const access = data.canAccess;
@@ -90,8 +75,9 @@ export default function CommunityPost() {
         }
       }
     };
+
     fetchData();
-  }, [isAuthor]);
+  }, [data]);
 
   if (loading) {
     return (
@@ -100,8 +86,6 @@ export default function CommunityPost() {
       </>
     ); // 데이터 로딩 중에는 로딩 표시
   }
-  console.log("데이타", data);
-  console.log(postId);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -115,22 +99,6 @@ export default function CommunityPost() {
     // 선택된 이유들을 사용하거나 필요에 따라 다른 작업을 수행합니다.
     console.log("Selected Reasons:", selectedReasons);
   };
-
-  // const removePTags = (html) => {
-  //   // 정규식을 사용하여 <p></p> 태그를 제거합니다.
-  //   const withoutPTags = html.replace(/<p>/g, "").replace(/<\/p>/g, "");
-  //   return withoutPTags;
-  // };
-
-  // const removePTags = (html) => {
-  //   // html이 유효한 값이 아니면 빈 문자열 반환
-  //   if (html === undefined || html === null) {
-  //     return "";
-  //   }
-
-  //   const withoutPTags = html.replace(/<p>/g, "").replace(/<\/p>/g, "");
-  //   return withoutPTags;
-  // };
 
   function renderAccess() {
     if (data.canAccess === "대기") {

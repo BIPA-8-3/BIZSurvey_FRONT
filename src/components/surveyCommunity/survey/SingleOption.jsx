@@ -17,15 +17,19 @@ export default function SingleOption({ answers, setUserAnswer }) {
             aria-labelledby="demo-radio-buttons-group-label"
             name="radio-buttons-group"
           >
-            {answers.map((answer, index) => (
-              <div style={{ marginBottom: "5px" }} key={index}>
-                <FormControlLabel
-                  value={answer.surveyAnswer}
-                  control={<Radio onChange={handleChangeAnswer} />}
-                  label={answer.surveyAnswer}
-                />
-              </div>
-            ))}
+            {answers.map((answer, index) => {
+              if (answer.answerId !== null) {
+                return (
+                  <div style={{ marginBottom: "5px" }} key={index}>
+                    <FormControlLabel
+                      value={answer.surveyAnswer}
+                      control={<Radio onChange={handleChangeAnswer} />}
+                      label={answer.surveyAnswer}
+                    />
+                  </div>
+                );
+              }
+            })}
           </RadioGroup>
         </FormControl>
       </div>

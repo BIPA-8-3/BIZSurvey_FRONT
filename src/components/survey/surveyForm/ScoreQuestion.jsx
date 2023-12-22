@@ -82,6 +82,7 @@ export default function ScoreQuestion({
         <div>
           <div className={style.wrapQuestion}>
             <TextField
+              // name={}
               value={surveyQuestion}
               id="filled-basic"
               variant="filled"
