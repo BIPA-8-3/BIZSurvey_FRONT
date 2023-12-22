@@ -124,7 +124,7 @@ export default function CommunityPost() {
         await call("/s-community/survey/" + postId, "POST", result).then(
           (response) => {
             //제출 완료 여부 알리기
-            setIsSubmit(true);
+
             alert(response);
             navigate("/surveyCommunityDetail", { state: { postId: postId } });
           }
