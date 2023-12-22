@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import style from '../../style/user/MypagePasswordChange.module.css'
-import logo from '../../assets/img/logo.png'
-import useFadeIn from '../../style/useFadeIn';
-import Button from '@mui/material/Button';
 import { useLocation, useNavigate } from "react-router-dom";
 import call from '../../pages/workspace/api';
 
 function MypagePasswordChange({userData, setEditState}) {
-  const fadeIn = useFadeIn();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -69,25 +65,29 @@ function MypagePasswordChange({userData, setEditState}) {
                     </div>
                 </li>
                 <li>
-                <div style={{width:'500px', margin:'0 auto', textAlign:'center', paddingTop:'20px', paddingBottom:'20px', color:'gray', backgroundColor:'rgba(207, 217, 255, 0.2)', borderRadius:'10px'}}>
-                    <p style={{color:'#111'}}>변경할 비밀번호를 정확히 입력해주세요.</p>
-                    <p style={{color:'red', marginTop:'10px', fontSize:'12px'}}>(8-16자리, 소문자, 숫자, 특수문자를 포함해야 합니다.)</p>
-                </div>
-                <div id={style.loginWrap} style={{padding: '40px 0px 60px 0px'}}>
-                    <label style={{fontSize: '10px'}}>비밀번호</label>
-                    <input type='password' 
-                            className={style.input}
-                            onChange={handlePasswordChange}/>
-                    {passwordError && <p style={{color:'red', fontSize:'12px', marginTop:'5px'}}>{passwordError}</p>}
-                    <div style={{width:'10px', height:'15px'}}></div>
-                    <label style={{fontSize: '10px'}}>비밀번호 확인</label>
-                    <input type='password'  
-                            className={style.input}
-                            onChange={handleConfirmPasswordChange}/>
-                    {confirmPasswordError && <p style={{color:'red', fontSize:'12px', marginTop:'5px'}}>{confirmPasswordError}</p>}      
-
-                   
+                  <form>
+                    <div style={{width:'500px', margin:'0 auto', textAlign:'center', paddingTop:'20px', paddingBottom:'20px', color:'gray', backgroundColor:'rgba(207, 217, 255, 0.2)', borderRadius:'10px'}}>
+                        <p style={{color:'#111'}}>변경할 비밀번호를 정확히 입력해주세요.</p>
+                        <p style={{color:'red', marginTop:'10px', fontSize:'12px'}}>(8-16자리, 소문자, 숫자, 특수문자를 포함해야 합니다.)</p>
                     </div>
+                    
+                    <div id={style.loginWrap} style={{padding: '40px 0px 60px 0px'}}>
+                        <input type="text" name="email" style={{ display: 'none' }} aria-hidden="true" tabIndex="-1" value={userData.email  || ''} autoComplete="username" readOnly />
+                        <label style={{fontSize: '10px'}}>비밀번호</label>
+                        <input type='password' 
+                                className={style.input}
+                                onChange={handlePasswordChange}
+                                autoComplete="new-password"/>
+                        {passwordError && <p style={{color:'red', fontSize:'12px', marginTop:'5px'}}>{passwordError}</p>}
+                        <div style={{width:'10px', height:'15px'}}></div>
+                        <label style={{fontSize: '10px'}}>비밀번호 확인</label>
+                        <input type='password'  
+                                className={style.input}
+                                onChange={handleConfirmPasswordChange}
+                                autoComplete="new-password"/>
+                        {confirmPasswordError && <p style={{color:'red', fontSize:'12px', marginTop:'5px'}}>{confirmPasswordError}</p>} 
+                      </div>
+                    </form>
                 </li>
                 
             </ul>

@@ -21,7 +21,6 @@ function Header() {
   const isLoggedIn = !!localStorage.getItem("accessToken");
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   useEffect(() => {
-    console.log("userInfo : " + userInfo.email);
     const closeMenu = () => {
       setIsMenuOpen(false);
       setAnchorElUser(null);

@@ -1,14 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import style from '../../style/user/Join.module.css';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
 import back from '../../assets/img/back.png';
 import useFadeIn from '../../style/useFadeIn';
 import { useLocation, useNavigate } from 'react-router-dom';
 import call from '../../pages/workspace/api';
-import useApiCall, { additional } from "../api/ApiCall";
+import { additional } from "../api/ApiCall";
 function AdditionalJoin() {
   const [isNinknameCheck, setNinknameCheck] = useState(false);
   const [nickname, setNickname] = useState('');
@@ -52,16 +48,6 @@ function AdditionalJoin() {
       }
     })
   }
-  
-  // 로컬 스토리지에 엑세스 토큰 저장
-  const saveAccessTokenToLocalStorage = (token) => {
-    localStorage.setItem('accessToken', token);
-  };
-
-  // 리프레시 토큰을 로컬 스토리지에 저장
-  const saveRefreshTokenToLocalStorage = (token) => {
-    localStorage.setItem('refreshToken', token);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
