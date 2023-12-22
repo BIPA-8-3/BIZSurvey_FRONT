@@ -23,6 +23,7 @@ function AdminDashboard() {
     const [signupCount, setSignupCount] = useState([])
     const [lineChartData, setLineChartData] = useState([]);
     const [surveyCommunityList, setSurveyCommunityList] = useState([]);
+    const [claimList, setClaimList] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -45,9 +46,18 @@ function AdminDashboard() {
 
             const surveyCommunityListData = await call("/admin/s-community", "GET")
             setSurveyCommunityList(surveyCommunityListData);
+
+            call("/admin/claim/unprocessed", "GET").then((data) => {
+                setClaimList(data.content);
+            }).catch((error) => {
+                console.log(error)
+            })
             
         } catch (error) {
             console.error("데이터를 불러오는 중 오류 발생:", error);
+            if(error.response.data.errorCode === 403){
+                navigate("/admin/login")
+            }
         }
         };
 
@@ -136,14 +146,16 @@ function AdminDashboard() {
                 <div className={style.dashboardWrap}>
                     <h2>신고 내역</h2>
                     <table className={style.adminClaimTable}>
-                        <tr>
-                            <td>
-                                <span className={style.claimSpanNone}>미처리</span>
-                            </td>
-                            <td>대댓글</td>
-                            <td>스팸홍보/도배글</td>
-                            <td>2023-12-12</td>
-                        </tr>
+                        {Array.isArray(claimList.content) && claimList.content.slice(0, 6).map((claimList, index) => (
+                            <tr>
+                                <td>
+                                    <span className={style.claimSpanNone}>미처리</span>
+                                </td>
+                                <td>{claimList.claimType}</td>
+                                <td>{claimList.claimReason}</td>
+                                <td>{claimList.regDate}</td>
+                            </tr>
+                        ))}             
                         <tr>
                             <td>
                                 <span className={style.claimSpanNone}>미처리</span>
