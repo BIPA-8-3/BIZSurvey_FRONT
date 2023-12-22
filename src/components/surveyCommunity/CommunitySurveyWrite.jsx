@@ -78,6 +78,8 @@ export default function CommunityPost() {
         })
         .catch((error) => {
           console.log(error);
+          alert(error.response.data.errorMessage);
+          navigate("/");
         });
     }
   }, [postId]);

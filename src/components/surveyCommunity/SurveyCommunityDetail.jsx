@@ -42,13 +42,18 @@ export default function CommunityPost() {
     console.log("여기 postId들어옴", postId);
     const fetchData = async () => {
       try {
-        call("/s-community/showPost/" + postId, "GET").then((data) => {
-          if (data.reported === 1) {
-            alert("신고당한 게시물입니다.");
+        call("/s-community/showPost/" + postId, "GET")
+          .then((data) => {
+            if (data.reported === 1) {
+              alert("신고당한 게시물입니다.");
+              navigate("/");
+            }
+            setData(data);
+          })
+          .catch((error) => {
+            alert("이미 삭제된 게시물입니다.");
             navigate("/");
-          }
-          setData(data);
-        });
+          });
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -131,8 +136,6 @@ export default function CommunityPost() {
       return prefix + profile;
     }
   }
-
-  
 
   const handleButtonClick = () => {
     if (localStorage.getItem("userInfo")) {
