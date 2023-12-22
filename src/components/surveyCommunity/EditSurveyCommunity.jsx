@@ -59,7 +59,6 @@ export default function CommunityWrite() {
 
   useEffect(() => {
     console.log(postId, "postId야");
-    alert(postId);
     // 데이터를 가져오는 비동기 함수
     const fetchData = async () => {
       try {
@@ -126,6 +125,7 @@ export default function CommunityWrite() {
   };
 
   const handleFileChange = async (event) => {
+    setLoading(true);
     const file = event.target.files[0];
     // 파일 선택 후의 로직을 처리합니다.
     console.log("Selected File:", file); // 넘겨받은 이미지
@@ -134,7 +134,7 @@ export default function CommunityWrite() {
     formData.append("file", file); // formData는 키-밸류 구조
     formData.append("domain", "SURVEY_THUMB");
     // 백엔드 multer라우터에 이미지를 보낸다.
-    setLoading(true);
+
     try {
       const result = await axios.post(
         "http://localhost:8080/storage/",
@@ -204,13 +204,14 @@ export default function CommunityWrite() {
               boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // 투영(튀어나온 효과) 추가
               margin: "auto",
               width: "700px",
+              maxHeight: "152px",
             }}
           >
             {/* 좌측 이미지 */}
             <Box
               component="img"
               src={returnImgUrl()}
-              sx={{ width: "200px", height: "auto" }}
+              sx={{ width: "200px", maxHeight: "152px" }}
             />
 
             {/* 나머지 내용 */}
