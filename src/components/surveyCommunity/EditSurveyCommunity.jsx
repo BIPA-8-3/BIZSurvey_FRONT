@@ -10,7 +10,7 @@ import ReactQuill from "react-quill";
 import SurveyListModal from "./SurveyListModal";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import call from "./checkLogin.js";
+import call from "../../pages/workspace/api.js";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Divider, TextField, Input } from "@mui/material";
@@ -47,7 +47,8 @@ export default function CommunityWrite() {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const location = useLocation();
-  const { postId, surveyId } = location.state || {};
+  const { surveyId } = location.state || {};
+  const [postId, setPostId] = useState(0);
 
   useEffect(() => {}, [loading]);
   useEffect(() => {
@@ -59,6 +60,14 @@ export default function CommunityWrite() {
   }, [data]);
 
   useEffect(() => {
+    const post = location.state ? location.state.postId : 0;
+    const survey = location.state ? location.state.surveyId : 0;
+
+    setPostId(post);
+  }, []);
+
+  useEffect(() => {
+    console.log(postId, "postId야");
     // 데이터를 가져오는 비동기 함수
     const fetchData = async () => {
       try {
@@ -80,7 +89,7 @@ export default function CommunityWrite() {
 
     // fetchData 함수 실행
     fetchData();
-  }, []);
+  }, [postId]);
 
   const handleSetPostData = (data) => {
     //   private Long postId;  아이디 있어야함
