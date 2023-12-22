@@ -21,6 +21,7 @@ import Loader from "../../pages/loader/Loader";
 export default function CommunityWrite() {
   const quillRef = useRef();
   const [content, setContent] = useState("");
+  const [prevContent, setPrevContent] = useState("");
   const fadeIn = useFadeIn();
   const [voteTitle, setVoteTitle] = useState("");
   const [voteOptions, setVoteOptions] = useState([""]);
@@ -49,6 +50,65 @@ export default function CommunityWrite() {
          
       }
     }, []);
+
+    useEffect(() => {
+      console.log("Content 값이 변경되었습니다:", content);
+      if (prevContent !== content) {
+        handleContentChange();
+      }
+      setPrevContent(content);
+
+    }, [content, prevContent]);
+
+    const handleContentChange = () => {
+      // content 값에서 특정 이미지 태그를 찾아내고 그에 따른 동작을 수행
+      const removedImageTag = findRemovedImageTag(prevContent, content);
+      
+      if (removedImageTag) {
+        // 찾아낸 이미지 태그에 대한 동작 수행
+        handleImageTagRemoved(removedImageTag);
+      }
+    };
+
+    const findRemovedImageTag = (prevContent, currentContent) => {
+      
+      const imgRegex = /<img[^>]*>/g;
+      const prevImageTags = prevContent.match(imgRegex) || [];
+      const currentImageTags = currentContent.match(imgRegex) || [];
+    
+      // 이전에 있었지만 현재는 없는 이미지 태그를 찾아냄
+      const removedImageTags = prevImageTags.filter(
+        (tag) => !currentImageTags.includes(tag)
+      );
+    
+      
+      if (removedImageTags.length > 0) {
+        return removedImageTags[0];
+      }
+    
+      return null;
+    };
+    
+    const handleImageTagRemoved = (removedImageTag) => {
+      // 사라진 이미지 태그에 대한 동작을 여기에 작성
+      const srcRegex = /<img.*?src="(.*?)".*?>/i;
+      const match = removedImageTag.match(srcRegex);
+    
+      // match 배열의 두 번째 요소가 src 속성값
+      const srcValue = match ? match[1] : null;
+      for(let i = 0; i < imageSrcArray.length; i++) {
+        if(imageSrcArray[i] === srcValue)  {
+          imageSrcArray.splice(i, 1);
+          i--;
+        }
+      }
+      const sliceSrcValue = srcValue.slice(8);
+      
+      call("/storage/file/" + sliceSrcValue, "DELETE")
+      .then((data) => console.log(data))
+      .catch((error) => console.log(error));
+      
+    };
 
     
 
@@ -204,7 +264,7 @@ export default function CommunityWrite() {
 
     const imgElements = doc.querySelectorAll("img");
     imgElements.forEach((imgElement) => {
-      const src = imgElement.getAttribute("src");
+    const src = imgElement.getAttribute("src");
 
       if (src) {
         imageSrcArray.push(src);
