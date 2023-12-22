@@ -24,8 +24,6 @@ export default function SurveyInfo() {
     const response = window.confirm("설문지를 삭제하시겠습니까?");
     if (response) {
       call("/survey/" + surveyId, "DELETE").then((data) => {
-        console.log(data);
-        alert(data);
         navigate("/workspace");
       });
     }
