@@ -9,7 +9,7 @@ import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import SurveyListModal from "./SurveyListModal";
 import axios from "axios";
-import call, {getURI} from "../../pages/workspace/api";
+import call, { getURI } from "../../pages/workspace/api";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Divider, TextField, Input } from "@mui/material";
@@ -91,14 +91,11 @@ export default function CommunityWrite() {
         ...prevError,
         title: "제목을 입력해주세요.",
       }));
-      
+
       return;
     } else {
       setError((prevError) => ({ ...prevError, title: "" }));
-      
     }
-
-  
 
     if (!selectedStartDate) {
       setError((prevError) => ({
@@ -128,7 +125,7 @@ export default function CommunityWrite() {
         ...prevError,
         endDate: "종료일은 시작일보다 하루 이상 뒤여야 합니다.",
       }));
-      
+
       return;
     } else {
       setError((prevError) => ({ ...prevError, endDate: "" }));
@@ -157,9 +154,10 @@ export default function CommunityWrite() {
   };
 
   const handleUpload = () => {
-
-    if(selectedSurvey === null){
-      alert("먼저 설문을 지정하셔야 설문 섬네일 이미지를 지정하실 수 있습니다!")
+    if (selectedSurvey === null) {
+      alert(
+        "먼저 설문을 지정하셔야 설문 섬네일 이미지를 지정하실 수 있습니다!"
+      );
       return;
     }
 
@@ -176,15 +174,11 @@ export default function CommunityWrite() {
     formData.append("domain", "SURVEY_THUMB");
     // 백엔드 multer라우터에 이미지를 보낸다.
     try {
-      const result = await axios.post(
-        getURI() + "/storage/",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const result = await axios.post(getURI() + "/storage/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       console.log("성공 시, 백엔드가 보내주는 데이터", result.data);
       const HEAD_IMG_URL = "https://";
       const IMG_URL = HEAD_IMG_URL + result.data;
@@ -312,15 +306,11 @@ export default function CommunityWrite() {
       formData.append("domain", "COMMUNITY");
       // 백엔드 multer라우터에 이미지를 보낸다.
       try {
-        const result = await axios.post(
-          getURI() + "/storage/",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        const result = await axios.post(getURI() + "/storage/", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
         console.log("성공 시, 백엔드가 보내주는 데이터", result.data);
         const HEAD_IMG_URL = "https://";

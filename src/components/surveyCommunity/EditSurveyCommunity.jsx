@@ -57,15 +57,6 @@ export default function CommunityWrite() {
     setPostId(post);
   }, []);
 
-  useEffect(() => {}, [loading]);
-  useEffect(() => {
-    console.log(data);
-    if (data.length > 0 && surveyId !== 0) {
-      const surveyData = data.find((dt) => dt.surveyId === surveyId);
-      setSurvey(surveyData);
-    }
-  }, [data]);
-
   useEffect(() => {
     console.log(postId, "postId야");
     alert(postId);
@@ -89,8 +80,18 @@ export default function CommunityWrite() {
     };
 
     // fetchData 함수 실행
-    fetchData();
+    if (postId !== 0) {
+      fetchData();
+    }
   }, [postId]);
+
+  useEffect(() => {
+    console.log(data);
+    if (data.length > 0 && surveyId !== 0) {
+      const surveyData = data.find((dt) => dt.surveyId === surveyId);
+      setSurvey(surveyData);
+    }
+  }, [data]);
 
   const handleSetPostData = (data) => {
     //   private Long postId;  아이디 있어야함
@@ -326,7 +327,6 @@ export default function CommunityWrite() {
       content: content,
       startDateTime: selectedStartDate + "T00:00:00",
       endDateTime: selectedEndDate + "T00:00:00",
-      maxMember: maxParticipants,
       surveyId: selectedSurvey.surveyId,
       thumbImgUrl: selectedFile,
     };
@@ -413,20 +413,6 @@ export default function CommunityWrite() {
 
           <div className={style.voteWrap}>
             {renderModal()}
-            <br />
-            <br />
-            설문을 응시할 수 있는 최대 인원을 입력해주세요!
-            <br />
-            <br />
-            <Input
-              value={maxParticipants}
-              onChange={handleMaxParticipantsChange}
-              type="number"
-              defaultValue={1}
-              onBlur={(e) => handleMaxParticipantsBlur(e)}
-              inputProps={{ style: { textAlign: "center" } }} // 입력창 가운데 정렬
-            />
-            (명)
             <br />
             <br />
             {renderImgForm()}
