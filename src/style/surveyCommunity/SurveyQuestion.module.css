@@ -2,7 +2,7 @@
   width: 85%;
   background-color: white;
   border-radius: 10px;
-  min-height: 120px;
+  /* min-height: 120px; */
   border: 1px solid #eaeaea;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
     rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
@@ -32,6 +32,6 @@
 
 .option {
   width: 90%;
-  min-height: 50px;
+  /* min-height: 50px; */
   margin: 0 auto;
 }

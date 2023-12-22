@@ -22,7 +22,6 @@ export default function CommunityPost() {
   const fadeIn = useFadeIn();
   const navigate = useNavigate();
   const location = useLocation();
-  // const postId = location.state ? location.state.postId : 0;
 
   // 설문지 데이터
   const [survey, setSurvey] = useState({
@@ -122,14 +121,14 @@ export default function CommunityPost() {
       );
 
       try {
-        const response = await call(
-          "/s-community/survey/" + postId,
-          "POST",
-          result
+        await call("/s-community/survey/" + postId, "POST", result).then(
+          (response) => {
+            //제출 완료 여부 알리기
+
+            alert(response);
+            navigate("/surveyCommunityDetail", { state: { postId: postId } });
+          }
         );
-        console.log(response);
-        alert(response);
-        navigate("/surveyCommunityDetail", { state: { postId: postId } });
       } catch (error) {
         console.error("답변 제출 중 오류 발생:", error);
       }
@@ -190,6 +189,7 @@ export default function CommunityPost() {
           {/* 설문지 영역  */}
 
           <SurveyForm
+            sharedId={postId}
             survey={survey}
             handleSetAnswer={handleSetAnswer}
             pass={pass}

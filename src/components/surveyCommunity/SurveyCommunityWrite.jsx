@@ -75,43 +75,56 @@ export default function CommunityWrite() {
     }
   }, [data]);
 
-  const handleSaveClick = () => {
-
-    if(!selectedSurvey){
-      setError((prevError) => ({ ...prevError, selectedSurvey: "설문을 등록해주세요." }));
+  const handleSaveClick = async () => {
+    if (!selectedSurvey) {
+      setError((prevError) => ({
+        ...prevError,
+        selectedSurvey: "설문을 등록해주세요.",
+      }));
       return;
-    }else{
+    } else {
       setError((prevError) => ({ ...prevError, selectedSurvey: "" }));
     }
 
     if (!title) {
-      setError((prevError) => ({ ...prevError, title: "제목을 입력해주세요." }));
+      setError((prevError) => ({
+        ...prevError,
+        title: "제목을 입력해주세요.",
+      }));
       titleInputRef.current.focus();
       return;
-    }else{
+    } else {
       setError((prevError) => ({ ...prevError, title: "" }));
       contentInputRef.current.focus();
     }
-      
 
     if (!content) {
-      setError((prevError) => ({ ...prevError, content: "내용을 입력해주세요." }));
+      setError((prevError) => ({
+        ...prevError,
+        content: "내용을 입력해주세요.",
+      }));
       return;
-    }else{
+    } else {
       setError((prevError) => ({ ...prevError, content: "" }));
     }
 
     if (!selectedStartDate) {
-      setError((prevError) => ({ ...prevError, startDate: "시작일을 입력해주세요." }));
+      setError((prevError) => ({
+        ...prevError,
+        startDate: "시작일을 입력해주세요.",
+      }));
       return;
-    }else{
+    } else {
       setError((prevError) => ({ ...prevError, startDate: "" }));
     }
 
     if (!selectedEndDate) {
-      setError((prevError) => ({ ...prevError, endDate: "종료일을 입력해주세요." }));
+      setError((prevError) => ({
+        ...prevError,
+        endDate: "종료일을 입력해주세요.",
+      }));
       return;
-    }else{
+    } else {
       setError((prevError) => ({ ...prevError, endDate: "" }));
     }
 
@@ -129,7 +142,6 @@ export default function CommunityWrite() {
       setError((prevError) => ({ ...prevError, endDate: "" }));
     }
 
-
     const data = {
       title: title,
       content: content,
@@ -137,14 +149,11 @@ export default function CommunityWrite() {
       endDateTime: selectedEndDate + "T00:00:00",
       surveyId: selectedSurvey.surveyId,
       thumbImageUrl: selectedFile,
-    };  
+    };
 
-        // 유효성 검사
-        
-        
+    // 유효성 검사
 
-
-    call("/s-community/createPost", "POST", data)
+    await call("/s-community/createPost", "POST", data)
       .then((data) => {
         alert("게시글 등록이 완료되었습니다.");
         navigate("/surveyCommunityDetail", { state: { postId: data } });
@@ -363,7 +372,6 @@ export default function CommunityWrite() {
     setTitle(event.target.value);
   };
 
-
   // 시작일 관리
   const handleDateChange = (event) => {
     setSelectedStartDate(event.target.value);
@@ -409,7 +417,9 @@ export default function CommunityWrite() {
               modules={modules}
             />
           </div>
-          <p style={{ color: "red" }} ref={contentInputRef}>{error.content}</p>
+          <p style={{ color: "red" }} ref={contentInputRef}>
+            {error.content}
+          </p>
         </div>
         {renderBox()}
 
@@ -418,7 +428,6 @@ export default function CommunityWrite() {
           <p style={{ color: "red" }}>{error.selectedSurvey}</p>
           <br />
           <br />
-         
           {renderImgForm()}
           <br />
           <br />
@@ -446,7 +455,7 @@ export default function CommunityWrite() {
             inputProps={{ min: new Date().toISOString().split("T")[0] }}
             ref={endDateErrorRef}
           />
-           <p style={{ color: "red" }}>{error.endDate}</p>
+          <p style={{ color: "red" }}>{error.endDate}</p>
         </div>
       </div>
 

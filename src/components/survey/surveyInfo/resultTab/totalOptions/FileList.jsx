@@ -6,13 +6,10 @@ import { IoMdDownload } from "react-icons/io";
 import { getURI } from "../../../../../pages/workspace/api";
 
 export default function FileList({ files, surveyId, questionId }) {
-  const zipURL =
-    getURI() +
-    "/storage/folder/bizsurvey-bucket.s3.ap-northeast-2.amazonaws.com/survey/" +
-    surveyId +
-    "/internal-1/" +
-    questionId +
-    "/images/";
+  const index = files[0].url.indexOf("/images");
+  const result = index !== -1 ? files[0].url.substring(0, index) : files[0].url;
+
+  const zipURL = getURI() + "/storage/folder/" + result;
 
   const handleFolderDownload = (e) => {
     e.preventDefault();

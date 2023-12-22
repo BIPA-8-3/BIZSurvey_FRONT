@@ -17,7 +17,14 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import style from "../../style/community/CommunityWrite.module.css";
 import Button from "@mui/material/Button";
 
-const CreateVote = ({ handleClose, setTitle, setOptions, voteTitle, voteOptions, setVote }) => {
+const CreateVote = ({
+  handleClose,
+  setTitle,
+  setOptions,
+  voteTitle,
+  voteOptions,
+  setVote,
+}) => {
   const [pass, setPass] = useState(true);
 
   const handleTitleChange = (e) => {
@@ -35,9 +42,13 @@ const CreateVote = ({ handleClose, setTitle, setOptions, voteTitle, voteOptions,
   };
 
   const handleRemoveOption = (index) => {
-    const newOptions = [...voteOptions];
-    newOptions.splice(index, 1);
-    setOptions(newOptions);
+    if (voteOptions.length > 1) {
+      const newOptions = [...voteOptions];
+      newOptions.splice(index, 1);
+      setOptions(newOptions);
+    } else {
+      return;
+    }
   };
 
   const handleVoteSubmit = () => {
@@ -104,7 +115,11 @@ const CreateVote = ({ handleClose, setTitle, setOptions, voteTitle, voteOptions,
 
       {/* 투표 항목 추가 버튼 */}
       <div style={{ width: "100%", textAlign: "center" }}>
-        <IconButton onClick={handleAddOption} color="primary" sx={{ textAlign: "center" }}>
+        <IconButton
+          onClick={handleAddOption}
+          color="primary"
+          sx={{ textAlign: "center" }}
+        >
           <AddIcon />
         </IconButton>
       </div>
@@ -142,6 +157,7 @@ const CreateVote = ({ handleClose, setTitle, setOptions, voteTitle, voteOptions,
               {
                 ":hover": {
                   backgroundColor: "#f8f8f8",
+                  border: "0",
                 },
               },
             ]}
