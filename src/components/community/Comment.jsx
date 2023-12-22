@@ -30,7 +30,13 @@ export default function Comment({props}) {
       navigate("/login")
       return;
     } 
-    
+
+
+    if(comment === ''){
+      alert("값을 입력해주세요!")
+      return;
+    }
+
 
     try {
         call(`/community/${postId}/createComment`, "POST", {

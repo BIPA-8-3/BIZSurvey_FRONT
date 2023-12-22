@@ -31,6 +31,11 @@ export default function ChildCommentForm({props}) {
         return;
       } 
 
+          if(childComment === ''){
+            alert("값을 입력해주세요!")
+            return;
+          }
+
         try {
           const response = call(`/community/${getCommentId}/createChildComment`, "POST",{
             content: childComment,
