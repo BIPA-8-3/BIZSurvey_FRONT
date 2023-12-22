@@ -8,7 +8,13 @@ import SingleOption from "./SingleOption";
 import TextOption from "./TextOption";
 import { useEffect } from "react";
 
-export default function SurveyQuestion({ question, handleSetAnswer, pass }) {
+export default function SurveyQuestion({
+  question,
+  handleSetAnswer,
+  pass,
+  surveyId,
+  sharedId,
+}) {
   const {
     questionId,
     surveyQuestion,
@@ -83,6 +89,8 @@ export default function SurveyQuestion({ question, handleSetAnswer, pass }) {
           )}
           {answerType === "FILE" && (
             <FileOption
+              sharedId={sharedId}
+              surveyId={surveyId}
               setFileAnswer={setFileAnswer}
               questionId={questionId}
               fileAnswer={fileAnswer}

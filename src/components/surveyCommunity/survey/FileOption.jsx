@@ -6,10 +6,11 @@ import { IoIosClose } from "react-icons/io";
 import IconButton from "@mui/material/IconButton";
 import { IoCloseOutline } from "react-icons/io5";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { ConstructionOutlined } from "@mui/icons-material";
 import Loader from "../../../pages/loader/Loader";
+import { getURI } from "../../../pages/workspace/api";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -23,7 +24,13 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export default function FileOption({ setFileAnswer, questionId, fileAnswer }) {
+export default function FileOption({
+  setFileAnswer,
+  questionId,
+  fileAnswer,
+  surveyId,
+  sharedId,
+}) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -38,8 +45,8 @@ export default function FileOption({ setFileAnswer, questionId, fileAnswer }) {
     // url 받아오기
     const data = new FormData();
     data.append("file", file);
-    data.append("surveyId", 11);
-    data.append("shareId", 1);
+    data.append("surveyId", surveyId);
+    data.append("shareId", sharedId);
     data.append("shareType", "INTERNAL");
     data.append("questionId", questionId);
     data.append("domain", "SURVEY");
@@ -53,7 +60,11 @@ export default function FileOption({ setFileAnswer, questionId, fileAnswer }) {
     setLoading(true);
 
     try {
-      const response = await axios.post("/storage/survey", data, config);
+      const response = await axios.post(
+        getURI() + "/storage/survey",
+        data,
+        config
+      );
       url = response.data;
       console.log("url!!!!!!!!!!!!!" + response.data);
     } catch (error) {
@@ -68,7 +79,9 @@ export default function FileOption({ setFileAnswer, questionId, fileAnswer }) {
 
   const handleDeleteFile = async () => {
     try {
-      const response = await axios.delete("/storage/file/" + fileAnswer[0].url);
+      const response = await axios.delete(
+        getURI() + "/storage/file/" + fileAnswer[0].url
+      );
     } catch (error) {
       console.log(error);
     }
@@ -82,7 +95,7 @@ export default function FileOption({ setFileAnswer, questionId, fileAnswer }) {
       {loading ? <Loader /> : null}
       {/* 선택된 파일 정보 출력 */}
       {selectedFile ? (
-        <div style={{ paddingTop: "15px" }}>
+        <div style={{ marginBottom: "10px" }}>
           <TextField
             disabled
             id="outlined-disabled"
@@ -97,7 +110,7 @@ export default function FileOption({ setFileAnswer, questionId, fileAnswer }) {
         </div>
       ) : (
         <>
-          <div style={{ paddingTop: "15px" }}>
+          <div style={{ marginBottom: "10px" }}>
             <Button
               component="label"
               variant="outlined"
