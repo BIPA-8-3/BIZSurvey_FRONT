@@ -12,6 +12,7 @@ import { useWorkspaceContext } from "../workspace/WorkspaceContext";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateScoreSurveyPage() {
+  // state , context
   const { selectedWorkspaceId } = useWorkspaceContext();
   const navigate = useNavigate();
   const [pass, setPass] = useState(false);
@@ -40,15 +41,7 @@ export default function CreateScoreSurveyPage() {
     },
   ]);
 
-  const handleOnDragEnd = (result) => {
-    if (!result.destination) return;
-    const updatedQuestions = Array.from(questions);
-    const [reorderedQuestion] = updatedQuestions.splice(result.source.index, 1);
-    updatedQuestions.splice(result.destination.index, 0, reorderedQuestion);
-
-    setQuestions(updatedQuestions);
-  };
-
+  // 설문 제출
   const handleSubmitSurvey = async (e) => {
     e.preventDefault();
     const questionData = questions.map((question, index) => ({
@@ -67,6 +60,26 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
+  // 드래그 정렬
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return;
+    const updatedQuestions = Array.from(questions);
+    const [reorderedQuestion] = updatedQuestions.splice(result.source.index, 1);
+    updatedQuestions.splice(result.destination.index, 0, reorderedQuestion);
+
+    setQuestions(updatedQuestions);
+  };
+
+  //설문 제목 변경
+  const changeSurveyTitle = (text) => {
+    setFormData((pre) => ({ ...pre, title: text }));
+  };
+  // 설문 소개 변경
+  const changeSurveyContent = (text) => {
+    setFormData((pre) => ({ ...pre, content: text }));
+  };
+
+  // 질문 제목 변경
   const changeQuestionTitle = (id, text) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
@@ -76,6 +89,7 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
+  // 옵션
   const changeOption = (id, type) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
@@ -85,6 +99,7 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
+  // 질문 삭제
   const deleteQuestion = (id) => {
     setQuestions((pre) => {
       const result = pre
@@ -94,6 +109,7 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
+  // 옵션추가
   const addQuestion = () => {
     setQuestions((pre) => {
       return [
@@ -116,6 +132,7 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
+  // 필수 체크 변경
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
@@ -127,14 +144,7 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
-  const changeSurveyTitle = (text) => {
-    setFormData((pre) => ({ ...pre, title: text }));
-  };
-
-  const changeSurveyContent = (text) => {
-    setFormData((pre) => ({ ...pre, content: text }));
-  };
-
+  // 옵션 추가
   const handleAddOption = (qid) => {
     setQuestions((prevQuestions) => {
       return prevQuestions.map((question, index) => {
@@ -158,6 +168,7 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
+  // 옵션 제거
   const handleDeleteOption = (qid, aid) => {
     setQuestions((prevQuestions) => {
       return prevQuestions.map((question, index) => {
@@ -173,6 +184,7 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
+  // 옵션 내용 변경
   const handleChangeOptionText = (qid, aid, text) => {
     setQuestions((prevQuestions) => {
       return prevQuestions.map((question, index) => {
@@ -190,7 +202,7 @@ export default function CreateScoreSurveyPage() {
       });
     });
   };
-
+  // 점수 변경
   const handleChangeScore = (qid, score) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
@@ -202,6 +214,7 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
+  // 정답 여부
   const handleChangeCorrect = (qid, aid) => {
     setQuestions((pre) => {
       return pre.map((question, index) => {

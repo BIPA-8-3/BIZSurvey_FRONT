@@ -39,10 +39,6 @@ export default function SurveyInfoPage() {
   };
 
   useEffect(() => {
-    console.log("여기 survey", survey);
-  }, [survey]);
-
-  useEffect(() => {
     handleGetSurvey();
   }, []);
 
