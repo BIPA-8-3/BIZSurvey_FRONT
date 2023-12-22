@@ -24,7 +24,7 @@ export default function Main() {
   /////////////////////////// State 설정 ///////////////////////////
   /////////////////////////////////////////////////////////////////
 
-  const { workspaceList, setWorkspaceList, selectedWorkspaceId, setSelectedSurveyId } =
+  const { workspaceList, setWorkspaceList, selectedWorkspaceId, setSelectedSurveyId, isPersonal } =
     useWorkspaceContext();
 
   // 관리자 목록 (캐싱)
@@ -69,6 +69,8 @@ export default function Main() {
 
   // 설문지 이름 변경 요청
   const handleChangeSurveyName = (title) => {
+    alert(title);
+    alert(changeModalSurveyId);
     modifySurveyName(changeModalSurveyId, title)
       .then((data) => {
         let copy = surveyList.map((survey) => {
@@ -87,8 +89,8 @@ export default function Main() {
 
   // 워크스페이스 포커스 잃었을때 핸들러
   const handleChangeWorkspaceName = (event, changeName) => {
-    event.preventDefault();
-    if (event && originWorkspaceName === changeWorkspaceName) {
+    if (event && !changeName && originWorkspaceName === changeWorkspaceName) {
+      event.preventDefault();
       return;
     }
     if (!event && originWorkspaceName === changeName) {
@@ -139,7 +141,6 @@ export default function Main() {
       })
       .catch((error) => {
         console.error(error);
-        console.log(error.response);
       });
   };
 
@@ -156,7 +157,6 @@ export default function Main() {
       })
       .catch((error) => {
         console.error(error);
-        console.log(error.response);
       });
   };
 
@@ -198,7 +198,6 @@ export default function Main() {
     getSurveyState();
     getAdminState();
     getContactState();
-    setSelectedSurveyId(0);
   }, [selectedWorkspaceId]);
 
   ////////////////////////////////////////////////////////////
@@ -290,6 +289,7 @@ export default function Main() {
                 e.preventDefault();
                 setChangeWorkspaceName(e.target.value);
               }}
+              disabled={isPersonal()}
             />
 
             {/* group box */}
