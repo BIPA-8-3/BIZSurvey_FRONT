@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import SearchResult from "./SearchResult";
 import { useNavigate } from "react-router-dom";
+import call from "../../pages/workspace/api";
 
 function SCommunitySearch() {
   const [title, setTitle] = useState(""); // 검색할 데이터
@@ -54,13 +55,12 @@ function SCommunitySearch() {
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
 
-    axios
-      .post("http://localhost:8080/s-community/findSurveyPostTitle", {
+      call("/s-community/findSurveyPostTitle", "POST", {
         keyword: e.target.value,
       })
-      .then((response) => {
-        console.log("Search Result:", response.data);
-        setFindTitles(response.data); // Update the search results state
+      .then((data) => {
+        console.log("Search Result:", data);
+        setFindTitles(data); // Update the search results state
       })
       .catch((error) => {
         console.error("Error searching posts:", error);
@@ -71,18 +71,17 @@ function SCommunitySearch() {
 
   const searchPosts = () => {
     
-    axios
-      .get(`http://localhost:8080/s-community/search?keyword=${title}`)
-      .then((response) => {
-        console.log("검색 결과!!!!(<Search />):", response.data);
+      call(`/s-community/search?keyword=${title}`, "GET")
+      .then((data) => {
+        console.log("검색 결과!!!!(<Search />):", data);
         
-        console.log(response.data);
+        console.log(data);
         
-        let data = {keyword:title, result:response.data}
+        let postData = {keyword:title, result:data}
 
-        console.log( "보내는 데이터 : "+JSON.stringify(data))
+        console.log( "보내는 데이터 : "+JSON.stringify(postData))
         
-        navigate('/surveyCommunitySearchResult', {state: data}) 
+        navigate('/surveyCommunitySearchResult', {state: postData}) 
         
       })
       .catch((error) => {

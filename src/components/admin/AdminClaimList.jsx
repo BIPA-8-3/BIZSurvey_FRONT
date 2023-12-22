@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import style from '../../style/admin/AdminSurveyList.module.css'
-import useFadeIn from '../../style/useFadeIn';
-import Button from '@mui/material/Button';
-import { useLocation, useNavigate, useHistory } from "react-router-dom";
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
-import useApiCall from '../api/ApiCall'; 
+import call from '../../pages/workspace/api';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -14,7 +11,6 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 function AdminClaimList() {
     const navigate = useNavigate();
 
-    const { call } = useApiCall();
     const [total, setTotal] = useState(0);
     const [claimList, setClaimList] = useState([]);
 

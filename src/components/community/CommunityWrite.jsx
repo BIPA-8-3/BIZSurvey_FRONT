@@ -12,7 +12,7 @@ import axios from "axios";
 import CreateVote from "./CreateVote";
 import RegisterVote from "./RegisterVote";
 import { useNavigate } from "react-router-dom";
-import call from "../../pages/workspace/api";
+import call, { getURI } from "../../pages/workspace/api";
 // import { setOptions } from "react-chartjs-2/dist/utils";
 
 // 가상의 서버 통신 함수 (실제로는 서버와의 통신을 구현해야 함)
@@ -108,8 +108,8 @@ export default function CommunityWrite() {
       formData.append("domain", "COMMUNITY");
       // 백엔드 multer라우터에 이미지를 보낸다.
       try {
-        const result = await axios.post(
-          "http://localhost:8080/storage/",
+        const result = await axios.post( 
+          getURI() + "/storage/",
           formData,
           {
             headers: {

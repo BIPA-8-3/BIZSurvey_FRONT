@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from "axios";
 import CircularProgress from '@mui/material/CircularProgress';
-import useApiCall from "../api/ApiCall";
+import useApiCall, {loginKaKaoCode, loginKaKaoNicknameCheck} from "../api/ApiCall";
 import { LoginContext, LoginFunContext } from "../../App";
 
 const OAuth2RedirectHandler = () => {
@@ -28,38 +28,48 @@ const OAuth2RedirectHandler = () => {
         const code = new URL(window.location.href).searchParams.get('code');
   
         try {
-          const response = await Axios.get(`/login/oauth2/code/kakao?code=${code}`);
-          const headers = response.headers;
+          loginKaKaoCode(code).then((response) => {
+              
+            console.log("data header : " + response.headers)
+            const headers = response.headers;
+
+            if (headers && headers.authorization) {
+
+
+              loginKaKaoNicknameCheck(response.data.loginInfoRequest.id).then((checkResponse)=>{
+                  if(!checkResponse.data){
+                      navigate("/additionalJoin", {state : {
+                          info : response.data.loginInfoRequest
+                      }})
+                  }else{
+                      const headers = response.headers;
+                      const authorization = headers['authorization'];
+                      const refreshAuthorization = headers['refreshauthorization'];
+
+                      saveAccessTokenToLocalStorage(authorization);
+                      saveRefreshTokenToLocalStorage(refreshAuthorization);
+
+                      try {
+                          call("/user/info", "GET").then((data) =>{
+                          console.log("/user/info : " + data);
+                          setUserInfo(data);
+                        })
+                        
+                      } catch (error) {
+                        console.error("사용자 정보 가져오기 실패:", error);
+                      }
+
+                      navigate('/');
+                  }
+              });
+                  
+            } else {
+              console.error('Authorization header not found in the response.');
+            }
+         })
+         
           
-          if (headers && headers.authorization) {
-
-            const checkResponse = await Axios.get(`/nickname/existence?id=${response.data.loginInfoRequest.id}`);
-                
-                if(!checkResponse.data){
-                    navigate("/additionalJoin", {state : {
-                        info : response.data.loginInfoRequest
-                    }})
-                }else{
-                    const headers = response.headers;
-                    const authorization = headers['authorization'];
-                    const refreshAuthorization = headers['refreshauthorization'];
-            
-                    saveAccessTokenToLocalStorage(authorization);
-                    saveRefreshTokenToLocalStorage(refreshAuthorization);
-
-                    try {
-                      const data = await call("/user/info", "GET");
-                      console.log(data);
-                      setUserInfo(data);
-                    } catch (error) {
-                      console.error("사용자 정보 가져오기 실패:", error);
-                    }
-
-                    navigate('/');
-                }
-          } else {
-            console.error('Authorization header not found in the response.');
-          }
+          
         } catch (error) {
           console.error('Error fetching data:', error);
         }

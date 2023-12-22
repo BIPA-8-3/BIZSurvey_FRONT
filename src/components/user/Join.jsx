@@ -8,7 +8,6 @@ import back from "../../assets/img/back.png";
 import useFadeIn from "../../style/useFadeIn";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-import Axios from "axios";
 
 import { useForm } from "react-hook-form";
 import call from "../../pages/workspace/api";

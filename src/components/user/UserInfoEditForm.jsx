@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import style from '../../style/user/UserInfoEditForm.module.css';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
 import back from '../../assets/img/back.png';
 import useFadeIn from '../../style/useFadeIn';
 import { useLocation, useNavigate } from 'react-router-dom';
 import call from '../../pages/workspace/api';
-import useApiCall, {userInfoUpdate} from '../api/ApiCall';
+import { userInfoUpdate } from '../api/ApiCall';
 
 function UserInfoEditForm({userData,setEditState, setUserData}) {
   const [isNinknameCheck, setNinknameCheck] = useState(true);
@@ -80,8 +76,6 @@ function UserInfoEditForm({userData,setEditState, setUserData}) {
         nickname: nickname,
         birthdate: birthdate,
       }).then((data) =>{
-          console.log("data : " + data);
-
           const updatedUserData = {
             ...userData,
             nickname: nickname,
