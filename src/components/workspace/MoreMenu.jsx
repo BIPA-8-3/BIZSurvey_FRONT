@@ -13,7 +13,7 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum, managedValues 
   ////////////////////////// useContext //////////////////////////
   ////////////////////////////////////////////////////////////////
   // active workspace
-  let { workspaceList, setWorkspaceList, selectedWorkspaceId, setSelectedWorkspaceId } =
+  let { workspaceList, setWorkspaceList, selectedWorkspaceId, setSelectedWorkspaceId, isPersonal } =
     useWorkspaceContext();
 
   ////////////////////////////////////////////////////////////////
@@ -98,15 +98,6 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum, managedValues 
         <ul>
           <li
             onClick={async () => {
-              await setMenu("tab1");
-              toggleMenu();
-              setManagementModal(true);
-            }}
-          >
-            관리자 관리
-          </li>
-          <li
-            onClick={async () => {
               await setMenu("tab2");
               toggleMenu();
               setManagementModal(true);
@@ -115,9 +106,20 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum, managedValues 
             연락처 관리
           </li>
           <li
+            onClick={async () => {
+              await setMenu("tab1");
+              toggleMenu();
+              setManagementModal(true);
+            }}
+            className={isPersonal() ? style.disabled : ""}
+          >
+            관리자 관리
+          </li>
+          <li
             onClick={() => {
               openWorkspaceModal(1);
             }}
+            className={isPersonal() ? style.disabled : ""}
           >
             이름 바꾸기
           </li>
@@ -125,6 +127,7 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum, managedValues 
             onClick={() => {
               handleRemoveClick();
             }}
+            className={isPersonal() ? style.disabled : ""}
           >
             삭제
           </li>

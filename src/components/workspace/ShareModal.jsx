@@ -199,7 +199,7 @@ export default function ShareModal({ isOpen, onClose, survey, contactList }) {
                         return selectedList.map((share) => (
                           <ShareItem
                             key={share.id}
-                            btnVisible={false}
+                            btnVisible={true}
                             info={share}
                             handleClickShareItem={handleClickShareItem}
                           />

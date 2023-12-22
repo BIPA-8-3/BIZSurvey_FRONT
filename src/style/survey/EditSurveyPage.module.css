@@ -1,17 +1,15 @@
 .container {
-  width: 900px;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  margin: 0 auto;
-  margin-top: 80px;
-}
-
-.wrapContent {
   width: 700px;
   padding-top: 100px;
   padding-left: 254px;
   margin: 0 auto;
+}
+
+.wrapContent {
+  /* width: 700px;
+  padding-top: 100px;
+  padding-left: 254px;
+  margin: 0 auto; */
 }
 
 .questionList {
