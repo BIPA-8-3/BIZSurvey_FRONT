@@ -131,6 +131,20 @@ export default function CommunityWrite() {
       setError((prevError) => ({ ...prevError, endDate: "" }));
     }
 
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, "text/html");
+
+    const imgElements = doc.querySelectorAll("img");
+    imgElements.forEach((imgElement) => {
+      const src = imgElement.getAttribute("src");
+
+      if (src) {
+        imageSrcArray.push(src);
+      }
+
+      alert("배열 확인" + JSON.stringify(imageSrcArray));
+    });
+
     const data = {
       title: title,
       content: content,
