@@ -7,11 +7,12 @@ import Loader from "../loader/Loader";
 import { createContext } from "react";
 import { useWorkspaceContext } from "../workspace/WorkspaceContext";
 import call from "../workspace/api";
+import { useNavigate } from "react-router-dom";
 
 export const SurveyContext = createContext();
 
 export default function SurveyInfoPage() {
-  const { selectedSurveyId } = useWorkspaceContext();
+  const { selectedSurveyId, setSelectedSurveyId } = useWorkspaceContext();
   const [page, setPage] = useState(0);
   const [element, setElement] = useState(<></>);
   const [loading, setLoading] = useState(true);
@@ -49,14 +50,6 @@ export default function SurveyInfoPage() {
       setElement(<SurveyInfo />);
     }
   }, [page]);
-
-  // useEffect(() => {
-  //   if (page) {
-  //     setElement(<ResultView />);
-  //   } else {
-  //     setElement(<SurveyInfo />);
-  //   }
-  // }, [page, survey]);
 
   const handleGetSurvey = async () => {
     if (!selectedSurveyId) {
