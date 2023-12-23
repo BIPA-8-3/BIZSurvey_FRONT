@@ -203,7 +203,6 @@ export const removeAdmin = (id) => {
 }
 
 
-
 // 공유 실행
 export const shareSurvey = (sharedRequest) => {
     return call(`${shareURI}`, "POST", sharedRequest);

@@ -15,7 +15,6 @@ export default function SurveyCard({
   const cotainerRef = useRef(null);
 
   const handleClickCard = (id) => {
-    alert(JSON.stringify(survey));
     setSelectedSurveyId(id);
   };
 

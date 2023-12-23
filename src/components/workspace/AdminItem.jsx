@@ -1,7 +1,7 @@
 import style from "../../style/workspace/AdminItem.module.css";
 import { IoCloseSharp } from "react-icons/io5";
 
-export default function AdminItem({ info, handleClickRemoveAdminBtn }) {
+export default function AdminItem({ info, handleClickRemoveAdminBtn, isAdmin }) {
   console.log(info);
 
   return (
@@ -24,12 +24,16 @@ export default function AdminItem({ info, handleClickRemoveAdminBtn }) {
       {info.id !== 0 && info.inviteFlag ? (
         <div className={style.profileState}>
           관리자
-          <IoCloseSharp
-            className={style.closeBtn}
-            onClick={() => {
-              handleClickRemoveAdminBtn(info.id, info.inviteFlag);
-            }}
-          />
+          {!isAdmin ? (
+            <IoCloseSharp
+              className={style.closeBtn}
+              onClick={() => {
+                handleClickRemoveAdminBtn(info.id, info.inviteFlag);
+              }}
+            />
+          ) : (
+            ""
+          )}
         </div>
       ) : (
         ""
@@ -38,12 +42,16 @@ export default function AdminItem({ info, handleClickRemoveAdminBtn }) {
       {info.id > 0 && !info.inviteFlag ? (
         <div className={style.profileState}>
           대기중
-          <IoCloseSharp
-            className={style.closeBtn}
-            onClick={() => {
-              handleClickRemoveAdminBtn(info.id, info.inviteFlag);
-            }}
-          />
+          {!isAdmin ? (
+            <IoCloseSharp
+              className={style.closeBtn}
+              onClick={() => {
+                handleClickRemoveAdminBtn(info.id, info.inviteFlag);
+              }}
+            />
+          ) : (
+            ""
+          )}
         </div>
       ) : (
         ""

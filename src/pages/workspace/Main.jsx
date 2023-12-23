@@ -2,7 +2,7 @@ import style from "../../style/workspace/Main.module.css";
 import SurveyCard from "../../components/workspace/SurveyCard";
 import DefaultCard from "../../components/workspace/DefaultCard";
 import MoreMenu from "../../components/workspace/MoreMenu";
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo, useRef, useContext } from "react";
 import ProfileContainer from "../../components/workspace/ProfileContainer";
 import ShareModal from "../../components/workspace/ShareModal";
 import Loader from "../../pages/loader/Loader";
@@ -18,6 +18,7 @@ import {
 } from "./api.js";
 import { WorkspaceModal } from "../../components/workspace/WorkspaceModal";
 import { useWorkspaceContext } from "./WorkspaceContext";
+import { LoginContext } from "../../App";
 
 export default function Main() {
   /////////////////////////////////////////////////////////////////
@@ -26,6 +27,8 @@ export default function Main() {
 
   const { workspaceList, setWorkspaceList, selectedWorkspaceId, setSelectedSurveyId, isPersonal } =
     useWorkspaceContext();
+
+  const userInfo = useContext(LoginContext);
 
   // 관리자 목록 (캐싱)
   const [owner, setOwner] = useState({});
@@ -69,8 +72,6 @@ export default function Main() {
 
   // 설문지 이름 변경 요청
   const handleChangeSurveyName = (title) => {
-    alert(title);
-    alert(changeModalSurveyId);
     modifySurveyName(changeModalSurveyId, title)
       .then((data) => {
         let copy = surveyList.map((survey) => {
@@ -254,6 +255,10 @@ export default function Main() {
     setContactList,
   };
 
+  const isOwner = () => {
+    return owner.email === userInfo.email;
+  };
+
   return (
     <div id={style.SectionBody}>
       {/* Loader */}
@@ -264,7 +269,7 @@ export default function Main() {
         onClose={closeShareModal}
         survey={selectedSurvey}
         contactList={contactList}
-        title={""}
+        setLoader={setLoader}
       />
 
       {
@@ -300,6 +305,7 @@ export default function Main() {
                 setWorkspaceModalState={setWorkspaceModalState}
                 setWorkspaceModalNum={setWorkspaceModalNum}
                 managedValues={managedValues}
+                isOwner={isOwner}
               />
             </div>
           </div>

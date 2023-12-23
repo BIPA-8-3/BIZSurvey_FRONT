@@ -7,7 +7,7 @@ import { shareSurvey, getSharedSurveyHistory } from "../../pages/workspace/api";
 import SharedHistoryItem from "./SharedHistoryItem";
 import { getSharedContactList } from "../../pages/workspace/api";
 
-export default function ShareModal({ isOpen, onClose, survey, contactList }) {
+export default function ShareModal({ isOpen, onClose, survey, contactList, setLoader }) {
   const modalTitle = ["연락처 공유", "공유 히스토리"];
   const leftBoxTitle = ["이메일 목록", "공유 내역"];
   const rightBoxTitle = ["선택 목록", "공유 상세 내역"];
@@ -33,12 +33,10 @@ export default function ShareModal({ isOpen, onClose, survey, contactList }) {
     if (isOpen && survey.menuNum != null) {
       // 공유
       if (survey.menuNum === 0) {
-        console.log(survey);
         setShareContactList([...contactList]);
       }
       // 공유 히스토리
       else if (survey.menuNum === 1) {
-        console.log("@", survey);
         getSharedSurveyHistory(survey.surveyId)
           .then((data) => {
             console.log(data);
@@ -88,7 +86,7 @@ export default function ShareModal({ isOpen, onClose, survey, contactList }) {
 
   // 초대 메소드
   const handleClickShareBtn = () => {
-    // setLoader(true);
+    setLoader(true);
 
     let sharedRequest = {
       surveyId: survey.surveyId,
@@ -99,15 +97,15 @@ export default function ShareModal({ isOpen, onClose, survey, contactList }) {
     shareSurvey(sharedRequest)
       .then((data) => {
         console.log(data);
-        // alert("공유가 완료되었습니다.");
+        alert("공유가 완료되었습니다.");
       })
       .catch((error) => {
         console.log(error);
         console.log(error.response);
-        // alert("공유에 실패하셨습니다.");
+        alert("공유에 실패하셨습니다.");
       })
       .finally((data) => {
-        // setLoader(false);
+        setLoader(false);
         onClose();
       });
   };
@@ -116,7 +114,6 @@ export default function ShareModal({ isOpen, onClose, survey, contactList }) {
   const handleClickHistoryItem = () => {
     getSharedContactList(selectedHistory)
       .then((data) => {
-        console.log("여기여기", data);
         setSharedContactDetails(data);
       })
       .catch((error) => {

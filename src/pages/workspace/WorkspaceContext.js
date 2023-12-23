@@ -23,13 +23,22 @@ export const WorkspaceProvider = ({ children }) => {
     const navigate = useNavigate();
     const [permission, setPermission] = useState(false);
 
+
     useEffect(() => {
         checkPermissions()
             .then((data) => {
-                setPermission(true);
+                setPermission(data);
+                if (!data && window.confirm('플랜에 가입하시거나 관리자로 초대받으셔야 이용 가능합니다.\n플랜 페이지로 이동하시겠습니까?')) {
+                    navigate("/mypagePlan");
+                } else if (!data) {
+                    navigate(-2);
+                }
             }).catch((error) => {
-                alert('접근 권한이 없습니다.');
-                navigate("/");
+                if (window.confirm('로그인 하셔야 이용하실 수 있습니다.\n로그인 페이지로 이동하시겠습니까?')) {
+                    navigate("/login");
+                } else {
+                    navigate(-2);
+                }
             })
     }, [])
 

@@ -101,8 +101,7 @@ export default function EditSurveyPage() {
           ...question,
           step: index + 1,
           answers:
-            question.answerType === "SINGLE_CHOICE" ||
-            question.answerType === "MULTIPLE_CHOICE"
+            question.answerType === "SINGLE_CHOICE" || question.answerType === "MULTIPLE_CHOICE"
               ? question.answers
               : [],
         };
@@ -114,8 +113,7 @@ export default function EditSurveyPage() {
             ...question,
             step: index + 1,
             answers:
-              question.answerType === "SINGLE_CHOICE" ||
-              question.answerType === "MULTIPLE_CHOICE"
+              question.answerType === "SINGLE_CHOICE" || question.answerType === "MULTIPLE_CHOICE"
                 ? question.answers
                 : [],
           });
@@ -216,9 +214,7 @@ export default function EditSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id
-          ? { ...question, isRequired: !question.isRequired }
-          : question
+        index === id ? { ...question, isRequired: !question.isRequired } : question
       );
       return result;
     });
@@ -311,11 +307,7 @@ export default function EditSurveyPage() {
                 className={style.questionList}
               >
                 {questions.map((questionData, index) => (
-                  <Draggable
-                    key={index}
-                    draggableId={`question-${index}`}
-                    index={index}
-                  >
+                  <Draggable key={index} draggableId={`question-${index}`} index={index}>
                     {(provided) => (
                       <div ref={provided.innerRef} {...provided.draggableProps}>
                         <div className={style.question}>
