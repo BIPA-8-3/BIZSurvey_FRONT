@@ -1,12 +1,41 @@
+/* .historyWrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0px 10px 3px;
+  margin: 5px 0;
+  border: 1px solid #dddddd;
+  cursor: pointer;
+} */
+.container {
+  border: 1px solid #dddddd;
+  margin: 5px 0;
+  overflow: hidden;
+}
+
+.inputWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0px 10px 3px;
+}
+
+.input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 .historyWrap {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   padding: 10px 0px 10px 3px;
-  border: 1px solid black;
-  border-radius: 10px;
-  margin: 5px 0;
+  cursor: pointer;
 }
 
 .historyText {

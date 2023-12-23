@@ -19,11 +19,13 @@ import {
 import { WorkspaceModal } from "../../components/workspace/WorkspaceModal";
 import { useWorkspaceContext } from "./WorkspaceContext";
 import { LoginContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 
 export default function Main() {
   /////////////////////////////////////////////////////////////////
   /////////////////////////// State 설정 ///////////////////////////
   /////////////////////////////////////////////////////////////////
+  const navigate = useNavigate();
 
   const { workspaceList, setWorkspaceList, selectedWorkspaceId, setSelectedSurveyId, isPersonal } =
     useWorkspaceContext();
@@ -115,6 +117,19 @@ export default function Main() {
         console.error(error);
       });
   };
+
+  // 뒤로가기 시 초기화
+  useEffect(() => {
+    const handleBack = (event) => {
+      setSelectedSurveyId(0);
+    };
+
+    window.addEventListener("popstate", handleBack);
+
+    return () => {
+      window.removeEventListener("popstate", handleBack);
+    };
+  }, [navigate]);
 
   //////////////////////////////////////////////////////////////////
   ///////////////////////// 초기 State 메소드 /////////////////////////

@@ -41,9 +41,15 @@ export default function CreateScoreSurveyPage() {
     },
   ]);
 
+  const [answerPass, setAnswerPass] = useState(true);
+
   // 설문 제출
   const handleSubmitSurvey = async (e) => {
     e.preventDefault();
+    if (!answerPass) {
+      alert("중복 답변은 입력할 수 없습니다.");
+      return;
+    }
     const questionData = questions.map((question, index) => ({
       ...question,
       step: index + 1,
@@ -270,6 +276,7 @@ export default function CreateScoreSurveyPage() {
                         >
                           <div className={style.question}>
                             <ScoreQuestion
+                              answerPass={setAnswerPass}
                               key={index}
                               index={index}
                               questionInfo={questionData}
