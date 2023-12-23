@@ -52,6 +52,10 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
   });
 
   useEffect(() => {
+    console.log("이거임", resultData);
+  }, [resultData]);
+
+  useEffect(() => {
     // 설문 게시물 참가자 목록
     if (nickname !== 0) {
       switch (sharedType) {
@@ -220,20 +224,27 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
             <OptionBox>
               {/* {matchingQuestion ? ( */}
 
-              {question.answers.map((answer, index) => (
-                // <ChoiceField
-                //   key={index}
-                //   text={answer.answer}
-                //   select={matchingQuestion.answer.includes(
-                //     answer.surveyAnswer
-                //   )}
-                // />
-                <ScoreResultOption
-                  key={index}
-                  text={answer.answer}
-                  correct={answer.correct}
-                />
-              ))}
+              {question.answers.map((answer, index) =>
+                answer.answer !== null ? (
+                  <ScoreResultOption
+                    key={index}
+                    text={answer.answer}
+                    correct={answer.correct}
+                  />
+                ) : (
+                  <>
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        paddingTop: "10px",
+                        color: "grey",
+                      }}
+                    >
+                      사용자 응답이 없습니다.
+                    </p>
+                  </>
+                )
+              )}
 
               {/* // ) : (
                 //   <>

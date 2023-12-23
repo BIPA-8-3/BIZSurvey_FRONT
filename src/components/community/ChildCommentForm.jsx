@@ -25,11 +25,16 @@ export default function ChildCommentForm({props}) {
 
     const handleSaveClick = async () => {
 
-      if(userInfo.id === undefined){
+      if(!localStorage.getItem("userInfo")){
         alert("댓글을 작성하려면 로그인을 먼저 해야합니다.")
         navigate("/login")
         return;
       } 
+
+          if(childComment === ''){
+            alert("값을 입력해주세요!")
+            return;
+          }
 
         try {
           const response = call(`/community/${getCommentId}/createChildComment`, "POST",{

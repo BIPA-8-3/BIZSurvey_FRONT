@@ -58,19 +58,24 @@ export default function CommunityPost() {
     // 데이터를 가져오는 함수
     const fetchData = async () => {
       try {
-        await call("/community/showPost/" + postId, "GET").then((data) => {
-          console.log("aaaaaaaaaaaaaaaaaaaa : " + JSON.stringify(data));
-          setData(data);
+        await call("/community/showPost/" + postId, "GET")
+          .then((data) => {
+            console.log("aaaaaaaaaaaaaaaaaaaa : " + JSON.stringify(data));
+            setData(data);
 
-          if (data.reported === 1) {
-            alert("신고당한 게시물입니다.");
+            if (data.reported === 1) {
+              alert("신고당한 게시물입니다.");
+              navigate("/community");
+            }
+
+            if (userInfo.nickname === data.nickname) {
+              setIsAuthor(true);
+            }
+          })
+          .catch((error) => {
+            alert("이미 삭제된 게시물입니다.");
             navigate("/community");
-          }
-
-          if (userInfo.nickname === data.nickname) {
-            setIsAuthor(true);
-          }
-        });
+          });
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -128,11 +133,10 @@ export default function CommunityPost() {
   // };
 
   const handleOpenModal = () => {
-    if(userInfo.id === undefined){
-     
-      alert("게시물 신고를 하려면 먼저 로그인을 해야 합니다.")
-      navigate("/login")
-    } 
+    if (localStorage.getItem("userInfo")) {
+      alert("게시물 신고를 하려면 먼저 로그인을 해야 합니다.");
+      navigate("/login");
+    }
     setIsModalOpen(true);
   };
 
@@ -166,12 +170,12 @@ export default function CommunityPost() {
     }
   };
 
-  function renderProfil(profile){
-    if(profile === null){
+  function renderProfil(profile) {
+    if (profile === null) {
       return logo;
-    }else{
+    } else {
       let prefix = "https://";
-      console.log("프로필 : " + prefix + profile)
+      console.log("프로필 : " + prefix + profile);
       return prefix + profile;
     }
   }
@@ -187,7 +191,10 @@ export default function CommunityPost() {
                 <p style={{ textAlign: "center" }}>
                   <div className={style.profil} style={{ textAlign: "center" }}>
                     <span className={style.photo}>
-                      <img className="" src={renderProfil(data.thumbImageUrl)} />
+                      <img
+                        className=""
+                        src={renderProfil(data.thumbImageUrl)}
+                      />
                     </span>
                     <span className={style.nickname}>{data.nickname}</span>
                   </div>
@@ -245,10 +252,7 @@ export default function CommunityPost() {
                         to={"/editCommunityPost"}
                         state={{ surveyId: data.surveyId, postId: postId }}
                       >
-                        <span
-                          style={{ cursor: "pointer", fontSize: "14px" }}
-                          onClick={handleOpenModal}
-                        >
+                        <span style={{ cursor: "pointer", fontSize: "14px" }}>
                           수정
                         </span>
                       </Link>

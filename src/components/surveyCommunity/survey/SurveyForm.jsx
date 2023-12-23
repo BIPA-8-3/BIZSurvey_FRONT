@@ -1,7 +1,13 @@
 import style from "../../../style/surveyCommunity/CommunitySurveyWrite.module.css";
 import SurveyQuestion from "./SurveyQuestion";
 
-export default function SurveyForm({ survey, handleSetAnswer, pass, type }) {
+export default function SurveyForm({
+  survey,
+  handleSetAnswer,
+  pass,
+  type,
+  sharedId,
+}) {
   return (
     <>
       <div
@@ -15,6 +21,8 @@ export default function SurveyForm({ survey, handleSetAnswer, pass, type }) {
         {survey.questions &&
           survey.questions.map((question, index) => (
             <SurveyQuestion
+              sharedId={sharedId}
+              surveyId={survey.surveyId}
               key={index}
               question={question}
               handleSetAnswer={handleSetAnswer}

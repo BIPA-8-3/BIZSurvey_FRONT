@@ -9,28 +9,24 @@ import { useNavigate } from "react-router-dom";
 
 
 const SurveyListModal = ({ props }) => {
-
-  const navigate = useNavigate();
-  
   const data = props.list;
   const modalTitle = props.title;
-
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedSurvey, setSelectedSurvey] = useState(null);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleOpenModal = () => {
-
     if (props.list.length === 0) {
       if(window.confirm("등록된 설문이 없네요! 사용자의 워크스페이스로 이동하시겠습니까?" +
       "이동하시게 된다면 작성한 게시글 정보는 유지되지 않습니다.")){
         navigate("/workspace");
-      }else{
-        setModalOpen(true);
       }
+    }else{
+      setModalOpen(true);
     };
-  }
+  };
 
   const handleCloseModal = () => {
     setModalOpen(false);

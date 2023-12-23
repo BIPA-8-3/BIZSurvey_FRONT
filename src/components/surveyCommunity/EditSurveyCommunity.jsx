@@ -10,7 +10,7 @@ import ReactQuill from "react-quill";
 import SurveyListModal from "./SurveyListModal";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import call from "./checkLogin.js";
+import call from "../../pages/workspace/api.js";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Divider, TextField, Input } from "@mui/material";
@@ -47,18 +47,18 @@ export default function CommunityWrite() {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const location = useLocation();
-  const { postId, surveyId } = location.state || {};
-
-  useEffect(() => {}, [loading]);
-  useEffect(() => {
-    console.log(data);
-    if (data.length > 0 && surveyId !== 0) {
-      const surveyData = data.find((dt) => dt.surveyId === surveyId);
-      setSurvey(surveyData);
-    }
-  }, [data]);
+  const { surveyId } = location.state || {};
+  const [postId, setPostId] = useState(0);
 
   useEffect(() => {
+    const post = location.state ? location.state.postId : 0;
+    const survey = location.state ? location.state.surveyId : 0;
+
+    setPostId(post);
+  }, []);
+
+  useEffect(() => {
+    console.log(postId, "postId야");
     // 데이터를 가져오는 비동기 함수
     const fetchData = async () => {
       try {
@@ -79,8 +79,18 @@ export default function CommunityWrite() {
     };
 
     // fetchData 함수 실행
-    fetchData();
-  }, []);
+    if (postId !== 0) {
+      fetchData();
+    }
+  }, [postId]);
+
+  useEffect(() => {
+    console.log(data);
+    if (data.length > 0 && surveyId !== 0) {
+      const surveyData = data.find((dt) => dt.surveyId === surveyId);
+      setSurvey(surveyData);
+    }
+  }, [data]);
 
   const handleSetPostData = (data) => {
     //   private Long postId;  아이디 있어야함
@@ -115,6 +125,7 @@ export default function CommunityWrite() {
   };
 
   const handleFileChange = async (event) => {
+    setLoading(true);
     const file = event.target.files[0];
     // 파일 선택 후의 로직을 처리합니다.
     console.log("Selected File:", file); // 넘겨받은 이미지
@@ -123,7 +134,7 @@ export default function CommunityWrite() {
     formData.append("file", file); // formData는 키-밸류 구조
     formData.append("domain", "SURVEY_THUMB");
     // 백엔드 multer라우터에 이미지를 보낸다.
-    setLoading(true);
+
     try {
       const result = await axios.post(
         "http://localhost:8080/storage/",
@@ -193,13 +204,14 @@ export default function CommunityWrite() {
               boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // 투영(튀어나온 효과) 추가
               margin: "auto",
               width: "700px",
+              maxHeight: "152px",
             }}
           >
             {/* 좌측 이미지 */}
             <Box
               component="img"
               src={returnImgUrl()}
-              sx={{ width: "200px", height: "auto" }}
+              sx={{ width: "200px", maxHeight: "152px" }}
             />
 
             {/* 나머지 내용 */}
@@ -316,7 +328,6 @@ export default function CommunityWrite() {
       content: content,
       startDateTime: selectedStartDate + "T00:00:00",
       endDateTime: selectedEndDate + "T00:00:00",
-      maxMember: maxParticipants,
       surveyId: selectedSurvey.surveyId,
       thumbImgUrl: selectedFile,
     };
@@ -403,20 +414,6 @@ export default function CommunityWrite() {
 
           <div className={style.voteWrap}>
             {renderModal()}
-            <br />
-            <br />
-            설문을 응시할 수 있는 최대 인원을 입력해주세요!
-            <br />
-            <br />
-            <Input
-              value={maxParticipants}
-              onChange={handleMaxParticipantsChange}
-              type="number"
-              defaultValue={1}
-              onBlur={(e) => handleMaxParticipantsBlur(e)}
-              inputProps={{ style: { textAlign: "center" } }} // 입력창 가운데 정렬
-            />
-            (명)
             <br />
             <br />
             {renderImgForm()}
