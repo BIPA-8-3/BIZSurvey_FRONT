@@ -12,10 +12,11 @@ import QuestionInfo from "./QuestionInfo";
 import ScoreQuestionInfo from "./ScoreQuestionInfo";
 
 import IconButton from "@mui/material/IconButton";
+import { useWorkspaceContext } from "../../../../pages/workspace/WorkspaceContext";
 
 export default function SurveyInfo() {
   const { survey } = useContext(SurveyContext);
-
+  const { setSelectedSurveyId } = useWorkspaceContext();
   const navigate = useNavigate();
 
   const { surveyId, title, content, surveyType, questions } = survey;
@@ -37,7 +38,12 @@ export default function SurveyInfo() {
         <div className={style.wrapButton}>
           <div style={{ marginTop: "7px" }}>
             <IconButton>
-              <IoArrowBackSharp onClick={(e) => navigate("/workspace")} />
+              <IoArrowBackSharp
+                onClick={(e) => {
+                  setSelectedSurveyId(0);
+                  navigate("/workspace");
+                }}
+              />
             </IconButton>
           </div>
 
@@ -65,19 +71,13 @@ export default function SurveyInfo() {
             </Button> */}
             {surveyType === "NORMAL" ? (
               <Link to={"/workspace/edit"} state={{ surveyId: surveyId }}>
-                <Button
-                  variant="outlined"
-                  sx={{ color: "#243579", borderColor: "#243579" }}
-                >
+                <Button variant="outlined" sx={{ color: "#243579", borderColor: "#243579" }}>
                   수정
                 </Button>
               </Link>
             ) : (
               <Link to={"/workspace/editscore"} state={{ surveyId: surveyId }}>
-                <Button
-                  variant="outlined"
-                  sx={{ color: "#243579", borderColor: "#243579" }}
-                >
+                <Button variant="outlined" sx={{ color: "#243579", borderColor: "#243579" }}>
                   수정
                 </Button>
               </Link>

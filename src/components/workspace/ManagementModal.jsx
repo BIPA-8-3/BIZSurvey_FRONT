@@ -6,13 +6,14 @@ import { IoCloseSharp } from "react-icons/io5";
 import ContactItem from "./ContactItem";
 import { createContact, removeContact, inviteAdmin, removeAdmin } from "../../pages/workspace/api";
 import { useWorkspaceContext } from "../../pages/workspace/WorkspaceContext";
+import { LoginContext } from "../../App";
 
-export default function ManagementModal({ isOpen, onClose, tab, managedValues }) {
+export default function ManagementModal({ isOpen, onClose, tab, managedValues, isOwner }) {
   ////////////////////////////////////////////////////////////////
   ////////////////////////// useContext //////////////////////////
   ////////////////////////////////////////////////////////////////
   // context에서 workspace id 추출
-  const { selectedWorkspaceId } = useWorkspaceContext();
+  const { selectedWorkspaceId, isPersonal } = useWorkspaceContext();
 
   // 관리정보 추출
   const {
@@ -55,6 +56,8 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues })
 
   // [admin] input state
   const [adminSearchList, setAdminSearchList] = useState([]);
+
+  const userInfo = useContext(LoginContext);
 
   ///////////////////////////////////////////////////////////////
   ////////////////////////// useEffect //////////////////////////
@@ -250,16 +253,17 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues })
         <div className={style.modalHeader}>
           <ul className={style.tabContainer}>
             <li
-              className={`${style.tab} ${activeTab === "tab1" ? style.activeTab : ""}`}
-              onClick={() => chageTab("tab1")}
-            >
-              관리자 관리
-            </li>
-            <li
               className={`${style.tab} ${activeTab === "tab2" ? style.activeTab : ""}`}
               onClick={() => chageTab("tab2")}
             >
               연락처 관리
+            </li>
+            <li
+              className={`${style.tab} ${activeTab === "tab1" ? style.activeTab : ""} 
+              ${isPersonal() ? style.disabled : ""}`}
+              onClick={() => chageTab("tab1")}
+            >
+              관리자 관리
             </li>
           </ul>
           <div className={style.modalExitBtn}>
@@ -270,7 +274,7 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues })
         <div className={style.modalBody}>
           {/* 관리자 관리 */}
           <div className={`${style.tabContentWrap} ${activeTab === "tab1" ? style.active : ""}`}>
-            <div className={style.tabContent}>
+            <div className={`${style.tabContent} ${!isOwner() ? style.disabled : ""}`}>
               <div className={style.inputBox}>
                 <form style={{ margin: "0", padding: "0", display: "flex", alignItems: "center" }}>
                   <input
@@ -304,6 +308,7 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues })
                         key={admin.id}
                         info={admin}
                         handleClickRemoveAdminBtn={handleClickRemoveAdminBtn}
+                        isAdmin={!isOwner()}
                       />
                     );
                   } else {
@@ -321,6 +326,7 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues })
                         key={admin.id}
                         info={admin}
                         handleClickRemoveAdminBtn={handleClickRemoveAdminBtn}
+                        isAdmin={!isOwner()}
                       />
                     );
                   } else {

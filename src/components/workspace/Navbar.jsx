@@ -98,8 +98,9 @@ function Navbar() {
           <img
             // src={(userInfo.profile && userInfo.profile) || "https://via.placeholder.com/45X45"}
             src={
-              (userInfo.profile && userInfo.profile) ||
-              "https://ui-avatars.com/api/?name=" + userInfo.email + "&background=random"
+              "https://" +
+              ((userInfo.profile && userInfo.profile) ||
+                "ui-avatars.com/api/?name=" + userInfo.email + "&background=random")
             }
             className={style.profileRadius}
           ></img>
