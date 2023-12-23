@@ -6,8 +6,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { useNavigate } from "react-router-dom";
 
-
-
 const SurveyListModal = ({ props }) => {
   const data = props.list;
   const modalTitle = props.title;
@@ -19,13 +17,17 @@ const SurveyListModal = ({ props }) => {
 
   const handleOpenModal = () => {
     if (props.list.length === 0) {
-      if(window.confirm("등록된 설문이 없네요! 사용자의 워크스페이스로 이동하시겠습니까?" +
-      "이동하시게 된다면 작성한 게시글 정보는 유지되지 않습니다.")){
+      if (
+        window.confirm(
+          "등록된 설문이 없네요! 사용자의 워크스페이스로 이동하시겠습니까?\n" +
+            "이동하시게 된다면 작성한 게시글 정보는 유지되지 않습니다."
+        )
+      ) {
         navigate("/workspace");
       }
-    }else{
+    } else {
       setModalOpen(true);
-    };
+    }
   };
 
   const handleCloseModal = () => {
@@ -56,7 +58,6 @@ const SurveyListModal = ({ props }) => {
 
   return (
     <div>
-
       <button onClick={handleOpenModal}>{modalTitle}</button>
       <BizModal
         isOpen={modalOpen}
@@ -67,7 +68,10 @@ const SurveyListModal = ({ props }) => {
           sx={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
         >
           {/* 목차 표시 */}
-          <ListItemText primary={`설문지 이름`}  sx={{width:'350px', fontWeight:'bold'}}/>
+          <ListItemText
+            primary={`설문지 이름`}
+            sx={{ width: "350px", fontWeight: "bold" }}
+          />
           <ListItemText primary={`워크스페이스 이름`} />
         </List>
         <Divider />
@@ -76,7 +80,15 @@ const SurveyListModal = ({ props }) => {
           {data.map((survey) => (
             <ListItem key={survey.surveyId} divider>
               {/* 스키마 표시 */}
-              <ListItemText primary={survey.title} sx={{width:'350px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}/>
+              <ListItemText
+                primary={survey.title}
+                sx={{
+                  width: "350px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              />
               <ListItemText primary={survey.workspaceName} />
               {/* 선택 체크박스 */}
               <Checkbox
