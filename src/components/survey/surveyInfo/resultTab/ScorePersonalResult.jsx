@@ -16,7 +16,7 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
   const { survey } = useContext(SurveyContext);
   const { surveyId, questions, ...other } = survey;
 
-  const [nickname, setNickname] = useState(0);
+  const [user, setUser] = useState(0);
   const [userList, setUserList] = useState([
     {
       userId: 0,
@@ -57,13 +57,10 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
 
   useEffect(() => {
     // 설문 게시물 참가자 목록
-    if (nickname !== 0) {
+    if (user !== 0) {
       switch (sharedType) {
         case "INTERNAL":
-          call(
-            `/survey/result/score/${surveyId}/${sharedId}/${nickname}`,
-            "GET"
-          )
+          call(`/survey/result/score/${surveyId}/${sharedId}/${user}`, "GET")
             .then((data) => {
               handleMergeAnswers(data, (newData) => {
                 setResultData(newData);
@@ -72,7 +69,7 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
             .catch((error) => console.log(error));
           break;
         case "EXTERNAL":
-          getdPersonalScoreResult(nickname)
+          getdPersonalScoreResult(user)
             .then((data) => {
               handleMergeAnswers(data, (newData) => {
                 setResultData(newData);
@@ -82,7 +79,7 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
           break;
       }
     }
-  }, [nickname]);
+  }, [user]);
 
   useEffect(() => {
     if (sharedId !== 0) {
@@ -110,8 +107,8 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
     }
   }, [sharedId]);
 
-  const handleSetUser = (nick) => {
-    setNickname(nick);
+  const handleSetUser = (user) => {
+    setUser(user);
   };
 
   const handleMergeAnswers = (userAnswers, callback) => {
@@ -185,7 +182,7 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
     );
   }
 
-  if (nickname === 0) {
+  if (user === 0) {
     return (
       <>
         {userList.length !== 0 ? (
