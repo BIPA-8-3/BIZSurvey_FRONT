@@ -16,11 +16,11 @@ export default function UserList({ userList, setUser, sharedType }) {
   );
 }
 
-function User({ nickname, setUser, sharedType, contact }) {
+function User({ nickname, setUser, sharedType, contact, userId }) {
   if (sharedType === "INTERNAL") {
     return (
       <>
-        <button className={style.userButton} onClick={() => setUser(nickname)}>
+        <button className={style.userButton} onClick={() => setUser(userId)}>
           <div>{nickname}</div>
         </button>
       </>
@@ -51,6 +51,7 @@ function createInternalItem(userList, setUser, sharedType) {
         nickname={user.nickname}
         setUser={setUser}
         sharedType={sharedType}
+        userId={user.userId}
       />
     ) : (
       <p>응답자가 존재하지 않습니다.</p>

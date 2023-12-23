@@ -68,16 +68,18 @@ export default function CommunityPost() {
   useEffect(() => {
     const fetchData = async () => {
       const local = localStorage.getItem("userInfo");
-      const newUser = JSON.parse(local);
-      if (data.nickname !== undefined) {
-        if (newUser.nickname === data.nickname) {
-          setIsAuthor(true);
-        }
-        const res = await call("/s-community/survey/check/" + postId, "GET");
-        setIsAvailable(!res);
-        const access = data.canAccess;
-        if (access === "대기" || access === "설문 종료") {
-          setIsAvailable(false);
+      if (local) {
+        const newUser = JSON.parse(local);
+        if (data.nickname !== undefined) {
+          if (newUser.nickname === data.nickname) {
+            setIsAuthor(true);
+          }
+          const res = await call("/s-community/survey/check/" + postId, "GET");
+          setIsAvailable(!res);
+          const access = data.canAccess;
+          if (access === "대기" || access === "설문 종료") {
+            setIsAvailable(false);
+          }
         }
       }
     };
