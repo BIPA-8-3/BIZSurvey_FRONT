@@ -1,7 +1,6 @@
 // Header.jsx
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Axios from "axios";
 import CircularProgress from '@mui/material/CircularProgress';
 import useApiCall, {loginKaKaoCode, loginKaKaoNicknameCheck} from "../api/ApiCall";
 import { LoginContext, LoginFunContext } from "../../App";
@@ -45,7 +44,7 @@ const OAuth2RedirectHandler = () => {
                       const headers = response.headers;
                       const authorization = headers['authorization'];
                       const refreshAuthorization = headers['refreshauthorization'];
-
+                      console.log("test : " + authorization)
                       saveAccessTokenToLocalStorage(authorization);
                       saveRefreshTokenToLocalStorage(refreshAuthorization);
 

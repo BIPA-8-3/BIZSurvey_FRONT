@@ -282,6 +282,7 @@ export default function CommunityWrite() {
 
 
   function renderModal() {
+    
     if (selectedSurvey === null) {
       const setName = "설문 등록";
 
