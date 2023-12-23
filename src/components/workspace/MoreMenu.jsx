@@ -5,7 +5,7 @@ import ManagementModal from "./ManagementModal";
 import { removeWorkspace } from "../../pages/workspace/api.js";
 import { useWorkspaceContext } from "../../pages/workspace/WorkspaceContext";
 
-const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum, managedValues }) => {
+const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum, managedValues, isOwner }) => {
   // 더보기 메뉴
   const cotainerRef = useRef(null);
 
@@ -86,6 +86,7 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum, managedValues 
         onClose={closeManagementModal}
         tab={menu}
         managedValues={managedValues}
+        isOwner={isOwner}
       />
       <BiDotsHorizontalRounded
         onClick={() => {
@@ -127,7 +128,7 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum, managedValues 
             onClick={() => {
               handleRemoveClick();
             }}
-            className={isPersonal() ? style.disabled : ""}
+            className={`${isOwner() ? (isPersonal() ? style.disabled : "") : style.disabled}`}
           >
             삭제
           </li>
