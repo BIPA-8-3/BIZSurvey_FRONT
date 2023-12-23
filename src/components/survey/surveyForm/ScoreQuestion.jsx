@@ -23,6 +23,7 @@ export default function ScoreQuestion({
   changeScore,
   changeCorrect,
   checkDuplication,
+  answerPass,
 }) {
   const {
     surveyQuestion,
@@ -108,7 +109,7 @@ export default function ScoreQuestion({
                 deleteAnswer={deleteAnswer}
                 changeAnswerText={changeAnswerText}
                 changeCorrect={changeCorrect}
-                checkDuplication={checkDuplication}
+                answerPass={answerPass}
               />
             </>
 

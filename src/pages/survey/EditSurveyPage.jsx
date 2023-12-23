@@ -35,6 +35,8 @@ export default function EditSurveyPage() {
     },
   ]);
 
+  const [answerPass, setAnswerPass] = useState(true);
+
   // effect
   useEffect(() => {
     console.log(surveyId);
@@ -95,13 +97,18 @@ export default function EditSurveyPage() {
 
   // 설문 제출
   const handleUpdateSurvey = async (surveyId) => {
+    if (!answerPass) {
+      alert("중복 답변은 입력할 수 없습니다.");
+      return;
+    }
     const { createQuestion, updateQuestion } = questions.reduce(
       (acc, question, index) => {
         const { questionId, ...rest } = {
           ...question,
           step: index + 1,
           answers:
-            question.answerType === "SINGLE_CHOICE" || question.answerType === "MULTIPLE_CHOICE"
+            question.answerType === "SINGLE_CHOICE" ||
+            question.answerType === "MULTIPLE_CHOICE"
               ? question.answers
               : [],
         };
@@ -113,7 +120,8 @@ export default function EditSurveyPage() {
             ...question,
             step: index + 1,
             answers:
-              question.answerType === "SINGLE_CHOICE" || question.answerType === "MULTIPLE_CHOICE"
+              question.answerType === "SINGLE_CHOICE" ||
+              question.answerType === "MULTIPLE_CHOICE"
                 ? question.answers
                 : [],
           });
@@ -214,7 +222,9 @@ export default function EditSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id ? { ...question, isRequired: !question.isRequired } : question
+        index === id
+          ? { ...question, isRequired: !question.isRequired }
+          : question
       );
       return result;
     });
@@ -307,7 +317,11 @@ export default function EditSurveyPage() {
                 className={style.questionList}
               >
                 {questions.map((questionData, index) => (
-                  <Draggable key={index} draggableId={`question-${index}`} index={index}>
+                  <Draggable
+                    key={index}
+                    draggableId={`question-${index}`}
+                    index={index}
+                  >
                     {(provided) => (
                       <div ref={provided.innerRef} {...provided.draggableProps}>
                         <div className={style.question}>
@@ -323,6 +337,7 @@ export default function EditSurveyPage() {
                             addAnswer={handleAddOption}
                             deleteAnswer={handleDeleteOption}
                             changeAnswerText={handleChangeOptionText}
+                            answerPass={setAnswerPass}
                           />
                         </div>
                       </div>
