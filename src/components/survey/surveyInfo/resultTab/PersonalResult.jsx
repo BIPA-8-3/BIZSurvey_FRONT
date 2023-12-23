@@ -27,6 +27,10 @@ export default function PersonalResult({ sharedType, sharedId }) {
   const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
+    console.log(answers);
+  }, [answers]);
+
+  useEffect(() => {
     // 설문 게시물 참가자 목록
     if (nickname !== 0) {
       switch (sharedType) {

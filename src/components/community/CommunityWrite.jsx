@@ -13,6 +13,7 @@ import CreateVote from "./CreateVote";
 import RegisterVote from "./RegisterVote";
 import { useNavigate } from "react-router-dom";
 import call, { getURI } from "../../pages/workspace/api";
+import Loader from "../../pages/loader/Loader";
 // import { setOptions } from "react-chartjs-2/dist/utils";
 
 // 가상의 서버 통신 함수 (실제로는 서버와의 통신을 구현해야 함)
@@ -20,6 +21,7 @@ import call, { getURI } from "../../pages/workspace/api";
 export default function CommunityWrite() {
   const quillRef = useRef();
   const [content, setContent] = useState("");
+  const [prevContent, setPrevContent] = useState("");
   const fadeIn = useFadeIn();
   const [voteTitle, setVoteTitle] = useState("");
   const [voteOptions, setVoteOptions] = useState([""]);
@@ -28,6 +30,88 @@ export default function CommunityWrite() {
   const imageSrcArray = [];
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
+  const [error, setError] = useState({
+    selectedSurvey: "",
+    title: "",
+    content: "",
+    startDate: "",
+    endDate: "",
+  });
+
+  
+
+  // 컴포넌트 언 마운트될 때 삭제 요청 상황 
+  useEffect( () => {
+      return () => {
+          alert("알림")
+
+         
+      }
+    }, []);
+
+    useEffect(() => {
+      console.log("Content 값이 변경되었습니다:", content);
+      if (prevContent !== content) {
+        handleContentChange();
+      }
+      setPrevContent(content);
+
+    }, [content, prevContent]);
+
+    const handleContentChange = () => {
+      // content 값에서 특정 이미지 태그를 찾아내고 그에 따른 동작을 수행
+      const removedImageTag = findRemovedImageTag(prevContent, content);
+      
+      if (removedImageTag) {
+        // 찾아낸 이미지 태그에 대한 동작 수행
+        handleImageTagRemoved(removedImageTag);
+      }
+    };
+
+    const findRemovedImageTag = (prevContent, currentContent) => {
+      
+      const imgRegex = /<img[^>]*>/g;
+      const prevImageTags = prevContent.match(imgRegex) || [];
+      const currentImageTags = currentContent.match(imgRegex) || [];
+    
+      // 이전에 있었지만 현재는 없는 이미지 태그를 찾아냄
+      const removedImageTags = prevImageTags.filter(
+        (tag) => !currentImageTags.includes(tag)
+      );
+    
+      
+      if (removedImageTags.length > 0) {
+        return removedImageTags[0];
+      }
+    
+      return null;
+    };
+    
+    const handleImageTagRemoved = (removedImageTag) => {
+      // 사라진 이미지 태그에 대한 동작을 여기에 작성
+      const srcRegex = /<img.*?src="(.*?)".*?>/i;
+      const match = removedImageTag.match(srcRegex);
+    
+      // match 배열의 두 번째 요소가 src 속성값
+      const srcValue = match ? match[1] : null;
+      for(let i = 0; i < imageSrcArray.length; i++) {
+        if(imageSrcArray[i] === srcValue)  {
+          imageSrcArray.splice(i, 1);
+          i--;
+        }
+      }
+      const sliceSrcValue = srcValue.slice(8);
+      
+      call("/storage/file/" + sliceSrcValue, "DELETE")
+      .then((data) => console.log(data))
+      .catch((error) => console.log(error));
+      
+    };
+
+    
+
 
   useEffect(() => {
     console.log("titleleeeeeeeeeeee", voteTitle);
@@ -117,7 +201,7 @@ export default function CommunityWrite() {
             },
           }
         );
-
+        setLoading(true); // 
         console.log("성공 시, 백엔드가 보내주는 데이터", result.data.url);
         const HEAD_IMG_URL = "https://";
         const IMG_URL = HEAD_IMG_URL + result.data;
@@ -136,7 +220,10 @@ export default function CommunityWrite() {
         editor.insertEmbed(range.index, "image", IMG_URL);
       } catch (error) {
         console.log("실패했어요ㅠ");
+      }finally {
+        setLoading(false); // 데이터 로딩이 끝났음을 표시
       }
+        
     });
   };
 
@@ -164,12 +251,20 @@ export default function CommunityWrite() {
   const handleClose = () => setOpen(false);
 
   const handleSaveClick = () => {
+
+    if (!title) {
+      setError((prevError) => ({ ...prevError, title: "제목을 입력해주세요." }));
+      return;
+    }else{
+      setError((prevError) => ({ ...prevError, title: "" }));
+    }
+
     const parser = new DOMParser();
     const doc = parser.parseFromString(content, "text/html");
 
     const imgElements = doc.querySelectorAll("img");
     imgElements.forEach((imgElement) => {
-      const src = imgElement.getAttribute("src");
+    const src = imgElement.getAttribute("src");
 
       if (src) {
         imageSrcArray.push(src);
@@ -229,6 +324,7 @@ export default function CommunityWrite() {
             placeholder="제목을 입력해주세요."
             onChange={handleTitleChange}
           />
+          <p style={{ color: "red" }}>{error.title}</p>
         </div>
         <div className={style.editorWrap}>
           <div
@@ -244,7 +340,9 @@ export default function CommunityWrite() {
               modules={modules}
               formats={formats}
             />
+           
           </div>
+          <p style={{ color: "red", margin: "0 auto", textAlign: 'center' }}>{error.content}</p>         
         </div>
         <div className={style.voteWrap}>
           <p>비즈서베이의 투표 기능을 이용해보세요!</p>

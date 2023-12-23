@@ -56,7 +56,7 @@ export default function SurveyPostSelect({
               "aria-label": "Without label",
             }}
           >
-            <MenuItem value="0">
+            <MenuItem value={0}>
               <em style={{ color: "grey" }}>== 게시물 선택 ==</em>
             </MenuItem>
             {sharedUnit.map((unit) => (

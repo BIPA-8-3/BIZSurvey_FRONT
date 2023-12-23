@@ -2,7 +2,7 @@ import style from "../../style/workspace/Main.module.css";
 import SurveyCard from "../../components/workspace/SurveyCard";
 import DefaultCard from "../../components/workspace/DefaultCard";
 import MoreMenu from "../../components/workspace/MoreMenu";
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo, useRef, useContext } from "react";
 import ProfileContainer from "../../components/workspace/ProfileContainer";
 import ShareModal from "../../components/workspace/ShareModal";
 import Loader from "../../pages/loader/Loader";
@@ -18,14 +18,17 @@ import {
 } from "./api.js";
 import { WorkspaceModal } from "../../components/workspace/WorkspaceModal";
 import { useWorkspaceContext } from "./WorkspaceContext";
+import { LoginContext } from "../../App";
 
 export default function Main() {
   /////////////////////////////////////////////////////////////////
   /////////////////////////// State 설정 ///////////////////////////
   /////////////////////////////////////////////////////////////////
 
-  const { workspaceList, setWorkspaceList, selectedWorkspaceId, setSelectedSurveyId } =
+  const { workspaceList, setWorkspaceList, selectedWorkspaceId, setSelectedSurveyId, isPersonal } =
     useWorkspaceContext();
+
+  const userInfo = useContext(LoginContext);
 
   // 관리자 목록 (캐싱)
   const [owner, setOwner] = useState({});
@@ -87,8 +90,8 @@ export default function Main() {
 
   // 워크스페이스 포커스 잃었을때 핸들러
   const handleChangeWorkspaceName = (event, changeName) => {
-    event.preventDefault();
-    if (event && originWorkspaceName === changeWorkspaceName) {
+    if (event && !changeName && originWorkspaceName === changeWorkspaceName) {
+      event.preventDefault();
       return;
     }
     if (!event && originWorkspaceName === changeName) {
@@ -139,7 +142,6 @@ export default function Main() {
       })
       .catch((error) => {
         console.error(error);
-        console.log(error.response);
       });
   };
 
@@ -156,7 +158,6 @@ export default function Main() {
       })
       .catch((error) => {
         console.error(error);
-        console.log(error.response);
       });
   };
 
@@ -198,7 +199,6 @@ export default function Main() {
     getSurveyState();
     getAdminState();
     getContactState();
-    setSelectedSurveyId(0);
   }, [selectedWorkspaceId]);
 
   ////////////////////////////////////////////////////////////
@@ -255,6 +255,10 @@ export default function Main() {
     setContactList,
   };
 
+  const isOwner = () => {
+    return owner.email === userInfo.email;
+  };
+
   return (
     <div id={style.SectionBody}>
       {/* Loader */}
@@ -265,7 +269,7 @@ export default function Main() {
         onClose={closeShareModal}
         survey={selectedSurvey}
         contactList={contactList}
-        title={""}
+        setLoader={setLoader}
       />
 
       {
@@ -290,6 +294,7 @@ export default function Main() {
                 e.preventDefault();
                 setChangeWorkspaceName(e.target.value);
               }}
+              disabled={isPersonal()}
             />
 
             {/* group box */}
@@ -300,6 +305,7 @@ export default function Main() {
                 setWorkspaceModalState={setWorkspaceModalState}
                 setWorkspaceModalNum={setWorkspaceModalNum}
                 managedValues={managedValues}
+                isOwner={isOwner}
               />
             </div>
           </div>

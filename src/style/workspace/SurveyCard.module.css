@@ -30,6 +30,10 @@
 .optionBtn {
   color: grey;
   border-radius: 35px;
+  padding: 10px;
+  position: absolute;
+  top: -10px;
+  left: -30px;
 }
 
 /* 이벤트 */
@@ -49,7 +53,7 @@
 
 .menu {
   position: absolute;
-  left: -70px;
+  left: -80px;
   background-color: white;
   border: 1px solid #ddd;
   padding: 5px;
@@ -63,6 +67,7 @@
 
   opacity: 0;
   height: 0;
+  top: 30px;
   overflow: hidden;
   transition: opacity 100ms cubic-bezier(0.4, 0, 0.2, 1), height 100ms cubic-bezier(0.4, 0, 0.2, 1);
 }

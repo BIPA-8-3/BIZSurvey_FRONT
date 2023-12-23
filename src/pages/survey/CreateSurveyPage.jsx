@@ -38,6 +38,7 @@ export default function CreateSurveyPage() {
     },
   ]);
 
+  // 드래그 정렬
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
 
@@ -48,6 +49,7 @@ export default function CreateSurveyPage() {
     setQuestions(items);
   };
 
+  // 설문 제출
   const handleSubmitSurvey = async (e) => {
     e.preventDefault();
     const questionData = questions.map((question, index) => ({
@@ -71,42 +73,17 @@ export default function CreateSurveyPage() {
     });
   };
 
-  const changeQuestionTitle = (id, text) => {
-    setQuestions((pre) => {
-      const result = pre.map((question, index) =>
-        index === id ? { ...question, surveyQuestion: text } : question
-      );
-      return result;
-    });
+  // 설문지 제목
+  const changeSurveyTitle = (text) => {
+    setFormData((pre) => ({ ...pre, title: text }));
   };
 
-  const changeQuestionContent = (id, text) => {
-    setQuestions((pre) => {
-      const result = pre.map((question, index) =>
-        index === id ? { ...question, content: text } : question
-      );
-      return result;
-    });
+  // 설문지 설명
+  const changeSurveyContent = (text) => {
+    setFormData((pre) => ({ ...pre, content: text }));
   };
 
-  const changeOption = (id, type) => {
-    setQuestions((pre) => {
-      const result = pre.map((question, index) =>
-        index === id ? { ...question, answerType: type } : question
-      );
-      return result;
-    });
-  };
-
-  const deleteQuestion = (id) => {
-    setQuestions((pre) => {
-      const result = pre
-        .filter((question, index) => index !== id)
-        .map((question, index) => ({ ...question }));
-      return result;
-    });
-  };
-
+  // 질문 추가 (기본 객관식)
   const addQuestion = () => {
     setQuestions((pre) => {
       return [
@@ -128,6 +105,37 @@ export default function CreateSurveyPage() {
     });
   };
 
+  // 질문 제목 변경
+  const changeQuestionTitle = (id, text) => {
+    setQuestions((pre) => {
+      const result = pre.map((question, index) =>
+        index === id ? { ...question, surveyQuestion: text } : question
+      );
+      return result;
+    });
+  };
+
+  // 질문 삭제
+  const deleteQuestion = (id) => {
+    setQuestions((pre) => {
+      const result = pre
+        .filter((question, index) => index !== id)
+        .map((question, index) => ({ ...question }));
+      return result;
+    });
+  };
+
+  // 옵션 변경
+  const changeOption = (id, type) => {
+    setQuestions((pre) => {
+      const result = pre.map((question, index) =>
+        index === id ? { ...question, answerType: type } : question
+      );
+      return result;
+    });
+  };
+
+  // 필수 변경
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
@@ -139,23 +147,7 @@ export default function CreateSurveyPage() {
     });
   };
 
-  const handleOption = (id, options) => {
-    setQuestions((pre) => {
-      const result = pre.map((question, index) =>
-        index === id ? { ...question, answers: options } : question
-      );
-      return result;
-    });
-  };
-
-  const changeSurveyTitle = (text) => {
-    setFormData((pre) => ({ ...pre, title: text }));
-  };
-
-  const changeSurveyContent = (text) => {
-    setFormData((pre) => ({ ...pre, content: text }));
-  };
-
+  // 객관식 옵션 추가
   const handleAddOption = (qid) => {
     setQuestions((prevQuestions) => {
       return prevQuestions.map((question, index) => {
@@ -177,6 +169,7 @@ export default function CreateSurveyPage() {
     });
   };
 
+  // 객관식 옵션 삭제
   const handleDeleteOption = (qid, aid) => {
     setQuestions((prevQuestions) => {
       return prevQuestions.map((question, index) => {
@@ -192,6 +185,7 @@ export default function CreateSurveyPage() {
     });
   };
 
+  // 옵션 내용 변경
   const handleChangeOptionText = (qid, aid, text) => {
     setQuestions((prevQuestions) => {
       return prevQuestions.map((question, index) => {
@@ -248,7 +242,6 @@ export default function CreateSurveyPage() {
                               index={index}
                               questionInfo={questionData}
                               changeTitle={changeQuestionTitle}
-                              changeContent={changeQuestionContent}
                               changeOption={changeOption}
                               deleteQuestion={deleteQuestion}
                               changeRequired={changeRequired}

@@ -52,3 +52,7 @@
   display: flex;
   padding-bottom: 10px;
 }
+
+input:disabled {
+  background-color: #fff;
+}

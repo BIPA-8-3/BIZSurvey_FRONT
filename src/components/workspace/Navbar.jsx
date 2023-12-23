@@ -17,6 +17,8 @@ function Navbar() {
     setWorkspaceList,
     selectedWorkspaceId,
     setSelectedWorkspaceId,
+    selectedWorkspaceType,
+    setSelectedWorkspaceType,
     setSelectedSurveyId,
   } = useWorkspaceContext();
   const userInfo = useContext(LoginContext);
@@ -40,11 +42,19 @@ function Navbar() {
 
   useEffect(() => {
     navigate("/workspace");
+    setSelectedSurveyId(0);
+    if (selectedWorkspaceId) {
+      setSelectedWorkspaceType(
+        workspaceList.find((w) => w.id === selectedWorkspaceId).workspaceType
+      );
+    } else {
+      setSelectedWorkspaceType(null);
+    }
   }, [selectedWorkspaceId]);
 
   // 클릭한 workspace id 저장
-  const changeWorkspace = (workspaceId) => {
-    setSelectedWorkspaceId(workspaceId);
+  const changeWorkspace = (id, workspaceType) => {
+    setSelectedWorkspaceId(id);
     setSelectedSurveyId(0);
   };
 
@@ -68,9 +78,11 @@ function Navbar() {
     if (!selectedWorkspaceId && workspaceList.length > 0) {
       setSelectedWorkspaceId(workspaceList[0].id);
     }
-
-    console.log("여기여기: ", selectedWorkspaceId);
   }, [selectedWorkspaceId, workspaceList.length]); // workspaceList.length를 직접 의존성 배열에 추가
+
+  const isAuthority = () => {
+    return userInfo.planSubscribe === "COMPANY_SUBSCRIBE";
+  };
 
   return (
     <div id={style.Navbar}>
@@ -84,7 +96,12 @@ function Navbar() {
       <div className={style.NavbarHeader}>
         <div className={style.HeaderProfile}>
           <img
-            src={(userInfo.profile && userInfo.profile) || "https://via.placeholder.com/45X45"}
+            // src={(userInfo.profile && userInfo.profile) || "https://via.placeholder.com/45X45"}
+            src={
+              "https://" +
+              ((userInfo.profile && userInfo.profile) ||
+                "ui-avatars.com/api/?name=" + userInfo.email + "&background=random")
+            }
             className={style.profileRadius}
           ></img>
           <div className={style.profileInfo}>
@@ -100,7 +117,7 @@ function Navbar() {
           <span className={style.headerWorkspaceFont}>워크스페이스</span>
           <span>
             <AddIcon
-              className={style.addIcon}
+              className={`${style.addIcon} ${!isAuthority() ? style.disabled : ""}`}
               onClick={() => {
                 setWorkspaceModalState(true);
               }}
@@ -126,6 +143,7 @@ function Navbar() {
           onClick={() => {
             setWorkspaceModalState(true);
           }}
+          className={!isAuthority() ? style.disabled : ""}
         >
           <ButtonItem />
         </div>
@@ -134,11 +152,8 @@ function Navbar() {
 
       {/* footer */}
       <div className={style.NavbarFooter}>
-        {/* <div className={style.planBox}>
-          <p>😁 일반 플랜</p>
-        </div> */}
         <div>
-          <Link className={style.planText} to="/plan">
+          <Link className={style.planText} to="/mypagePlan">
             플랜 변경하기
           </Link>
         </div>
@@ -150,7 +165,7 @@ function Navbar() {
 function getIcon(planSubscribe) {
   switch (planSubscribe) {
     case "COMPANY_SUBSCRIBE":
-      return "🏅";
+      return "🎖️";
     case "NORMAL_SUBSCRIBE":
       return "🏅";
     default:
