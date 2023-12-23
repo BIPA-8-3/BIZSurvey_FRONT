@@ -9,8 +9,15 @@
   cursor: pointer;
 } */
 .container {
+  /* border: 1px solid #dddddd;
+  margin: 5px 0;
+  overflow: hidden; */
+  width: 100%;
+  padding-left: 3px;
+
   border: 1px solid #dddddd;
   margin: 5px 0;
+  cursor: pointer;
   overflow: hidden;
 }
 
@@ -48,7 +55,7 @@
 }
 
 /* event */
-.historyWrap:hover {
+.container:hover {
   background-color: rgba(55, 53, 47, 0.08);
 }
 

@@ -1,5 +1,7 @@
+import { useState } from "react";
 import style from "../../style/workspace/SharedHistoryItem.module.css";
-import { IoCloseSharp } from "react-icons/io5";
+import { WorkspaceModal } from "./WorkspaceModal";
+import { modifyDatelineDate } from "../../pages/workspace/api";
 
 export default function SharedHistoryItem({ info, setSelectedHistory }) {
   const formattedDate = new Intl.DateTimeFormat("ko-KR", {
@@ -12,12 +14,47 @@ export default function SharedHistoryItem({ info, setSelectedHistory }) {
     timeZone: "Asia/Seoul",
   });
 
+  const extension = () => {
+    setModal(true);
+  };
+
+  const [modal, setModal] = useState(false);
+  const [updateCount, setUpdateCount] = useState(0);
+
+  const modifySharedDate = (date) => {
+    if (!isDateTimeInputValid(date)) {
+      alert("유효한 날짜를 입력해 주세요.");
+      return false;
+    }
+    if (isDateTimeEarlierThanNow(date)) {
+      alert("마감일자는 현재날짜보다 빠를 수 없습니다.");
+      return false;
+    }
+
+    modifyDatelineDate(info.id, date)
+      .then((e) => {
+        alert("수정이 완료되었습니다.");
+        info.dueDate = date;
+        setUpdateCount((prevCount) => prevCount + 1);
+        setModal(false);
+      })
+      .catch((error) => {
+        alert("수정에 실패하였습니다.");
+        return false;
+      });
+  };
   console.log(info);
   if (!info.id) {
     return null;
   }
   return (
     <div className={style.container}>
+      <WorkspaceModal
+        isOpen={modal}
+        pageNum={3}
+        setWorkspaceModalState={setModal}
+        handleClickSubmitBtn={modifySharedDate}
+      />
       <div
         className={style.historyWrap}
         onClick={(e) => {
@@ -36,16 +73,26 @@ export default function SharedHistoryItem({ info, setSelectedHistory }) {
           {info.deadline ? (
             <div className={style.labelBox}>마감</div>
           ) : (
-            <button className={style.button}>연장</button>
+            <button className={style.button} onClick={extension}>
+              수정
+            </button>
           )}
         </div>
       </div>
-      {/* <div className={style.inputWrap}>
-        <span>연장 기한(일): </span>
-        <form>
-          <input className={style.input} type="number" min="10" max="30" step="3"></input>
-        </form>
-      </div> */}
     </div>
   );
+}
+
+function isDateTimeEarlierThanNow(dateTimeValue) {
+  const inputDateTime = new Date(dateTimeValue);
+  const now = new Date();
+
+  return inputDateTime < now;
+}
+
+function isDateTimeInputValid(dateTimeValue) {
+  const inputDate = new Date(dateTimeValue);
+
+  // 모든 필드가 유효한지 확인 (0 또는 NaN이 아닌지)
+  return !isNaN(inputDate);
 }
