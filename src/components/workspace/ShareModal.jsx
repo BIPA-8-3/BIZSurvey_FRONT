@@ -86,6 +86,11 @@ export default function ShareModal({ isOpen, onClose, survey, contactList, setLo
 
   // 초대 메소드
   const handleClickShareBtn = () => {
+    if (selectedList.length < 1) {
+      alert("이메일을 선택해주세요");
+      return;
+    }
+
     setLoader(true);
 
     let sharedRequest = {
@@ -148,7 +153,7 @@ export default function ShareModal({ isOpen, onClose, survey, contactList, setLo
               <div className={style.itemBox} style={{ marginRight: "10px" }}>
                 {/* <span>이메일을 선택해주세요</span> */}
                 <div className={style.listBox}>
-                  <div className={style.listBoxHeader}>
+                  <div className={`${style.listBoxHeader} ${style.leftBox}`}>
                     <ul>
                       <li>
                         <span>{leftBoxTitle[survey.menuNum]}</span>
@@ -183,7 +188,7 @@ export default function ShareModal({ isOpen, onClose, survey, contactList, setLo
               <div className={style.itemBox}>
                 {/* <span>선택된 이메일</span> */}
                 <div className={style.listBox}>
-                  <div className={style.listBoxHeader}>
+                  <div className={`${style.listBoxHeader} ${style.rightBox}`}>
                     <ul>
                       <li>
                         <span>{rightBoxTitle[survey.menuNum]}</span>
@@ -218,14 +223,18 @@ export default function ShareModal({ isOpen, onClose, survey, contactList, setLo
             </div>
           </div>
           <div className={style.rightContainer}>
-            <button
-              className={`${style.button} ${style.right}`}
-              onClick={(e) => {
-                handleClickShareBtn();
-              }}
-            >
-              전송
-            </button>
+            {survey.menuNum === 0 ? (
+              <button
+                className={`${style.button} ${style.right}`}
+                onClick={(e) => {
+                  handleClickShareBtn();
+                }}
+              >
+                전송
+              </button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>

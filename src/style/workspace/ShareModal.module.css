@@ -8,8 +8,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 11;
+  z-index: 9999;
 }
+
 .ModalWrap {
   box-sizing: border-box;
   width: 800px;
@@ -73,9 +74,17 @@
   height: 10px;
   padding: 15px 5px;
   border-bottom: 1px solid black;
-  /* border-bottom: 1px solid #eee; */
 }
 
+.leftBox {
+  background-color: #154dca;
+  color: #fff;
+}
+
+.rightBox {
+  background-color: #119fb3;
+  color: #fff;
+}
 /*  */
 .listBoxHeader ul {
   display: flex;
@@ -83,14 +92,16 @@
 }
 
 .listBox {
-  border: 1px solid black;
   border-radius: 20px;
   margin-top: 10px;
   /* max-height: 430px; */
   height: 500px;
   box-sizing: border-box;
   /* border: 1px solid #eee; */
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  border: 1px solid #d6d6d6;
+
+  overflow: hidden;
 }
 .listBoxBody {
   box-sizing: border-box;
