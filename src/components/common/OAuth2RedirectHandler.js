@@ -31,7 +31,7 @@ const OAuth2RedirectHandler = () => {
               
             console.log("data header : " + response.headers)
             const headers = response.headers;
-
+            
             if (headers && headers.authorization) {
 
 
@@ -44,7 +44,6 @@ const OAuth2RedirectHandler = () => {
                       const headers = response.headers;
                       const authorization = headers['authorization'];
                       const refreshAuthorization = headers['refreshauthorization'];
-                      console.log("test : " + authorization)
                       saveAccessTokenToLocalStorage(authorization);
                       saveRefreshTokenToLocalStorage(refreshAuthorization);
 
