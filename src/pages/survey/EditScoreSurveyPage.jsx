@@ -42,6 +42,8 @@ export default function EditScoreSurveyPage() {
     },
   ]);
 
+  const [answerPass, setAnswerPass] = useState(true);
+
   // effect
 
   useEffect(() => {
@@ -116,6 +118,11 @@ export default function EditScoreSurveyPage() {
 
   // 설문 수정
   const handleUpdateSurvey = async (surveyId) => {
+    if (!answerPass) {
+      alert("중복 답변은 입력할 수 없습니다.");
+      return;
+    }
+
     const { createQuestion, updateQuestion } = questions.reduce(
       (acc, question, index) => {
         const { questionId, ...rest } = {
@@ -353,6 +360,7 @@ export default function EditScoreSurveyPage() {
                         >
                           <div className={style.question}>
                             <ScoreQuestion
+                              answerPass={setAnswerPass}
                               key={index}
                               index={index}
                               questionInfo={questionData}

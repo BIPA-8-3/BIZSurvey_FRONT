@@ -38,6 +38,8 @@ export default function CreateSurveyPage() {
     },
   ]);
 
+  const [answerPass, setAnswerPass] = useState(true);
+
   // 드래그 정렬
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
@@ -52,6 +54,10 @@ export default function CreateSurveyPage() {
   // 설문 제출
   const handleSubmitSurvey = async (e) => {
     e.preventDefault();
+    if (!answerPass) {
+      alert("중복 답변은 입력할 수 없습니다.");
+      return;
+    }
     const questionData = questions.map((question, index) => ({
       ...question,
       step: index + 1,
@@ -249,6 +255,7 @@ export default function CreateSurveyPage() {
                               addAnswer={handleAddOption}
                               deleteAnswer={handleDeleteOption}
                               changeAnswerText={handleChangeOptionText}
+                              answerPass={setAnswerPass}
                             />
                           </div>
                         </div>

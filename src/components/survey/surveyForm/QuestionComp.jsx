@@ -23,6 +23,7 @@ export default function QuestionComp({
   addAnswer,
   deleteAnswer,
   changeAnswerText,
+  answerPass,
 }) {
   const {
     surveyQuestion,
@@ -97,6 +98,7 @@ export default function QuestionComp({
                 {/* 원하는 조건에 따른 옵션을 렌더링 */}
                 {answerType === "SINGLE_CHOICE" && (
                   <ChoiceOption
+                    answerPass={answerPass}
                     single
                     qid={index}
                     answers={answers}
@@ -112,6 +114,7 @@ export default function QuestionComp({
                     addAnswer={addAnswer}
                     deleteAnswer={deleteAnswer}
                     changeAnswerText={changeAnswerText}
+                    answerPass={answerPass}
                   />
                 )}
                 {answerType === "TEXT" && <TextOption />}
