@@ -18,7 +18,6 @@ export default function ShareModal({ isOpen, onClose, survey, contactList, setLo
   // share
   const [shareContactList, setShareContactList] = useState([]);
   const [selectedList, setSelectedList] = useState([]);
-  // const { setLoader } = useContext(WorkspaceContext);
 
   // history
   const [sharedHistory, setSharedHistory] = useState([]);
@@ -39,12 +38,10 @@ export default function ShareModal({ isOpen, onClose, survey, contactList, setLo
       else if (survey.menuNum === 1) {
         getSharedSurveyHistory(survey.surveyId)
           .then((data) => {
-            console.log(data);
             setSharedHistory(data);
           })
           .catch((error) => {
-            console.log(error);
-            console.log(error.response);
+            console.error(error);
             setSharedHistory([]);
           });
       }
@@ -185,7 +182,7 @@ export default function ShareModal({ isOpen, onClose, survey, contactList, setLo
                 </div>
               </div>
 
-              <div className={style.itemBox}>
+              <div className={style.itemBox} style={{ marginRight: "10px" }}>
                 {/* <span>선택된 이메일</span> */}
                 <div className={style.listBox}>
                   <div className={`${style.listBoxHeader} ${style.rightBox}`}>
@@ -195,7 +192,7 @@ export default function ShareModal({ isOpen, onClose, survey, contactList, setLo
                       </li>
                     </ul>
                   </div>
-                  <div className={style.listBoxBody} style={{ marginRight: "5px" }}>
+                  <div className={style.listBoxBody}>
                     {(() => {
                       if (survey.menuNum === 0) {
                         return selectedList.map((share) => (
