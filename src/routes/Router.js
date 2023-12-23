@@ -196,7 +196,7 @@ const ThemeRoutes = [
       { path: "/mypagePassword", exact: true, element: <MypagePassword /> },
       { path: "/mypagePlan", exact: true, element: <MypagePlan /> },
       { path: "/admin/userList", exact: true, element: <AdminUserList /> },
-      { path: "/admin/userInfo", exact: true, element: <AdminUserInfo /> },
+      { path: "/admin/userInfo/:id", exact: true, element: <AdminUserInfo /> },
       { path: "/admin/surveyList", exact: true, element: <AdminSurveyList /> },
       {
         path: "/admin/communityList",
