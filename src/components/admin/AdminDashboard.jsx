@@ -146,56 +146,29 @@ function AdminDashboard() {
                 <div className={style.dashboardWrap}>
                     <h2>신고 내역</h2>
                     <table className={style.adminClaimTable}>
-                        {Array.isArray(claimList.content) && claimList.content.slice(0, 6).map((claimList, index) => (
-                            <tr>
-                                <td>
-                                    <span className={style.claimSpanNone}>미처리</span>
-                                </td>
-                                <td>{claimList.claimType}</td>
-                                <td>{claimList.claimReason}</td>
-                                <td>{claimList.regDate}</td>
-                            </tr>
-                        ))}             
+                    {claimList.length > 0 ? (
+                        claimList.slice(0, 6).map((claimItem, index) => {
+                            // Extracting the date part from the timestamp
+                            const formattedDate = claimItem.regDate.substring(0, 10);
+
+                            return (
+                                <tr key={index}>
+                                    <td>
+                                        <span className={style.claimSpanNone}>미처리</span>
+                                    </td>
+                                    <td>{claimItem.claimType}</td>
+                                    <td>{claimItem.claimReason}</td>
+                                    <td>{formattedDate}</td>
+                                </tr>
+                            );
+                        })
+                    ) : (
                         <tr>
-                            <td>
-                                <span className={style.claimSpanNone}>미처리</span>
+                            <td colSpan="4" style={{ textAlign: "center", padding: "10px" }}>
+                                신고 내역이 없습니다.
                             </td>
-                            <td>대댓글</td>
-                            <td>스팸홍보/도배글</td>
-                            <td>2023-12-12</td>
                         </tr>
-                        <tr>
-                            <td>
-                                <span className={style.claimSpanNone}>미처리</span>
-                            </td>
-                            <td>대댓글</td>
-                            <td>스팸홍보/도배글</td>
-                            <td>2023-12-12</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span className={style.claimSpanNone}>미처리</span>
-                            </td>
-                            <td>대댓글</td>
-                            <td>스팸홍보/도배글</td>
-                            <td>2023-12-12</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span className={style.claimSpanSuccess}>처리</span>
-                            </td>
-                            <td>대댓글</td>
-                            <td>스팸홍보/도배글</td>
-                            <td>2023-12-12</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span className={style.claimSpanSuccess}>처리</span>
-                            </td>
-                            <td>대댓글</td>
-                            <td>스팸홍보/도배글</td>
-                            <td>2023-12-12</td>
-                        </tr>
+                    )}
                     </table>
                 </div>
             </Grid>

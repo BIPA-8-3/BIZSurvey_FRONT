@@ -1,14 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import style from '../../style/admin/AdminUserInfo.module.css'
-import useFadeIn from '../../style/useFadeIn';
-import Button from '@mui/material/Button';
-import { useLocation, useNavigate } from "react-router-dom";
-import logo from '../../assets/img/logo.png';
-import { FaUserCircle } from "react-icons/fa";
-import { FaFolderOpen } from "react-icons/fa6";
-import { MdArrowForwardIos } from "react-icons/md";
+import { useParams } from "react-router-dom";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
+import call from '../../pages/workspace/api';
 function AdminUserInfo() {
+  const { id } = useParams();
+  const [userInfo, setUserInfo] = useState([]);
+
+  useEffect(() => {
+    call("/admin/user/" + id, "GET")
+    .then((data) => {
+      setUserInfo(data)
+    }).catch((error) => {
+      console.log(error)
+    })
+
+  },[]);
+
+  function formatDate(dateString) {
+    const dateObject = new Date(dateString);
+    const year = dateObject.getFullYear();
+    const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
+    const day = dateObject.getDate().toString().padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
+  }
   return (
     <div
     className={style.userListWrap}
@@ -37,7 +53,7 @@ function AdminUserInfo() {
           <div className="d-flex" style={{display:'flex'}}>
             <div className={style.infoFirstBox}>이메일</div>
             <div className={style.infoBox}>
-              404444@naver.com
+              {userInfo.email}
             </div>
           </div>
           <div className="d-flex" style={{display:'flex'}}>
@@ -45,7 +61,7 @@ function AdminUserInfo() {
               성명
             </div>
             <div className={style.infoBox}>
-              박소영
+              {userInfo.name}
             </div>
           </div>
           <div className="d-flex" style={{display:'flex'}}>
@@ -55,7 +71,7 @@ function AdminUserInfo() {
             <div
               className={style.infoBox}
             >
-              1999-09-09
+              {userInfo.birthdate}
             </div>
           </div>
         </div>
@@ -63,7 +79,7 @@ function AdminUserInfo() {
           <div className="d-flex" style={{display:'flex'}}>
             <div className={style.infoFirstBox}>성별</div>
             <div className={style.infoBox}>
-              FEMALE
+              {userInfo.gender}
             </div>
           </div>
           <div className="d-flex" style={{display:'flex'}}>
@@ -71,7 +87,7 @@ function AdminUserInfo() {
               닉네임
             </div>
             <div className={style.infoBox}>
-              홍길동
+              {userInfo.nickname}
             </div>
           </div>
           <div className="d-flex" style={{display:'flex'}}>
@@ -81,7 +97,7 @@ function AdminUserInfo() {
             <div
               className={style.infoBox}
             >
-              NORMAL_SUBSCRIBE
+              {userInfo.planSubscribe}
             </div>
           </div>
         </div>
@@ -89,7 +105,7 @@ function AdminUserInfo() {
           <div className="d-flex" style={{display:'flex'}}>
             <div className={style.infoFirstBox}>회원가입 유형</div>
             <div className={style.infoBox}>
-              bizsurvey
+              {userInfo.provider}
             </div>
           </div>
           <div className="d-flex" style={{display:'flex'}}>
@@ -97,7 +113,7 @@ function AdminUserInfo() {
               가입일
             </div>
             <div className={style.infoBox} style={{width:'497px'}}>
-              2023-11-21 17:55:39.821266
+              {formatDate(userInfo.regdate)}
             </div>
           </div>
         </div>
@@ -105,7 +121,7 @@ function AdminUserInfo() {
           <div className="d-flex" style={{display:'flex'}}>
             <div className={style.infoFirstBox}>신고상태</div>
             <div className={style.infoBox} style={{width:'824px'}}>
-              2022-11-11
+                {userInfo.forbiddenDate}
             </div>
           </div>
         </div>
