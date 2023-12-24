@@ -9,7 +9,7 @@ const ProfileContainer = ({ owner, adminList }) => {
   return (
     <div className={style.ProfileContainer}>
       {temp.map((admin, index) => (
-        <div className={style.imgBox}>
+        <div key={index} className={style.imgBox}>
           <img
             key={index}
             src={

@@ -2,6 +2,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import { useEffect, useState } from "react";
 import { FaCirclePlus } from "react-icons/fa6";
 import { IoCloseOutline } from "react-icons/io5";
 
@@ -12,6 +13,7 @@ export default function ChoiceOption({
   addAnswer,
   deleteAnswer,
   changeAnswerText,
+  answerPass,
 }) {
   const addOption = () => {
     addAnswer(qid);
@@ -28,16 +30,22 @@ export default function ChoiceOption({
   return (
     <>
       <div style={{ marginTop: "15px" }}>
-        {answers.map(({ step, surveyAnswer }, index) => (
-          <Option
-            key={index}
-            index={index}
-            onDelete={deleteOption}
-            changeText={changeText}
-            single={single}
-            text={surveyAnswer}
-          ></Option>
-        ))}
+        {answers.map(({ step, surveyAnswer }, index) => {
+          if (surveyAnswer !== null) {
+            return (
+              <Option
+                key={index}
+                index={index}
+                onDelete={deleteOption}
+                changeText={changeText}
+                single={single}
+                text={surveyAnswer}
+                answers={answers}
+                answerPass={answerPass}
+              ></Option>
+            );
+          }
+        })}
       </div>
 
       <div style={{ marginTop: "10px", paddingLeft: "45px" }}>
@@ -54,10 +62,37 @@ export default function ChoiceOption({
   );
 }
 
-function Option({ onDelete, index, changeText, single, text }) {
+function Option({
+  onDelete,
+  index,
+  changeText,
+  single,
+  text,
+  answers,
+  answerPass,
+}) {
+  const [dup, setDup] = useState(false);
+
   const handleBlur = (text) => {
+    console.log("여긴 들어오나?");
     if (text.trim() === "") {
       changeText(index, "옵션 " + (index + 1));
+    }
+    checkAnswer(text);
+  };
+
+  const checkAnswer = (text) => {
+    console.log("answer들어옴");
+    const dupAnswer = answers.find(
+      (answer, idx) => answer.surveyAnswer === text && index !== idx
+    );
+    console.log(dupAnswer);
+    if (dupAnswer) {
+      answerPass(false);
+      setDup(true);
+    } else {
+      answerPass(true);
+      setDup(false);
     }
   };
 
@@ -88,6 +123,11 @@ function Option({ onDelete, index, changeText, single, text }) {
             <IoCloseOutline />
           </IconButton>
         </Stack>
+        {dup ? (
+          <p style={{ textAlign: "center", fontSize: "12px", color: "red" }}>
+            중복 옵션은 지원되지 않습니다.
+          </p>
+        ) : null}
       </div>
     </>
   );

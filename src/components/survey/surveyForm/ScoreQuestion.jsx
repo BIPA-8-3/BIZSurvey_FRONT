@@ -23,6 +23,7 @@ export default function ScoreQuestion({
   changeScore,
   changeCorrect,
   checkDuplication,
+  answerPass,
 }) {
   const {
     surveyQuestion,
@@ -82,6 +83,7 @@ export default function ScoreQuestion({
         <div>
           <div className={style.wrapQuestion}>
             <TextField
+              // name={}
               value={surveyQuestion}
               id="filled-basic"
               variant="filled"
@@ -107,7 +109,7 @@ export default function ScoreQuestion({
                 deleteAnswer={deleteAnswer}
                 changeAnswerText={changeAnswerText}
                 changeCorrect={changeCorrect}
-                checkDuplication={checkDuplication}
+                answerPass={answerPass}
               />
             </>
 

@@ -13,17 +13,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 function AdminUserList() {
     const navigate = useNavigate();
 
-    const handleRowClick = () => {
-        navigate('/admin/userInfo');
+    const handleRowClick = (id) => {
+        navigate('/admin/userInfo/' + id);
     };
 
     const [userList, setUserList] = useState([]);
     const [total, setTotal] = useState(0);
-
-    // const [formData, setFromData] = useState({
-    //   type: "",
-    //   password: "",
-    // });
 
     const handleInputChange = (e) => {
       const { name, value } = e.target;
@@ -43,21 +38,6 @@ function AdminUserList() {
       })
   
     },[]);
-
-    useEffect(() => {
-      call("/admin/users", "GET")
-      .then((data) => {
-        setUserList(data.content);
-        setTotal(data.totalPages)
-      }).catch((error) => {
-        console.log(error)
-      })
-  
-    },[]);
-
-    const test = ()=>{
-      // alert(formdata)
-    };
 
     const handlePage = (event) => {
       const nowPageInt = parseInt(event.target.outerText)
@@ -122,7 +102,7 @@ function AdminUserList() {
         </thead>
         <tbody>
           {userList.map((userItem, index) => (
-              <tr onClick={handleRowClick}>
+              <tr onClick={() => handleRowClick(userItem.userId)}>
                   <td>{userItem.userId}</td>
                   <td>{userItem.email}</td>
                   <td>{userItem.name}</td>

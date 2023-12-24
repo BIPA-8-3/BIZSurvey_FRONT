@@ -203,7 +203,6 @@ export const removeAdmin = (id) => {
 }
 
 
-
 // 공유 실행
 export const shareSurvey = (sharedRequest) => {
     return call(`${shareURI}`, "POST", sharedRequest);
@@ -217,6 +216,14 @@ export const getSharedSurveyHistory = (id) => {
 // 공유 상세 내역 조회
 export const getSharedContactList = (id) => {
     return call(`${shareURI}/survey/${id}`, "GET");
+}
+
+// 공유 설문 마감일자 수정
+export const modifyDatelineDate = (id, deadline) => {
+    const reqest = {
+        deadlineDate: deadline
+    }
+    return call(`${shareURI}/${id}`, "PUT", reqest);
 }
 
 // 설문지 이름 수정

@@ -12,10 +12,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { FormGroup } from "@mui/material";
 import call from "../../pages/workspace/api";
+import { useNavigate } from "react-router-dom";
 
 export default function VoteWrite({ postId, voteId, setSubmit }) {
   let vId = voteId;
   let pId = postId;
+  const navigate = useNavigate();
 
   const fadeIn = useFadeIn();
 
@@ -44,14 +46,25 @@ export default function VoteWrite({ postId, voteId, setSubmit }) {
   };
 
   const boxOnClick = async () => {
-    await call(
-      `/community/${pId}/${vId}/choseAnswer/${value.selectedKey}`,
-      "GET"
-    )
-      .then((data) => {
-        setSubmit(true);
-      })
-      .catch((error) => console.error(error));
+    if (localStorage.getItem("userInfo")) {
+      await call(
+        `/community/${pId}/${vId}/choseAnswer/${value.selectedKey}`,
+        "GET"
+      )
+        .then((data) => {
+          setSubmit(true);
+        })
+        .catch((error) => console.error(error));
+    } else {
+      const res = window.confirm(
+        "로그인을 하셔야 투표에 참여하실 수 있습니다. \n로그인 페이지로 이동하시겠습니까?"
+      );
+      if (res) {
+        navigate("/login");
+      } else {
+        return;
+      }
+    }
   };
 
   //localhost:8080/community/30/showVoteAnswer/2

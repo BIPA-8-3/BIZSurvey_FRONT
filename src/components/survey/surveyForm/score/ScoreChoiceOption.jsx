@@ -5,6 +5,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { FaCirclePlus } from "react-icons/fa6";
 import { IoCloseOutline } from "react-icons/io5";
+import { useEffect, useState } from "react";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -16,7 +17,7 @@ export default function ScoreChoiceOption({
   qid,
   answers,
   changeCorrect,
-  checkDuplication,
+  answerPass,
 }) {
   const addOption = () => {
     addAnswer(qid);
@@ -37,20 +38,25 @@ export default function ScoreChoiceOption({
   return (
     <>
       <div style={{ marginTop: "15px" }}>
-        {answers.map(({ correct, surveyAnswer }, index) => (
-          <Option
-            key={index}
-            index={index}
-            onDelete={deleteOption}
-            changeText={changeText}
-            single={single}
-            text={surveyAnswer}
-            changeOptionCorrect={changeOptionCorrect}
-            correct={correct}
-            qid={qid}
-            checkDuplication={checkDuplication}
-          ></Option>
-        ))}
+        {answers.map(({ correct, surveyAnswer, answerId }, index) => {
+          if (answerId !== null) {
+            return (
+              <Option
+                key={index}
+                index={index}
+                onDelete={deleteOption}
+                changeText={changeText}
+                single={single}
+                text={surveyAnswer}
+                changeOptionCorrect={changeOptionCorrect}
+                correct={correct}
+                qid={qid}
+                answerPass={answerPass}
+                answers={answers}
+              ></Option>
+            );
+          }
+        })}
       </div>
 
       <div style={{ marginTop: "10px", paddingLeft: "45px" }}>
@@ -76,17 +82,30 @@ function Option({
   changeOptionCorrect,
   correct,
   qid,
-  checkDuplication,
+  answers,
+  answerPass,
 }) {
   // const [isPass, setPass] = useState(true);
+  const [dup, setDup] = useState(false);
 
   const handleBlur = (text) => {
     if (text.trim() === "") {
       changeText(index, "옵션 " + (index + 1));
+    }
+    checkAnswer(text);
+  };
+
+  const checkAnswer = (text) => {
+    const dupAnswer = answers.find(
+      (answer, idx) => answer.surveyAnswer === text && index !== idx
+    );
+    console.log(dupAnswer);
+    if (dupAnswer) {
+      answerPass(false);
+      setDup(true);
     } else {
-      // const res = checkDuplication(qid, text);
-      // console.log("rrrrrrrr", res);
-      // setPass(res);
+      answerPass(true);
+      setDup(false);
     }
   };
 
@@ -134,6 +153,11 @@ function Option({
             <IoCloseOutline />
           </IconButton>
         </Stack>
+        {dup ? (
+          <p style={{ textAlign: "center", fontSize: "12px", color: "red" }}>
+            중복 옵션은 지원되지 않습니다.
+          </p>
+        ) : null}
       </div>
     </>
   );

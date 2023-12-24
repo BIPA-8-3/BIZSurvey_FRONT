@@ -12,8 +12,10 @@ import { useWorkspaceContext } from "../workspace/WorkspaceContext";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateScoreSurveyPage() {
+  // state , context
   const { selectedWorkspaceId } = useWorkspaceContext();
   const navigate = useNavigate();
+  const [pass, setPass] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "제목",
@@ -39,41 +41,15 @@ export default function CreateScoreSurveyPage() {
     },
   ]);
 
-  const [pass, setPass] = useState(false);
+  const [answerPass, setAnswerPass] = useState(true);
 
-  // useEffect(() => {
-  //   login();
-  // }, []);
-
-  useEffect(() => {
-    console.log(questions);
-  }, [questions]);
-
-  // const handleCheckDuplication = (idx, text) => {
-  //   let isPass = true;
-  //   const question = questions.find((q, index) => index === idx);
-  //   const matchingAnswers = question.answers.filter(
-  //     (ans) => ans.surveyAnswer === text
-  //   );
-  //   console.log(matchingAnswers.surveyAnswer, "anssssssssssss");
-  //   if (matchingAnswers.length > 1) {
-  //     isPass = false;
-  //   }
-
-  //   return isPass;
-  // };
-
-  const handleOnDragEnd = (result) => {
-    if (!result.destination) return;
-    const updatedQuestions = Array.from(questions);
-    const [reorderedQuestion] = updatedQuestions.splice(result.source.index, 1);
-    updatedQuestions.splice(result.destination.index, 0, reorderedQuestion);
-
-    setQuestions(updatedQuestions);
-  };
-
+  // 설문 제출
   const handleSubmitSurvey = async (e) => {
     e.preventDefault();
+    if (!answerPass) {
+      alert("중복 답변은 입력할 수 없습니다.");
+      return;
+    }
     const questionData = questions.map((question, index) => ({
       ...question,
       step: index + 1,
@@ -85,13 +61,31 @@ export default function CreateScoreSurveyPage() {
     const surveyData = { ...formData };
     surveyData.questions = questionData;
 
-    console.log(surveyData);
-
     call("/survey/" + selectedWorkspaceId, "POST", surveyData).then((e) => {
       navigate("/workspace");
     });
   };
 
+  // 드래그 정렬
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return;
+    const updatedQuestions = Array.from(questions);
+    const [reorderedQuestion] = updatedQuestions.splice(result.source.index, 1);
+    updatedQuestions.splice(result.destination.index, 0, reorderedQuestion);
+
+    setQuestions(updatedQuestions);
+  };
+
+  //설문 제목 변경
+  const changeSurveyTitle = (text) => {
+    setFormData((pre) => ({ ...pre, title: text }));
+  };
+  // 설문 소개 변경
+  const changeSurveyContent = (text) => {
+    setFormData((pre) => ({ ...pre, content: text }));
+  };
+
+  // 질문 제목 변경
   const changeQuestionTitle = (id, text) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
@@ -101,15 +95,7 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
-  // const changeQuestionContent = (id, text) => {
-  //   setQuestions((pre) => {
-  //     const result = pre.map((question, index) =>
-  //       index === id ? { ...question, content: text } : question
-  //     );
-  //     return result;
-  //   });
-  // };
-
+  // 옵션
   const changeOption = (id, type) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
@@ -119,6 +105,7 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
+  // 질문 삭제
   const deleteQuestion = (id) => {
     setQuestions((pre) => {
       const result = pre
@@ -128,6 +115,7 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
+  // 옵션추가
   const addQuestion = () => {
     setQuestions((pre) => {
       return [
@@ -150,32 +138,19 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
+  // 필수 체크 변경
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id ? { ...question, isRequired: !question.isRequired } : question
+        index === id
+          ? { ...question, isRequired: !question.isRequired }
+          : question
       );
       return result;
     });
   };
 
-  // const handleOption = (id, options) => {
-  //   setQuestions((pre) => {
-  //     const result = pre.map((question, index) =>
-  //       index === id ? { ...question, answers: options } : question
-  //     );
-  //     return result;
-  //   });
-  // };
-
-  const changeSurveyTitle = (text) => {
-    setFormData((pre) => ({ ...pre, title: text }));
-  };
-
-  const changeSurveyContent = (text) => {
-    setFormData((pre) => ({ ...pre, content: text }));
-  };
-
+  // 옵션 추가
   const handleAddOption = (qid) => {
     setQuestions((prevQuestions) => {
       return prevQuestions.map((question, index) => {
@@ -199,6 +174,7 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
+  // 옵션 제거
   const handleDeleteOption = (qid, aid) => {
     setQuestions((prevQuestions) => {
       return prevQuestions.map((question, index) => {
@@ -214,6 +190,7 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
+  // 옵션 내용 변경
   const handleChangeOptionText = (qid, aid, text) => {
     setQuestions((prevQuestions) => {
       return prevQuestions.map((question, index) => {
@@ -231,7 +208,7 @@ export default function CreateScoreSurveyPage() {
       });
     });
   };
-
+  // 점수 변경
   const handleChangeScore = (qid, score) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
@@ -243,6 +220,7 @@ export default function CreateScoreSurveyPage() {
     });
   };
 
+  // 정답 여부
   const handleChangeCorrect = (qid, aid) => {
     setQuestions((pre) => {
       return pre.map((question, index) => {
@@ -286,16 +264,23 @@ export default function CreateScoreSurveyPage() {
                   className={style.questionList}
                 >
                   {questions.map((questionData, index) => (
-                    <Draggable key={index} draggableId={`question-${index}`} index={index}>
+                    <Draggable
+                      key={index}
+                      draggableId={`question-${index}`}
+                      index={index}
+                    >
                       {(provided) => (
-                        <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                        >
                           <div className={style.question}>
                             <ScoreQuestion
+                              answerPass={setAnswerPass}
                               key={index}
                               index={index}
                               questionInfo={questionData}
                               changeTitle={changeQuestionTitle}
-                              // changeContent={changeQuestionContent}
                               changeOption={changeOption}
                               deleteQuestion={deleteQuestion}
                               changeRequired={changeRequired}
@@ -305,7 +290,6 @@ export default function CreateScoreSurveyPage() {
                               changeAnswerText={handleChangeOptionText}
                               changeScore={handleChangeScore}
                               changeCorrect={handleChangeCorrect}
-                              // checkDuplication={handleCheckDuplication}
                             />
                           </div>
                         </div>

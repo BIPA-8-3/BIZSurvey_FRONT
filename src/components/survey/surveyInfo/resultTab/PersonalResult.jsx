@@ -17,7 +17,7 @@ export default function PersonalResult({ sharedType, sharedId }) {
   const { survey } = useContext(SurveyContext);
   const { surveyId, questions, ...other } = survey;
 
-  const [nickname, setNickname] = useState(0);
+  const [user, setUser] = useState(0);
   const [userList, setUserList] = useState([
     // {
     //   userId: 0,
@@ -27,11 +27,15 @@ export default function PersonalResult({ sharedType, sharedId }) {
   const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
+    console.log("userrrrrrrrrr", user);
+  }, [user]);
+
+  useEffect(() => {
     // 설문 게시물 참가자 목록
-    if (nickname !== 0) {
+    if (user !== 0) {
       switch (sharedType) {
         case "INTERNAL":
-          call(`/survey/result/${surveyId}/${sharedId}/${nickname}`, "GET")
+          call(`/survey/result/${surveyId}/${sharedId}/${user}`, "GET")
             .then((data) => {
               handleMergeAnswers(data, (newData) => {
                 setAnswers(newData);
@@ -40,7 +44,7 @@ export default function PersonalResult({ sharedType, sharedId }) {
             .catch((error) => console.log(error));
           break;
         case "EXTERNAL":
-          getPersonalResult(nickname)
+          getPersonalResult(user)
             .then((data) => {
               handleMergeAnswers(data, (newData) => {
                 setAnswers(newData);
@@ -50,7 +54,7 @@ export default function PersonalResult({ sharedType, sharedId }) {
           break;
       }
     }
-  }, [nickname]);
+  }, [user]);
 
   // 로딩 시 유저정보 조회
   useEffect(() => {
@@ -79,8 +83,8 @@ export default function PersonalResult({ sharedType, sharedId }) {
     }
   }, [sharedId]);
 
-  const handleSetUser = (nick) => {
-    setNickname(nick);
+  const handleSetUser = (user) => {
+    setUser(user);
   };
 
   const handleMergeAnswers = (answers, callback) => {
@@ -124,7 +128,7 @@ export default function PersonalResult({ sharedType, sharedId }) {
     );
   }
 
-  if (nickname === 0) {
+  if (user === 0) {
     return (
       <>
         {userList.length !== 0 ? (

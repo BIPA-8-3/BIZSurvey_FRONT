@@ -1,12 +1,15 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import style from '../../style/user/Join.module.css';
 import back from '../../assets/img/back.png';
 import useFadeIn from '../../style/useFadeIn';
 import { useLocation, useNavigate } from 'react-router-dom';
 import call from '../../pages/workspace/api';
 import { additional } from "../api/ApiCall";
+import { LoginContext, LoginFunContext } from "../../App";
+
 function AdditionalJoin() {
   const [isNinknameCheck, setNinknameCheck] = useState(false);
+  const {setUserInfo} = useContext(LoginFunContext)
   const [nickname, setNickname] = useState('');
   const [nicknameError, setNicknameError] = useState('');
   const [nicknameSuccess, setNicknameSuccess] = useState('');
@@ -60,6 +63,10 @@ function AdditionalJoin() {
         birthdate : birthdate,
         planSubscribe : data.planSubscribe
       }).then(() => {
+        call("/user/info", "GET").then((data) =>{
+          console.log("/user/info : " + data);
+          setUserInfo(data);
+        })
         navigate("/")
       })
     }
