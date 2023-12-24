@@ -3,8 +3,6 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  /* padding-right: 10px; */
-  /* padding: 7px 5px; */
   padding: 10px 0px 10px 3px;
 
   border: 1px solid #dddddd;
@@ -68,4 +66,5 @@
 .closeBtn {
   font-weight: bold;
   font-size: 20px;
+  margin-right: 5px;
 }

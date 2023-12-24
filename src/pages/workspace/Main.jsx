@@ -284,6 +284,8 @@ export default function Main() {
         onClose={closeShareModal}
         survey={selectedSurvey}
         contactList={contactList}
+        setWorkspaceModalState={setWorkspaceModalState}
+        setWorkspaceModalNum={setWorkspaceModalNum}
         setLoader={setLoader}
       />
 
