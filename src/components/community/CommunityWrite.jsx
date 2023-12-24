@@ -40,78 +40,67 @@ export default function CommunityWrite() {
     endDate: "",
   });
 
-  
-
-  // 컴포넌트 언 마운트될 때 삭제 요청 상황 
-  useEffect( () => {
-      return () => {
-          alert("알림")
-
-         
-      }
-    }, []);
-
-    useEffect(() => {
-      console.log("Content 값이 변경되었습니다:", content);
-      if (prevContent !== content) {
-        handleContentChange();
-      }
-      setPrevContent(content);
-
-    }, [content, prevContent]);
-
-    const handleContentChange = () => {
-      // content 값에서 특정 이미지 태그를 찾아내고 그에 따른 동작을 수행
-      const removedImageTag = findRemovedImageTag(prevContent, content);
-      
-      if (removedImageTag) {
-        // 찾아낸 이미지 태그에 대한 동작 수행
-        handleImageTagRemoved(removedImageTag);
-      }
+  // 컴포넌트 언 마운트될 때 삭제 요청 상황
+  useEffect(() => {
+    return () => {
+      alert("알림");
     };
+  }, []);
 
-    const findRemovedImageTag = (prevContent, currentContent) => {
-      
-      const imgRegex = /<img[^>]*>/g;
-      const prevImageTags = prevContent.match(imgRegex) || [];
-      const currentImageTags = currentContent.match(imgRegex) || [];
-    
-      // 이전에 있었지만 현재는 없는 이미지 태그를 찾아냄
-      const removedImageTags = prevImageTags.filter(
-        (tag) => !currentImageTags.includes(tag)
-      );
-    
-      
-      if (removedImageTags.length > 0) {
-        return removedImageTags[0];
+  useEffect(() => {
+    console.log("Content 값이 변경되었습니다:", content);
+    if (prevContent !== content) {
+      handleContentChange();
+    }
+    setPrevContent(content);
+  }, [content, prevContent]);
+
+  const handleContentChange = () => {
+    // content 값에서 특정 이미지 태그를 찾아내고 그에 따른 동작을 수행
+    const removedImageTag = findRemovedImageTag(prevContent, content);
+
+    if (removedImageTag) {
+      // 찾아낸 이미지 태그에 대한 동작 수행
+      handleImageTagRemoved(removedImageTag);
+    }
+  };
+
+  const findRemovedImageTag = (prevContent, currentContent) => {
+    const imgRegex = /<img[^>]*>/g;
+    const prevImageTags = prevContent.match(imgRegex) || [];
+    const currentImageTags = currentContent.match(imgRegex) || [];
+
+    // 이전에 있었지만 현재는 없는 이미지 태그를 찾아냄
+    const removedImageTags = prevImageTags.filter(
+      (tag) => !currentImageTags.includes(tag)
+    );
+
+    if (removedImageTags.length > 0) {
+      return removedImageTags[0];
+    }
+
+    return null;
+  };
+
+  const handleImageTagRemoved = (removedImageTag) => {
+    // 사라진 이미지 태그에 대한 동작을 여기에 작성
+    const srcRegex = /<img.*?src="(.*?)".*?>/i;
+    const match = removedImageTag.match(srcRegex);
+
+    // match 배열의 두 번째 요소가 src 속성값
+    const srcValue = match ? match[1] : null;
+    for (let i = 0; i < imageSrcArray.length; i++) {
+      if (imageSrcArray[i] === srcValue) {
+        imageSrcArray.splice(i, 1);
+        i--;
       }
-    
-      return null;
-    };
-    
-    const handleImageTagRemoved = (removedImageTag) => {
-      // 사라진 이미지 태그에 대한 동작을 여기에 작성
-      const srcRegex = /<img.*?src="(.*?)".*?>/i;
-      const match = removedImageTag.match(srcRegex);
-    
-      // match 배열의 두 번째 요소가 src 속성값
-      const srcValue = match ? match[1] : null;
-      for(let i = 0; i < imageSrcArray.length; i++) {
-        if(imageSrcArray[i] === srcValue)  {
-          imageSrcArray.splice(i, 1);
-          i--;
-        }
-      }
-      const sliceSrcValue = srcValue.slice(8);
-      
-      call("/storage/file/" + sliceSrcValue, "DELETE")
+    }
+    const sliceSrcValue = srcValue.slice(8);
+
+    call("/storage/file/" + sliceSrcValue, "DELETE")
       .then((data) => console.log(data))
       .catch((error) => console.log(error));
-      
-    };
-
-    
-
+  };
 
   useEffect(() => {
     console.log("titleleeeeeeeeeeee", voteTitle);
@@ -192,16 +181,12 @@ export default function CommunityWrite() {
       formData.append("domain", "COMMUNITY");
       // 백엔드 multer라우터에 이미지를 보낸다.
       try {
-        const result = await axios.post( 
-          getURI() + "/storage/",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        setLoading(true); // 
+        const result = await axios.post(getURI() + "/storage/", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        setLoading(true); //
         console.log("성공 시, 백엔드가 보내주는 데이터", result.data.url);
         const HEAD_IMG_URL = "https://";
         const IMG_URL = HEAD_IMG_URL + result.data;
@@ -220,10 +205,9 @@ export default function CommunityWrite() {
         editor.insertEmbed(range.index, "image", IMG_URL);
       } catch (error) {
         console.log("실패했어요ㅠ");
-      }finally {
+      } finally {
         setLoading(false); // 데이터 로딩이 끝났음을 표시
       }
-        
     });
   };
 
@@ -251,11 +235,13 @@ export default function CommunityWrite() {
   const handleClose = () => setOpen(false);
 
   const handleSaveClick = () => {
-
     if (!title) {
-      setError((prevError) => ({ ...prevError, title: "제목을 입력해주세요." }));
+      setError((prevError) => ({
+        ...prevError,
+        title: "제목을 입력해주세요.",
+      }));
       return;
-    }else{
+    } else {
       setError((prevError) => ({ ...prevError, title: "" }));
     }
 
@@ -264,7 +250,7 @@ export default function CommunityWrite() {
 
     const imgElements = doc.querySelectorAll("img");
     imgElements.forEach((imgElement) => {
-    const src = imgElement.getAttribute("src");
+      const src = imgElement.getAttribute("src");
 
       if (src) {
         imageSrcArray.push(src);
@@ -313,7 +299,7 @@ export default function CommunityWrite() {
       <div className={style.titleWrap}>
         <h1 className="textCenter title textBold">커뮤니티</h1>
         <p className="textCenter subTitle">
-          쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.
+          투표를 통해 여러분의 소소한 일상을 공유해주세요.
         </p>
       </div>
       <div className={style.writeWrap}>
@@ -340,9 +326,10 @@ export default function CommunityWrite() {
               modules={modules}
               formats={formats}
             />
-           
           </div>
-          <p style={{ color: "red", margin: "0 auto", textAlign: 'center' }}>{error.content}</p>         
+          <p style={{ color: "red", margin: "0 auto", textAlign: "center" }}>
+            {error.content}
+          </p>
         </div>
         <div className={style.voteWrap}>
           <p>비즈서베이의 투표 기능을 이용해보세요!</p>
