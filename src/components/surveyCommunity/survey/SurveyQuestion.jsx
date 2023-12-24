@@ -8,22 +8,8 @@ import SingleOption from "./SingleOption";
 import TextOption from "./TextOption";
 import { useEffect } from "react";
 
-export default function SurveyQuestion({
-  question,
-  handleSetAnswer,
-  pass,
-  surveyId,
-  sharedId,
-}) {
-  const {
-    questionId,
-    surveyQuestion,
-    answerType,
-    score,
-    step,
-    isRequired,
-    answers,
-  } = question;
+export default function SurveyQuestion({ question, handleSetAnswer, pass, surveyId, sharedId }) {
+  const { questionId, surveyQuestion, answerType, score, step, isRequired, answers } = question;
 
   // 파일 제외 응답
   const [userAnswer, setUserAnswer] = useState([]);
@@ -51,9 +37,7 @@ export default function SurveyQuestion({
         <div className={style.title}>
           <p>
             <span>{surveyQuestion} </span>
-            <span style={{ color: "red" }}>
-              {isRequired === true ? "*" : ""}
-            </span>
+            <span style={{ color: "red" }}>{isRequired === true ? "*" : ""}</span>
           </p>
         </div>
         {/* 옵션 영역  */}
@@ -76,12 +60,8 @@ export default function SurveyQuestion({
                 }
               })
             : null}
-          {answerType === "TEXT" && (
-            <TextOption setUserAnswer={setUserAnswer} />
-          )}
-          {answerType === "CALENDAR" && (
-            <DateOption setUserAnswer={setUserAnswer} />
-          )}
+          {answerType === "TEXT" && <TextOption setUserAnswer={setUserAnswer} />}
+          {answerType === "CALENDAR" && <DateOption setUserAnswer={setUserAnswer} />}
           {answerType === "FILE" && (
             <FileOption
               sharedId={sharedId}
