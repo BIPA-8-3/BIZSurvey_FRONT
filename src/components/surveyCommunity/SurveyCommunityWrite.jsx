@@ -35,6 +35,8 @@ export default function CommunityWrite() {
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [loading, setLoading] = useState(false);
+  const tempUrlList = [];
+  const deleteSrcArray = [];
 
   const quillRef = useRef();
   const [content, setContent] = useState("");
@@ -75,6 +77,23 @@ export default function CommunityWrite() {
 
     // fetchData 함수 실행
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      console.log("temp : " + JSON.stringify(tempUrlList));
+  
+      // 각 아이템을 객체로 감싸서 새로운 배열 생성
+      const mappedArray = tempUrlList.map(fileName => ({ fileName }));
+  
+      console.log(mappedArray);
+      deleteSrcArray.push(...mappedArray); // spread 연산자를 사용하여 배열 확장
+      console.log("뒤로가기 삭제 : " + JSON.stringify(deleteSrcArray));
+  
+      call("/storage/multiple/files/", "POST", deleteSrcArray)
+        .then((data) => console.log(data))
+        .catch((error) => console.log(error));
+    };
   }, []);
 
   useEffect(() => {
@@ -254,6 +273,7 @@ export default function CommunityWrite() {
     formData.append("domain", "SURVEY_THUMB");
     // 백엔드 multer라우터에 이미지를 보낸다.
     try {
+      setLoading(true); //
       const result = await axios.post(getURI() + "/storage/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -383,6 +403,7 @@ export default function CommunityWrite() {
       formData.append("domain", "COMMUNITY");
       // 백엔드 multer라우터에 이미지를 보낸다.
       try {
+        setLoading(true); //
         const result = await axios.post(getURI() + "/storage/", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -407,6 +428,8 @@ export default function CommunityWrite() {
         editor.insertEmbed(range.index, "image", IMG_URL);
       } catch (error) {
         console.log("실패했어요ㅠ");
+      }finally {
+        setLoading(false); // 데이터 로딩이 끝났음을 표시
       }
     });
   };
@@ -452,8 +475,8 @@ export default function CommunityWrite() {
 
   return (
     <>
-      {loading ? <Loader /> : null}
       <div className={`fade-in ${fadeIn ? "active" : ""}`}>
+       {loading ? <Loader /> : "" }
         <div className={style.titleWrap}>
           <h1 className="textCenter title textBold">설문 등록</h1>
           <p className="textCenter subTitle">
