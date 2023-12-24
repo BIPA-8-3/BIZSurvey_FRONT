@@ -76,7 +76,11 @@
 
 .surveyBtnWrap {
   text-align: center;
-  padding-top: 100px;
+  padding-top: 15px;
+  justify-content: space-between;
+  display: flex;
+  width: 1008px;
+  margin: 0 auto;
 }
 
 .requiredText {

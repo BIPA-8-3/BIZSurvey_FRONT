@@ -198,19 +198,19 @@ export default function CommunityPost() {
           />
 
           <div className={style.surveyBtnWrap}>
+            <Button>양식 초기화</Button>
             <Button
               variant="contained"
               href="#contained-buttons"
               onClick={handleSubmitAnswer}
               sx={[
                 {
-                  padding: "11px 30px",
+                  padding: "10px 25px",
                   backgroundColor: "#243579",
                   fontWeight: "bold",
                   marginBottom: "10px",
                   border: "1px solid #243579",
                   boxShadow: 0,
-                  marginLeft: "5px",
                 },
                 {
                   ":hover": {
