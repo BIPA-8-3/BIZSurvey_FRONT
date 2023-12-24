@@ -7,11 +7,12 @@ import Loader from "../loader/Loader";
 import { createContext } from "react";
 import { useWorkspaceContext } from "../workspace/WorkspaceContext";
 import call from "../workspace/api";
+import { useNavigate } from "react-router-dom";
 
 export const SurveyContext = createContext();
 
 export default function SurveyInfoPage() {
-  const { selectedSurveyId } = useWorkspaceContext();
+  const { selectedSurveyId, setSelectedSurveyId } = useWorkspaceContext();
   const [page, setPage] = useState(0);
   const [element, setElement] = useState(<></>);
   const [loading, setLoading] = useState(true);
@@ -50,14 +51,6 @@ export default function SurveyInfoPage() {
     }
   }, [page]);
 
-  // useEffect(() => {
-  //   if (page) {
-  //     setElement(<ResultView />);
-  //   } else {
-  //     setElement(<SurveyInfo />);
-  //   }
-  // }, [page, survey]);
-
   const handleGetSurvey = async () => {
     if (!selectedSurveyId) {
       return;
@@ -83,7 +76,7 @@ export default function SurveyInfoPage() {
     <>
       {loading ? <Loader /> : null}
       <SurveyContext.Provider value={contextValue}>
-        <div style={{ paddingTop: "100px", paddingLeft: "254px" }}>
+        <div style={{ paddingTop: "100px", paddingLeft: "254px", paddingBottom: "30px" }}>
           <div style={{ width: "700px", margin: "0 auto" }}>
             <ButtonTab
               handleChangeTab={handleChangeTab}

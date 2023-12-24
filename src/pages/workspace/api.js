@@ -218,6 +218,14 @@ export const getSharedContactList = (id) => {
     return call(`${shareURI}/survey/${id}`, "GET");
 }
 
+// 공유 설문 마감일자 수정
+export const modifyDatelineDate = (id, deadline) => {
+    const reqest = {
+        deadlineDate: deadline
+    }
+    return call(`${shareURI}/${id}`, "PUT", reqest);
+}
+
 // 설문지 이름 수정
 export const modifySurveyName = (id, title) => {
     const request = {

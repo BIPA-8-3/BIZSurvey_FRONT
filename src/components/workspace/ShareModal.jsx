@@ -18,7 +18,6 @@ export default function ShareModal({ isOpen, onClose, survey, contactList, setLo
   // share
   const [shareContactList, setShareContactList] = useState([]);
   const [selectedList, setSelectedList] = useState([]);
-  // const { setLoader } = useContext(WorkspaceContext);
 
   // history
   const [sharedHistory, setSharedHistory] = useState([]);
@@ -39,12 +38,10 @@ export default function ShareModal({ isOpen, onClose, survey, contactList, setLo
       else if (survey.menuNum === 1) {
         getSharedSurveyHistory(survey.surveyId)
           .then((data) => {
-            console.log(data);
             setSharedHistory(data);
           })
           .catch((error) => {
-            console.log(error);
-            console.log(error.response);
+            console.error(error);
             setSharedHistory([]);
           });
       }
@@ -86,6 +83,11 @@ export default function ShareModal({ isOpen, onClose, survey, contactList, setLo
 
   // 초대 메소드
   const handleClickShareBtn = () => {
+    if (selectedList.length < 1) {
+      alert("이메일을 선택해주세요");
+      return;
+    }
+
     setLoader(true);
 
     let sharedRequest = {
@@ -148,7 +150,7 @@ export default function ShareModal({ isOpen, onClose, survey, contactList, setLo
               <div className={style.itemBox} style={{ marginRight: "10px" }}>
                 {/* <span>이메일을 선택해주세요</span> */}
                 <div className={style.listBox}>
-                  <div className={style.listBoxHeader}>
+                  <div className={`${style.listBoxHeader} ${style.leftBox}`}>
                     <ul>
                       <li>
                         <span>{leftBoxTitle[survey.menuNum]}</span>
@@ -180,17 +182,17 @@ export default function ShareModal({ isOpen, onClose, survey, contactList, setLo
                 </div>
               </div>
 
-              <div className={style.itemBox}>
+              <div className={style.itemBox} style={{ marginRight: "10px" }}>
                 {/* <span>선택된 이메일</span> */}
                 <div className={style.listBox}>
-                  <div className={style.listBoxHeader}>
+                  <div className={`${style.listBoxHeader} ${style.rightBox}`}>
                     <ul>
                       <li>
                         <span>{rightBoxTitle[survey.menuNum]}</span>
                       </li>
                     </ul>
                   </div>
-                  <div className={style.listBoxBody} style={{ marginRight: "5px" }}>
+                  <div className={style.listBoxBody}>
                     {(() => {
                       if (survey.menuNum === 0) {
                         return selectedList.map((share) => (
@@ -218,14 +220,18 @@ export default function ShareModal({ isOpen, onClose, survey, contactList, setLo
             </div>
           </div>
           <div className={style.rightContainer}>
-            <button
-              className={`${style.button} ${style.right}`}
-              onClick={(e) => {
-                handleClickShareBtn();
-              }}
-            >
-              전송
-            </button>
+            {survey.menuNum === 0 ? (
+              <button
+                className={`${style.button} ${style.right}`}
+                onClick={(e) => {
+                  handleClickShareBtn();
+                }}
+              >
+                전송
+              </button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>

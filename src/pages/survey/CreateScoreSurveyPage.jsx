@@ -142,9 +142,7 @@ export default function CreateScoreSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id
-          ? { ...question, isRequired: !question.isRequired }
-          : question
+        index === id ? { ...question, isRequired: !question.isRequired } : question
       );
       return result;
     });
@@ -244,7 +242,7 @@ export default function CreateScoreSurveyPage() {
 
   return (
     <>
-      <div className={style.container}>
+      <div className={style.container} style={{ paddingBottom: "30px" }}>
         <div className={style.wrapContent}>
           {/* 설문지 제목  */}
           <EditSurveyTitle
@@ -264,16 +262,9 @@ export default function CreateScoreSurveyPage() {
                   className={style.questionList}
                 >
                   {questions.map((questionData, index) => (
-                    <Draggable
-                      key={index}
-                      draggableId={`question-${index}`}
-                      index={index}
-                    >
+                    <Draggable key={index} draggableId={`question-${index}`} index={index}>
                       {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                        >
+                        <div ref={provided.innerRef} {...provided.draggableProps}>
                           <div className={style.question}>
                             <ScoreQuestion
                               answerPass={setAnswerPass}

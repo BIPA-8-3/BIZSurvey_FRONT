@@ -72,7 +72,7 @@ function Plan() {
       <div className={style.titleWrap}>
         <h1 className="textCenter title textBold">플랜 소개</h1>
         <p className="textCenter subTitle">
-          플랜 가입하고 비즈서베이의 워크스페이스 기능을 사용해보세요!
+          <b>BIZ SURVEY</b>의 워크스페이스를 경험해 보세요!
         </p>
       </div>
       <div className={style.planWrap}>
@@ -83,15 +83,15 @@ function Plan() {
                 className={style.planHead}
                 style={{ backgroundColor: "#0171D1" }}
               >
-                <p>SINGlE PLAN</p>
+                <p>NORMAL PLAN</p>
               </div>
               <div className={style.planBody}>
                 <p className={style.subTitle}>개인 플랜</p>
                 <div className={style.subText}>
                   <p>
-                    어쩌고 저쩌고 무슨말 저런말 입니다.
+                    개인 구독자를 위한 플랜입니다.
                     <br />
-                    쓸말이 없지만 또 만들어서 넣을 예정!
+                    자유롭게 설문 양식을 관리하고 공유해보세요.
                   </p>
                 </div>
                 <div className={style.itemList}>
@@ -155,6 +155,20 @@ function Plan() {
                         <FaChartBar />
                       </IconWithText>
                     </Grid>
+                    <Grid item xs={6} md={6} lg={6}>
+                      <IconWithText
+                        text={
+                          <>
+                            <span className={style.point2}>외부링크 공유</span>
+                          </>
+                        }
+                        fontsize={"13px"}
+                        fontweight={"400"}
+                        fontcolor={"#111"}
+                      >
+                        <FaLink />
+                      </IconWithText>
+                    </Grid>
                   </Grid>
                 </div>
               </div>
@@ -172,9 +186,9 @@ function Plan() {
                 <p className={style.subTitle}>그룹 플랜</p>
                 <div className={style.subText}>
                   <p>
-                    어쩌고 저쩌고 무슨말 저런말 입니다.
+                    여러 사람들과 설문을 공유하기 위한 그룹 플랜입니다.
                     <br />
-                    쓸말이 없지만 또 만들어서 넣을 예정!
+                    관리자를 초대하여 설문지를 그룹별로 관리하고 공유해보세요.
                   </p>
                 </div>
                 <div className={style.itemList}>

@@ -3,11 +3,11 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding-right: 10px;
-  padding: 7px 5px;
-  border: 1px solid black;
-  border-radius: 15px;
+  padding: 10px 0px 10px 3px;
+
+  border: 1px solid #dddddd;
   margin: 5px 0;
+  cursor: pointer;
 }
 
 .contactText {
@@ -38,6 +38,26 @@
   border-radius: 45px;
 }
 
+.fontResponse {
+  font-size: 12px;
+  margin-right: 5px;
+  font-weight: bold;
+
+  display: inline-block;
+  width: 40px;
+  text-align: center;
+}
+
+.fontNoResponse {
+  font-size: 12px;
+  color: gray;
+  margin-right: 5px;
+
+  display: inline-block;
+  width: 40px;
+  text-align: center;
+}
+
 /* event */
 .contactWrap:hover {
   background-color: rgba(55, 53, 47, 0.08);
@@ -46,4 +66,5 @@
 .closeBtn {
   font-weight: bold;
   font-size: 20px;
+  margin-right: 5px;
 }

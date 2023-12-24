@@ -32,7 +32,11 @@ export default function ShareItem({ btnVisible, info, handleClickShareItem }) {
 
       {(() => {
         if (info.response || info.response === 0) {
-          return info.response > 0 ? <span>응답</span> : <span>미응답</span>;
+          return info.response > 0 ? (
+            <span className={style.fontResponse}>응답</span>
+          ) : (
+            <span className={style.fontNoResponse}>미응답</span>
+          );
         } else {
           return null;
         }

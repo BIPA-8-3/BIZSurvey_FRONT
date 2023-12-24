@@ -83,7 +83,7 @@ export default function CommunityPost() {
       <div className={style.titleWrap}>
         <h1 className="textCenter title textBold">커뮤니티</h1>
         <p className="textCenter subTitle">
-          쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.
+          투표를 통해 여러분의 소소한 일상을 공유해주세요.
         </p>
       </div>
       <Search></Search>

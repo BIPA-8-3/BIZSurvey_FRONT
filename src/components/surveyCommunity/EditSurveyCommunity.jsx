@@ -488,7 +488,7 @@ export default function CommunityWrite() {
         <div className={style.titleWrap}>
           <h1 className="textCenter title textBold">설문 수정</h1>
           <p className="textCenter subTitle">
-            쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.
+            설문에 참여하고 소중한 의견을 공유해주세요.
           </p>
         </div>
         <div className={style.writeWrap}>
