@@ -10,7 +10,7 @@ import ReactQuill from "react-quill";
 import SurveyListModal from "./SurveyListModal";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import call from "../../pages/workspace/api.js";
+import call, { getURI } from "../../pages/workspace/api";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Divider, TextField, Input } from "@mui/material";
@@ -38,17 +38,102 @@ export default function CommunityWrite() {
   const fileInputRef = useRef();
   const quillRef = useRef();
   const [content, setContent] = useState("");
+  const [prevContent, setPrevContent] = useState("");
   const fadeIn = useFadeIn();
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [maxParticipants, setMaxParticipants] = useState("");
   //   const [postData, setPostData] = useState({});
   const imageSrcArray = [];
+  const tempUrlList = [];
+  const deleteSrcArray = [];
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const { surveyId } = location.state || {};
   const [postId, setPostId] = useState(0);
+  const MAX_FILE_SIZE_MB = 5;
+
+
+  useEffect(() => {
+    return () => {
+      console.log("temp : " + JSON.stringify(tempUrlList));
+  
+      // 각 아이템을 객체로 감싸서 새로운 배열 생성
+      const mappedArray = tempUrlList.map(fileName => ({ fileName }));
+  
+      console.log(mappedArray);
+      deleteSrcArray.push(...mappedArray); // spread 연산자를 사용하여 배열 확장
+      console.log("뒤로가기 삭제 : " + JSON.stringify(deleteSrcArray));
+  
+      call("/storage/multiple/files/", "POST", deleteSrcArray)
+        .then((data) => console.log(data))
+        .catch((error) => console.log(error));
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log("Content 값이 변경되었습니다:", content);
+    if (prevContent !== content) {
+      handleContentChange();
+    }
+    setPrevContent(content);
+
+  }, [content, prevContent]);
+
+  const handleContentChange = () => {
+    // content 값에서 특정 이미지 태그를 찾아내고 그에 따른 동작을 수행
+    const removedImageTag = findRemovedImageTag(prevContent, content);
+    
+    if (removedImageTag) {
+      // 찾아낸 이미지 태그에 대한 동작 수행
+      handleImageTagRemoved(removedImageTag);
+    }
+  };
+
+  const findRemovedImageTag = (prevContent, currentContent) => {
+    
+    const imgRegex = /<img[^>]*>/g;
+    const prevImageTags = prevContent.match(imgRegex) || [];
+    const currentImageTags = currentContent.match(imgRegex) || [];
+  
+    // 이전에 있었지만 현재는 없는 이미지 태그를 찾아냄
+    const removedImageTags = prevImageTags.filter(
+      (tag) => !currentImageTags.includes(tag)
+    );
+  
+    
+    if (removedImageTags.length > 0) {
+      return removedImageTags[0];
+    }
+  
+    return null;
+  };
+  
+  const handleImageTagRemoved = (removedImageTag) => {
+    // 사라진 이미지 태그에 대한 동작을 여기에 작성
+    const srcRegex = /<img.*?src="(.*?)".*?>/i;
+    const match = removedImageTag.match(srcRegex);
+  
+    // match 배열의 두 번째 요소가 src 속성값
+    const srcValue = match ? match[1] : null;
+    for(let i = 0; i < imageSrcArray.length; i++) {
+      if(imageSrcArray[i] === srcValue)  {
+        imageSrcArray.splice(i, 1);
+        i--;
+      }
+    }
+    const sliceSrcValue = srcValue.slice(8);
+    
+    call("/storage/file/" + sliceSrcValue, "DELETE")
+    .then((data) => console.log(data))
+    .catch((error) => console.log(error));
+
+    console.log("이미지 삭제됨")
+    
+  };
+
+
 
   useEffect(() => {
     const post = location.state ? location.state.postId : 0;
@@ -126,7 +211,16 @@ export default function CommunityWrite() {
 
   const handleFileChange = async (event) => {
     setLoading(true);
-    const file = event.target.files[0];
+    let file = event.target.files[0];
+
+    let fileSizeMB = file.size / (1024 * 1024);
+      if(file && fileSizeMB > MAX_FILE_SIZE_MB) {
+        alert("파일 크기는 5MB를 초과할 수 없습니다.")
+        file = null;
+        return;
+      }
+
+
     // 파일 선택 후의 로직을 처리합니다.
     console.log("Selected File:", file); // 넘겨받은 이미지
 
@@ -136,8 +230,9 @@ export default function CommunityWrite() {
     // 백엔드 multer라우터에 이미지를 보낸다.
 
     try {
+      setLoading(true); //
       const result = await axios.post(
-        "http://localhost:8080/storage/",
+        getURI()+"/storage/",
         formData,
         {
           headers: {
@@ -260,15 +355,25 @@ export default function CommunityWrite() {
     // input에 변화가 생긴다면 = 이미지를 선택
     input.addEventListener("change", async () => {
       console.log("온체인지");
-      const file = input.files[0];
+      let file = input.files[0];
+
+      let fileSizeMB = file.size / (1024 * 1024);
+      if(file && fileSizeMB > MAX_FILE_SIZE_MB) {
+        alert("파일 크기는 5MB를 초과할 수 없습니다.")
+        file = null;
+        return;
+      }
+
+
       // multer에 맞는 형식으로 데이터 만들어준다.
       const formData = new FormData();
       formData.append("file", file); // formData는 키-밸류 구조
       formData.append("domain", "COMMUNITY");
       // 백엔드 multer라우터에 이미지를 보낸다.
       try {
+        setLoading(true); //
         const result = await axios.post(
-          "http://localhost:8080/storage/",
+          getURI() + "/storage/",
           formData,
           {
             headers: {
@@ -281,9 +386,6 @@ export default function CommunityWrite() {
         const HEAD_IMG_URL = "https://";
         const IMG_URL = HEAD_IMG_URL + result.data;
 
-        // 이 URL을 img 태그의 src에 넣은 요소를 현재 에디터의 커서에 넣어주면 에디터 내에서 이미지가 나타난다
-        // src가 base64가 아닌 짧은 URL이기 때문에 데이터베이스에 에디터의 전체 글 내용을 저장할 수있게된다
-        // 이미지는 꼭 로컬 백엔드 uploads 폴더가 아닌 다른 곳에 저장해 URL로 사용하면된다.
 
         // 이미지 태그를 에디터에 써주기 - 여러 방법이 있다.
         const editor = quillRef.current.getEditor(); // 에디터 객체 가져오기
@@ -295,6 +397,8 @@ export default function CommunityWrite() {
         editor.insertEmbed(range.index, "image", IMG_URL);
       } catch (error) {
         console.log("실패했어요ㅠ");
+      }finally {
+        setLoading(false); // 데이터 로딩이 끝났음을 표시
       }
     });
   };
@@ -310,6 +414,10 @@ export default function CommunityWrite() {
           [{ color: [] }, { background: [] }],
           [{ align: [] }, "link", "image"],
         ],
+        handlers: {
+          // 이미지 처리는 우리가 직접 imageHandler라는 함수로 처리할 것이다.
+          image: imageHandler,
+        },
       },
     };
   }, []);
@@ -330,6 +438,7 @@ export default function CommunityWrite() {
       endDateTime: selectedEndDate + "T00:00:00",
       surveyId: selectedSurvey.surveyId,
       thumbImgUrl: selectedFile,
+      imageUrlList: imageSrcArray
     };
 
     call("/s-community/updateSurveyPost/" + postId, "PATCH", data)
@@ -373,8 +482,9 @@ export default function CommunityWrite() {
 
   return (
     <>
-      {loading ? <Loader /> : null}
+      
       <div className={`fade-in ${fadeIn ? "active" : ""}`}>
+      {loading ? <Loader /> : "" }
         <div className={style.titleWrap}>
           <h1 className="textCenter title textBold">설문 수정</h1>
           <p className="textCenter subTitle">
