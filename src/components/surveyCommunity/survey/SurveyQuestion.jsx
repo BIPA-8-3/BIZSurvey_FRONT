@@ -33,9 +33,6 @@ export default function SurveyQuestion({
 
   // [파일 제외] 사용자가 답변을 체크 할때마다 답변 설정
   useEffect(() => {
-    console.log("answerTYpd: " + answerType);
-    console.log("ans" + userAnswer);
-
     handleSetAnswer(questionId, userAnswer, answerType, "");
   }, [userAnswer]);
 
@@ -46,8 +43,6 @@ export default function SurveyQuestion({
       handleSetAnswer(questionId, filename, answerType, fileAnswer[0].url);
     }
   }, [fileAnswer]);
-
-  console.log("dddddlrjjjjjjjjjjjjjjjj", answers);
 
   return (
     <>
