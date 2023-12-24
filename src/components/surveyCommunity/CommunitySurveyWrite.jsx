@@ -67,6 +67,7 @@ export default function CommunityPost() {
   }, []);
 
   useEffect(() => {
+    console.log("postID", postId);
     if (postId != 0) {
       call("/s-community/survey/" + postId, "GET")
         .then((data) => {
@@ -164,6 +165,30 @@ export default function CommunityPost() {
     return result;
   };
 
+  const handleResetClick = async () => {
+    const res = window.confirm(
+      "양식을 지우시겠습니까? \n모든 질문에서 답변이 삭제되며 되돌릴 수 없습니다."
+    );
+    if (res) {
+      setSurvey({});
+      await call("/s-community/survey/" + postId, "GET")
+        .then((data) => {
+          setSurvey(data);
+        })
+        .then(() => {
+          const newPassArray = Array(survey.questions.length).fill(true);
+          setPass(newPassArray);
+        })
+        .catch((error) => {
+          console.log(error);
+          alert(error.response.data.errorMessage);
+          navigate("/");
+        });
+    } else {
+      return;
+    }
+  };
+
   if (survey.surveyId === 0) {
     return;
   }
@@ -198,7 +223,7 @@ export default function CommunityPost() {
           />
 
           <div className={style.surveyBtnWrap}>
-            <Button>양식 초기화</Button>
+            <Button onClick={handleResetClick}>양식 초기화</Button>
             <Button
               variant="contained"
               href="#contained-buttons"
