@@ -133,7 +133,7 @@ export default function CommunityPost() {
   // };
 
   const handleOpenModal = () => {
-    if (localStorage.getItem("userInfo")) {
+    if (!localStorage.getItem("userInfo")) {
       alert("게시물 신고를 하려면 먼저 로그인을 해야 합니다.");
       navigate("/login");
     }

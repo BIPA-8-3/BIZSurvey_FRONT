@@ -174,7 +174,7 @@ export default function CommunityPost() {
                 <span className={style.bar}> | </span>
                 <span>S-COMMUNITY</span>
                 <span className={style.bar}> | </span>
-                <span>{data.startDateTime}</span>
+                <span>설문 시작 : {data.startDateTime} <span className={style.bar}> | </span> 설문 종료 : {data.endDateTime}</span>
               </div>
             </p>
           </div>
