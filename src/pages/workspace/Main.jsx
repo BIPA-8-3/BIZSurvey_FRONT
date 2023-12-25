@@ -118,17 +118,9 @@ export default function Main() {
       });
   };
 
-  // 뒤로가기 시 초기화
+  // // 뒤로가기 시 초기화
   useEffect(() => {
-    const handleBack = (event) => {
-      setSelectedSurveyId(0);
-    };
-
-    window.addEventListener("popstate", handleBack);
-
-    return () => {
-      window.removeEventListener("popstate", handleBack);
-    };
+    setSelectedSurveyId(0);
   }, [navigate]);
 
   //////////////////////////////////////////////////////////////////
