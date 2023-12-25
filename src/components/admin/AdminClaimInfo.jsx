@@ -60,7 +60,7 @@ function AdminClaimInfo() {
           <IoIosArrowDropdownCircle 
             style={{ color: "#0476D9" }}
           />
-          <p style={{marginLeft:'5px'}}>신고자</p>
+          <span style={{marginLeft:'5px'}}>신고자</span>
         </p>
       </div>
       <div
@@ -89,7 +89,7 @@ function AdminClaimInfo() {
           <IoIosArrowDropdownCircle 
             style={{ color: "#0476D9" }}
           />
-          <p style={{marginLeft:'5px'}}>신고대상자</p>
+          <span style={{marginLeft:'5px'}}>신고대상자</span>
       </p>
       <div
         className={style.breadcrumb}

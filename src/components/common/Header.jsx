@@ -4,7 +4,7 @@ import style from "../../style/Header.module.css";
 import logo from "../../assets/img/logo.png";
 import { IoMenu } from "react-icons/io5";
 import avatar from "../../assets/img/avatar.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,  } from "react-router-dom";
 import { LoginContext, LoginFunContext } from "../../App";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
@@ -20,17 +20,18 @@ function Header() {
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem("accessToken");
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
   useEffect(() => {
     const closeMenu = () => {
       setIsMenuOpen(false);
       setAnchorElUser(null);
     };
-    window.addEventListener("popstate", closeMenu);
 
+    // 컴포넌트 정리 로직을 여기에 추가
     return () => {
-      window.removeEventListener("popstate", closeMenu);
+      closeMenu(); // 컴포넌트 정리 시 메뉴를 닫음
     };
-  }, []);
+  }, [navigate]); // Ensure history is in the dependency array
 
   useEffect(() => {
     if (bestRef.current) {

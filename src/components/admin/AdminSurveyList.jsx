@@ -63,7 +63,7 @@ function AdminSurveyList() {
           <IoIosArrowDropdownCircle 
             style={{ color: "#0476D9" }}
           />
-          <p style={{marginLeft:'5px'}}>설문커뮤니티조회</p>
+          <span style={{marginLeft:'5px'}}>설문커뮤니티조회</span>
         </p>
       </div>
       {/* <div className={style.adminSearchWrap}>
@@ -86,7 +86,7 @@ function AdminSurveyList() {
         </thead>
         <tbody>
           {communityList.map((communityitem, index) => (
-              <tr>
+              <tr key={communityitem.postId}>
                   <td>{communityitem.postId}</td>
                   <td>{communityitem.title}</td>
                   <td>{communityitem.nickname}</td>

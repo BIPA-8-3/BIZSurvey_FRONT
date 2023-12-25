@@ -40,6 +40,26 @@ export const WorkspaceModal = ({
     setWorkspaceModalState(false);
   };
 
+  const handleSubmit = () => {
+    switch (pageNum) {
+      case 0:
+        handleClickSubmitBtn();
+        onClose();
+        break;
+      case 1:
+        handleModifyBtnClick();
+        onClose();
+        break;
+      case 2:
+        handleModifySurveyNameBtnClick();
+        onClose();
+        break;
+      case 3:
+        handleModifyDeadlineDateBtnClick();
+        break;
+    }
+  };
+
   return ReactDOM.createPortal(
     <div className={style.modalOverlay} onClick={onClose}>
       <div className={style.ModalWrap} onClick={(e) => e.stopPropagation()}>
@@ -58,6 +78,13 @@ export const WorkspaceModal = ({
                 type="text"
                 id="input_name"
                 placeholder={explanation[pageNum]}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    handleSubmit();
+                  }
+                }}
               />
             ) : (
               <input
@@ -65,41 +92,20 @@ export const WorkspaceModal = ({
                 type="datetime-local"
                 id="input_name"
                 placeholder={explanation[pageNum]}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    handleSubmit();
+                  }
+                }}
               />
             )}
             <button
               className={style.button}
               onClick={(e) => {
                 e.preventDefault();
-                switch (pageNum) {
-                  case 0:
-                    handleClickSubmitBtn();
-                    onClose();
-                    break;
-                  case 1:
-                    handleModifyBtnClick();
-                    onClose();
-                    break;
-                  case 2:
-                    handleModifySurveyNameBtnClick();
-                    onClose();
-                    break;
-                  case 3:
-                    handleModifyDeadlineDateBtnClick();
-                    break;
-                }
-                // if (pageNum === 0) {
-                //   handleClickSubmitBtn();
-                //   onClose();
-                // } else if (pageNum === 1) {
-                //   handleModifyBtnClick();
-                //   onClose();
-                // } else if (pageNum === 2) {
-                //   handleModifySurveyNameBtnClick();
-                //   onClose();
-                // } else if (pageNum === 3) {
-                //   handleModifyDeadlineDateBtnClick();
-                // }
+                handleSubmit();
               }}
             >
               {buttonName[pageNum]}

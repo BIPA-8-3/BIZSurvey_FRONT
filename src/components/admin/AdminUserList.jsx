@@ -74,7 +74,7 @@ function AdminUserList() {
           <IoIosArrowDropdownCircle 
             style={{ color: "#0476D9" }}
           />
-          <p style={{marginLeft:'5px'}}>회원목록조회</p>
+          <span style={{marginLeft:'5px'}}>회원목록조회</span>
         </p>
       </div>
       {/* <div className={style.adminSearchWrap}>
@@ -102,7 +102,7 @@ function AdminUserList() {
         </thead>
         <tbody>
           {userList.map((userItem, index) => (
-              <tr onClick={() => handleRowClick(userItem.userId)}>
+              <tr onClick={() => handleRowClick(userItem.userId)} key={userItem.userId}>
                   <td>{userItem.userId}</td>
                   <td>{userItem.email}</td>
                   <td>{userItem.name}</td>
