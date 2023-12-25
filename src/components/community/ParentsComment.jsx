@@ -23,6 +23,7 @@ const ParentsComment = ({ props }) => {
   const [showChildCommentForm, setShowChildCommentForm] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [childIsModalOpen, setChildIsModalOpen] = useState({});
+  const [commentModalOpen, setCommentModalOpen] = useState({});
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [isEditFormVisible, setEditFormVisible] = useState(false);
 
@@ -33,17 +34,24 @@ const ParentsComment = ({ props }) => {
   
 
   // 댓글
-  const handleOpenModal = () => {
-    if(userInfo.id === undefined){
-      alert("댓글을 신고하려면 먼저 로그인을 해야합니다.")
-      navigate("/login")
+  const handleOpenModal = (commentId) => {
+    if (userInfo.id === undefined) {
+      alert("댓글을 신고하려면 먼저 로그인을 해야합니다.");
+      navigate("/login");
       return;
-    } 
-    setIsModalOpen(true);
+    }
+   
+    setCommentModalOpen((prev) => ({
+      ...prev,
+      [commentId]: true,
+    }));
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleCloseModal = (commentId) => {
+    setCommentModalOpen((prev) => ({
+      ...prev,
+      [commentId]: false,
+    }));
   };
 
   const handleSelectReasons = (selectedReasons) => {
@@ -278,14 +286,14 @@ const ParentsComment = ({ props }) => {
                 <span onClick={() => toggleChildCommentForm(item.commentId)}>
                   답글 달기
                 </span>{" "}
-                |<span onClick={handleOpenModal}> 신고 </span>
+                |<span onClick={() => handleOpenModal(item.commentId)}> 신고 </span>
                 {renderUpdateAndDelButton(item.nickName, item.commentId)}
 
-                {isModalOpen && (
+                {commentModalOpen[item.commentId] && (
                   <ClaimReasonModal
                     onSelect={handleSelectReasons}
-                    onClose={handleCloseModal}
-                    isModalOpen={isModalOpen}
+                    onClose={() => handleCloseModal(item.commentId)}
+                    isModalOpen={commentModalOpen[item.commentId]}
                     props={"comment"}
                     id={item.commentId}
                   />
