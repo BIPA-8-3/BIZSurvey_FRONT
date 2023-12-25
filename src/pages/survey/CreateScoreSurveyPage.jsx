@@ -107,12 +107,16 @@ export default function CreateScoreSurveyPage() {
 
   // 질문 삭제
   const deleteQuestion = (id) => {
-    setQuestions((pre) => {
-      const result = pre
-        .filter((question, index) => index !== id)
-        .map((question, index) => ({ ...question }));
-      return result;
-    });
+    if (questions.length > 1) {
+      setQuestions((pre) => {
+        const result = pre
+          .filter((question, index) => index !== id)
+          .map((question, index) => ({ ...question }));
+        return result;
+      });
+    } else {
+      return;
+    }
   };
 
   // 옵션추가
@@ -142,7 +146,9 @@ export default function CreateScoreSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id ? { ...question, isRequired: !question.isRequired } : question
+        index === id
+          ? { ...question, isRequired: !question.isRequired }
+          : question
       );
       return result;
     });
@@ -262,9 +268,16 @@ export default function CreateScoreSurveyPage() {
                   className={style.questionList}
                 >
                   {questions.map((questionData, index) => (
-                    <Draggable key={index} draggableId={`question-${index}`} index={index}>
+                    <Draggable
+                      key={index}
+                      draggableId={`question-${index}`}
+                      index={index}
+                    >
                       {(provided) => (
-                        <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                        >
                           <div className={style.question}>
                             <ScoreQuestion
                               answerPass={setAnswerPass}
