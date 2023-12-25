@@ -43,17 +43,17 @@ function MypageCommunityList({userData, setEditState}) {
                     <div>
                         <span>커뮤니티</span>
                     </div>
-                </li>
+                </li> 
                 {communityList.length > 0 ? (
                   communityList.map((communityItem) => (
-                    <Link to={'/communityDetail'} state={{postId : communityItem.postId}}>
+                    <Link to={'/communityDetail'} state={{postId : communityItem.postId}} key={communityItem.postId}>
                       <li className={style.MypageSurveyLi}>
                           <div className={style.MypageSurveyTitle}>{communityItem.title}</div>
                           <div className={style.MypageSurveyDate}>
                               <div className={style.MypageSurveyDate}>
                                   <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
                                       <MdOutlineRemoveRedEye />
-                                      <span style={{ margin: '0 5px 0 5px' }}>00</span>
+                                      <span style={{ margin: '0 5px 0 5px' }}>{communityItem.count}</span>
                                   </div>
                                   <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', marginLeft:'15px'}}>
                                       <MdDateRange />

@@ -99,7 +99,7 @@ function AdminDashboard() {
           <IoIosArrowDropdownCircle 
             style={{ color: "#0476D9" }}
           />
-          <p style={{marginLeft:'5px'}}>대시보드</p>
+          <span style={{marginLeft:'5px'}}>대시보드</span>
         </p>
       </div>
       <div style={{width:'100%', marginTop:'20px'}}>
@@ -146,6 +146,7 @@ function AdminDashboard() {
                 <div className={style.dashboardWrap}>
                     <h2>신고 내역</h2>
                     <table className={style.adminClaimTable}>
+                    <tbody>
                     {claimList.length > 0 ? (
                         claimList.slice(0, 6).map((claimItem, index) => {
                             // Extracting the date part from the timestamp
@@ -169,6 +170,7 @@ function AdminDashboard() {
                             </td>
                         </tr>
                     )}
+                    </tbody>
                     </table>
                 </div>
             </Grid>
@@ -176,16 +178,18 @@ function AdminDashboard() {
                 <div className={style.dashboardWrap}>
                     <h2>설문 커뮤니티</h2>
                     <table className={style.adminBoarderTable}>
+                    <tbody>
                     {Array.isArray(surveyCommunityList.content) && surveyCommunityList.content.slice(0, 6).map((communityitem, index) => (
-                         <tr>
-                         <td>
-                             {index + 1}
-                         </td>
-                         <td style={{whiteSpace:'nowrap', maxWidth:'150px', overflow:'hidden', textOverflow: 'ellipsis'}}>{communityitem.title}</td>
-                         <td>{communityitem.nickname}</td>
-                         <td>{communityitem.createDate}</td>
-                     </tr>
+                        <tr key={communityitem.postId}>
+                            <td>
+                                {index + 1}
+                            </td>
+                            <td style={{whiteSpace:'nowrap', maxWidth:'150px', overflow:'hidden', textOverflow: 'ellipsis'}}>{communityitem.title}</td>
+                            <td>{communityitem.nickname}</td>
+                            <td>{communityitem.createDate}</td>
+                        </tr>
                     ))}
+                    </tbody>
                     </table>
                 </div>
             </Grid>
@@ -193,8 +197,9 @@ function AdminDashboard() {
                 <div className={style.dashboardWrap}>
                     <h2>커뮤니티</h2>
                     <table className={style.adminBoarderTable}>
+                    <tbody>
                     {Array.isArray(communityList.content) && communityList.content.slice(0, 6).map((communityitem, index) => (
-                        <tr>
+                        <tr key={communityitem.postId}>
                             <td>
                                 {index + 1}
                             </td>
@@ -203,6 +208,7 @@ function AdminDashboard() {
                             <td>{communityitem.createTime}</td>
                         </tr>
                     ))}
+                    </tbody>
                     </table>
                 </div>
             </Grid>
