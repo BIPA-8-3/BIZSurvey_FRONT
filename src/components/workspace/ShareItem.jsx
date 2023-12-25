@@ -19,16 +19,7 @@ export default function ShareItem({ btnVisible, info, handleClickShareItem }) {
         </span>
         <span className={style.contactText}>{info.email}</span>
       </div>
-      {btnVisible ? (
-        <IoCloseSharp
-          className={style.closeBtn}
-          onClick={(e) => {
-            handleClickShareItem(info.id, btnVisible);
-          }}
-        />
-      ) : (
-        ""
-      )}
+      {btnVisible ? <IoCloseSharp className={style.closeBtn} /> : ""}
 
       {(() => {
         if (info.response || info.response === 0) {
