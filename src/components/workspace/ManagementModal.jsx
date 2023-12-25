@@ -54,9 +54,6 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues, i
   // 관리자 검색
   const [adminSearchKeyword, setAdminSearchKeyword] = useState("");
 
-  // [admin] input state
-  const [adminSearchList, setAdminSearchList] = useState([]);
-
   const userInfo = useContext(LoginContext);
 
   ///////////////////////////////////////////////////////////////
@@ -246,6 +243,14 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues, i
       });
   };
 
+  const handleOnKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.stopPropagation();
+      e.preventDefault();
+      handleClickInviteBtn(e); // Enter 입력이 되면 클릭 이벤트 실행
+    }
+  };
+
   return ReactDOM.createPortal(
     // modal
     <div className={style.modalOverlay} onClick={onClose}>
@@ -284,6 +289,7 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues, i
                     placeholder="사용자, 이메일 추가"
                     value={email}
                     onChange={handleChangeEmail}
+                    onKeyDown={handleOnKeyPress}
                     required
                   />
                   <button className={style.button} onClick={(e) => handleClickInviteBtn(e)}>

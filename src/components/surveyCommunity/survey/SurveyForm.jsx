@@ -1,13 +1,7 @@
 import style from "../../../style/surveyCommunity/CommunitySurveyWrite.module.css";
 import SurveyQuestion from "./SurveyQuestion";
 
-export default function SurveyForm({
-  survey,
-  handleSetAnswer,
-  pass,
-  type,
-  sharedId,
-}) {
+export default function SurveyForm({ survey, handleSetAnswer, pass, type, sharedId }) {
   return (
     <>
       <div

@@ -22,6 +22,7 @@ export default function MypagePlanDetail() {
     "설문 커뮤니티 공유",
     "설문지 관리",
     "설문 통계 조회",
+    "외부링크 공유",
   ];
   const group = [
     "개인 워크스페이스",

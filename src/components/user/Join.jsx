@@ -80,43 +80,46 @@ function Join({
   const handleVerificationCodeSend = async () => {
     const emailValue = getValues("email");
 
-   
+    setLoading(true);
 
-      setLoading(true);
-      
-      call("/signup/send-email", "POST", {
-        email: emailValue,
-      }).then((data) => {
+    call("/signup/send-email", "POST", {
+      email: emailValue,
+    })
+      .then((data) => {
         // 전송 성공 시 카운트다운 시작
         setCountdown(180); // 초기화
         setIsCounting(true);
         setIsInputDisabled(true); // 인증번호 전송 후 입력 필드 비활성화
         setIsButtonDisabled(false);
         setLoading(false);
-      }).catch ((error) => {
+      })
+      .catch((error) => {
         if (error.response.data.errorCode === 600) {
           setLoading(false);
           alert(error.response.data.errorMessage);
           setIsCounting(false);
           setIsInputDisabled(true); // 전송 실패 시 다시 입력 필드 활성화
-      }})
+        }
+      });
   };
   const [isNumberCheck, setNumberCheck] = useState(false);
   const handleCode = async () => {
     const emailValue = getValues("email");
     const emailNumber = (getValues("number") ?? "").trim();
 
-      if (emailNumber != "") {
-        call("/signup/check-authnumber", "POST", {
-          email: emailValue,
-          authNumber: emailNumber,
-        }).then((data) => {
+    if (emailNumber != "") {
+      call("/signup/check-authnumber", "POST", {
+        email: emailValue,
+        authNumber: emailNumber,
+      })
+        .then((data) => {
           setIsButtonDisabled(true);
           setNumberCheck(true);
           setIsCounting(false);
           setIsInputDisabled(true);
           alert("인증되었습니다.");
-        }).catch ((error) => {
+        })
+        .catch((error) => {
           if (error.response.data.errorCode === 600) {
             setError("number", {
               type: "manual",
@@ -124,23 +127,24 @@ function Join({
             });
             setNumberCheck(false);
           }
-        })
-      } else {
-        alert("인증번호를 입력해주세요.");
-      }
+        });
+    } else {
+      alert("인증번호를 입력해주세요.");
+    }
   };
   const [isNinknameCheck, setNinknameCheck] = useState(false);
   const handleNickname = async () => {
     const getNickname = (getValues("nickname") ?? "").trim();
 
-    
-      if (getNickname != "") {
-        call("/signup/check-nickname", "POST", {
-          nickname: getNickname,
-        }).then((response) => {
+    if (getNickname != "") {
+      call("/signup/check-nickname", "POST", {
+        nickname: getNickname,
+      })
+        .then((response) => {
           alert(response);
           setNinknameCheck(true);
-        }).catch ((error) => {
+        })
+        .catch((error) => {
           if (error.response.data.errorCode === 600) {
             setError("nickname", {
               type: "manual",
@@ -148,8 +152,8 @@ function Join({
             });
             setNinknameCheck(false);
           }
-        })
-      }
+        });
+    }
   };
 
   const navigate = useNavigate();
@@ -169,16 +173,18 @@ function Join({
         message: "닉네임 중복확인을 해주세요",
       });
     } else {
-        call("/signup", "POST", data).then((response)=>{
+      call("/signup", "POST", data)
+        .then((response) => {
           alert(response);
           navigate("/login");
-        }).catch ((error) => {
+        })
+        .catch((error) => {
           if (error.response.data.errorCode === 600) {
             alert("xx");
           }
-        })
-      }
-    });
+        });
+    }
+  });
 
   const handleNicknameEdit = () => {
     setNinknameCheck(false);
@@ -196,7 +202,9 @@ function Join({
       <form onSubmit={handleSubmitFunction}>
         <div className={style.titleWrap}>
           <h1 className="textCenter title textBold">회원가입</h1>
-          <p className="textCenter subTitle">쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.</p>
+          <p className="textCenter subTitle">
+            <b>BIZ SURVEY</b>에 오신 것을 환영합니다.
+          </p>
         </div>
 
         <label htmlFor="email">
@@ -214,7 +222,9 @@ function Join({
               className={style.input}
               id="email"
               name="email"
-              aria-invalid={isSubmitted ? (errors.email ? "true" : "false") : undefined}
+              aria-invalid={
+                isSubmitted ? (errors.email ? "true" : "false") : undefined
+              }
               {...register("email", {
                 required: "필수 정보입니다.",
                 pattern: {
@@ -245,18 +255,25 @@ function Join({
               className={style.input}
               id="number"
               name="number"
-              aria-invalid={isSubmitted ? (errors.number ? "true" : "false") : undefined}
+              aria-invalid={
+                isSubmitted ? (errors.number ? "true" : "false") : undefined
+              }
               {...register("number", {
                 required: "이메일 인증을 진행해주세요",
               })}
               onBlur={() => handleBlur("number")}
               disabled={isInputDisabled} // 상태에 따라 입력 필드 활성화/비활성화
             />
-            {isCounting ? `${Math.floor(countdown / 60)}:${countdown % 60}` : ""}
+            {isCounting
+              ? `${Math.floor(countdown / 60)}:${countdown % 60}`
+              : ""}
           </div>
           {/* 상태에 따라 버튼 내용 변경 */}
 
-          <div className={style.inputBtn} onClick={isButtonDisabled ? null : handleCode}>
+          <div
+            className={style.inputBtn}
+            onClick={isButtonDisabled ? null : handleCode}
+          >
             인증번호 확인
           </div>
         </div>
@@ -278,7 +295,8 @@ function Join({
               {...register("password", {
                 required: "비밀번호를 입력하세요.",
                 pattern: {
-                  value: /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/,
+                  value:
+                    /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/,
                   message: "8~16자 영문 소문자, 숫자, 특수문자를 사용하세요.",
                 },
               })}
@@ -303,7 +321,8 @@ function Join({
               id="passwordConfirm"
               {...register("passwordConfirm", {
                 required: "비밀번호를 확인하세요.",
-                validate: (value) => value === password || "비밀번호가 일치하지 않습니다.",
+                validate: (value) =>
+                  value === password || "비밀번호가 일치하지 않습니다.",
               })}
               onBlur={() => handleBlur("passwordConfirm")}
             />
@@ -323,7 +342,9 @@ function Join({
               type="text"
               className={style.input}
               id="name"
-              aria-invalid={isSubmitted ? (errors.name ? "true" : "false") : undefined}
+              aria-invalid={
+                isSubmitted ? (errors.name ? "true" : "false") : undefined
+              }
               {...register("name", {
                 required: "필수 정보입니다.",
               })}
@@ -347,7 +368,9 @@ function Join({
               className={style.input}
               id="nickname"
               name="nickname"
-              aria-invalid={isSubmitted ? (errors.nickname ? "true" : "false") : undefined}
+              aria-invalid={
+                isSubmitted ? (errors.nickname ? "true" : "false") : undefined
+              }
               {...register("nickname", {
                 required: "필수 정보입니다.",
               })}

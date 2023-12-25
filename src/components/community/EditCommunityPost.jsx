@@ -20,9 +20,12 @@ import call from "../../pages/workspace/api";
 export default function CommunityWrite() {
   const quillRef = useRef();
   const [content, setContent] = useState("");
+  const [prevContent, setPrevContent] = useState("");
   const fadeIn = useFadeIn();
   const [loading, setLoading] = useState(true);
   const imageSrcArray = [];
+  const tempUrlList = [];
+  const deleteSrcArray = [];
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,12 +35,30 @@ export default function CommunityWrite() {
   const [voteOptions, setVoteOptions] = useState([""]);
   const [hasVote, setHasVote] = useState(false);
   const [voteId, setVoteId] = useState(0);
+  const MAX_FILE_SIZE_MB = 5;
 
   //   const changeTitle = (e) => {
   //     quillRef = quillRef.current;
 
   //     setContent(e.target.value);
   //   }
+
+  useEffect(() => {
+    return () => {
+      console.log("temp : " + JSON.stringify(tempUrlList));
+  
+      // 각 아이템을 객체로 감싸서 새로운 배열 생성
+      const mappedArray = tempUrlList.map(fileName => ({ fileName }));
+  
+      console.log(mappedArray);
+      deleteSrcArray.push(...mappedArray); // spread 연산자를 사용하여 배열 확장
+      console.log("뒤로가기 삭제 : " + JSON.stringify(deleteSrcArray));
+  
+      call("/storage/multiple/files/", "POST", deleteSrcArray)
+        .then((data) => console.log(data))
+        .catch((error) => console.log(error));
+    };
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -48,6 +69,67 @@ export default function CommunityWrite() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    console.log("Content 값이 변경되었습니다:", content);
+    if (prevContent !== content) {
+      handleContentChange();
+    }
+    setPrevContent(content);
+
+  }, [content, prevContent]);
+
+  const handleContentChange = () => {
+    // content 값에서 특정 이미지 태그를 찾아내고 그에 따른 동작을 수행
+    const removedImageTag = findRemovedImageTag(prevContent, content);
+    
+    if (removedImageTag) {
+      // 찾아낸 이미지 태그에 대한 동작 수행
+      handleImageTagRemoved(removedImageTag);
+    }
+  };
+
+  const findRemovedImageTag = (prevContent, currentContent) => {
+    
+    const imgRegex = /<img[^>]*>/g;
+    const prevImageTags = prevContent.match(imgRegex) || [];
+    const currentImageTags = currentContent.match(imgRegex) || [];
+  
+    // 이전에 있었지만 현재는 없는 이미지 태그를 찾아냄
+    const removedImageTags = prevImageTags.filter(
+      (tag) => !currentImageTags.includes(tag)
+    );
+  
+    
+    if (removedImageTags.length > 0) {
+      return removedImageTags[0];
+    }
+  
+    return null;
+  };
+  
+  const handleImageTagRemoved = (removedImageTag) => {
+    // 사라진 이미지 태그에 대한 동작을 여기에 작성
+    const srcRegex = /<img.*?src="(.*?)".*?>/i;
+    const match = removedImageTag.match(srcRegex);
+  
+    // match 배열의 두 번째 요소가 src 속성값
+    const srcValue = match ? match[1] : null;
+    for(let i = 0; i < imageSrcArray.length; i++) {
+      if(imageSrcArray[i] === srcValue)  {
+        imageSrcArray.splice(i, 1);
+        i--;
+      }
+    }
+    const sliceSrcValue = srcValue.slice(8);
+    
+    call("/storage/file/" + sliceSrcValue, "DELETE")
+    .then((data) => console.log(data))
+    .catch((error) => console.log(error));
+
+    console.log("이미지 삭제됨")
+    
+  };
 
   useEffect(() => {
     if (hasVote) {
@@ -100,8 +182,16 @@ export default function CommunityWrite() {
     // input에 변화가 생긴다면 = 이미지를 선택
     input.addEventListener("change", async () => {
       console.log("온체인지");
-      const file = input.files[0];
+      let file = input.files[0];
       // multer에 맞는 형식으로 데이터 만들어준다.
+
+      let fileSizeMB = file.size / (1024 * 1024);
+      if(file && fileSizeMB > MAX_FILE_SIZE_MB) {
+        alert("파일 크기는 5MB를 초과할 수 없습니다.")
+        file = null;
+        return;
+      }
+
       const formData = new FormData();
       formData.append("file", file); // formData는 키-밸류 구조
       formData.append("domain", "COMMUNITY");
@@ -298,7 +388,7 @@ export default function CommunityWrite() {
       <div className={style.titleWrap}>
         <h1 className="textCenter title textBold">커뮤니티</h1>
         <p className="textCenter subTitle">
-          쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.
+          투표를 통해 여러분의 소소한 일상을 공유해주세요.
         </p>
       </div>
       <div className={style.writeWrap}>
