@@ -177,12 +177,13 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
     return (
       <>
         {userList.length !== 0 ? (
-          <UserList userList={userList} setUser={handleSetUser} sharedType={sharedType} />
+          <>
+            <UserList userList={userList} setUser={handleSetUser} sharedType={sharedType} />
+            <div className={style.selectPost}>
+              <p>응답자를 선택해주세요.</p>
+            </div>
+          </>
         ) : null}
-
-        <div className={style.selectPost}>
-          <p>응답자를 선택해주세요.</p>
-        </div>
       </>
     );
   }

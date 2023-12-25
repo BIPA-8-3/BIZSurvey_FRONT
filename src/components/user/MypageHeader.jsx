@@ -26,33 +26,46 @@ function MypageHeader({ userData }) {
 
   
   const handleImageChange = async (event) => {
-    setLoading(true);
     const file = event.target.files[0];
-
-    
-    
-
+  
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setSelectedImage(imageUrl);
-
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('domain', 'USER');
+      // 파일 크기 확인 (5MB 미만)
+      if (file.size <= 1 * 1024 * 1024) {
+        setLoading(true);
+  
+        const imageUrl = URL.createObjectURL(file);
+        setSelectedImage(imageUrl);
+  
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('domain', 'USER');
+  
+        try {
+          const data = await call("/storage/", "POST", formData, true);
         
-      call("/storage/", "POST", formData, true).then((data) =>{
-          call("/user/profile/", "patch", {
-            userId : userData.id,
-            profile : data
-          }).then(() =>{
-              call("/user/info", "GET").then((data)=>{
-                setUserInfo(data);
-              });
-
-              setLoading(false);
-          })
-      })
+          const profileImageUrl = data;
+          
+          // Delete the old profile image
+          await call(`/storage/file/${userData.profile}`, "DELETE").then((data) => {
+            console.log(data)
+          });        
+          // Update the user profile with the new image
+          await call("/user/profile/", "PATCH", {
+            userId: userData.id,
+            profile: profileImageUrl,
+          });
         
+          const infodata = await call("/user/info", "GET");
+          setUserInfo(infodata);
+        } catch (error) {
+          console.error("프로필 이미지 업로드 실패:", error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        alert("이미지 크기가 1MB를 초과할 수 없습니다");
+        event.target.value = null
+      }
     }
   };
 

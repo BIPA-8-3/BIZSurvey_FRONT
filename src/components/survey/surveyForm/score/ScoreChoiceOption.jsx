@@ -92,14 +92,15 @@ function Option({
     if (text.trim() === "") {
       changeText(index, "옵션 " + (index + 1));
     }
-    checkAnswer(text);
+    // checkAnswer(text);
   };
 
-  const checkAnswer = (text) => {
+  const checkAnswer = (index, text) => {
+    changeText(index, text);
+    const txt = text.trim();
     const dupAnswer = answers.find(
-      (answer, idx) => answer.surveyAnswer === text && index !== idx
+      (answer, idx) => answer.surveyAnswer.trim() === txt && index !== idx
     );
-    console.log(dupAnswer);
     if (dupAnswer) {
       answerPass(false);
       setDup(true);
@@ -138,7 +139,7 @@ function Option({
 
           <TextField
             value={text}
-            onChange={(e) => changeText(index, e.target.value)}
+            onChange={(e) => checkAnswer(index, e.target.value)}
             id="standard-multiline-static"
             variant="standard"
             placeholder={"옵션을 입력하세요"}
