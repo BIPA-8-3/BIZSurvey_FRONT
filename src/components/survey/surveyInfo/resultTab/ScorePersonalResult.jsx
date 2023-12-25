@@ -23,15 +23,6 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
       nickname: "",
     },
   ]);
-  //   const [answers, setAnswers] = useState([
-  //     // {
-  //     //   questionId: 0,
-  //     //   answer: [],
-  //     //   url: "",
-  //     //   questionType: "",
-  //     //   answerType: "",
-  //     // },
-  //   ]);
 
   const [resultData, setResultData] = useState([
     {
@@ -50,10 +41,6 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
     total: 0,
     get: 0,
   });
-
-  useEffect(() => {
-    console.log("이거임", resultData);
-  }, [resultData]);
 
   useEffect(() => {
     // 설문 게시물 참가자 목록
@@ -182,88 +169,82 @@ export default function ScorePersonalResult({ sharedId, sharedType }) {
     );
   }
 
-  if (user === 0) {
+  if (userList.length > 0) {
+    if (user === 0) {
+      return (
+        <>
+          <UserList
+            userList={userList}
+            setUser={handleSetUser}
+            sharedType={sharedType}
+          />
+          <div className={style.selectPost}>
+            <p>응답자를 선택해주세요.</p>
+          </div>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <UserList
+            userList={userList}
+            setUser={handleSetUser}
+            sharedType={sharedType}
+          />
+
+          <div>
+            <p className={style.totalScore}>
+              총점 : {score.get} / {score.total}
+            </p>
+          </div>
+
+          {resultData.map((question, index) => (
+            <>
+              <QuestionBox key={index} score>
+                <QuestionTitle title={question.title} />
+                <OptionBox>
+                  {/* {matchingQuestion ? ( */}
+
+                  {question.answers.map((answer, index) =>
+                    answer.answer !== null ? (
+                      <ScoreResultOption
+                        key={index}
+                        text={answer.answer}
+                        correct={answer.correct}
+                      />
+                    ) : (
+                      <>
+                        <p
+                          style={{
+                            fontSize: "14px",
+                            paddingTop: "10px",
+                            color: "grey",
+                          }}
+                        >
+                          사용자 응답이 없습니다.
+                        </p>
+                      </>
+                    )
+                  )}
+
+                  <p className={style.score}>
+                    {question.getScore} / {question.score}
+                  </p>
+                </OptionBox>
+              </QuestionBox>
+            </>
+          ))}
+        </>
+      );
+    }
+  } else {
     return (
       <>
-        {userList.length !== 0 ? (
-          <>
-            <UserList
-              userList={userList}
-              setUser={handleSetUser}
-              sharedType={sharedType}
-            />
-            <div className={style.selectPost}>
-              <p>응답자를 선택해주세요.</p>
-            </div>
-          </>
-        ) : null}
+        <div className={style.selectPost}>
+          <p>응답자가 존재하지 않습니다.</p>
+        </div>
+        ;
       </>
     );
   }
-
-  return (
-    <>
-      <UserList
-        userList={userList}
-        setUser={handleSetUser}
-        sharedType={sharedType}
-      />
-
-      <div>
-        <p className={style.totalScore}>
-          총점 : {score.get} / {score.total}
-        </p>
-      </div>
-
-      {resultData.map((question, index) => (
-        <>
-          <QuestionBox key={index} score>
-            <QuestionTitle title={question.title} />
-            <OptionBox>
-              {/* {matchingQuestion ? ( */}
-
-              {question.answers.map((answer, index) =>
-                answer.answer !== null ? (
-                  <ScoreResultOption
-                    key={index}
-                    text={answer.answer}
-                    correct={answer.correct}
-                  />
-                ) : (
-                  <>
-                    <p
-                      style={{
-                        fontSize: "14px",
-                        paddingTop: "10px",
-                        color: "grey",
-                      }}
-                    >
-                      사용자 응답이 없습니다.
-                    </p>
-                  </>
-                )
-              )}
-
-              {/* // ) : (
-                //   <>
-                //     <p
-                //       style={{
-                //         fontSize: "14px",
-                //         paddingTop: "10px",
-                //         color: "grey",
-                //       }}
-                //     >
-                //       사용자 응답이 없습니다.
-                //     </p>
-                //   </>
-                // )} */}
-              <p className={style.score}>
-                {question.getScore} / {question.score}
-              </p>
-            </OptionBox>
-          </QuestionBox>
-        </>
-      ))}
-    </>
-  );
 }
