@@ -89,7 +89,7 @@ function UserInfoEditForm({userData,setEditState, setUserData}) {
           call("/user/info", "GET")
           .then((data) => {
             setUserInfo(data);
-            navigate("/");
+            navigate("/mypage");
           })
           .catch((error) => {
             console.error("사용자 정보 가져오기 실패:", error);

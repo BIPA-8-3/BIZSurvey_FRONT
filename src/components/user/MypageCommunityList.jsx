@@ -46,8 +46,8 @@ function MypageCommunityList({userData, setEditState}) {
                 </li> 
                 {communityList.length > 0 ? (
                   communityList.map((communityItem) => (
-                    <Link to={'/communityDetail'} state={{postId : communityItem.postId}}>
-                      <li key={communityItem.postId} className={style.MypageSurveyLi}>
+                    <Link to={'/communityDetail'} state={{postId : communityItem.postId}} key={communityItem.postId}>
+                      <li className={style.MypageSurveyLi}>
                           <div className={style.MypageSurveyTitle}>{communityItem.title}</div>
                           <div className={style.MypageSurveyDate}>
                               <div className={style.MypageSurveyDate}>

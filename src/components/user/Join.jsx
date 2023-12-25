@@ -255,6 +255,7 @@ function Join({
               className={style.input}
               id="number"
               name="number"
+              autoComplete="off" 
               aria-invalid={
                 isSubmitted ? (errors.number ? "true" : "false") : undefined
               }
@@ -292,6 +293,7 @@ function Join({
               type="password"
               className={style.input}
               id="password"
+              autoComplete="new-password"
               {...register("password", {
                 required: "비밀번호를 입력하세요.",
                 pattern: {
@@ -319,6 +321,7 @@ function Join({
               type="password"
               className={style.input}
               id="passwordConfirm"
+              autoComplete="new-password"
               {...register("passwordConfirm", {
                 required: "비밀번호를 확인하세요.",
                 validate: (value) =>
@@ -412,7 +415,7 @@ function Join({
           >
             <FormControlLabel
               value="MALE"
-              control={<Radio defaultChecked />}
+              control={<Radio />}
               label="남자"
               {...register("gender")}
             />

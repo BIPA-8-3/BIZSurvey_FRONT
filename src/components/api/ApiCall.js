@@ -101,8 +101,6 @@ export const login = async (formData) => {
     const response = await axios.post(URI + "/login", formData)
 
     const headers = response.headers;
-    console.log("response: ", response);
-    console.log("header: ", headers);
 
     const authorization = headers["authorization"];
     const refreshAuthorization = headers["refreshauthorization"];
