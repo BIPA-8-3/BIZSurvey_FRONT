@@ -114,15 +114,7 @@ function Option({
     <>
       <div style={{ margin: "0 auto", width: "600px" }}>
         <Stack direction="row" alignItems="center" spacing={1}>
-          <span
-          // style={{
-          //   width: "16px",
-          //   height: "16px",
-          //   border: "2px solid #D6D6D6",
-          //   textAlign: "center",
-          //   borderRadius: single ? "50%" : "3px",
-          // }}
-          >
+          <span>
             <Checkbox
               {...label}
               sx={{
@@ -132,7 +124,6 @@ function Option({
                 },
               }}
               checked={correct === "YES"}
-              // color="success"
               onChange={() => changeOptionCorrect(index)}
             />
           </span>
@@ -146,7 +137,6 @@ function Option({
             inputProps={{ style: { fontSize: 15 } }}
             sx={{
               width: 550,
-              // borderBottom: isPass === false ? "1px solid red" : "",
             }}
             onBlur={(e) => handleBlur(e.target.value)}
           />

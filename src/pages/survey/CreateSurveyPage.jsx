@@ -41,10 +41,6 @@ export default function CreateSurveyPage() {
 
   const [answerPass, setAnswerPass] = useState(true);
 
-  useEffect(() => {
-    console.log("questions변경됨", questions);
-  }, [questions]);
-
   // 드래그 정렬
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
@@ -52,7 +48,6 @@ export default function CreateSurveyPage() {
     const items = [...questions];
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-    console.log("드래그됨", items);
     setQuestions(items);
   };
 
@@ -77,10 +72,8 @@ export default function CreateSurveyPage() {
     }));
     const surveyData = { ...formData };
     surveyData.questions = questionData;
-    console.log("최종데이터입니다.", surveyData);
     call("/survey/" + selectedWorkspaceId, "POST", surveyData).then((data) => {
       navigate("/workspace");
-      console.log("저장 완료, ", data);
     });
   };
 

@@ -19,20 +19,7 @@ export default function BarChart({ chartData }) {
     series: [
       {
         data: value,
-        // data: [
-        //   120,
-        //   {
-        //     value: 200,
-        //     itemStyle: {
-        //       color: '#a90000'
-        //     }
-        //   },
-        //   150,
-        //   80,
-        //   70,
-        //   110,
-        //   130
-        // ],
+
         label: {
           show: true,
           position: "right",
@@ -55,7 +42,6 @@ export default function BarChart({ chartData }) {
 
 function processData(answers) {
   const name = answers.map((answer) => answer.answer);
-  console.log(name);
 
   const value = answers.map((answer) => ({
     value: answer.count,
@@ -63,6 +49,6 @@ function processData(answers) {
       color: answer.correct === "YES" ? "#aacbfa" : "#d6d6d6",
     },
   }));
-  console.log(value);
+
   return { name, value };
 }
