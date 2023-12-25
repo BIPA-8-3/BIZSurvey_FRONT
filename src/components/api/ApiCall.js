@@ -128,7 +128,9 @@ export const loginKaKaoCode = async (code) => {
     const response = await axios.get(URI + `/login/oauth2/code/kakao?code=${code}`)
     return response;
   }catch(error){
-    console.log(error)
+    if (error.response.data.errorCode === 403) {
+      alert(error.response.data.errorMessage);
+    }
   }
 }
 
