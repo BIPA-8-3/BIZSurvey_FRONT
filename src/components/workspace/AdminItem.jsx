@@ -7,14 +7,20 @@ export default function AdminItem({ info, handleClickRemoveAdminBtn, isAdmin }) 
   return (
     <div className={style.adminProfile}>
       <div className={style.profileInfo}>
-        {info.inviteFlag ? (
-          <img
-            src={"https://ui-avatars.com/api/?name=" + info.email + "&background=random"}
-            className={style.profileRadius}
-          />
-        ) : (
-          <img src="https://via.placeholder.com/35X35" className={style.profileRadius} />
-        )}
+        {(() => {
+          if (info && info.profileUrl) {
+            return <img src={"https://" + info.profileUrl} className={style.profileRadius} />;
+          } else if (info.inviteFlag) {
+            return (
+              <img
+                src={"https://ui-avatars.com/api/?name=" + info.email + "&background=random"}
+                className={style.profileRadius}
+              />
+            );
+          } else {
+            return <img src="https://via.placeholder.com/35X35" className={style.profileRadius} />;
+          }
+        })()}
         <div className={style.profileDetail}>
           <span className={style.profileName}>{info.nickName}</span>
           <span className={style.profileEmail}>{info.email}</span>
