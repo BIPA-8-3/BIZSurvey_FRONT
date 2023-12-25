@@ -4,9 +4,6 @@ import Stack from "@mui/material/Stack";
 export default function ChoiceField(props) {
   const { single, text, select } = props;
 
-  console.log("객관식" + text);
-  console.log("객관식 선택여부" + select);
-
   return (
     // 읽기 전용(상세페이지)
     <>
