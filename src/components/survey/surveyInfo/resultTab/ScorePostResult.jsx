@@ -84,12 +84,6 @@ export default function ScorePostResult({ sharedId, sharedType }) {
     }
   };
 
-  const handleDownloadExcel = () => {
-    call(`/survey/result/file/${sharedType}/${sharedId}`, "GET")
-      .then((data) => console.log(data))
-      .catch((error) => console.log(error));
-  };
-
   if (sharedId === 0) {
     return (
       <>

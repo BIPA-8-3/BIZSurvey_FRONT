@@ -58,6 +58,7 @@ export default function PersonalResult({ sharedType, sharedId }) {
 
   // 로딩 시 유저정보 조회
   useEffect(() => {
+    console.log("여기ㅣㅣㅣ..........");
     if (sharedId) {
       switch (sharedType) {
         case "INTERNAL":
@@ -82,6 +83,10 @@ export default function PersonalResult({ sharedType, sharedId }) {
     } else {
     }
   }, [sharedId]);
+
+  useEffect(() => {
+    console.log("userList,", userList);
+  });
 
   const handleSetUser = (user) => {
     setUser(user);
@@ -154,6 +159,27 @@ export default function PersonalResult({ sharedType, sharedId }) {
           }}
         >
           <p>응답자를 선택해주세요.</p>
+        </div>
+      </>
+    );
+  } else if (userList.length < 1) {
+    return (
+      <>
+        <div
+          style={{
+            width: "700px",
+            margin: "0 auto",
+            textAlign: "center",
+            height: "300px",
+            justifyContent: "center",
+            alignItems: "center",
+            lineHeight: "300px",
+            fontSize: "15pt",
+            fontStyle: "italic",
+            color: "#d6d6d6",
+          }}
+        >
+          <p>응답자가 존재하지 않습니다.</p>
         </div>
       </>
     );
