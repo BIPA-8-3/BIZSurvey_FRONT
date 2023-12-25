@@ -1,15 +1,19 @@
-import { Outlet, useLocation } from "react-router-dom";
+import React, { useContext } from 'react';
+import { Outlet, useLocation, Navigate } from "react-router-dom";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import WorkspaceHeader from "../components/workspace/WorkspaceHeader";
 import "../style/Common.css";
 import Navbar from "../components/workspace/Navbar";
 import { WorkspaceProvider } from "./workspace/WorkspaceContext";
+import { LoginContext } from '../App';
 
 const Layout = () => {
   // 현재 경로 정보를 가져옵니다.
   const location = useLocation();
-  // 현재 경로가 '/mypage'인 경우 Header를 숨깁니다.
+
+  // 로그인 상태를 확인합니다.
+  const accessToken = localStorage.getItem("accessToken");
 
   const isWorkspace = location.pathname.startsWith("/workspace");
   const isMyPage =
@@ -23,7 +27,11 @@ const Layout = () => {
   const isAuthorization = location.pathname.startsWith("/authorization/");
   const isExternal = location.pathname.startsWith("/survey/participate/external");
   const isAdmin = location.pathname.startsWith("/admin/");
-
+  
+  const isLoginPage = location.pathname === "/login";
+  if (isLoginPage && accessToken) {
+    return <Navigate to="/" replace />;
+  }
   return (
     <div>
       {isWorkspace || isMyPage || isAuthorization || isAdmin || isExternal ? (

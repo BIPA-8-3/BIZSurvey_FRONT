@@ -59,6 +59,24 @@ function Login() {
     });
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      login(formData).then((data) => {
+        if(data){
+          call("/user/info", "GET")
+          .then((data) => {
+            setUserInfo(data);
+            navigate("/");
+          })
+          .catch((error) => {
+            console.error("사용자 정보 가져오기 실패:", error);
+            return;
+          });
+        }
+      });
+    }
+  };
+
   //카카오 로그인
   const loginKaKao = async () => {
     call("/kakao/clientId", "GET").then((data)=>{
@@ -86,7 +104,7 @@ function Login() {
           onChange={handleInputChange}
         />
         <label style={{ fontSize: "10pt" }}>패스워드</label>
-        <input type="password" className={style.input} name="password" onChange={handleInputChange} autoComplete="off"/>
+        <input type="password" className={style.input} name="password" onChange={handleInputChange}  onKeyPress={handleKeyPress} autoComplete="off"/>
         <p className={style.searchPw}>
           <Link to={"/findPassword"}>비밀번호를 잊으셨나요?</Link>
         </p>

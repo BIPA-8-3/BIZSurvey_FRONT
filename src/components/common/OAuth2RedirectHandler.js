@@ -64,6 +64,8 @@ const OAuth2RedirectHandler = () => {
             } else {
               console.error('Authorization header not found in the response.');
             }
+         }).catch((error)=>{
+            navigate("/login")
          })
          
           
