@@ -25,10 +25,6 @@ export default function ScorePostResult({ sharedId, sharedType }) {
     }
   }, [sharedId]);
 
-  useEffect(() => {
-    console.log(result, "result");
-  }, [result]);
-
   const handleGetData = async () => {
     // 데이터 받아오는 곳
     switch (sharedType) {
