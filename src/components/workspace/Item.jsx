@@ -10,7 +10,7 @@ function Item({ workspaceName, id, workspaceType, changeWorkspace, selectable })
       }}
     >
       <span className={style.textFont}>{workspaceName}</span>
-      <div className={style.labelBox}>{workspaceType}</div>
+      <div className={style.labelBox}>{workspaceType === "COMPANY" ? "GROUP" : workspaceType}</div>
     </div>
   );
 }

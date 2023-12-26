@@ -221,7 +221,7 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues, i
   };
 
   // 관리자 삭제 메소드
-  const handleClickRemoveAdminBtn = (id, inviteFlag) => {
+  const handleClickRemoveAdminBtn = (id, userId) => {
     if (id === -1) {
       alert("초대메일 전송중 입니다. 잠시후에 다시 시도해주세요");
       return;
@@ -229,8 +229,9 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues, i
 
     removeAdmin(id)
       .then((data) => {
+        console.log("d여기여기여ㅣ겨");
         console.log(data);
-        if (!inviteFlag) {
+        if (!userId) {
           let copy = adminWaitList.filter((admin) => admin.id !== id);
           setAdminWaitList(copy);
         } else {

@@ -49,6 +49,13 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum, managedValues,
 
   // 삭제 메소드
   const handleRemoveClick = () => {
+    if (
+      !window.confirm(
+        "워크스페이스를 삭제하시겠습니까?\n삭제된 워크스페이스는 복구하실 수 없습니다."
+      )
+    ) {
+      return;
+    }
     removeWorkspace(selectedWorkspaceId)
       .then((data) => {
         let copy = workspaceList.filter((workspace) => workspace.id !== selectedWorkspaceId);

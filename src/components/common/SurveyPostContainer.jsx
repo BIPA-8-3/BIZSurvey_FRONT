@@ -36,7 +36,9 @@ export default function SurveyPostContainer() {
 
   // !!!!! 삭제 X !!!!!
   useEffect(() => {
-    acceptInvite();
+    if (userInfo && userInfo.email) {
+      acceptInvite();
+    }
   }, []);
   // !!!!!!!!!!!!!!!!!
 
@@ -102,9 +104,7 @@ export default function SurveyPostContainer() {
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.titleWrap}>
         <h1 className="textCenter title textBold">설문 참여</h1>
-        <p className="textCenter subTitle">
-          설문에 참여하고 소중한 의견을 공유해주세요.
-        </p>
+        <p className="textCenter subTitle">설문에 참여하고 소중한 의견을 공유해주세요.</p>
       </div>
       <SCommunitySearch />
       <div style={{ textAlign: "right" }}>
