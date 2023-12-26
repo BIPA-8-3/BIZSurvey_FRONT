@@ -43,7 +43,7 @@ export default function SurveyPostContainer() {
   useEffect(() => {
     // inView가 true 일때만 실행한다.
     if (inView) {
-      console.log(inView, "무한 스크롤 요청 🎃");
+      
       dataFetch();
     }
   }, [inView]);
@@ -51,7 +51,7 @@ export default function SurveyPostContainer() {
   const fadeIn = useFadeIn();
 
   const dataFetch = () => {
-    console.log("토탈 페이지스" + data.totalPages);
+    
 
     if (page < data.totalPages || data.totalPages === undefined) {
       call(`/s-community?page=${page}`, "GET")

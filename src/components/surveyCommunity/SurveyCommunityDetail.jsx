@@ -39,7 +39,7 @@ export default function CommunityPost() {
   }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
 
   useEffect(() => {
-    console.log("여기 postId들어옴", postId);
+    
     const fetchData = async () => {
       try {
         call("/s-community/showPost/" + postId, "GET")
@@ -135,7 +135,6 @@ export default function CommunityPost() {
       return logo;
     } else {
       let prefix = "https://";
-      console.log("프로필 : " + prefix + profile);
       return prefix + profile;
     }
   }

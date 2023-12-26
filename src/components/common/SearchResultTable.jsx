@@ -25,8 +25,6 @@ export default function SearchResultTable() {
 
   let keyword = location.state.keyword;
   let result = location.state.result;
-  console.log("키워드드ㅡ드드드드드" + JSON.stringify(keyword));
-  console.log(JSON.stringify(result));
 
   const fadeIn = useFadeIn();
   const [data, setData] = useState({});
