@@ -59,8 +59,8 @@ function Search() {
         keyword: e.target.value,
       })
       .then((data) => {
-        console.log("Search Result:", data);
-        setFindTitles(data); // Update the search results state
+        
+        setFindTitles(data); 
       })
       .catch((error) => {
         console.error("Error searching posts:", error);
@@ -73,22 +73,14 @@ function Search() {
     
       call(`/community/search?keyword=${title}`, "GET")
       .then((data) => {
-        console.log("검색 결과!!!!(<Search />):", data);
-        
-        console.log(data);
-        
+       
         let newData = {keyword:title, result:data}
-
-        console.log( "보내는 데이터 : "+JSON.stringify(newData))
-        
         navigate('/communitySearchResult', {state: newData}) 
         
       })
       .catch((error) => {
         console.error("Error searching posts:", error);
       });
-      console.log('--------------------------------------------------')
-      console.log(searchResults.data)
       
   };
 

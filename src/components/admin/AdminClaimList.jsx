@@ -62,7 +62,7 @@ function AdminClaimList() {
           <IoIosArrowDropdownCircle 
             style={{ color: "#0476D9" }}
           />
-          <p style={{marginLeft:'5px'}}>신고내역조회</p>
+          <span style={{marginLeft:'5px'}}>신고내역조회</span>
         </p>
       </div>
       {/* <div className={style.adminSearchWrap}>
@@ -82,7 +82,7 @@ function AdminClaimList() {
         <tbody>
         {claimList.length > 0 ? (
           claimList.map((claimItem, index) => (
-            <tr onClick={() => handleRowClick(`${claimItem.id}`)}>
+            <tr onClick={() => handleRowClick(`${claimItem.id}`)} key={claimItem.id}>
               <td style={{padding:'6px 2px'}}>{claimItem.id}</td>
               <td>{claimItem.claimType}</td>
               <td>{claimItem.claimReason}</td>

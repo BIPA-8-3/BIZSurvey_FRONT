@@ -96,7 +96,6 @@ function Navbar() {
       <div className={style.NavbarHeader}>
         <div className={style.HeaderProfile}>
           <img
-            // src={(userInfo.profile && userInfo.profile) || "https://via.placeholder.com/45X45"}
             src={
               "https://" +
               ((userInfo.profile && userInfo.profile) ||

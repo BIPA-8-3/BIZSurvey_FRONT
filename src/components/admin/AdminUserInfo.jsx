@@ -42,7 +42,7 @@ function AdminUserInfo() {
           <IoIosArrowDropdownCircle 
             style={{ color: "#0476D9" }}
           />
-          <p style={{marginLeft:'5px'}}>회원목록조회</p>
+          <span style={{marginLeft:'5px'}}>회원목록조회</span>
         </p>
       </div>
       <div

@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import style from '../../style/user/UserInfoEditForm.module.css';
 import back from '../../assets/img/back.png';
 import useFadeIn from '../../style/useFadeIn';
 import { useLocation, useNavigate } from 'react-router-dom';
 import call from '../../pages/workspace/api';
 import { userInfoUpdate } from '../api/ApiCall';
+import { LoginContext, LoginFunContext } from "../../App";
 
 function UserInfoEditForm({userData,setEditState, setUserData}) {
   const [isNinknameCheck, setNinknameCheck] = useState(true);
@@ -12,6 +13,7 @@ function UserInfoEditForm({userData,setEditState, setUserData}) {
   const [nicknameError, setNicknameError] = useState('');
   const [nicknameSuccess, setNicknameSuccess] = useState('');
   const [birthdate, setBirthdate] = useState('');
+  const { setUserInfo } = useContext(LoginFunContext);
   let userdata = userData;
 
   useEffect(()=>{
@@ -83,6 +85,17 @@ function UserInfoEditForm({userData,setEditState, setUserData}) {
           };
           setUserData(updatedUserData)
           setEditState(false); 
+
+          call("/user/info", "GET")
+          .then((data) => {
+            setUserInfo(data);
+            navigate("/mypage");
+          })
+          .catch((error) => {
+            console.error("사용자 정보 가져오기 실패:", error);
+            return;
+          });
+          
       })
      
     } else if (nickname === '' && nickname !== userData.nickname) {

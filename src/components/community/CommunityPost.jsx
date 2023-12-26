@@ -21,8 +21,6 @@ import call from "../../pages/workspace/api";
 
 export default function CommunityPost() {
   const [data, setData] = useState([]);
-  console.log("데이타" + data);
-  console.log("총 페이지 수" + data.totalPages);
   const [loading, setLoading] = useState(true);
   const fadeIn = useFadeIn();
   const navigate = useNavigate();
@@ -83,7 +81,7 @@ export default function CommunityPost() {
       <div className={style.titleWrap}>
         <h1 className="textCenter title textBold">커뮤니티</h1>
         <p className="textCenter subTitle">
-          쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.
+          투표를 통해 여러분의 소소한 일상을 공유해주세요.
         </p>
       </div>
       <Search></Search>

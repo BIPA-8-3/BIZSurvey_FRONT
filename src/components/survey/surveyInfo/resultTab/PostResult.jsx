@@ -49,8 +49,7 @@ export default function PostResult({ sharedType, sharedId }) {
   const [processed, setProcessed] = useState([]);
 
   useEffect(() => {
-    console.log("sharedIdddddddddddd", sharedId);
-    if (sharedId && sharedId != 0) {
+    if (sharedId !== 0) {
       handleGetData();
     }
   }, [sharedId]);
@@ -116,9 +115,6 @@ export default function PostResult({ sharedType, sharedId }) {
     });
 
     setProcessed(processedData);
-
-    // 데이터 확인을 여기서 해도 됨
-    console.log("processed", processedData);
   };
 
   const handleChartData = (answers) => {
@@ -130,9 +126,7 @@ export default function PostResult({ sharedType, sharedId }) {
         name: answer.answer,
       };
       chartArr.push(data);
-      console.log("chart:", data);
     });
-    console.log("result", chartArr);
     return chartArr;
   };
 
@@ -143,7 +137,6 @@ export default function PostResult({ sharedType, sharedId }) {
       const { answer: text, count } = answer;
       textArr.push(...Array.from({ length: count }, () => text));
     });
-    console.log(textArr);
     return textArr;
   };
 
@@ -168,16 +161,9 @@ export default function PostResult({ sharedType, sharedId }) {
         </div>
       </>
     );
-  }
-
-  // if (processed.length === 0) {
-  //   console.log("prooooooooooooooooooo", processed.length);
-  //   return null;
-  // }
-
-  return (
-    <>
-      {processed.length !== 0 && sharedId != 0 ? (
+  } else {
+    return (
+      <>
         <div
           style={{
             width: "700px",
@@ -210,46 +196,46 @@ export default function PostResult({ sharedType, sharedId }) {
             </Button>
           </a>
         </div>
-      ) : null}
 
-      {survey.questions.map((question, index) => {
-        const matchingQuestion = processed.find(
-          (pro) => pro.questionId === question.questionId
-        );
+        {survey.questions.map((question, index) => {
+          const matchingQuestion = processed.find(
+            (pro) => pro.questionId === question.questionId
+          );
 
-        return (
-          <QuestionBox key={index}>
-            <QuestionTitle title={question.surveyQuestion} />
-            <OptionBox>
-              {matchingQuestion ? (
-                <>
-                  {(matchingQuestion.type === "SINGLE_CHOICE" ||
-                    matchingQuestion.type === "MULTIPLE_CHOICE") && (
-                    <Chart chartData={matchingQuestion.data} />
-                  )}
-                  {(matchingQuestion.type === "TEXT" ||
-                    matchingQuestion.type === "CALENDAR") && (
-                    <TextList values={matchingQuestion.data} />
-                  )}
-                  {matchingQuestion.type === "FILE" && (
-                    <FileList
-                      files={matchingQuestion.data}
-                      surveyId={survey.surveyId}
-                      questionId={question.questionId}
-                    />
-                  )}
-                </>
-              ) : (
-                <>
-                  <p style={{ fontSize: "14px", paddingTop: "10px" }}>
-                    질문에 대한 응답이 없습니다.
-                  </p>
-                </>
-              )}
-            </OptionBox>
-          </QuestionBox>
-        );
-      })}
-    </>
-  );
+          return (
+            <QuestionBox key={index}>
+              <QuestionTitle title={question.surveyQuestion} />
+              <OptionBox>
+                {matchingQuestion ? (
+                  <>
+                    {(matchingQuestion.type === "SINGLE_CHOICE" ||
+                      matchingQuestion.type === "MULTIPLE_CHOICE") && (
+                      <Chart chartData={matchingQuestion.data} />
+                    )}
+                    {(matchingQuestion.type === "TEXT" ||
+                      matchingQuestion.type === "CALENDAR") && (
+                      <TextList values={matchingQuestion.data} />
+                    )}
+                    {matchingQuestion.type === "FILE" && (
+                      <FileList
+                        files={matchingQuestion.data}
+                        surveyId={survey.surveyId}
+                        questionId={question.questionId}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <p style={{ fontSize: "14px", paddingTop: "10px" }}>
+                      질문에 대한 응답이 없습니다.
+                    </p>
+                  </>
+                )}
+              </OptionBox>
+            </QuestionBox>
+          );
+        })}
+      </>
+    );
+  }
 }

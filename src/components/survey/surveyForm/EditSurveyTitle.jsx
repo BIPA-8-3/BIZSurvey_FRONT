@@ -44,6 +44,7 @@ export default function EditSurveyTitle({
           <TextField
             id="standard-basic"
             placeholder={"설명"}
+            multiline
             inputProps={{
               style: {
                 fontSize: "14px",
@@ -51,7 +52,7 @@ export default function EditSurveyTitle({
                 marginTop: "10px",
               },
             }}
-            sx={{ width: 600 }}
+            sx={{ width: 600, marginBottom: "30px" }}
             value={content}
             onChange={(e) => changeSurveyContent(e.target.value)}
             variant="standard"

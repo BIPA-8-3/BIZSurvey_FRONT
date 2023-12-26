@@ -101,8 +101,6 @@ export const login = async (formData) => {
     const response = await axios.post(URI + "/login", formData)
 
     const headers = response.headers;
-    console.log("response: ", response);
-    console.log("header: ", headers);
 
     const authorization = headers["authorization"];
     const refreshAuthorization = headers["refreshauthorization"];
@@ -128,7 +126,9 @@ export const loginKaKaoCode = async (code) => {
     const response = await axios.get(URI + `/login/oauth2/code/kakao?code=${code}`)
     return response;
   }catch(error){
-    console.log(error)
+    if (error.response.data.errorCode === 403) {
+      alert(error.response.data.errorMessage);
+    }
   }
 }
 

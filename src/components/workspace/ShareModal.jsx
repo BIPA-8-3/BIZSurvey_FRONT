@@ -173,6 +173,7 @@ export default function ShareModal({ isOpen, onClose, survey, contactList, setLo
                           <SharedHistoryItem
                             key={history.id}
                             info={history}
+                            selectedHistory={selectedHistory}
                             setSelectedHistory={setSelectedHistory}
                           />
                         ));

@@ -36,14 +36,16 @@ export default function SurveyPostContainer() {
 
   // !!!!! 삭제 X !!!!!
   useEffect(() => {
-    acceptInvite();
+    if (userInfo && userInfo.email) {
+      acceptInvite();
+    }
   }, []);
   // !!!!!!!!!!!!!!!!!
 
   useEffect(() => {
     // inView가 true 일때만 실행한다.
     if (inView) {
-      console.log(inView, "무한 스크롤 요청 🎃");
+      
       dataFetch();
     }
   }, [inView]);
@@ -51,7 +53,7 @@ export default function SurveyPostContainer() {
   const fadeIn = useFadeIn();
 
   const dataFetch = () => {
-    console.log("토탈 페이지스" + data.totalPages);
+    
 
     if (page < data.totalPages || data.totalPages === undefined) {
       call(`/s-community?page=${page}`, "GET")
@@ -102,9 +104,7 @@ export default function SurveyPostContainer() {
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.titleWrap}>
         <h1 className="textCenter title textBold">설문 참여</h1>
-        <p className="textCenter subTitle">
-          쉽고 빠른 설문 플랫폼 어쩌고 저쩌고 입니다.
-        </p>
+        <p className="textCenter subTitle">설문에 참여하고 소중한 의견을 공유해주세요.</p>
       </div>
       <SCommunitySearch />
       <div style={{ textAlign: "right" }}>

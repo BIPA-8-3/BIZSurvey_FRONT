@@ -15,48 +15,15 @@ import BarChart from "../../../common/BarChart";
 export default function ScorePostResult({ sharedId, sharedType }) {
   const { survey } = useContext(SurveyContext);
 
-  //   const [survey, setSurvey] = useState({
-  //     surveyId: 0,
-  //     title: "",
-  //     content: "",
-  //     surveyType: "",
-  // questions: [
-  //   {
-  //     questionId: 0,
-  //     surveyQuestion: "",
-  //     answerType: "",
-  //     score: 0,
-  //     step: 0,
-  //     isRequired: false,
-  //     answers: [],
-  //   },
-  // ],
-  //   });
-
   // get data
-  const [result, setResult] = useState([
-    // {
-    //   questionId: 0,
-    //   title: "",
-    //   answers: [
-    //     {
-    //       answer: "1",
-    //       count: 0,
-    //       correct: "",
-    //     },
-    //   ],
-    // },
-  ]);
+  const [result, setResult] = useState([]);
 
   useEffect(() => {
-    if (sharedId) {
+    setResult([]);
+    if (sharedId !== 0) {
       handleGetData();
     }
   }, [sharedId]);
-
-  useEffect(() => {
-    console.log("여기: ", result);
-  }, [result]);
 
   const handleGetData = async () => {
     // 데이터 받아오는 곳
@@ -71,10 +38,8 @@ export default function ScorePostResult({ sharedId, sharedType }) {
           });
         break;
       case "EXTERNAL":
-        console.log(survey.surveyId);
         getSharedSurveyScoreResult(survey.surveyId, sharedId)
           .then((data) => {
-            console.log("asdf", data);
             setResult(data);
           })
           .catch((error) => {
@@ -82,12 +47,6 @@ export default function ScorePostResult({ sharedId, sharedType }) {
           });
         break;
     }
-  };
-
-  const handleDownloadExcel = () => {
-    call(`/survey/result/file/${sharedType}/${sharedId}`, "GET")
-      .then((data) => console.log(data))
-      .catch((error) => console.log(error));
   };
 
   if (sharedId === 0) {
@@ -111,50 +70,53 @@ export default function ScorePostResult({ sharedId, sharedType }) {
         </div>
       </>
     );
-  }
-
-  return (
-    <>
-      <div
-        style={{
-          width: "700px",
-          margin: "0 auto",
-          textAlign: "right",
-          marginBottom: "3px",
-        }}
-      >
-        <a
-          href={getURI() + "/survey/result/file/" + sharedType + "/" + sharedId}
+  } else {
+    return (
+      <>
+        <div
+          style={{
+            width: "700px",
+            margin: "0 auto",
+            textAlign: "right",
+            marginBottom: "3px",
+          }}
         >
-          <Button
-            // onClick={handleDownloadExcel}
-            variant="text"
-            startIcon={<IoMdDownload />}
-            sx={[
-              {
-                color: "#0171d1",
-              },
-              {
-                ":hover": {
-                  backgroundColor: "#f5fbff",
-                },
-              },
-            ]}
+          <a
+            href={
+              getURI() + "/survey/result/file/" + sharedType + "/" + sharedId
+            }
           >
-            엑셀 다운받기
-          </Button>
-        </a>
-      </div>
-      {result.map((question, index) => {
-        return (
-          <QuestionBox key={index} score>
-            <QuestionTitle title={question.title} />
-            <OptionBox>
-              <BarChart chartData={question.answers} />
-            </OptionBox>
-          </QuestionBox>
-        );
-      })}
-    </>
-  );
+            <Button
+              // onClick={handleDownloadExcel}
+              variant="text"
+              startIcon={<IoMdDownload />}
+              sx={[
+                {
+                  color: "#0171d1",
+                },
+                {
+                  ":hover": {
+                    backgroundColor: "#f5fbff",
+                  },
+                },
+              ]}
+            >
+              엑셀 다운받기
+            </Button>
+          </a>
+        </div>
+
+        {result.map((question, index) => {
+          return (
+            <QuestionBox key={index} score>
+              <QuestionTitle title={question.title} />
+              <OptionBox>
+                <BarChart chartData={question.answers} />
+              </OptionBox>
+            </QuestionBox>
+          );
+        })}
+      </>
+    );
+  }
 }

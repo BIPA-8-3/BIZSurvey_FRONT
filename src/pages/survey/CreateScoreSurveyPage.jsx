@@ -107,12 +107,16 @@ export default function CreateScoreSurveyPage() {
 
   // 질문 삭제
   const deleteQuestion = (id) => {
-    setQuestions((pre) => {
-      const result = pre
-        .filter((question, index) => index !== id)
-        .map((question, index) => ({ ...question }));
-      return result;
-    });
+    if (questions.length > 1) {
+      setQuestions((pre) => {
+        const result = pre
+          .filter((question, index) => index !== id)
+          .map((question, index) => ({ ...question }));
+        return result;
+      });
+    } else {
+      return;
+    }
   };
 
   // 옵션추가
@@ -244,7 +248,7 @@ export default function CreateScoreSurveyPage() {
 
   return (
     <>
-      <div className={style.container}>
+      <div className={style.container} style={{ paddingBottom: "30px" }}>
         <div className={style.wrapContent}>
           {/* 설문지 제목  */}
           <EditSurveyTitle

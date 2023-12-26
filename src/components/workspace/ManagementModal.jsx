@@ -54,9 +54,6 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues, i
   // 관리자 검색
   const [adminSearchKeyword, setAdminSearchKeyword] = useState("");
 
-  // [admin] input state
-  const [adminSearchList, setAdminSearchList] = useState([]);
-
   const userInfo = useContext(LoginContext);
 
   ///////////////////////////////////////////////////////////////
@@ -224,7 +221,7 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues, i
   };
 
   // 관리자 삭제 메소드
-  const handleClickRemoveAdminBtn = (id, inviteFlag) => {
+  const handleClickRemoveAdminBtn = (id, userId) => {
     if (id === -1) {
       alert("초대메일 전송중 입니다. 잠시후에 다시 시도해주세요");
       return;
@@ -232,8 +229,9 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues, i
 
     removeAdmin(id)
       .then((data) => {
+        console.log("d여기여기여ㅣ겨");
         console.log(data);
-        if (!inviteFlag) {
+        if (!userId) {
           let copy = adminWaitList.filter((admin) => admin.id !== id);
           setAdminWaitList(copy);
         } else {
@@ -244,6 +242,14 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues, i
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleOnKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.stopPropagation();
+      e.preventDefault();
+      handleClickInviteBtn(e); // Enter 입력이 되면 클릭 이벤트 실행
+    }
   };
 
   return ReactDOM.createPortal(
@@ -284,6 +290,7 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues, i
                     placeholder="사용자, 이메일 추가"
                     value={email}
                     onChange={handleChangeEmail}
+                    onKeyDown={handleOnKeyPress}
                     required
                   />
                   <button className={style.button} onClick={(e) => handleClickInviteBtn(e)}>

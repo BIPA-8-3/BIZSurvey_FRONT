@@ -33,11 +33,19 @@ export default function FileOption({
 }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const MAX_FILE_SIZE_MB = 5;
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     let url = "";
 
+    // 파일 크기 제한
+    const fileSizeMB = file.size / (1024 * 1024);
+    if (file && fileSizeMB > MAX_FILE_SIZE_MB) {
+      alert("파일 크기는 5MB를 초과할 수 없습니다.");
+      event.target.value = null;
+      return;
+    }
     if (file === undefined) {
       return;
     }
@@ -82,6 +90,7 @@ export default function FileOption({
       const response = await axios.delete(
         getURI() + "/storage/file/" + fileAnswer[0].url
       );
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
