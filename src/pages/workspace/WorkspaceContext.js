@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { checkPermissions } from './api';
+import SSEComponent from '../../components/workspace/SSEComponent';
 
 const WorkspaceContext = createContext();
 
@@ -73,7 +74,10 @@ export const WorkspaceProvider = ({ children }) => {
             setSelectedSurveyId,
             isPersonal,
         }}>
-            {children}
+            <>
+                {<SSEComponent />}
+                {children}
+            </>
         </WorkspaceContext.Provider >
     )
 }

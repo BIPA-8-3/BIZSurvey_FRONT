@@ -130,6 +130,7 @@ export default function Main() {
   const getAdminState = () => {
     getAdminList(selectedWorkspaceId)
       .then((data) => {
+        console.log(data);
         if (!data.owner) {
           setOwner({});
         } else {
