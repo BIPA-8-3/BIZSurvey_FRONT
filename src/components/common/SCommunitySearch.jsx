@@ -69,10 +69,11 @@ function SCommunitySearch() {
  
 
   const searchPosts = () => {
+    const encodedKeyword = encodeURIComponent(title);
     
-      call(`/s-community/search?keyword=${title}`, "GET")
+      call(`/s-community/search?keyword=${encodedKeyword}`, "GET")
       .then((data) => {        
-        let postData = {keyword:title, result:data}    
+        let postData = {keyword:encodedKeyword, result:data}    
         navigate('/surveyCommunitySearchResult', {state: postData})      
       })
       .catch((error) => {
@@ -82,14 +83,13 @@ function SCommunitySearch() {
   };
 
   const clickSearchPosts = (e) => {
+    const encodedKeyword = encodeURIComponent(e);
     setTitle(e)
 
-    axios
-      .get(`http://localhost:8080/s-community/search?keyword=${e}`)
-      .then((response) => {
-        let data = { keyword: e, result: response.data };
-        setTitle(e)
-        navigate('/surveyCommunitySearchResult', { state: data });
+    call(`/s-community/search?keyword=${encodedKeyword}`, "GET")
+      .then((data) => {        
+        let postData = {keyword:encodedKeyword, result:data}    
+        navigate('/surveyCommunitySearchResult', {state: postData})      
       })
       .catch((error) => {
         console.error("Error searching posts:", error);

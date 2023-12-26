@@ -32,7 +32,7 @@ export default function VoteWrite({ postId, voteId, setSubmit }) {
   });
   const [loading, setLoading] = useState(false);
 
-  console.log("(투표)postId : " + pId + " (투표)voteId" + vId);
+  
 
   const [value, setValue] = React.useState({ selectedKey: 0 });
   const handleChange = (event) => {
@@ -40,7 +40,7 @@ export default function VoteWrite({ postId, voteId, setSubmit }) {
 
     const selectKey = event.target.value;
 
-    console.log("(확인)selectKey" + selectKey);
+    
 
     setValue({ selectedKey: selectKey }); // 선택된 값을 변수에 설정 ;
   };
@@ -77,8 +77,7 @@ export default function VoteWrite({ postId, voteId, setSubmit }) {
           `/community/${pId}/showVoteAnswer/${vId}`,
           "GET"
         );
-        console.log("여기투표데이터!!!!!!!!!", response);
-
+        
         setVoteData(response);
       } catch (error) {
         console.error("Error fetching data:", error);
