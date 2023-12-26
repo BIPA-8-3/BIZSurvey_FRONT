@@ -2,7 +2,6 @@
   "name": "bizsurvey_front",
   "version": "0.1.0",
   "private": true,
-
   "dependencies": {
     "@babel/runtime": "^7.23.4",
     "@emotion/react": "^11.11.1",
@@ -21,6 +20,7 @@
     "draft-js": "^0.11.7",
     "echarts": "^5.4.3",
     "echarts-for-react": "^3.0.2",
+    "event-source-polyfill": "^1.0.31",
     "lazysizes": "^5.3.2",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",

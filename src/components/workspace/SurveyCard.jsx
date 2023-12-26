@@ -13,6 +13,7 @@ export default function SurveyCard({
 }) {
   const { type, surveyId, title } = survey;
   const cotainerRef = useRef(null);
+  const cotainerRef2 = useRef(null);
 
   const handleClickCard = (id) => {
     setSelectedSurveyId(id);
@@ -52,8 +53,10 @@ export default function SurveyCard({
       id={style.Container}
       ref={cotainerRef}
       onClick={(e) => {
-        e.preventDefault();
-        handleClickCard(surveyId);
+        // e.stopPropagation();
+        if (e.target.tagName !== "svg") {
+          handleClickCard(surveyId);
+        }
       }}
     >
       <div className={style.cardHeader}>
@@ -62,8 +65,9 @@ export default function SurveyCard({
           <div>
             <BiDotsHorizontalRounded
               className={style.optionBtn}
+              ref={cotainerRef2}
               onClick={(e) => {
-                e.stopPropagation();
+                // e.stopPropagation();
                 toggleMenu();
               }}
             />

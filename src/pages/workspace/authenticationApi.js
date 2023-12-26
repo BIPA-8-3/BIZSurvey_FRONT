@@ -22,10 +22,10 @@ export const acceptInvite = () => {
     }
     call(`${adminURI}`, "POST", request)
         .then((data) => {
-            console.log(data);
         })
         .catch((error) => {
-            console.log(error.response);
+            console.error(error);
+            error && error.response && error.response.data && alert(error.response.data);
         })
         .finally(() => {
             sessionStorage.removeItem("INVITE_TOKEN");
