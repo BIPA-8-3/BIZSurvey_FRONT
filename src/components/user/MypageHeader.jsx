@@ -45,7 +45,9 @@ function MypageHeader({ userData }) {
         
           const profileImageUrl = data;
           // Delete the old profile image
+
           if (!userData.profile == '' || !userData.profil == null) {
+
             await call(`/storage/file/${userData.profile}`, "DELETE").then((data) => {
               console.log(data);
             });
