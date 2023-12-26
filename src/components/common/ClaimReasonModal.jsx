@@ -9,7 +9,7 @@ const ClaimReasonModal = ({ onSelect, onClose, props, id }) => {
   const type = props;
   const seltedId = id;
 
-  alert("신고 당할 예정인 ~"+id)
+  
 
   const claimReasons = [
     "스팸홍보/도배글",
@@ -30,11 +30,11 @@ const ClaimReasonModal = ({ onSelect, onClose, props, id }) => {
   };
 
   const handleApply = () => {
-    // 선택한 이유를 배열에 담아서 전달
+    
     const selectedReasons = selectedReason ? selectedReason : '';
     onSelect(selectedReasons);
     onClose();
-    alert("선택된 이유"+JSON.stringify(selectedReasons))
+    
 
     let selctedType = null;
     if(type === 'post'){
@@ -51,11 +51,11 @@ const ClaimReasonModal = ({ onSelect, onClose, props, id }) => {
       claimType : selctedType
     }
 
-    alert(JSON.stringify(data))
+   
 
     call("/claim/accept", "POST", data)
     .then((data) => {
-      alert("넘어온 데이터 : " + data)
+      alert(data)
     }).catch((error) => {
       console.log(error)
     })

@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 function CommunityTable({props}) {
   
   const data = Array.isArray(props) ? props : [];
-  console.log(data)
+ 
 
   function renderIsBest(isBest){
     if(isBest !== null){
@@ -44,7 +44,6 @@ function CommunityTable({props}) {
       return logo;
     }else{
       let prefix = "https://";
-      console.log("프로필 : " + prefix + profile)
       return prefix + profile;
     }
   }

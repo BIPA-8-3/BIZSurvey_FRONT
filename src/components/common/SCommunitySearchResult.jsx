@@ -65,7 +65,6 @@ function SurveyCommunitySearchResult() {
   useEffect(() => {
     // inView가 true 일때만 실행한다.
     if (inView) {
-      console.log(inView, "무한 스크롤 요청 🎃");
       dataFetch();
     }
   }, [inView, page, keyword]);

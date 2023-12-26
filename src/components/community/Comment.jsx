@@ -14,7 +14,7 @@ export default function Comment({props}) {
   const userInfo = useContext(LoginContext);
   let postId = props.postId;
   let type = props.type;
-  console.log("게시물 타입이야 : " + type)
+  
 
   const navigate = useNavigate();
 

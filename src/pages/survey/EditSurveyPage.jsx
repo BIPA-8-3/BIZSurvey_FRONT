@@ -39,9 +39,10 @@ export default function EditSurveyPage() {
 
   // effect
   useEffect(() => {
-    console.log(surveyId);
     handleGetSurvey(surveyId);
   }, []);
+
+  useEffect(() => {}, [questions]);
 
   // functions
   const handleGoBack = () => {
@@ -101,45 +102,27 @@ export default function EditSurveyPage() {
       alert("중복 답변은 입력할 수 없습니다.");
       return;
     }
-    const { createQuestion, updateQuestion } = questions.reduce(
-      (acc, question, index) => {
-        const { questionId, ...rest } = {
-          ...question,
-          step: index + 1,
-          answers:
-            question.answerType === "SINGLE_CHOICE" || question.answerType === "MULTIPLE_CHOICE"
-              ? question.answers
-              : [],
-        };
 
-        if (questionId === 0) {
-          acc.createQuestion.push(rest);
-        } else {
-          acc.updateQuestion.push({
-            ...question,
-            step: index + 1,
-            answers:
-              question.answerType === "SINGLE_CHOICE" || question.answerType === "MULTIPLE_CHOICE"
-                ? question.answers
-                : [],
-          });
-        }
-
-        return acc;
-      },
-      { createQuestion: [], updateQuestion: [] }
-    );
+    const questionData = questions.map((question, index) => ({
+      ...question,
+      step: index + 1,
+      answers:
+        question.answerType === "SINGLE_CHOICE" ||
+        question.answerType === "MULTIPLE_CHOICE"
+          ? question.answers.map((answer, answerIndex) => ({
+              surveyAnswer: answer.surveyAnswer,
+              step: answerIndex + 1,
+            }))
+          : [],
+    }));
 
     const surveyData = {
       ...formData,
-      questions: undefined, // questions 필드 없애기
-      updateQuestions: updateQuestion,
-      createQuestions: createQuestion,
+      questions: questionData,
     };
 
     await call(`/survey/${surveyId}`, "PATCH", surveyData)
       .then((response) => {
-        console.log(response);
         alert(response);
         navigate("/workspace/info");
       })
@@ -185,12 +168,16 @@ export default function EditSurveyPage() {
 
   // 질문 삭제
   const deleteQuestion = (id) => {
-    setQuestions((pre) => {
-      const result = pre
-        .filter((question, index) => index !== id)
-        .map((question, index) => ({ ...question }));
-      return result;
-    });
+    if (questions.length > 1) {
+      setQuestions((pre) => {
+        const result = pre
+          .filter((question, index) => index !== id)
+          .map((question, index) => ({ ...question }));
+        return result;
+      });
+    } else {
+      return;
+    }
   };
 
   // 질문 추가
@@ -220,7 +207,9 @@ export default function EditSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id ? { ...question, isRequired: !question.isRequired } : question
+        index === id
+          ? { ...question, isRequired: !question.isRequired }
+          : question
       );
       return result;
     });
@@ -313,7 +302,11 @@ export default function EditSurveyPage() {
                 className={style.questionList}
               >
                 {questions.map((questionData, index) => (
-                  <Draggable key={index} draggableId={`question-${index}`} index={index}>
+                  <Draggable
+                    key={index}
+                    draggableId={`question-${index}`}
+                    index={index}
+                  >
                     {(provided) => (
                       <div ref={provided.innerRef} {...provided.draggableProps}>
                         <div className={style.question}>

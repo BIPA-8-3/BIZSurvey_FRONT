@@ -1,10 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import call from "../../../../pages/workspace/api";
 import { SurveyContext } from "../../../../pages/survey/SurveyInfoPage";
-import {
-  getPersonalResult,
-  getSharedContactList,
-} from "../../../../pages/workspace/api";
+import { getPersonalResult, getSharedContactList } from "../../../../pages/workspace/api";
 import ChoiceField from "../../fields/ChoiceField";
 import QuestionBox from "../QuestionBox";
 import QuestionTitle from "../QuestionTitle";
@@ -25,10 +22,6 @@ export default function PersonalResult({ sharedType, sharedId }) {
     // },
   ]);
   const [answers, setAnswers] = useState([]);
-
-  useEffect(() => {
-    console.log("userrrrrrrrrr", user);
-  }, [user]);
 
   useEffect(() => {
     // 설문 게시물 참가자 목록
@@ -72,7 +65,7 @@ export default function PersonalResult({ sharedType, sharedId }) {
         case "EXTERNAL":
           getSharedContactList(sharedId)
             .then((data) => {
-              setUserList(data);
+              setUserList(data.filter((user) => user.response > 0));
             })
             .catch((error) => {
               console.log(error);
@@ -128,17 +121,40 @@ export default function PersonalResult({ sharedType, sharedId }) {
     );
   }
 
-  if (user === 0) {
+  if (userList.length > 0) {
+    if (user === 0) {
+      return (
+        <>
+          <UserList userList={userList} setUser={handleSetUser} sharedType={sharedType} />
+          <div
+            style={{
+              width: "700px",
+              margin: "0 auto",
+              textAlign: "center",
+              height: "300px",
+              justifyContent: "center",
+              alignItems: "center",
+              lineHeight: "300px",
+              fontSize: "15pt",
+              fontStyle: "italic",
+              color: "#d6d6d6",
+            }}
+          >
+            <p>응답자를 선택해주세요.</p>
+          </div>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <UserList userList={userList} setUser={handleSetUser} sharedType={sharedType} />
+          {createAnswerItem(questions, answers)}
+        </>
+      );
+    }
+  } else {
     return (
       <>
-        {userList.length !== 0 ? (
-          <UserList
-            userList={userList}
-            setUser={handleSetUser}
-            sharedType={sharedType}
-          />
-        ) : null}
-
         <div
           style={{
             width: "700px",
@@ -153,19 +169,8 @@ export default function PersonalResult({ sharedType, sharedId }) {
             color: "#d6d6d6",
           }}
         >
-          <p>응답자를 선택해주세요.</p>
+          <p>응답자가 존재하지 않습니다.</p>
         </div>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <UserList
-          userList={userList}
-          setUser={handleSetUser}
-          sharedType={sharedType}
-        />
-        {createAnswerItem(questions, answers)}
       </>
     );
   }
@@ -173,9 +178,7 @@ export default function PersonalResult({ sharedType, sharedId }) {
 
 function createAnswerItem(questions, answers) {
   return questions.map((question, index) => {
-    const matchingQuestion = answers.find(
-      (ans) => ans.questionId === question.questionId
-    );
+    const matchingQuestion = answers.find((ans) => ans.questionId === question.questionId);
     return (
       <>
         <QuestionBox key={index}>
@@ -190,9 +193,7 @@ function createAnswerItem(questions, answers) {
                       key={index}
                       single
                       text={answer.surveyAnswer}
-                      select={matchingQuestion.answer.includes(
-                        answer.surveyAnswer
-                      )}
+                      select={matchingQuestion.answer.includes(answer.surveyAnswer)}
                     />
                   ))}
 
@@ -202,26 +203,19 @@ function createAnswerItem(questions, answers) {
                     <ChoiceField
                       key={index}
                       text={answer.surveyAnswer}
-                      select={matchingQuestion.answer.includes(
-                        answer.surveyAnswer
-                      )}
+                      select={matchingQuestion.answer.includes(answer.surveyAnswer)}
                     />
                   ))}
 
-                {(question.answerType === "TEXT" ||
-                  question.answerType === "CALENDAR") &&
+                {(question.answerType === "TEXT" || question.answerType === "CALENDAR") &&
                   matchingQuestion.answerType !== "FILE" &&
                   matchingQuestion.answer.map((answer, index) => (
                     <Text key={index} value={answer} personal />
                   ))}
 
-                {question.answerType === "FILE" &&
-                  matchingQuestion.answerType === "FILE" && (
-                    <File
-                      filename={matchingQuestion.answer[0]}
-                      url={matchingQuestion.url}
-                    />
-                  )}
+                {question.answerType === "FILE" && matchingQuestion.answerType === "FILE" && (
+                  <File filename={matchingQuestion.answer[0]} url={matchingQuestion.url} />
+                )}
               </>
             ) : (
               <>

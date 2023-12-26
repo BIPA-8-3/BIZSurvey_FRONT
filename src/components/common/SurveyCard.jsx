@@ -23,7 +23,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function SurveyCard({ data }) {
   useEffect(() => {
-    console.log("여기야!!!!!!!!!!!!!!!!!!!!", data);
+    
   }, [data]);
 
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -50,7 +50,7 @@ function SurveyCard({ data }) {
       return logo;
     } else {
       let prefix = "https://";
-      console.log("프로필 : " + prefix + profile);
+      
       return prefix + profile;
     }
   }

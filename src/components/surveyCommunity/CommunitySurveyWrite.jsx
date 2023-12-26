@@ -67,7 +67,6 @@ export default function CommunityPost() {
   }, []);
 
   useEffect(() => {
-    console.log("postID", postId);
     if (postId != 0) {
       call("/s-community/survey/" + postId, "GET")
         .then((data) => {
@@ -111,7 +110,6 @@ export default function CommunityPost() {
 
   const handleSubmitAnswer = async () => {
     const res = handleCheckAnswer();
-    console.log("확인.........", postId);
     if (!res) {
       alert("필수 질문에 응답해주세요.");
       return;

@@ -10,6 +10,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import call from "../workspace/api";
 import { useWorkspaceContext } from "../workspace/WorkspaceContext";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function CreateSurveyPage() {
   const { selectedWorkspaceId } = useWorkspaceContext();
@@ -47,7 +48,6 @@ export default function CreateSurveyPage() {
     const items = [...questions];
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-
     setQuestions(items);
   };
 
@@ -62,7 +62,8 @@ export default function CreateSurveyPage() {
       ...question,
       step: index + 1,
       answers:
-        question.answerType === "SINGLE_CHOICE" || question.answerType === "MULTIPLE_CHOICE"
+        question.answerType === "SINGLE_CHOICE" ||
+        question.answerType === "MULTIPLE_CHOICE"
           ? question.answers.map((answer, answerIndex) => ({
               ...answer,
               step: answerIndex + 1,
@@ -71,10 +72,8 @@ export default function CreateSurveyPage() {
     }));
     const surveyData = { ...formData };
     surveyData.questions = questionData;
-    console.log(surveyData);
     call("/survey/" + selectedWorkspaceId, "POST", surveyData).then((data) => {
       navigate("/workspace");
-      console.log("저장 완료, ", data);
     });
   };
 
@@ -122,12 +121,16 @@ export default function CreateSurveyPage() {
 
   // 질문 삭제
   const deleteQuestion = (id) => {
-    setQuestions((pre) => {
-      const result = pre
-        .filter((question, index) => index !== id)
-        .map((question, index) => ({ ...question }));
-      return result;
-    });
+    if (questions.length > 1) {
+      setQuestions((pre) => {
+        const result = pre
+          .filter((question, index) => index !== id)
+          .map((question, index) => ({ ...question }));
+        return result;
+      });
+    } else {
+      return;
+    }
   };
 
   // 옵션 변경
@@ -144,7 +147,9 @@ export default function CreateSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id ? { ...question, isRequired: !question.isRequired } : question
+        index === id
+          ? { ...question, isRequired: !question.isRequired }
+          : question
       );
       return result;
     });
@@ -229,9 +234,16 @@ export default function CreateSurveyPage() {
                   className={style.questionList}
                 >
                   {questions.map((questionData, index) => (
-                    <Draggable key={index} draggableId={`question-${index}`} index={index}>
+                    <Draggable
+                      key={index}
+                      draggableId={`question-${index}`}
+                      index={index}
+                    >
                       {(provided) => (
-                        <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                        >
                           <div className={style.question}>
                             <QuestionComp
                               key={index}

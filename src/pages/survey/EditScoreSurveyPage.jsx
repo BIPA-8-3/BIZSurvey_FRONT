@@ -51,7 +51,6 @@ export default function EditScoreSurveyPage() {
     if (id !== 0) {
       setSurveyId(id);
     }
-    console.log(surveyId);
   }, []);
 
   useEffect(() => {
@@ -109,7 +108,6 @@ export default function EditScoreSurveyPage() {
       }
 
       setQuestions(newArr);
-      console.log(data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -123,33 +121,41 @@ export default function EditScoreSurveyPage() {
       return;
     }
 
-    const { createQuestion, updateQuestion } = questions.reduce(
-      (acc, question, index) => {
-        const { questionId, ...rest } = {
-          ...question,
-          step: index + 1,
-        };
+    // const { createQuestion, updateQuestion } = questions.reduce(
+    //   (acc, question, index) => {
+    //     const { questionId, ...rest } = {
+    //       ...question,
+    //       step: index + 1,
+    //     };
 
-        if (questionId === 0) {
-          acc.createQuestion.push(rest);
-        } else {
-          acc.updateQuestion.push({
-            ...question,
-            step: index + 1,
-          });
-        }
+    //     if (questionId === 0) {
+    //       acc.createQuestion.push(rest);
+    //     } else {
+    //       acc.updateQuestion.push({
+    //         ...question,
+    //         step: index + 1,
+    //       });
+    //     }
 
-        return acc;
-      },
-      { createQuestion: [], updateQuestion: [] }
-    );
+    //     return acc;
+    //   },
+    //   { createQuestion: [], updateQuestion: [] }
+    // );
+
+    const questionData = questions.map((question, index) => ({
+      ...question,
+      step: index + 1,
+      answers: question.answers.map((answer, answerIndex) => ({
+        surveyAnswer: answer.surveyAnswer,
+        step: answerIndex + 1,
+        correct: answer.correct,
+      })),
+    }));
 
     const surveyData = {
       ...formData,
       surveyType: "SCORE",
-      questions: undefined, // questions 필드 없애기
-      updateQuestions: updateQuestion,
-      createQuestions: createQuestion,
+      questions: questionData,
     };
 
     await call(`/survey/${surveyId}`, "PATCH", surveyData)
@@ -182,12 +188,16 @@ export default function EditScoreSurveyPage() {
 
   // 질문 삭제
   const deleteQuestion = (id) => {
-    setQuestions((pre) => {
-      const result = pre
-        .filter((question, index) => index !== id)
-        .map((question, index) => ({ ...question }));
-      return result;
-    });
+    if (questions.length > 1) {
+      setQuestions((pre) => {
+        const result = pre
+          .filter((question, index) => index !== id)
+          .map((question, index) => ({ ...question }));
+        return result;
+      });
+    } else {
+      return;
+    }
   };
 
   // 질문 추가
@@ -218,7 +228,9 @@ export default function EditScoreSurveyPage() {
   const changeRequired = (id) => {
     setQuestions((pre) => {
       const result = pre.map((question, index) =>
-        index === id ? { ...question, isRequired: !question.isRequired } : question
+        index === id
+          ? { ...question, isRequired: !question.isRequired }
+          : question
       );
       return result;
     });
@@ -346,9 +358,16 @@ export default function EditScoreSurveyPage() {
                   className={style.questionList}
                 >
                   {questions.map((questionData, index) => (
-                    <Draggable key={index} draggableId={`question-${index}`} index={index}>
+                    <Draggable
+                      key={index}
+                      draggableId={`question-${index}`}
+                      index={index}
+                    >
                       {(provided) => (
-                        <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                        >
                           <div className={style.question}>
                             <ScoreQuestion
                               answerPass={setAnswerPass}

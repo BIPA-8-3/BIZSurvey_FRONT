@@ -53,14 +53,6 @@ export default function ResultView() {
     }
   }, [survey]);
 
-  useEffect(() => {
-    if (isPersonal) {
-      //개별 응답 api 요청
-    } else {
-      //게시물 통계 api 요청
-    }
-  }, [isPersonal]);
-
   const handleChangeTab = (e, num) => {
     e.preventDefault();
     setIsPersonal(num);
