@@ -24,9 +24,9 @@ export default function SearchResultTable() {
   const location = useLocation();
 
   let keyword = location.state.keyword;
+  const decodedKeyword = decodeURIComponent(keyword);
+
   let result = location.state.result;
-  console.log("키워드드ㅡ드드드드드" + JSON.stringify(keyword));
-  console.log(JSON.stringify(result));
 
   const fadeIn = useFadeIn();
   const [data, setData] = useState({});
@@ -50,7 +50,7 @@ export default function SearchResultTable() {
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.titleWrap}>
-        <h1 className="textCenter title textBold">'{keyword}' 검색 결과</h1>
+        <h1 className="textCenter title textBold">'{decodedKeyword}' 검색 결과</h1>
         <p className="textCenter subTitle">
           투표를 통해 여러분의 소소한 일상을 공유해주세요.
         </p>

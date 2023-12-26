@@ -57,23 +57,20 @@ export default function CommunityWrite() {
 
   useEffect(() => {
     return () => {
-      console.log("temp : " + JSON.stringify(tempUrlList));
-  
-      // 각 아이템을 객체로 감싸서 새로운 배열 생성
+     
+
       const mappedArray = tempUrlList.map(fileName => ({ fileName }));
   
-      console.log(mappedArray);
-      deleteSrcArray.push(...mappedArray); // spread 연산자를 사용하여 배열 확장
-      console.log("뒤로가기 삭제 : " + JSON.stringify(deleteSrcArray));
+      deleteSrcArray.push(...mappedArray);  
   
       call("/storage/multiple/files/", "POST", deleteSrcArray)
-        .then((data) => console.log(data))
-        .catch((error) => console.log(error));
+        .then()
+        .catch();
     };
   }, []);
 
   useEffect(() => {
-    console.log("Content 값이 변경되었습니다:", content);
+    
     if (prevContent !== content) {
       handleContentChange();
     }
@@ -143,8 +140,7 @@ export default function CommunityWrite() {
   }, []);
 
   useEffect(() => {
-    console.log(postId, "postId야");
-    // 데이터를 가져오는 비동기 함수
+   
     const fetchData = async () => {
       try {
         call("/s-community/survey/list", "GET")
@@ -170,7 +166,7 @@ export default function CommunityWrite() {
   }, [postId]);
 
   useEffect(() => {
-    console.log(data);
+   
     if (data.length > 0 && surveyId !== 0) {
       const surveyData = data.find((dt) => dt.surveyId === surveyId);
       setSurvey(surveyData);
@@ -221,13 +217,10 @@ export default function CommunityWrite() {
       }
 
 
-    // 파일 선택 후의 로직을 처리합니다.
-    console.log("Selected File:", file); // 넘겨받은 이미지
-
     const formData = new FormData();
-    formData.append("file", file); // formData는 키-밸류 구조
+    formData.append("file", file); 
     formData.append("domain", "SURVEY_THUMB");
-    // 백엔드 multer라우터에 이미지를 보낸다.
+    
 
     try {
       setLoading(true); //
@@ -240,10 +233,10 @@ export default function CommunityWrite() {
           },
         }
       );
-      console.log("성공 시, 백엔드가 보내주는 데이터", result.data);
+    
       const HEAD_IMG_URL = "https://";
       const IMG_URL = HEAD_IMG_URL + result.data;
-      console.log(IMG_URL);
+      
       setSelectedFile(IMG_URL);
     } catch (error) {
       console.log("실패했어요ㅠ");
@@ -471,13 +464,11 @@ export default function CommunityWrite() {
   // 시작일 관리
   const handleDateChange = (event) => {
     setSelectedStartDate(event.target.value);
-    console.log("시작일 : " + JSON.stringify(event.target.value));
   };
 
   // 종료일 관리
   const handleEndDateChange = (event) => {
     setSelectedEndDate(event.target.value);
-    console.log("종료일 : " + JSON.stringify(event.target.value));
   };
 
   return (

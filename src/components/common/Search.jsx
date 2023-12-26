@@ -23,7 +23,7 @@ function Search() {
         );
         const nextIndex = (currentIndex + 1) % findTitles.length;
         setSelectedItem(findTitles[nextIndex].result);
-        console.log("test " + findTitles[nextIndex].result)
+        
       }
     } else if (e.keyCode === 38) {
       if (findTitles.length > 0) {
@@ -33,7 +33,7 @@ function Search() {
         const prevIndex =
           currentIndex === 0 ? findTitles.length - 1 : currentIndex - 1;
         setSelectedItem(findTitles[prevIndex].result);
-        console.log("test2 " + findTitles[prevIndex].result)
+        
       }
     }else if (e.keyCode === 13) {
       if (selectedItem) {
@@ -59,8 +59,8 @@ function Search() {
         keyword: e.target.value,
       })
       .then((data) => {
-        console.log("Search Result:", data);
-        setFindTitles(data); // Update the search results state
+        
+        setFindTitles(data); 
       })
       .catch((error) => {
         console.error("Error searching posts:", error);
@@ -70,34 +70,29 @@ function Search() {
  
 
   const searchPosts = () => {
-    
-      call(`/community/search?keyword=${title}`, "GET")
-      .then((data) => {
-        console.log("검색 결과!!!!(<Search />):", data);
-        
-        console.log(data);
-        
-        let newData = {keyword:title, result:data}
 
-        console.log( "보내는 데이터 : "+JSON.stringify(newData))
-        
-        navigate('/communitySearchResult', {state: newData}) 
-        
+    const encodedKeyword = encodeURIComponent(title);
+    
+    call(`/community/search?keyword=${encodedKeyword}`, "GET")
+      .then((data) => {
+        let newData = { keyword: encodedKeyword, result: data };
+        navigate("/communitySearchResult", { state: newData });
       })
       .catch((error) => {
-        console.error("Error searching posts:", error);
+        console.error("게시물 검색 중 오류 발생:", error);
+      })
+      .finally(() => {
+        
       });
-      console.log('--------------------------------------------------')
-      console.log(searchResults.data)
-      
   };
 
   const clickSearchPosts = (e) => {
     setTitle(e)
+    const encodedKeyword = encodeURIComponent(e);
 
-      call(`/community/search?keyword=${e}`, "GET")
+      call(`/community/search?keyword=${encodedKeyword}`, "GET")
       .then((data) => {
-        let newData = { keyword: e, result: data };
+        let newData = { keyword: encodedKeyword, result: data };
         setTitle(e)
         navigate('/communitySearchResult', { state: newData });
       })

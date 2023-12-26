@@ -32,9 +32,10 @@ function SurveyCommunitySearchResult() {
   });
   const [keyword, setKeyword] = useState("");
   const location = useLocation();
-
+  let decodedKeyword = decodeURIComponent(location.state.keyword);
   useEffect(() => {
     const newKeyword = location.state.keyword;
+   
     setKeyword(newKeyword);
 
     // 새로운 검색어를 받지 않으면 데이터 초기화하지 않음
@@ -65,7 +66,6 @@ function SurveyCommunitySearchResult() {
   useEffect(() => {
     // inView가 true 일때만 실행한다.
     if (inView) {
-      console.log(inView, "무한 스크롤 요청 🎃");
       dataFetch();
     }
   }, [inView, page, keyword]);
@@ -74,7 +74,7 @@ function SurveyCommunitySearchResult() {
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.titleWrap}>
-        <h1 className="textCenter title textBold">'{keyword}' 검색 결과</h1>
+        <h1 className="textCenter title textBold">'{decodedKeyword}' 검색 결과</h1>
         <p className="textCenter subTitle">
           설문에 참여하고 소중한 의견을 공유해주세요.
         </p>

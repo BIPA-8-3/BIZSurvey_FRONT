@@ -16,12 +16,6 @@ export default function EdditComment({props}) {
   let type = props.type;
   let commentId = props.commentId;
 
-  
-
-
-
-  console.log("게시물 타입이야 : " + type)
-
   const navigate = useNavigate();
 
   const [comment, setComment] = useState('');
@@ -37,6 +31,10 @@ export default function EdditComment({props}) {
       return;
     } 
 
+    if(comment === ''){
+      alert("값을 입력해주세요!")
+      return;
+    }
 
     try {
         call(`/community/${postId}/updateComment/${commentId}`, "PATCH", {

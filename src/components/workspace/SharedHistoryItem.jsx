@@ -3,7 +3,7 @@ import style from "../../style/workspace/SharedHistoryItem.module.css";
 import { WorkspaceModal } from "./WorkspaceModal";
 import { modifyDatelineDate } from "../../pages/workspace/api";
 
-export default function SharedHistoryItem({ info, setSelectedHistory }) {
+export default function SharedHistoryItem({ info, selectedHistory, setSelectedHistory }) {
   const formattedDate = new Intl.DateTimeFormat("ko-KR", {
     year: "numeric",
     month: "2-digit",
@@ -48,7 +48,7 @@ export default function SharedHistoryItem({ info, setSelectedHistory }) {
     return null;
   }
   return (
-    <div className={style.container}>
+    <div className={`${style.container} ${selectedHistory === info.id ? style.hover : ""}`}>
       <WorkspaceModal
         isOpen={modal}
         pageNum={3}

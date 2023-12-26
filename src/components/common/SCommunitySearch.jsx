@@ -59,7 +59,6 @@ function SCommunitySearch() {
         keyword: e.target.value,
       })
       .then((data) => {
-        console.log("Search Result:", data);
         setFindTitles(data); // Update the search results state
       })
       .catch((error) => {
@@ -70,37 +69,27 @@ function SCommunitySearch() {
  
 
   const searchPosts = () => {
+    const encodedKeyword = encodeURIComponent(title);
     
-      call(`/s-community/search?keyword=${title}`, "GET")
-      .then((data) => {
-        console.log("검색 결과!!!!(<Search />):", data);
-        
-        console.log(data);
-        
-        let postData = {keyword:title, result:data}
-
-        console.log( "보내는 데이터 : "+JSON.stringify(postData))
-        
-        navigate('/surveyCommunitySearchResult', {state: postData}) 
-        
+      call(`/s-community/search?keyword=${encodedKeyword}`, "GET")
+      .then((data) => {        
+        let postData = {keyword:encodedKeyword, result:data}    
+        navigate('/surveyCommunitySearchResult', {state: postData})      
       })
       .catch((error) => {
         console.error("Error searching posts:", error);
       });
-      console.log('--------------------------------------------------')
-      console.log(searchResults.data)
       
   };
 
   const clickSearchPosts = (e) => {
+    const encodedKeyword = encodeURIComponent(e);
     setTitle(e)
 
-    axios
-      .get(`http://localhost:8080/s-community/search?keyword=${e}`)
-      .then((response) => {
-        let data = { keyword: e, result: response.data };
-        setTitle(e)
-        navigate('/surveyCommunitySearchResult', { state: data });
+    call(`/s-community/search?keyword=${encodedKeyword}`, "GET")
+      .then((data) => {        
+        let postData = {keyword:encodedKeyword, result:data}    
+        navigate('/surveyCommunitySearchResult', {state: postData})      
       })
       .catch((error) => {
         console.error("Error searching posts:", error);

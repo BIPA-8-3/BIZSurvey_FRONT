@@ -51,21 +51,19 @@ export default function CommunityWrite() {
     
         // 각 아이템을 객체로 감싸서 새로운 배열 생성
         const mappedArray = tempUrlList.map(fileName => ({ fileName }));
-    
-        console.log(mappedArray);
-        deleteSrcArray.push(...mappedArray); // spread 연산자를 사용하여 배열 확장
-        console.log("뒤로가기 삭제 : " + JSON.stringify(deleteSrcArray));
-    
+        
+        deleteSrcArray.push(...mappedArray); 
+        
         call("/storage/multiple/files/", "POST", deleteSrcArray)
-          .then((data) => console.log(data))
-          .catch((error) => console.log(error));
+          .then()
+          .catch();
       };
     }, []);
 
 
 
   useEffect(() => {
-    console.log("Content 값이 변경되었습니다:", content);
+    
     if (prevContent !== content) {
       handleContentChange();
     }
@@ -115,21 +113,18 @@ export default function CommunityWrite() {
     const sliceSrcValue = srcValue.slice(8);
 
     call("/storage/file/" + sliceSrcValue, "DELETE")
-      .then((data) => console.log(data))
-      .catch((error) => console.log(error));
+      .then()
+      .catch();
 
-      console.log("이미지 삭제됨")
+      
       
     };
 
 
   useEffect(() => {
-    console.log("titleleeeeeeeeeeee", voteTitle);
   }, [voteTitle]);
 
-  useEffect(() => {
-    console.log("optionsssssssssssssleeeeeeeeeeee", voteOptions);
-  }, [voteOptions]);
+  useEffect(() => {}, [voteOptions]);
 
   useEffect(() => {
     return () => {
@@ -169,7 +164,6 @@ export default function CommunityWrite() {
     };
 
     const voteId = await call(`/community/createVote`, "POST", data);
-    console.log(voteId);
     setVoteId(voteId);
   };
 
@@ -226,7 +220,6 @@ export default function CommunityWrite() {
 
         const HEAD_IMG_URL = "https://";
         const IMG_URL = HEAD_IMG_URL + result.data;
-        alert(JSON.stringify(IMG_URL));
         const editor = quillRef.current.getEditor(); 
 
 
