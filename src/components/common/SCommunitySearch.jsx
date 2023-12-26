@@ -59,7 +59,6 @@ function SCommunitySearch() {
         keyword: e.target.value,
       })
       .then((data) => {
-        console.log("Search Result:", data);
         setFindTitles(data); // Update the search results state
       })
       .catch((error) => {
@@ -72,23 +71,13 @@ function SCommunitySearch() {
   const searchPosts = () => {
     
       call(`/s-community/search?keyword=${title}`, "GET")
-      .then((data) => {
-        console.log("검색 결과!!!!(<Search />):", data);
-        
-        console.log(data);
-        
-        let postData = {keyword:title, result:data}
-
-        console.log( "보내는 데이터 : "+JSON.stringify(postData))
-        
-        navigate('/surveyCommunitySearchResult', {state: postData}) 
-        
+      .then((data) => {        
+        let postData = {keyword:title, result:data}    
+        navigate('/surveyCommunitySearchResult', {state: postData})      
       })
       .catch((error) => {
         console.error("Error searching posts:", error);
       });
-      console.log('--------------------------------------------------')
-      console.log(searchResults.data)
       
   };
 

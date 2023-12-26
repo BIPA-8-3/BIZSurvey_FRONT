@@ -135,7 +135,7 @@ const ParentsComment = ({ props }) => {
   const renderEditCommentForm = (commentId) => {
     if (commentId !== null && editingCommentId === commentId && isEditFormVisible) {
 
-      alert("넘겨주는 댓글 ID!!!" +  commentId)
+    
       return (
         <>
           <EdditComment props={{postId : postId, commentId: commentId, type : 'co'}} />
