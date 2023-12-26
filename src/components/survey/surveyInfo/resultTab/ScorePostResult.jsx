@@ -46,7 +46,7 @@ export default function ScorePostResult({ sharedId, sharedType }) {
         getSharedSurveyScoreResult(survey.surveyId, sharedId)
           .then((data) => {
             let sorted = data.sort((a, b) => a.step - b.step);
-            setResult(data);
+            setResult(sorted);
           })
           .catch((error) => {
             console.log(error);
