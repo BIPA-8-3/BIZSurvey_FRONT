@@ -18,8 +18,6 @@ const ParentsComment = ({ props }) => {
   let postId = props.postId;
   let type = props.type;
 
-  console.log("서베이쪽에서 넘어온 게시물 ID야 : " + postId);
-
   const [showChildCommentForm, setShowChildCommentForm] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [childIsModalOpen, setChildIsModalOpen] = useState({});
@@ -89,7 +87,7 @@ const ParentsComment = ({ props }) => {
       return logo;
     }else{
       let prefix = "https://";
-      console.log("프로필 : " + prefix + profile)
+      
       return prefix + profile;
     }
   }
