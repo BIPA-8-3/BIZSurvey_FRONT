@@ -221,7 +221,6 @@ export default function CommunityWrite() {
 
         const HEAD_IMG_URL = "https://";
         const IMG_URL = HEAD_IMG_URL + result.data;
-        alert(JSON.stringify(IMG_URL));
         const editor = quillRef.current.getEditor(); 
 
 
