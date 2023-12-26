@@ -63,7 +63,7 @@ export default function CommunityWrite() {
 
 
   useEffect(() => {
-    console.log("Content 값이 변경되었습니다:", content);
+    
     if (prevContent !== content) {
       handleContentChange();
     }
@@ -164,7 +164,6 @@ export default function CommunityWrite() {
     };
 
     const voteId = await call(`/community/createVote`, "POST", data);
-    console.log(voteId);
     setVoteId(voteId);
   };
 
@@ -221,7 +220,6 @@ export default function CommunityWrite() {
 
         const HEAD_IMG_URL = "https://";
         const IMG_URL = HEAD_IMG_URL + result.data;
-        alert(JSON.stringify(IMG_URL));
         const editor = quillRef.current.getEditor(); 
 
 
