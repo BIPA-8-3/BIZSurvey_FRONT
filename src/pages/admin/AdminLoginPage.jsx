@@ -21,6 +21,8 @@ export default function AdminLoginPage() {
   const handleSubmit = async () => {
       adminLogin(formData).then((data) => {
         navigate("/admin/main");
+      }).catch((error) => {
+        return;
       })
   };
   return (

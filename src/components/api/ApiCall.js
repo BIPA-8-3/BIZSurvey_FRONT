@@ -216,6 +216,7 @@ export const adminLogin = async (formdata) => {
       alert(error.response.data.errorMessage);
     } else {
       alert("계정을 확인해주세요")
+      return;
     }
   }
 }
