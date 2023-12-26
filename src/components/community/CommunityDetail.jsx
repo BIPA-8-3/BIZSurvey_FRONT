@@ -46,7 +46,7 @@ export default function CommunityPost() {
           setIsResult(true);
         }
       } catch (error) {
-        console.error(error);
+       
       } finally {
         setLoading(false);
       }
@@ -60,7 +60,6 @@ export default function CommunityPost() {
       try {
         await call("/community/showPost/" + postId, "GET")
           .then((data) => {
-            console.log("aaaaaaaaaaaaaaaaaaaa : " + JSON.stringify(data));
             setData(data);
 
             if (data.reported === 1) {
@@ -87,7 +86,7 @@ export default function CommunityPost() {
   }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행되도록 함
 
   useEffect(() => {
-    console.log("voteid!!!!!!!!!!!!!!!!!!!!!!!!!!!!", data.voteId);
+    
     const checkVote = async () => {
       try {
         if (data.voteId != null) {
@@ -164,7 +163,7 @@ export default function CommunityPost() {
       call("/community/deletePost/" + postId, "DELETE")
         .then((data) => {
           window.alert(data);
-          navigate("community/");
+          navigate("/community");
         })
         .catch((error) => console.error(error));
     }
@@ -175,7 +174,6 @@ export default function CommunityPost() {
       return logo;
     } else {
       let prefix = "https://";
-      console.log("프로필 : " + prefix + profile);
       return prefix + profile;
     }
   }

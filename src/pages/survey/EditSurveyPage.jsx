@@ -39,13 +39,10 @@ export default function EditSurveyPage() {
 
   // effect
   useEffect(() => {
-    console.log(surveyId);
     handleGetSurvey(surveyId);
   }, []);
 
-  useEffect(() => {
-    console.log("questions", questions);
-  }, [questions]);
+  useEffect(() => {}, [questions]);
 
   // functions
   const handleGoBack = () => {
@@ -123,8 +120,6 @@ export default function EditSurveyPage() {
       ...formData,
       questions: questionData,
     };
-
-    console.log("최종데이터입니다ㅣ", surveyData);
 
     await call(`/survey/${surveyId}`, "PATCH", surveyData)
       .then((response) => {

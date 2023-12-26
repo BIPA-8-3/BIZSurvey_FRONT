@@ -24,10 +24,6 @@ export default function PersonalResult({ sharedType, sharedId }) {
   const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
-    console.log("userrrrrrrrrr", user);
-  }, [user]);
-
-  useEffect(() => {
     // 설문 게시물 참가자 목록
     if (user !== 0) {
       switch (sharedType) {
@@ -55,7 +51,6 @@ export default function PersonalResult({ sharedType, sharedId }) {
 
   // 로딩 시 유저정보 조회
   useEffect(() => {
-    console.log("여기ㅣㅣㅣ..........");
     if (sharedId) {
       switch (sharedType) {
         case "INTERNAL":
@@ -80,10 +75,6 @@ export default function PersonalResult({ sharedType, sharedId }) {
     } else {
     }
   }, [sharedId]);
-
-  useEffect(() => {
-    console.log("userList,", userList);
-  });
 
   const handleSetUser = (user) => {
     setUser(user);
@@ -130,32 +121,38 @@ export default function PersonalResult({ sharedType, sharedId }) {
     );
   }
 
-  if (user === 0) {
-    return (
-      <>
-        {userList.length !== 0 ? (
+  if (userList.length > 0) {
+    if (user === 0) {
+      return (
+        <>
           <UserList userList={userList} setUser={handleSetUser} sharedType={sharedType} />
-        ) : null}
-
-        <div
-          style={{
-            width: "700px",
-            margin: "0 auto",
-            textAlign: "center",
-            height: "300px",
-            justifyContent: "center",
-            alignItems: "center",
-            lineHeight: "300px",
-            fontSize: "15pt",
-            fontStyle: "italic",
-            color: "#d6d6d6",
-          }}
-        >
-          <p>응답자를 선택해주세요.</p>
-        </div>
-      </>
-    );
-  } else if (userList.length < 1) {
+          <div
+            style={{
+              width: "700px",
+              margin: "0 auto",
+              textAlign: "center",
+              height: "300px",
+              justifyContent: "center",
+              alignItems: "center",
+              lineHeight: "300px",
+              fontSize: "15pt",
+              fontStyle: "italic",
+              color: "#d6d6d6",
+            }}
+          >
+            <p>응답자를 선택해주세요.</p>
+          </div>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <UserList userList={userList} setUser={handleSetUser} sharedType={sharedType} />
+          {createAnswerItem(questions, answers)}
+        </>
+      );
+    }
+  } else {
     return (
       <>
         <div
@@ -174,13 +171,6 @@ export default function PersonalResult({ sharedType, sharedId }) {
         >
           <p>응답자가 존재하지 않습니다.</p>
         </div>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <UserList userList={userList} setUser={handleSetUser} sharedType={sharedType} />
-        {createAnswerItem(questions, answers)}
       </>
     );
   }

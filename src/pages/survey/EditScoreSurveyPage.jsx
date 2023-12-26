@@ -51,7 +51,6 @@ export default function EditScoreSurveyPage() {
     if (id !== 0) {
       setSurveyId(id);
     }
-    console.log(surveyId);
   }, []);
 
   useEffect(() => {
@@ -109,7 +108,6 @@ export default function EditScoreSurveyPage() {
       }
 
       setQuestions(newArr);
-      console.log(data);
     } catch (error) {
       console.log(error);
     } finally {

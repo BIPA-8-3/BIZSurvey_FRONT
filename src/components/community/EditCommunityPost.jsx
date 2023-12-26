@@ -29,7 +29,7 @@ export default function CommunityWrite() {
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  let postId = location.state.postId;
+  const postId = location.state ? location.state.postId : null;
 
   const [voteTitle, setVoteTitle] = useState("");
   const [voteOptions, setVoteOptions] = useState([""]);
@@ -47,12 +47,12 @@ export default function CommunityWrite() {
     return () => {
       console.log("temp : " + JSON.stringify(tempUrlList));
   
-      // 각 아이템을 객체로 감싸서 새로운 배열 생성
+      
       const mappedArray = tempUrlList.map(fileName => ({ fileName }));
   
       console.log(mappedArray);
-      deleteSrcArray.push(...mappedArray); // spread 연산자를 사용하여 배열 확장
-      console.log("뒤로가기 삭제 : " + JSON.stringify(deleteSrcArray));
+      deleteSrcArray.push(...mappedArray); 
+      
   
       call("/storage/multiple/files/", "POST", deleteSrcArray)
         .then((data) => console.log(data))
@@ -71,7 +71,7 @@ export default function CommunityWrite() {
   }, []);
 
   useEffect(() => {
-    console.log("Content 값이 변경되었습니다:", content);
+   
     if (prevContent !== content) {
       handleContentChange();
     }
@@ -127,7 +127,7 @@ export default function CommunityWrite() {
     .then((data) => console.log(data))
     .catch((error) => console.log(error));
 
-    console.log("이미지 삭제됨")
+   
     
   };
 
@@ -154,9 +154,8 @@ export default function CommunityWrite() {
     };
 
     const voteId = await call(`/community/createVote`, "POST", data);
-    console.log(voteId);
     setVoteId(voteId);
-    // handleClose();
+    
   };
 
   const handleDeleteVote = async () => {
@@ -207,10 +206,10 @@ export default function CommunityWrite() {
           }
         );
 
-        console.log("성공 시, 백엔드가 보내주는 데이터", result.data.url);
+        
         const HEAD_IMG_URL = "https://";
         const IMG_URL = HEAD_IMG_URL + result.data;
-        alert(JSON.stringify(IMG_URL));
+        
         // 이 URL을 img 태그의 src에 넣은 요소를 현재 에디터의 커서에 넣어주면 에디터 내에서 이미지가 나타난다
         // src가 base64가 아닌 짧은 URL이기 때문에 데이터베이스에 에디터의 전체 글 내용을 저장할 수있게된다
         // 이미지는 꼭 로컬 백엔드 uploads 폴더가 아닌 다른 곳에 저장해 URL로 사용하면된다.
@@ -262,7 +261,7 @@ export default function CommunityWrite() {
           navigate("/community");
         }
 
-        console.log("리스폰스 : " + JSON.stringify(data));
+        
         setTitle(data.title);
         setContent(data.content);
 
@@ -276,7 +275,7 @@ export default function CommunityWrite() {
         //   ]
         // }
 
-        if (data.voteId !== null || data.voteId !== undefined) {
+        if (data.voteId !== null) {
           const vote = await call(
             `/community/${postId}/showVoteAnswer/${data.voteId}`,
             "GET"
@@ -293,7 +292,7 @@ export default function CommunityWrite() {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setLoading(false); // 데이터 로딩이 끝났음을 표시
+        setLoading(false); 
       }
     };
 
@@ -491,7 +490,7 @@ export default function CommunityWrite() {
             취소
           </Button>
         </Link>
-        <Link to={"/communityWrite"}>
+       
           <Button
             variant="contained"
             href="#contained-buttons"
@@ -516,7 +515,7 @@ export default function CommunityWrite() {
           >
             저장
           </Button>
-        </Link>
+       
       </div>
 
       <img src={back} alt="배경" className={style.back} />

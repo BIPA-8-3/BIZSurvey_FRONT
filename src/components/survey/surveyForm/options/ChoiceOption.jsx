@@ -74,14 +74,10 @@ function Option({
   const [dup, setDup] = useState(false);
 
   const handleBlur = (text) => {
-    console.log("여긴 들어오나?");
     if (text.trim() === "") {
       changeText(index, "옵션 " + (index + 1));
     }
-    // checkAnswer(text);
   };
-
-  const handleChange = (text) => {};
 
   const checkAnswer = (index, text) => {
     changeText(index, text);
@@ -89,7 +85,7 @@ function Option({
     const dupAnswer = answers.find(
       (answer, idx) => answer.surveyAnswer.trim() === txt && index !== idx
     );
-    console.log(dupAnswer);
+
     if (dupAnswer) {
       answerPass(false);
       setDup(true);

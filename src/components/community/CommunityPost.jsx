@@ -21,8 +21,6 @@ import call from "../../pages/workspace/api";
 
 export default function CommunityPost() {
   const [data, setData] = useState([]);
-  console.log("데이타" + data);
-  console.log("총 페이지 수" + data.totalPages);
   const [loading, setLoading] = useState(true);
   const fadeIn = useFadeIn();
   const navigate = useNavigate();
