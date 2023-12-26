@@ -51,6 +51,10 @@ export default function SurveyInfoPage() {
     }
   }, [page]);
 
+  useEffect(() => {
+    console.log("survey", survey);
+  }, [survey]);
+
   const handleGetSurvey = async () => {
     if (!selectedSurveyId) {
       return;
@@ -76,7 +80,13 @@ export default function SurveyInfoPage() {
     <>
       {loading ? <Loader /> : null}
       <SurveyContext.Provider value={contextValue}>
-        <div style={{ paddingTop: "100px", paddingLeft: "254px", paddingBottom: "30px" }}>
+        <div
+          style={{
+            paddingTop: "100px",
+            paddingLeft: "254px",
+            paddingBottom: "30px",
+          }}
+        >
           <div style={{ width: "700px", margin: "0 auto" }}>
             <ButtonTab
               handleChangeTab={handleChangeTab}
