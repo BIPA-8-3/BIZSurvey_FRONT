@@ -44,11 +44,12 @@ function MypageHeader({ userData }) {
           const data = await call("/storage/", "POST", formData, true);
         
           const profileImageUrl = data;
-          
           // Delete the old profile image
-          await call(`/storage/file/${userData.profile}`, "DELETE").then((data) => {
-            console.log(data)
-          });        
+          if (!userData.profile == '' || !userData.profil == null) {
+            await call(`/storage/file/${userData.profile}`, "DELETE").then((data) => {
+              console.log(data);
+            });
+          }
           // Update the user profile with the new image
           await call("/user/profile/", "PATCH", {
             userId: userData.id,
