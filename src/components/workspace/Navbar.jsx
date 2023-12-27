@@ -28,7 +28,6 @@ function Navbar() {
   useEffect(() => {
     getWorkspaceList()
       .then((data) => {
-        console.log("workspaceList data", data);
         if (!data) {
           setWorkspaceList([]);
         } else {
