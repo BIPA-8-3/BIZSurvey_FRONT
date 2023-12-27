@@ -75,7 +75,6 @@ export const WorkspaceProvider = ({ children }) => {
             isPersonal,
         }}>
             <>
-                {/* {<SSEComponent />} */}
                 {children}
             </>
         </WorkspaceContext.Provider >
