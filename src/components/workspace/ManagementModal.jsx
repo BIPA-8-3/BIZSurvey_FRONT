@@ -169,7 +169,6 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues, i
     inviteAdmin(inviteRequest)
       .then((data) => {
         console.log(data);
-        // temp.id = data.id;
         setAdminWaitList([...adminWaitList.filter((a) => a.id !== -1), data]);
       })
       .catch((error) => {

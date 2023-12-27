@@ -55,9 +55,9 @@ function WorkspaceHeader() {
             </Link>
           </ul>
         </div>
-        <div id="menuIcon" onClick={toggleMenu}>
+        {/* <div id="menuIcon" onClick={toggleMenu}>
           <IoMenu style={{ fontSize: "36px", paddingTop: "3px", color: "#243579" }} />
-        </div>
+        </div> */}
       </div>
 
       <div className={style.mobileMenu}>

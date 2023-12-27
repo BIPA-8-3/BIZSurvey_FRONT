@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { checkPermissions } from './api';
-// import SSEComponent from '../../components/workspace/SSEComponent';
 
 const WorkspaceContext = createContext();
 
@@ -10,7 +9,7 @@ export const WorkspaceProvider = ({ children }) => {
     const [workspaceList, setWorkspaceList] = useState([]);
 
     // 선택된 워크스페이스
-    const [selectedWorkspaceId, setSelectedWorkspaceId] = useState(null);
+    const [selectedWorkspaceId, setSelectedWorkspaceId] = useState(0);
     const [selectedWorkspaceType, setSelectedWorkspaceType] = useState(null);
 
     // 선택된 설문지 [context 안해도 될듯 ? 나중에보고 ㄱㄱ]
@@ -19,11 +18,11 @@ export const WorkspaceProvider = ({ children }) => {
         title: null,
         menuNum: null,
     });
-    // 선택된 설문지 (상세 조회)
-    const [selectedSurveyId, setSelectedSurveyId] = useState(0);
-    const navigate = useNavigate();
-    const [permission, setPermission] = useState(false);
 
+    // 선택된 설문지 (상세 조회)
+    const navigate = useNavigate();
+    const [selectedSurveyId, setSelectedSurveyId] = useState(0);
+    const [permission, setPermission] = useState(false);
 
     useEffect(() => {
         checkPermissions()
@@ -51,7 +50,6 @@ export const WorkspaceProvider = ({ children }) => {
         }
     }, [selectedSurveyId]);
 
-
     if (!permission) {
         return;
     }
@@ -59,6 +57,7 @@ export const WorkspaceProvider = ({ children }) => {
     const isPersonal = (method) => {
         return selectedWorkspaceType === "PERSONAL";
     };
+
 
     return (
         <WorkspaceContext.Provider value={{
