@@ -47,16 +47,16 @@ export default function CommunityWrite() {
     // 컴포넌트 언 마운트될 때 삭제 요청 상황 
     useEffect(() => {
       return () => {
-        console.log("temp : " + JSON.stringify(tempUrlList));
-    
+        
         // 각 아이템을 객체로 감싸서 새로운 배열 생성
         const mappedArray = tempUrlList.map(fileName => ({ fileName }));
+    
         
-        deleteSrcArray.push(...mappedArray); 
+        deleteSrcArray.push(...mappedArray); // spread 연산자를 사용하여 배열 확장
         
+    
         call("/storage/multiple/files/", "POST", deleteSrcArray)
-          .then()
-          .catch();
+          
       };
     }, []);
 
@@ -176,7 +176,7 @@ export default function CommunityWrite() {
   };
 
   const imageHandler = () => {
-    console.log("에디터에서 이미지 버튼을 클릭하면 이 핸들러가 시작됩니다!");
+   
 
     // 1. 이미지를 저장할 input type=file DOM을 만든다.
     const input = document.createElement("input");
@@ -279,7 +279,7 @@ export default function CommunityWrite() {
         imageSrcArray.push(src);
       }
 
-      alert("배열 확인 : " + JSON.stringify(imageSrcArray));
+      
     });
 
     if (voteId !== 0) {

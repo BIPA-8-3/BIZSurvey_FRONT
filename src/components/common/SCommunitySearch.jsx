@@ -23,7 +23,7 @@ function SCommunitySearch() {
         );
         const nextIndex = (currentIndex + 1) % findTitles.length;
         setSelectedItem(findTitles[nextIndex].result);
-        console.log("test " + findTitles[nextIndex].result)
+        
       }
     } else if (e.keyCode === 38) {
       if (findTitles.length > 0) {
@@ -33,7 +33,7 @@ function SCommunitySearch() {
         const prevIndex =
           currentIndex === 0 ? findTitles.length - 1 : currentIndex - 1;
         setSelectedItem(findTitles[prevIndex].result);
-        console.log("test2 " + findTitles[prevIndex].result)
+       
       }
     }else if (e.keyCode === 13) {
       if (selectedItem) {
