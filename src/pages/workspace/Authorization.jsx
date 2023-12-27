@@ -40,7 +40,7 @@ export default function Authorization() {
             });
           })
           .catch((error) => {
-            setResult(error.response.data.message);
+            setResult(error.response.data);
           });
         break;
       default:
