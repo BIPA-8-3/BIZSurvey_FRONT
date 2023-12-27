@@ -31,7 +31,8 @@ export default function ScorePostResult({ sharedId, sharedType }) {
       case "INTERNAL":
         call("/survey/result/score/" + sharedId, "GET")
           .then((data) => {
-            setResult(data);
+            let sorted = data.sort((a, b) => a.step - b.step);
+            setResult(sorted);
           })
           .catch((error) => {
             console.log(error);
@@ -40,7 +41,8 @@ export default function ScorePostResult({ sharedId, sharedType }) {
       case "EXTERNAL":
         getSharedSurveyScoreResult(survey.surveyId, sharedId)
           .then((data) => {
-            setResult(data);
+            let sorted = data.sort((a, b) => a.step - b.step);
+            setResult(sorted);
           })
           .catch((error) => {
             console.log(error);

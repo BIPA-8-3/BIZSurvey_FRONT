@@ -53,8 +53,7 @@ const ParentsComment = ({ props }) => {
   };
 
   const handleSelectReasons = (selectedReasons) => {
-    // 선택된 이유들을 사용하거나 필요에 따라 다른 작업을 수행합니다.
-    console.log("Selected Reasons:", selectedReasons);
+   
   };
 
   // 대댓글
