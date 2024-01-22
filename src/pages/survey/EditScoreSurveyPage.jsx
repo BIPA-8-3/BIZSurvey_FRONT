@@ -141,8 +141,8 @@ export default function EditScoreSurveyPage() {
 
     await call(`/survey/${surveyId}`, "PATCH", surveyData)
       .then((response) => {
-        alert(response);
-        navigate("/workspace/info");
+        alert("설문지 수정이 완료되었습니다.");
+        navigate("/workspace/info", { state: response });
       })
       .catch((error) => console.log(error));
   };

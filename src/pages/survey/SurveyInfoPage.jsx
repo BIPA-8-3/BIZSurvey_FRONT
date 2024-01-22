@@ -7,7 +7,7 @@ import Loader from "../loader/Loader";
 import { createContext } from "react";
 import { useWorkspaceContext } from "../workspace/WorkspaceContext";
 import call from "../workspace/api";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const SurveyContext = createContext();
 
@@ -33,6 +33,7 @@ export default function SurveyInfoPage() {
       },
     ],
   });
+  const location = useLocation();
 
   const contextValue = {
     survey,
@@ -40,8 +41,17 @@ export default function SurveyInfoPage() {
   };
 
   useEffect(() => {
-    handleGetSurvey();
+    let id = location.state ? location.state : null;
+    if (id) {
+      setSelectedSurveyId(id);
+    } else {
+      handleGetSurvey();
+    }
   }, []);
+
+  useEffect(() => {
+    handleGetSurvey();
+  }, [selectedSurveyId]);
 
   useEffect(() => {
     if (page) {
