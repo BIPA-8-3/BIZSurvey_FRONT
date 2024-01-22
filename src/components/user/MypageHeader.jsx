@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import style from '../../style/user/MypageHeader.module.css';
 import logo from '../../assets/img/logo.png';
 import avatar from '../../assets/img/avatar.png';
@@ -15,6 +15,9 @@ const getLinkStyle = (currentPage, path) => {
   };
 };
 
+
+
+
 function MypageHeader({ userData }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -25,6 +28,12 @@ function MypageHeader({ userData }) {
   const currentPage = location.pathname;
 
   
+  useEffect(() => {
+    if(localStorage.getItem("userInfo") === null){
+      navigate('/login');
+    }
+  }, []);
+
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
   
