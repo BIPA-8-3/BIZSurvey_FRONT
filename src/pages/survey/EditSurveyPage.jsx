@@ -105,6 +105,7 @@ export default function EditSurveyPage() {
 
     const questionData = questions.map((question, index) => ({
       ...question,
+      questionId: undefined,
       step: index + 1,
       answers:
         question.answerType === "SINGLE_CHOICE" ||
@@ -118,6 +119,7 @@ export default function EditSurveyPage() {
 
     const surveyData = {
       ...formData,
+      surveyId: undefined,
       questions: questionData,
     };
 

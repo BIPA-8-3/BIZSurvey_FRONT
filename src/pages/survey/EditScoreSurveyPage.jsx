@@ -121,29 +121,9 @@ export default function EditScoreSurveyPage() {
       return;
     }
 
-    // const { createQuestion, updateQuestion } = questions.reduce(
-    //   (acc, question, index) => {
-    //     const { questionId, ...rest } = {
-    //       ...question,
-    //       step: index + 1,
-    //     };
-
-    //     if (questionId === 0) {
-    //       acc.createQuestion.push(rest);
-    //     } else {
-    //       acc.updateQuestion.push({
-    //         ...question,
-    //         step: index + 1,
-    //       });
-    //     }
-
-    //     return acc;
-    //   },
-    //   { createQuestion: [], updateQuestion: [] }
-    // );
-
     const questionData = questions.map((question, index) => ({
       ...question,
+      questionId: undefined,
       step: index + 1,
       answers: question.answers.map((answer, answerIndex) => ({
         surveyAnswer: answer.surveyAnswer,
@@ -154,6 +134,7 @@ export default function EditScoreSurveyPage() {
 
     const surveyData = {
       ...formData,
+      surveyId: undefined,
       surveyType: "SCORE",
       questions: questionData,
     };
