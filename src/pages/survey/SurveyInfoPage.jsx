@@ -51,10 +51,6 @@ export default function SurveyInfoPage() {
     }
   }, [page]);
 
-  useEffect(() => {
-    console.log("survey", survey);
-  }, [survey]);
-
   const handleGetSurvey = async () => {
     if (!selectedSurveyId) {
       return;
