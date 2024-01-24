@@ -33,6 +33,8 @@ export default function SurveyInfoPage() {
       },
     ],
   });
+  const [isEdit, setIsEdit] = useState(false);
+
   const location = useLocation();
 
   const contextValue = {
@@ -43,15 +45,22 @@ export default function SurveyInfoPage() {
   useEffect(() => {
     let id = location.state ? location.state : null;
     if (id) {
+      console.log("id 있음");
       setSelectedSurveyId(id);
+      setIsEdit(true);
     } else {
+      console.log("id 없음");
+
       handleGetSurvey();
     }
   }, []);
 
   useEffect(() => {
-    handleGetSurvey();
-  }, [selectedSurveyId]);
+    if (isEdit) {
+      console.log("isEdit : ", isEdit);
+      handleGetSurvey();
+    }
+  }, [isEdit]);
 
   useEffect(() => {
     if (page) {
