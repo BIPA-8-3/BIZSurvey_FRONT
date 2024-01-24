@@ -128,7 +128,10 @@ export default function EditSurveyPage() {
         alert("설문지 수정이 완료되었습니다.");
         navigate("/workspace/info", { state: response });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        alert(error.response.data.errorMessage);
+        navigate("/workspace");
+      });
   };
 
   // 질문 제목

@@ -45,12 +45,9 @@ export default function SurveyInfoPage() {
   useEffect(() => {
     let id = location.state ? location.state : null;
     if (id) {
-      console.log("id 있음");
       setSelectedSurveyId(id);
       setIsEdit(true);
     } else {
-      console.log("id 없음");
-
       handleGetSurvey();
     }
   }, []);
