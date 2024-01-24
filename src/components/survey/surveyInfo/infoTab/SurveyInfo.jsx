@@ -24,9 +24,14 @@ export default function SurveyInfo() {
   const handleDeleteSurvey = () => {
     const response = window.confirm("설문지를 삭제하시겠습니까?");
     if (response) {
-      call("/survey/" + surveyId, "DELETE").then((data) => {
-        navigate("/workspace");
-      });
+      call("/survey/" + surveyId, "DELETE")
+        .then((data) => {
+          navigate("/workspace");
+        })
+        .catch((error) => {
+          alert(error.response.data.errorMessage);
+          navigate("/workspace");
+        });
     }
   };
 
@@ -71,13 +76,19 @@ export default function SurveyInfo() {
             </Button> */}
             {surveyType === "NORMAL" ? (
               <Link to={"/workspace/edit"} state={{ surveyId: surveyId }}>
-                <Button variant="outlined" sx={{ color: "#243579", borderColor: "#243579" }}>
+                <Button
+                  variant="outlined"
+                  sx={{ color: "#243579", borderColor: "#243579" }}
+                >
                   수정
                 </Button>
               </Link>
             ) : (
               <Link to={"/workspace/editscore"} state={{ surveyId: surveyId }}>
-                <Button variant="outlined" sx={{ color: "#243579", borderColor: "#243579" }}>
+                <Button
+                  variant="outlined"
+                  sx={{ color: "#243579", borderColor: "#243579" }}
+                >
                   수정
                 </Button>
               </Link>
