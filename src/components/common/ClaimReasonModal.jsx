@@ -65,7 +65,7 @@ const ClaimReasonModal = ({ onSelect, onClose, props, id }) => {
   return (
     <BizModal isOpen={true} handleClose={onClose} title="신고 사유 선택">
       <Divider />
-      <List sx={{ width: "400px", overflowY: "auto", maxHeight: "300px" }}>
+      <List sx={{ width: "100%", overflowY: "auto", maxHeight: "300px" }}>
         {claimReasons.map((reason) => (
           <ListItem key={reason} divider>
             <ListItemText primary={reason} />

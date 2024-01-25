@@ -169,13 +169,16 @@ export default function CommunityPost() {
                   <span className={style.nickname}>{data.nickname}</span>
                 </div>
               </p>
-              <div style={{ marginTop: "16px" }}>
+              <div style={{ marginTop: "16px" }} className={style.spanWrap}>
                 <span className={style.bar}> | </span>
                 <span>S-COMMUNITY</span>
                 <span className={style.bar}> | </span>
-                <span>설문 시작 : {data.startDateTime} <span className={style.bar}> | </span> 설문 종료 : {data.endDateTime}</span>
+                <span className={style.mobileNone}>설문 시작 : {data.startDateTime} <span className={style.bar}> | </span> 설문 종료 : {data.endDateTime}</span>
               </div>
             </p>
+            <div className={style.spanWrap}>
+                <span className={style.pcNone}>설문 시작 : {data.startDateTime} <span className={style.bar}> | </span> 설문 종료 : {data.endDateTime}</span>
+              </div>
           </div>
         </div>
         <div className={style.content}>

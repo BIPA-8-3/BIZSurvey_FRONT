@@ -74,7 +74,7 @@ export default function ChildCommentForm({props}) {
                             </div>
                         </div>
                         <div className={style.commentFormWrap}>
-                            <input type='text' placeholder='칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다:)' onChange={handleInputChange}/>
+                            <input type='text' placeholder='댓글은 작성자에게 큰 힘이 됩니다:)' onChange={handleInputChange}/>
                             <span className={style.writeBtn} onClick={handleSaveClick}>입력</span>
                         </div>
                     </div>

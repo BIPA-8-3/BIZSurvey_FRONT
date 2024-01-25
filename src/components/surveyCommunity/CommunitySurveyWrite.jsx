@@ -198,13 +198,7 @@ export default function CommunityPost() {
           <div className={style.title}>
             <h1>{survey.title}</h1>
             <p style={{ display: "flex" }}>
-              <p style={{ textAlign: "center" }}>
-                <div
-                  className={style.profil}
-                  style={{ textAlign: "center" }}
-                ></div>
-              </p>
-              <div style={{ marginTop: "16px" }}>
+              <div style={{ marginTop: "16px" }} className={style.surveyContent}>
                 <span>{survey.content}</span>
               </div>
             </p>
