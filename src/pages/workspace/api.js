@@ -82,8 +82,6 @@ const RefreshRequest = async () => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("userInfo");
-        console.error("Error refreshing token:", error);
-        console.log(error.response.data.errorCode)
         return false;
     }
         // await axios.get(URI + '/refresh', {

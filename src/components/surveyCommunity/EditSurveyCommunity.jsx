@@ -493,7 +493,7 @@ export default function CommunityWrite() {
             />
           </div>
           <div className={style.editorWrap}>
-            <div
+            <div className={style.quillClass}
               style={{
                 width: "1000px",
                 margin: "0 auto",
@@ -502,6 +502,7 @@ export default function CommunityWrite() {
             >
               <ReactQuill
                 style={{ width: "1000px", height: "300px" }}
+                className={style.quillClass}
                 placeholder="내용을 입력해주세요."
                 theme="snow"
                 ref={quillRef}
@@ -547,7 +548,7 @@ export default function CommunityWrite() {
         <div
           style={{
             textAlign: "center",
-            width: "1000px",
+            width: "100%",
             margin: "0 auto",
             paddingTop: "80px",
           }}
