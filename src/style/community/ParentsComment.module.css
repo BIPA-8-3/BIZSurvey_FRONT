@@ -100,11 +100,16 @@
     }
 
     .commentWrap{
-        padding: 0px 10px;
+        padding: 0px 0px;
+        padding-left: 10px;
     }
 
     .writeWrap{
         padding-bottom: 0px;
+    }
+
+    .writer{
+        padding: 0px !important;
     }
 }
 

@@ -69,7 +69,7 @@ export default function ChildCommentForm({props}) {
                 <div className={style.childCommentWrap}>
                     <div className={style.writeWrap}>
                         <div className={style.writer}>
-                            <div>
+                            <div className={style.writerImgWrap}>
                                 <img src={logo} />
                             </div>
                         </div>
