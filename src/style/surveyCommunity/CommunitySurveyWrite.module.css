@@ -12,12 +12,13 @@
   z-index: -1;
   opacity: 0.5;
 }
-.contentWrap {
+
+.contentWrap{
   margin-top: 30px;
-  margin-top: 170px;
 }
+
 .contentWrap .title {
-  padding: 40px 40px 13px 40px;
+  padding: 40px 40px 40px 40px;
   border-top: 3px solid #111;
   border-bottom: 1px solid #ddd;
   color: #111;
@@ -121,6 +122,70 @@
 
 /* 모바일 세로 (해상도 ~ 479px)*/
 @media all and (max-width: 479px) {
+  .contentWrap div .title{
+      padding: 0px 20px 10px 20px;
+  }
+
+  .contentWrap div .title h1{
+      font-size: 20px;
+      padding: 20px 0px 10px 0px;
+  }
+
+  .profil .photo{
+      width: 30px;
+      height: 30px;
+  }
+
+  .profil .photo img{
+      width: 30px;
+  }
+
+  .profil .nickname{
+      font-size: 14px;
+  }
+
+  .spanWrap span{
+      font-size: 14px;
+  }
+
+  p .profil{
+      margin-bottom: 0px;
+  }
+
+  .content{
+      padding: 5px !important;
+      padding-top: 20px !important;
+  }
+
+  .content p{
+      padding: 15px 15px 0px 15px;
+  }
+
+  .contentFooter{
+      font-size: 14px;
+  }
+
+  .communityDetailBackBtn{
+      margin-top: 50px;
+  }
+
+  .communityDetailBackBtn a a{
+      padding: 10px 15px;
+      display: inline-block;
+      font-size: 12px;
+  }
+
+  .mobileNone{
+      display: none;
+  }
+
+  .pcNone{
+      display: block;
+  }
+
+  .surveyContent{
+    font-size: 14px;
+  }
 }
 
 @media all and (max-width: 1200px) {

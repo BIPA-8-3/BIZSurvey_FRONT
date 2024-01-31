@@ -103,7 +103,7 @@ export default function CommunityPost() {
         </Button>
       </div>
       <CommunityTable props={data.content} />
-      <div style={{ width: "1200px", margin: "0 auto", marginTop: "20px" }}>
+      <div style={{ width: "100%", margin: "0 auto", marginTop: "20px" }}>
         <Stack spacing={1} sx={{ margin: "0 auto", float: "right" }}>
           <Pagination
             count={data.totalPages}

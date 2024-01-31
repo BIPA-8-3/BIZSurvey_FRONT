@@ -29,7 +29,7 @@ const OAuth2RedirectHandler = () => {
         try {
           loginKaKaoCode(code).then((response) => {
               
-            console.log("data header : " + response.headers)
+            //console.log("data header : " + response.headers)
             const headers = response.headers;
             
             if (headers && headers.authorization) {
@@ -49,7 +49,7 @@ const OAuth2RedirectHandler = () => {
 
                       try {
                           call("/user/info", "GET").then((data) =>{
-                          console.log("/user/info : " + data);
+                          //console.log("/user/info : " + data);
                           setUserInfo(data);
                         })
                         

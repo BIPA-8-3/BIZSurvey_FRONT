@@ -43,7 +43,7 @@ export default async function call(api, method, request, file) {
             if (refreshTokenSuccess) {
                 return call(api, method, request, file);
             } else {
-                throw new Error("Failed to refresh token.");
+                return call(api, method, request, file);
             }
         } else {
             throw error;
@@ -79,9 +79,31 @@ const RefreshRequest = async () => {
         saveAccessTokenToLocalStorage(authorization);
         return true;
     } catch (error) {
-        console.error("Error refreshing token:", error);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("userInfo");
         return false;
     }
+        // await axios.get(URI + '/refresh', {
+        //     headers: {
+        //         refreshAuthorization: localStorage.getItem("refreshToken"),
+        //     },
+        // }).then((response) => {
+        //     const headers = response.headers;
+        //     const authorization = headers['authorization'];
+        //     saveAccessTokenToLocalStorage(authorization);
+        //     return true;
+        // }).catch((error) => {
+        //     console.log(localStorage.getItem("accessToken"))
+        //     localStorage.removeItem("accessToken");
+        //     localStorage.removeItem("refreshToken");
+        //     localStorage.removeItem("userInfo");
+        //     console.error("Error refreshing token:", error);
+        //     console.log(error.response.data.errorCode)
+        //     return false;
+        // })
+
+      
 };
 
 
