@@ -116,6 +116,10 @@
     .writeWrap{
         padding-right: 5px;
     }
+
+    .writerImgWrap{
+        margin-right: 10px !important;
+    }
 }
 
 @media all and (max-width:1200px) { 

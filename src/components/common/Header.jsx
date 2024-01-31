@@ -132,12 +132,12 @@ function Header() {
                   onClose={handleCloseUserMenu}
                 >
                   <Link to={"/mypage"}>
-                    <MenuItem onClick={handleCloseUserMenu} sx={{ width: "150px" }}>
-                      <Typography textAlign="center">마이페이지</Typography>
+                    <MenuItem onClick={handleCloseUserMenu} sx={{ width: "150px" }} >
+                      <Typography textAlign="center" onClick={handleLinkClick}>마이페이지</Typography>
                     </MenuItem>
                   </Link>
                   <MenuItem onClick={handleLogout}>
-                    <Typography textAlign="center">로그아웃</Typography>
+                    <Typography textAlign="center" onClick={handleLinkClick}>로그아웃</Typography>
                   </MenuItem>
                 </Menu>
               </li>
@@ -157,7 +157,35 @@ function Header() {
       <div className={style.mobileMenu}>
         {isMenuOpen && <div className={style.back} onClick={toggleMenu}></div>}
         <div ref={bestRef} className={style.mobileMenuItemWrap}>
-          <img src={logo} alt="logo" className={style.logo} style={{ height: "auto" }} />
+          <Link to={"/"} onClick={handleLinkClick}><img src={logo} alt="logo" className={style.logo} style={{ height: "auto" }} /></Link>
+          {/* <div className={style.mobileLoginWrap}>
+            <div className={style.mobileLoginBtnWrap}>
+                <Link to={"/login"} onClick={handleLinkClick}><div>로그인</div></Link>
+                <Link to={"/join"} onClick={handleLinkClick}><div>회원가입</div></Link>
+            </div>
+          </div> */}
+
+          {isLoggedIn ? (
+              // 로그인 상태일 때 표시되는 링크
+              <div className={style.mobileLoginBtnWrap2} onClick={handleOpenUserMenu}>
+                <div className={style.photo} >
+                    <img
+                      className=""
+                      src={userInfo.profile ? `https://${userInfo.profile}` : avatar}
+                      alt="프로필 이미지"
+                    />
+                    
+                </div>
+                <p className={style.mobildLoginNickname}>{userInfo.nickname}</p>
+              </div>
+            ) : (
+            <div className={style.mobileLoginWrap}>
+              <div className={style.mobileLoginBtnWrap}>
+                  <Link to={"/login"} onClick={handleLinkClick}><div>로그인</div></Link>
+                  <Link to={"/join"} onClick={handleLinkClick}><div>회원가입</div></Link>
+              </div>
+            </div>
+            )}
           <ul>
             <Link to={"/surveyPost"} onClick={handleLinkClick}>
               <li>설문참여</li>
@@ -171,9 +199,9 @@ function Header() {
             <Link to={"/workspace"} onClick={handleLinkClick}>
               <li>워크스페이스</li>
             </Link>
-            <Link to={"/login"} onClick={handleLinkClick}>
+            {/* <Link to={"/login"} onClick={handleLinkClick}>
               <li>Sign In</li>
-            </Link>
+            </Link> */}
           </ul>
         </div>
       </div>
