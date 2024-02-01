@@ -114,6 +114,11 @@
     color: #fff;
 }
 
+.BoxWrap{
+    width: 1000px;
+    margin: 0 auto;
+}
+
 
 
 
@@ -166,6 +171,23 @@
 
     .modalWrap .modal{
         width: 80% !important;
+    }
+
+    .BoxWrap{
+        width: 100%;
+    }
+    .BoxWrap div img{
+        width: 30% !important;
+        object-fit: cover;
+    }
+
+    .BoxWrap div h5{
+        font-size: 16px !important;
+        font-weight: bold;
+    }
+
+    .BoxWrap div p{
+        font-size: 14px;
     }
 }
 

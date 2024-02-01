@@ -186,6 +186,10 @@
   .surveyContent{
     font-size: 14px;
   }
+
+  .modalWorkspaceName{
+    display: none;
+  }
 }
 
 @media all and (max-width: 1200px) {
