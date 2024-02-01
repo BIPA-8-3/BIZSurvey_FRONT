@@ -35,8 +35,46 @@
 
 .content {
   padding: 20px;
+  box-sizing: border-box;
+}
+.mobileSurveyTableWrap{
+  padding-bottom: 20px;
+}
+.mobileSurveyTable{
+  width: 600px;
+  font-size: 16px;
+  padding: 20px 0px;
 }
 
+.mobileSurveyTable tr td:nth-child(3){
+  text-align: center;
+}
+
+.mobileSurveyTable thead{
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0px;
+  font-weight: bold;
+}
+
+.mobileSurveyTable thead tr td{
+  padding: 15px 0px;
+}
+
+
+
+.mobileSurveyTableTitle p{
+  width:350px;  
+  text-overflow:ellipsis; 
+  overflow:hidden; 
+  white-space:nowrap;
+}
+
+.mobileSurveyTableWorkspaceName p{
+  width:220px;  
+  text-overflow:ellipsis; 
+  overflow:hidden; 
+  white-space:nowrap;
+}
 
 /* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px)*/ 
 @media all and (min-width:1024px) and (max-width:1279px) { 
@@ -55,6 +93,25 @@
 @media all and (max-width:479px) {
     .container{
       width: 90%;
+    }
+
+    .mobileSurveyTable{
+      width: 100%;
+      font-size: 14px;
+    }
+
+    .mobileSurveyTableTitle p{
+      width:150px;  
+      text-overflow:ellipsis; 
+      overflow:hidden; 
+      white-space:nowrap;
+    }
+    
+    .mobileSurveyTableWorkspaceName p{
+      width:120px;  
+      text-overflow:ellipsis; 
+      overflow:hidden; 
+      white-space:nowrap;
     }
 }
 
