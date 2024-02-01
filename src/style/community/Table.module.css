@@ -210,4 +210,9 @@
     .mCommunityTable{
         display: block;
     }
+
+    .vote{
+        display: inline-block;
+        margin-top: 2px;
+    }
 }

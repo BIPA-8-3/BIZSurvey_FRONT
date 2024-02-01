@@ -143,12 +143,12 @@
     font-size: 14px;
 }
 .mobileLoginBtnWrap a:nth-child(1){
-    border: 1px solid #0171D1;
-    color: #0171D1;
+    border: 1px solid #119FB3;
+    color: #119FB3;
 }
 .mobileLoginBtnWrap a:nth-child(2){
-    background-color: #0171D1;
-    border: 1px solid #0171D1;
+    background-color: #119FB3;
+    border: 1px solid #119FB3;
     color: #fff;
 }
 

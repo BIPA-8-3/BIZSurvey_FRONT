@@ -97,14 +97,16 @@ function CommunityTable({props}) {
           <Link to={'/communityDetail'} state={{postId : item.postId}}>
             <div className={style.mCommunityTableWrap}>
               <div>
-                <p className={style.contentsTitle}>{item.title}</p>
+                <p className={style.contentsTitle}>{item.title}{renderVote(item.voteId)}</p>
                 <p className={style.contentsSubTitle}>
                   <span className={style.contentsItem}> {item.nickname}</span> 
                   <span className={style.contentsSubTitleItem}> <MdDateRange /> <span className={style.contentsItem}>{item.createTime}</span></span> 
                   <span className={style.contentsSubTitleItem}> <IoIosEye /> <span className={style.contentsItem}>{item.count}</span></span>
                 </p>
               </div>
+              
               <div className={style.commentWrap}>
+              
                 <p style={{fontSize:"16px", textAlign:"center", marginBottom:"2px"}}>{item.commentSize}</p>
                 <p style={{fontSize:"12px", textAlign:"center"}}><FaRegCommentDots /></p>
               </div>
