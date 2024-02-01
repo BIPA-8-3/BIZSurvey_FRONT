@@ -194,7 +194,7 @@ export default function CommunityPost() {
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.contentWrap}>
-        <div style={{ backgroundColor: "rgba(209, 232, 248, 0.1)" }}>
+        <div style={{ backgroundColor: "rgba(209, 232, 248, 0.1)", paddingBottom:"20px"}}>
           <div className={style.title}>
             <h1>{survey.title}</h1>
             <p style={{ display: "flex" }}>
