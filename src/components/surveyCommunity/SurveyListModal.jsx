@@ -79,7 +79,7 @@ const SurveyListModal = ({ props }) => {
             {data.map((survey) => (
                 <tr>
                     <td className={style.mobileSurveyTableTitle}>
-                      <p>{survey.title} 줄간격을 늘릴려고 일부러 쓰</p>
+                      <p>{survey.title}</p>
                     </td>
                     <td className={style.mobileSurveyTableWorkspaceName}>
                       <p>{survey.workspaceName}</p>

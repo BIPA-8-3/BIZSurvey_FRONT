@@ -15,6 +15,14 @@ const getLinkStyle = (currentPage, path) => {
   };
 };
 
+const getLinkStyle2 = (currentPage, path) => {
+  return {
+    fontWeight: currentPage === path ? 'bold' : 'normal',
+    backgroundColor: currentPage  === path ? '#0171d1' : '#fff', 
+    color: currentPage === path ? '#fff' : '#000'
+  };
+};
+
 
 
 
@@ -103,6 +111,7 @@ function MypageHeader({ userData }) {
   }
 
   return (
+    <>
     <div className={style.mypageHeader}>
       {loading && (
         <div className="customLoadingWrap">
@@ -168,6 +177,58 @@ function MypageHeader({ userData }) {
       </div>
       <p className={style.mypageLogout} onClick={handleLogout}>로그아웃</p>
     </div>
+    <div className={style.mypageUserMobile}>
+      <div className={style.logoWrapMobile}>
+        <Link to="/">
+          <img src={logo} alt="logo" className={style.logo} />
+        </Link>
+      </div>
+      <div className={style.mypageMenuWrapMobile}>
+        <ul className={style.mypageMenuMobile}>
+          <li style={getLinkStyle2(currentPage, '/mypage')}>
+              <Link to="/mypage" style={getLinkStyle2(currentPage, '/mypage')}>내 프로필</Link>
+          </li>
+          <li style={getLinkStyle2(currentPage, '/mypageSurveyCommunity')}>
+              <Link to="/mypageSurveyCommunity" style={getLinkStyle2(currentPage, '/mypageSurveyCommunity')}>설문 커뮤니티 관리</Link>
+          </li>
+          <li style={getLinkStyle2(currentPage, '/mypageCommunity')}>
+              <Link to="/mypageCommunity" style={getLinkStyle2(currentPage, '/mypageCommunity')}>커뮤니티 관리</Link>
+          </li>
+          <li style={getLinkStyle2(currentPage, '/mypagePassword')}>
+              <Link to="/mypagePassword" style={getLinkStyle2(currentPage, '/mypagePassword')}>비밀번호 변경</Link>
+          </li>
+          <li style={getLinkStyle2(currentPage, '/mypagePlan')}>
+              <Link to="/mypagePlan" style={getLinkStyle2(currentPage, '/mypagePlan')}>플랜 구독</Link>
+          </li>
+        </ul>
+      </div>
+      <div className={style.mypageUser}>
+        <div className={style.profil}>
+          <div style={{ position: 'relative', width: '150px', margin: '0 auto' }}>
+            <div className={style.photo}>
+              {selectedImage ? (
+                <img className="" src={selectedImage} alt="선택된 아바타" />
+              ) : (
+                <img className="" src={userData.profile ? `https://${userData.profile}` : avatar} alt="프포필 이미지" />
+              )}
+            </div>
+            <label htmlFor="avatarInput" className={style.profilePen}>
+              <FaPen />
+            </label>
+            <input
+              type="file"
+              id="avatarInput"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handleImageChange}
+            />
+          </div>
+          <p className={style.nickname}>{userData.nickname}</p>
+          <p className={style.email}>{userData.email}</p>
+        </div>
+      </div>
+    </div>
+    </>
   );
 }
 

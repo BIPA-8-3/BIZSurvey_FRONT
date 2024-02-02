@@ -23,7 +23,7 @@ function Mypage() {
   }, []);
   return (
     <div id={style.joinWrap} className={`fade-in ${fadeIn ? "active" : ""}`}>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex" }} className={style.mypageWrapMobile}>
         <MypageHeader userData={userData} />
         <div style={{ background: "#fff", flex: "1", marginTop: "-54px" }}>
           {editState ? (
