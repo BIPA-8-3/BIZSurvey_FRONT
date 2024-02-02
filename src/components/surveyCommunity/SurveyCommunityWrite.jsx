@@ -336,7 +336,7 @@ export default function CommunityWrite() {
                 margin: "auto",
                 width: "100%",
                 maxHeight: "152px",
-                boxSizing: "border-box",
+                boxSizing: "border-box"
               }}
             >
               {/* 좌측 이미지 */}
