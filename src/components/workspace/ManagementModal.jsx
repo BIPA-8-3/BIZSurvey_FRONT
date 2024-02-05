@@ -132,7 +132,7 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues, i
     e.preventDefault();
 
     if (adminList.length + adminWaitList.length > 3) {
-      alert("최대 4명까지 초대 가능합니다.");
+      alert("총 관리자 제외 최대 4명까지 초대 가능합니다.");
       return;
     }
 
@@ -160,16 +160,28 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues, i
     setEmail("");
     setAdminSearchKeyword("");
 
+    // let tempId = adminWaitList.reduce((acc, curr) => {
+    //   return acc.id < curr.id ? acc : curr;
+    // }, 0);
+
+    // const temp = {
+    //   nickName: email,
+    //   id: tempId && tempId < 0 ? tempId - 1 : -1,
+    //   email: email,
+    // };
+
     const temp = {
       nickName: email,
       id: -1,
       email: email,
     };
+
     setAdminWaitList([...adminWaitList, temp]);
     inviteAdmin(inviteRequest)
       .then((data) => {
-        console.log(data);
-        setAdminWaitList([...adminWaitList.filter((a) => a.id !== -1), data]);
+        // setAdminWaitList([...adminWaitList.filter((a) => a.email !== data.email), data]);
+        temp.id = data.id;
+        console.log(temp);
       })
       .catch((error) => {
         console.error(error);
@@ -221,15 +233,13 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues, i
 
   // 관리자 삭제 메소드
   const handleClickRemoveAdminBtn = (id, userId) => {
-    if (id === -1) {
+    if (id < 0) {
       alert("초대메일 전송중 입니다. 잠시후에 다시 시도해주세요");
       return;
     }
 
     removeAdmin(id)
       .then((data) => {
-        console.log("d여기여기여ㅣ겨");
-        console.log(data);
         if (!userId) {
           let copy = adminWaitList.filter((admin) => admin.id !== id);
           setAdminWaitList(copy);
@@ -322,14 +332,14 @@ export default function ManagementModal({ isOpen, onClose, tab, managedValues, i
                   }
                 })}
 
-                {adminWaitList.map((admin) => {
+                {adminWaitList.map((admin, index) => {
                   if (
                     admin.email.includes(adminSearchKeyword) ||
                     admin.nickName.includes(adminSearchKeyword)
                   ) {
                     return (
                       <AdminItem
-                        key={admin.id}
+                        key={index}
                         info={admin}
                         handleClickRemoveAdminBtn={handleClickRemoveAdminBtn}
                         isAdmin={!isOwner()}

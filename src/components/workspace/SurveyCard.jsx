@@ -11,7 +11,7 @@ export default function SurveyCard({
   setChageModalSurveyId,
   setSelectedSurveyId,
 }) {
-  const { type, surveyId, title } = survey;
+  const { type, surveyId, title, modeDate } = survey;
   const cotainerRef = useRef(null);
   const cotainerRef2 = useRef(null);
 
@@ -47,6 +47,16 @@ export default function SurveyCard({
     setWorkspaceModalNum(num);
     setWorkspaceModalState(true);
   };
+
+  const formatter = new Intl.DateTimeFormat("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Seoul",
+  });
 
   return (
     <div
@@ -118,7 +128,9 @@ export default function SurveyCard({
         </div>
       </div>
       <div className={style.cardBody}>{title}</div>
-      <div className={style.cardFooter}>2023-12-05 16:14</div>
+      <div className={style.cardFooter}>
+        {formatter.format(new Date(modeDate)).replace(/\. /g, "-")}
+      </div>
     </div>
   );
 }
