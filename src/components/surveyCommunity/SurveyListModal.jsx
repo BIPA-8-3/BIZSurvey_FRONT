@@ -5,6 +5,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { useNavigate } from "react-router-dom";
+import style from "../../style/BizModal.module.css";
 
 const SurveyListModal = ({ props }) => {
   const data = props.list;
@@ -48,7 +49,7 @@ const SurveyListModal = ({ props }) => {
   const handleApply = () => {
     // 선택된 설문이 없으면 오류 메시지 표시
     if (selectedSurvey === null) {
-      setError("하나의 설문만 체크할 수 있습니다.");
+      setError("설문지를 선택해주세요.");
       return;
     }
     const selected = data.find((survey) => survey.surveyId === selectedSurvey);
@@ -64,40 +65,36 @@ const SurveyListModal = ({ props }) => {
         handleClose={handleCloseModal}
         title={modalTitle}
       >
-        <List
-          sx={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
-        >
-          {/* 목차 표시 */}
-          <ListItemText
-            primary={`설문지 이름`}
-            sx={{ width: "350px", fontWeight: "bold" }}
-          />
-          <ListItemText primary={`워크스페이스 이름`} />
-        </List>
-        <Divider />
-        {/* 목록 표시 */}
-        <List sx={{ width: "700px", overflowY: "auto", maxHeight: "400px" }}>
-          {data.map((survey) => (
-            <ListItem key={survey.surveyId} divider>
-              {/* 스키마 표시 */}
-              <ListItemText
-                primary={survey.title}
-                sx={{
-                  width: "350px",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              />
-              <ListItemText primary={survey.workspaceName} />
-              {/* 선택 체크박스 */}
-              <Checkbox
-                checked={selectedSurvey === survey.surveyId}
-                onChange={() => handleCheckboxChange(survey.surveyId)}
-              />
-            </ListItem>
-          ))}
-        </List>
+        
+      <div className={style.mobileSurveyTableWrap}>
+          <table className={style.mobileSurveyTable}>
+            <thead>
+                <tr>
+                    <td>설문지 이름</td>
+                    <td>워크스페이스 이름</td>
+                    <td>선택</td>
+                </tr>
+            </thead>
+            <tbody>
+            {data.map((survey) => (
+                <tr>
+                    <td className={style.mobileSurveyTableTitle}>
+                      <p>{survey.title}</p>
+                    </td>
+                    <td className={style.mobileSurveyTableWorkspaceName}>
+                      <p>{survey.workspaceName}</p>
+                    </td>
+                    <td>
+                      <Checkbox
+                        checked={selectedSurvey === survey.surveyId}
+                        onChange={() => handleCheckboxChange(survey.surveyId)}
+                      />  
+                    </td>
+                </tr>
+            ))}
+            </tbody>
+          </table>
+      </div>
         {/* 오류 메시지 표시 */}
         {error && (
           <p style={{ color: "red", fontSize: "0.8rem", marginTop: "10px" }}>

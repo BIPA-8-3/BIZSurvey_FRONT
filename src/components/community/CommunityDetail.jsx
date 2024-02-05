@@ -182,7 +182,7 @@ export default function CommunityPost() {
     <>
       <div className={`fade-in ${fadeIn ? "active" : ""}`}>
         <div className={style.contentWrap} style={{ marginTop: "30px" }}>
-          <div style={{ backgroundColor: "rgba(209, 232, 248, 0.1)" }}>
+          <div style={{ backgroundColor: "rgba(209, 232, 248, 0.1)", paddingBottom:"20px"}}>
             <div className={style.title}>
               <h1>{data.title}</h1>
               <p style={{ display: "flex" }}>
@@ -197,7 +197,7 @@ export default function CommunityPost() {
                     <span className={style.nickname}>{data.nickname}</span>
                   </div>
                 </p>
-                <div style={{ marginTop: "16px" }}>
+                <div style={{ marginTop: "16px" }} className={style.spanWrap}>
                   <span className={style.bar}> | </span>
                   <span>COMMUNITY</span>
                   <span className={style.bar}> | </span>
@@ -235,7 +235,7 @@ export default function CommunityPost() {
                   justifyContent: "space-between",
                 }}
               >
-                <div>
+                <div className={style.contentFooter}>
                   조회수{" "}
                   <span style={{ fontWeight: "bold" }}>{data.count}</span>
                   <span style={{ color: "#ddd" }}> | </span>
@@ -290,7 +290,7 @@ export default function CommunityPost() {
               />
             ) : null}
           </div>
-          <div style={{ textAlign: "center" }}>
+          <div style={{ textAlign: "center" }} className={style.communityDetailBackBtn}>
             <Link to={"/community"}>
               <Button
                 variant="contained"

@@ -326,17 +326,17 @@ export default function CommunityWrite() {
     if (selectedSurvey !== null) {
       return (
         <>
-          <div>
+          <div className={style.BoxWrap}>
             <Box
               sx={{
                 display: "flex",
-                border: "1px solid lightblue", // 항상 테두리를 표시
-                borderRadius: "8px", // 테두리를 둥글게 만들기
+                border: "1px solid #ddd", // 항상 테두리를 표시
                 overflow: "hidden", // 테두리를 넘어가는 내용 숨김
                 boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // 투영(튀어나온 효과) 추가
                 margin: "auto",
-                width: "700px",
+                width: "100%",
                 maxHeight: "152px",
+                boxSizing: "border-box"
               }}
             >
               {/* 좌측 이미지 */}
@@ -492,7 +492,7 @@ export default function CommunityWrite() {
             <p style={{ color: "red" }}>{error.title}</p>
           </div>
           <div className={style.editorWrap}>
-            <div
+            <div className={style.quillClass}
               style={{
                 width: "1000px",
                 margin: "0 auto",
@@ -501,6 +501,7 @@ export default function CommunityWrite() {
             >
               <ReactQuill
                 style={{ width: "1000px", height: "300px" }}
+                className={style.quillClass}
                 placeholder="내용을 입력해주세요."
                 theme="snow"
                 ref={quillRef}
@@ -554,7 +555,7 @@ export default function CommunityWrite() {
         <div
           style={{
             textAlign: "center",
-            width: "1000px",
+            width: "100%",
             margin: "0 auto",
             paddingTop: "80px",
           }}

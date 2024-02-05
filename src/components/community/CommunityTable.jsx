@@ -4,6 +4,9 @@ import IconWithText from '../common/IconWithText';
 import logo from "../../assets/img/avatar.png"
 import { CiMemoPad } from "react-icons/ci";
 import { Link } from 'react-router-dom';
+import { MdDateRange } from "react-icons/md";
+import { IoIosEye } from "react-icons/io";
+import { FaRegCommentDots } from "react-icons/fa";
 
 function CommunityTable({props}) {
   
@@ -87,6 +90,30 @@ function CommunityTable({props}) {
           ))}
         </tbody>
       </table>
+
+      {/* 모바일 커뮤니티 */}
+      <div className={style.mCommunityTable}>
+        {data.map(item => (
+          <Link to={'/communityDetail'} state={{postId : item.postId}}>
+            <div className={style.mCommunityTableWrap}>
+              <div>
+                <p className={style.contentsTitle}>{item.title}{renderVote(item.voteId)}</p>
+                <p className={style.contentsSubTitle}>
+                  <span className={style.contentsItem}> {item.nickname}</span> 
+                  <span className={style.contentsSubTitleItem}> <MdDateRange /> <span className={style.contentsItem}>{item.createTime}</span></span> 
+                  <span className={style.contentsSubTitleItem}> <IoIosEye /> <span className={style.contentsItem}>{item.count}</span></span>
+                </p>
+              </div>
+              
+              <div className={style.commentWrap}>
+              
+                <p style={{fontSize:"16px", textAlign:"center", marginBottom:"2px"}}>{item.commentSize}</p>
+                <p style={{fontSize:"12px", textAlign:"center"}}><FaRegCommentDots /></p>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

@@ -114,6 +114,11 @@
     color: #fff;
 }
 
+.BoxWrap{
+    width: 1000px;
+    margin: 0 auto;
+}
+
 
 
 
@@ -132,7 +137,58 @@
 
 /* 모바일 세로 (해상도 ~ 479px)*/ 
 @media all and (max-width:479px) {
-    
+    .writeWrap .title{
+        font-size: 18px;
+        width: 100%;
+    }
+
+    .writeWrap{
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .editorWrapDiv{
+        width: 100% !important;
+    }
+
+    .quillClass{
+        width: 100% !important;
+    }
+
+    .voteWrap{
+        width: 100%;
+        font-size: 12px;
+    }
+
+    .voteWrap p{
+        font-size: 12px;
+    }
+
+    .voteModalBtn{
+        font-size: 12px;
+        font-weight: 900;
+    }
+
+    .modalWrap .modal{
+        width: 80% !important;
+    }
+
+    .BoxWrap{
+        width: 100%;
+    }
+    .BoxWrap div img{
+        width: 30% !important;
+        object-fit: cover;
+    }
+
+    .BoxWrap div h5{
+        font-size: 16px !important;
+        font-weight: bold;
+    }
+
+    .BoxWrap div p{
+        font-size: 14px;
+    }
 }
 
 @media all and (max-width:1200px) { 
@@ -141,3 +197,4 @@
     }
 
 } 
+

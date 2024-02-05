@@ -13,6 +13,7 @@
 .writer{
     padding: 10px;
     padding-left: 0px;
+    padding-right: 0px;
 }
 
 .commentFormWrap{
@@ -72,3 +73,55 @@
 .commentFormWrap input::placeholder{
     color: #ddd;
 }
+
+
+/* 모바일 세로 (해상도 ~ 479px)*/ 
+@media all and (max-width:479px) {
+    .commentWrap{
+        padding: 0px;
+        padding-top: 0px;
+        padding-left: 10px;
+        padding-right: 10px;
+        width: 95%;
+    }
+
+    .commentFormWrap input{
+        font-size: 12px;
+        padding-left: 5px;
+        height: 40px;
+    }
+
+    .commentFormWrap{
+        padding: 0px;
+    }
+
+    .writeBtn{
+        position: absolute;
+        top: 50%;
+        right: 0%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        font-weight: bold;
+        margin-right: 0px;
+        margin-top: 0px;
+        color: #ddd;
+        transition: all 0.5s;
+        font-size: 14px;
+    }
+
+    .writer{
+        padding-top: 3px;
+    }
+
+    .writeWrap{
+        padding-right: 5px;
+    }
+
+    .writerImgWrap{
+        margin-right: 10px !important;
+    }
+}
+
+@media all and (max-width:1200px) { 
+
+} 

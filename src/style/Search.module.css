@@ -111,10 +111,11 @@
 
 /* 모바일 세로 (해상도 ~ 479px)*/ 
 @media all and (max-width:479px) {
+    
     .searchInput{
-        width: 95%;
+        width: 100%;
         margin: 0;
-        padding: 2px 30px;
+        padding: 2px 15px;
         box-sizing: border-box;
         border: 2px solid #109cda;
         background-color: #FFF;
@@ -122,7 +123,7 @@
         border-bottom-right-radius: 30px;
         line-height: 44px;
         color: #05054c;
-        font-size: 20px;
+        font-size: 16px;
         font-weight: 600;
         letter-spacing: -0.04em;
     }
@@ -131,20 +132,63 @@
     }
     
     .searchWrap{
-        width: 90%;
+        width: 100%;
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
     }
     
+
+    .searchInputWrap{
+        width: 100%;
+    }
+
+    .searchInputWrapDiv{
+        width: 100%;
+    }
+    
     .searchBtn{
-        width: 60px;
+        width: 62px;
         padding: 6.5px 0px;
         background-image: linear-gradient(135deg, #109cda 9%,#065eae 34%,#014099 57%);
         border-radius: 50%;
         box-shadow: rgba(1, 64, 153, 0.2) 18px 30px 50px;
         margin-bottom: 100px;
         text-align: center;
+        margin-left: 10px;
+    }
+
+    .searchBtn{
+        margin-bottom: 30px;
+    }
+
+    .autocomplete{
+        display: none;
+        position: absolute;
+        top: 51px;
+        left: 0px;
+        width: 311px;
+        box-sizing: border-box;
+        border-radius: 10px !important;
+        border-bottom-right-radius: 30px !important;
+        max-height: 200px;
+        overflow-y: scroll;
+        z-index: 99;
+    }
+    .hasResults{
+        width: 100%;
+        margin: 0;
+        padding: 2px 15px;
+        box-sizing: border-box;
+        border: 2px solid #109cda;
+        background-color: #FFF;
+        border-radius: 10px;
+        border-bottom-right-radius: 30px;
+        line-height: 44px;
+        color: #05054c;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: -0.04em;
     }
 }
 

@@ -60,7 +60,18 @@
 
 /* 모바일 세로 (해상도 ~ 479px)*/ 
 @media all and (max-width:479px) {
-    
+    .voteWriteWrap, .registerVoteWrap{
+        width: 90%;
+    }
+
+    .btnWrap button{
+        padding: 7px 15px;
+        font-size: 12px;
+    }
+
+    .content .MuiList-root{
+        width: 100% !important;
+    }
 }
 
 @media all and (max-width:1200px) { 

@@ -157,7 +157,7 @@ export default function CommunityPost() {
   return (
     <div className={`fade-in ${fadeIn ? "active" : ""}`}>
       <div className={style.contentWrap}>
-        <div style={{ backgroundColor: "rgba(209, 232, 248, 0.1)" }}>
+        <div style={{ backgroundColor: "rgba(209, 232, 248, 0.1)", paddingBottom:"20px" }}>
           <div className={style.title}>
             <h1>{data.title}</h1>
             <p style={{ display: "flex" }}>
@@ -169,13 +169,16 @@ export default function CommunityPost() {
                   <span className={style.nickname}>{data.nickname}</span>
                 </div>
               </p>
-              <div style={{ marginTop: "16px" }}>
+              <div style={{ marginTop: "16px" }} className={style.spanWrap}>
                 <span className={style.bar}> | </span>
                 <span>S-COMMUNITY</span>
                 <span className={style.bar}> | </span>
-                <span>설문 시작 : {data.startDateTime} <span className={style.bar}> | </span> 설문 종료 : {data.endDateTime}</span>
+                <span className={style.mobileNone}>설문 시작 : {data.startDateTime} <span className={style.bar}> | </span> 설문 종료 : {data.endDateTime}</span>
               </div>
             </p>
+            <div className={style.spanWrap}>
+                <span className={style.pcNone}>설문 시작 : {data.startDateTime} <span className={style.bar}> | </span> 설문 종료 : {data.endDateTime}</span>
+              </div>
           </div>
         </div>
         <div className={style.content}>

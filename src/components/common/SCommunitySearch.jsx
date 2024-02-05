@@ -112,7 +112,7 @@ function SCommunitySearch() {
     <div>
     <div className={style.searchWrap}>
       <div className={style.searchInputWrap}>
-        <div>
+        <div className={style.searchInputWrapDiv}>
           <input
             value={title}
             onChange={onChangeTitle}

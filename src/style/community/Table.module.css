@@ -91,3 +91,128 @@
     width: 100%;
     height: 51px;
 }
+
+/* 모바일 테이블 */
+.mCommunityTable{
+    display: none;
+    width: 100%;
+    margin-top: 15px;
+    border-top: 1px solid #efefef;
+}
+
+.mCommunityTableWrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #efefef;
+    height: 70px;
+    padding-left: 10px;
+}
+
+.contentsTitle{
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.contentsSubTitle{
+    font-size: 12px;
+    display: flex;
+}
+
+.contentsSubTitleItem{
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.contentsItem{
+    padding-top: 2px;
+}
+.commentWrap {
+    width: 50px;
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fefefe;
+}
+
+.commentWrap p {
+    margin: 0;
+}
+
+.commentWrap p {
+    text-align: center;
+}
+
+.commentWrap:first-child{
+    font-size: 24px;
+}
+/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px)*/ 
+@media all and (min-width:1024px) and (max-width:1279px) { 
+} 
+  
+/* 테블릿 가로 (해상도 768px ~ 1023px)*/ 
+@media all and (min-width:801px) and (max-width:1023px) { 
+   
+} 
+
+/* 모바일 세로 (해상도 ~ 479px)*/ 
+@media all and (max-width:479px) {
+    .title{
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+    #joinWrap{
+        width: 90%;
+        margin: 0 auto;
+    }
+    .input{
+        width: 90%;
+        border-style: solid;
+        border-width: 1px;
+        height: 1.4375em;
+        border-radius: 4px;
+        border-color: rgba(0, 0, 0, 0.23);
+        padding: 11.5px 5px !important
+    }
+    .inputDiv{
+        width: 90%;
+    }
+    .kakaoLogin{
+        width: 100%;
+        height: auto;
+    }
+    .input100{
+        width: 110%;
+    }
+    .inputBtn{
+        width: 80px;
+        height: 100%;
+        line-height: 45px;
+        font-size: 10px;
+        color: #fff;
+        text-align: center;
+        background-color: #243579;
+        z-index: 9998;
+        position: absolute;
+        top: 0px;
+        right: -12px;
+        border-radius: 0px 5px 5px 0px;
+        cursor: pointer;
+    }
+
+    .communityTable{
+        display: none;
+    }
+
+    .mCommunityTable{
+        display: block;
+    }
+
+    .vote{
+        display: inline-block;
+        margin-top: 2px;
+    }
+}
