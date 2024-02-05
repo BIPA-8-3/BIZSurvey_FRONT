@@ -224,6 +224,10 @@ export const removeAdmin = (id) => {
     return call(`${adminURI}/${id}`, "DELETE");
 }
 
+// 관리자 워크스페이스 탈퇴
+export const leaveAdmin = (workspaceId) => {
+    return call(`${adminURI}/self/${workspaceId}`, "DELETE");
+}
 
 // 공유 실행
 export const shareSurvey = (sharedRequest) => {

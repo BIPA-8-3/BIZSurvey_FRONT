@@ -15,11 +15,13 @@ import {
   getContactList,
   modifySurveyName,
   modifyWorkspace,
+  getURI,
 } from "./api.js";
 import { WorkspaceModal } from "../../components/workspace/WorkspaceModal";
 import { useWorkspaceContext } from "./WorkspaceContext";
 import { LoginContext } from "../../App";
 import { useNavigate } from "react-router-dom";
+import { NativeEventSource, EventSourcePolyfill } from "event-source-polyfill";
 
 export default function Main() {
   /////////////////////////////////////////////////////////////////
@@ -124,12 +126,93 @@ export default function Main() {
   }, [navigate]);
 
   //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+
+  // SSE
+  const newEventSourceRef = useRef(null);
+  const EventSource = NativeEventSource || EventSourcePolyfill;
+
+  const connectSSE = () => {
+    newEventSourceRef.current = new EventSource(getURI() + "/sse/connect?userId=" + userInfo.id);
+
+    newEventSourceRef.current.onopen = () => {
+      // console.log("SSE 연결이 열렸습니다.");
+    };
+
+    newEventSourceRef.current.onerror = (event) => {
+      if (event.eventPhase === EventSource.CLOSED) {
+        console.error("SSE 연결이 닫혔습니다.");
+        // newEventSourceRef.current.close();
+        // newEventSourceRef.current = null;
+      } else if (event.eventPhase === EventSource.error) {
+        console.error("SSE 오류 발생");
+      }
+    };
+
+    // newEventSourceRef.current.addEventListener("connect", function (event) {
+    //   console.log(event.data);
+    // });
+  };
+
+  const handleAdminEvent = (event) => {
+    var data = JSON.parse(event.data);
+    if (owner.id === userInfo.id) {
+      return;
+    }
+    if (data && data.workspaceId && owner.workspaceId === data.workspaceId) {
+      if (data.delFlag && userInfo.id === data.id) {
+        // alert("접근 권한이 없습니다.");
+        alert("워크스페이스에서 탈퇴 되었습니다.");
+        window.location.reload();
+      } else {
+        getAdminState();
+      }
+
+      // else if (data.userId !== userInfo.id) {
+      //   getAdminState();
+      // }
+    }
+    return;
+  };
+
+  const handleContactEvent = (event) => {
+    var data = JSON.parse(event.data);
+    if (data && owner.workspaceId === data.workspaceId && data.id !== userInfo.id) {
+      getContactState();
+    }
+    return;
+  };
+
+  useEffect(() => {
+    connectSSE();
+
+    return () => {
+      newEventSourceRef.current.close();
+      newEventSourceRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    newEventSourceRef.current.removeEventListener("adminEvent", handleAdminEvent);
+    newEventSourceRef.current.addEventListener("adminEvent", handleAdminEvent);
+    newEventSourceRef.current.removeEventListener("contactEvent", handleContactEvent);
+    newEventSourceRef.current.addEventListener("contactEvent", handleContactEvent);
+  }, [owner]);
+
+  //////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
   ///////////////////////// 초기 State 메소드 /////////////////////////
   //////////////////////////////////////////////////////////////////
+
   // 관리자 STATE 설정
   const getAdminState = () => {
     getAdminList(selectedWorkspaceId)
       .then((data) => {
+        if (!data) {
+          return;
+        }
         if (!data.owner) {
           setOwner({});
         } else {

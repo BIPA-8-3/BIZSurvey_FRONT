@@ -2,12 +2,14 @@ import { BiDotsHorizontalRounded } from "react-icons/bi";
 import style from "../../style/workspace/MoreMenu.module.css";
 import { useRef, useEffect, useState, useContext } from "react";
 import ManagementModal from "./ManagementModal";
-import { removeWorkspace } from "../../pages/workspace/api.js";
+import { leaveAdmin, removeAdmin, removeWorkspace } from "../../pages/workspace/api.js";
 import { useWorkspaceContext } from "../../pages/workspace/WorkspaceContext";
+import { LoginContext } from "../../App.js";
 
 const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum, managedValues, isOwner }) => {
   // 더보기 메뉴
   const cotainerRef = useRef(null);
+  const userInfo = useContext(LoginContext);
 
   ////////////////////////////////////////////////////////////////
   ////////////////////////// useContext //////////////////////////
@@ -64,6 +66,20 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum, managedValues,
         toggleMenu();
       })
       .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // 탈퇴 메소드
+  const handleLeaveWorkspaceClick = () => {
+    if (!window.confirm("워크스페이스에서 탈퇴하시겠습니까?")) {
+      return;
+    }
+
+    leaveAdmin(selectedWorkspaceId)
+      .then((data) => {})
+      .catch((error) => {
+        alert("탈퇴 과정에 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
         console.log(error);
       });
   };
@@ -131,13 +147,22 @@ const MoreMenu = ({ setWorkspaceModalState, setWorkspaceModalNum, managedValues,
           >
             이름 바꾸기
           </li>
-          <li
+          {/* <li
             onClick={() => {
-              handleRemoveClick();
+             handleRemoveClick();
             }}
             className={`${isOwner() ? (isPersonal() ? style.disabled : "") : style.disabled}`}
           >
             삭제
+          </li> */}
+
+          <li
+            onClick={() => {
+              isOwner() && !isPersonal() ? handleRemoveClick() : handleLeaveWorkspaceClick();
+            }}
+            className={`${isPersonal() ? style.disabled : ""}`}
+          >
+            {isOwner() ? "삭제" : "탈퇴하기"}
           </li>
         </ul>
       </div>

@@ -2,8 +2,6 @@ import style from "../../style/workspace/AdminItem.module.css";
 import { IoCloseSharp } from "react-icons/io5";
 
 export default function AdminItem({ info, handleClickRemoveAdminBtn, isAdmin }) {
-  console.log(info);
-
   return (
     <div className={style.adminProfile}>
       <div className={style.profileInfo}>

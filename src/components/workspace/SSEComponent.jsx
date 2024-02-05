@@ -11,7 +11,7 @@ const SSEComponent = () => {
 
   useEffect(() => {
     // 토큰 값 가져오기 (예: 로컬 스토리지 또는 다른 곳에서)
-    // alert("안녕안녕");
+    alert("안녕안녕");
 
     const accessToken = localStorage.getItem("accessToken");
     alert(accessToken);
@@ -29,7 +29,7 @@ const SSEComponent = () => {
 
     // 이벤트 수신 시 처리 로직
     eventSource.onmessage = (event) => {
-      // alert("들어오기하나");
+      alert("들어오기하나");
       const eventData = JSON.parse(event.data);
       setSseData(eventData.message);
       console.log(eventData.message); // 콘솔에 기록
@@ -48,11 +48,7 @@ const SSEComponent = () => {
     };
   }, []); // 빈 배열은 컴포넌트 마운트 시에만 실행되도록 함
 
-  return (
-    <div>
-      <p>SSE Data: {sseData}</p>
-    </div>
-  );
+  return <></>;
 };
 
 export default SSEComponent;
