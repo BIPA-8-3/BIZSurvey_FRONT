@@ -22,6 +22,7 @@ import { useWorkspaceContext } from "./WorkspaceContext";
 import { LoginContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 import { NativeEventSource, EventSourcePolyfill } from "event-source-polyfill";
+import SharingMethodModal from "../../components/workspace/SharingMethodModal.jsx";
 
 export default function Main() {
   /////////////////////////////////////////////////////////////////
@@ -54,6 +55,9 @@ export default function Main() {
     title: null,
     menuNum: null,
   });
+
+  // 공유 방식 선택 모달 / 공유 프로세스 확인 상태값
+  const [methodModal, setMethodModal] = useState(false);
 
   // 워크스페이스 이름 값에 대한 상태
   const [originWorkspaceName, setOriginWorkspaceName] = useState("");
@@ -272,13 +276,23 @@ export default function Main() {
   ///////////////////////// useEffect /////////////////////////
   /////////////////////////////////////////////////////////////
   // 공유 모달 설정
-  useEffect(() => {
-    if (!selectedSurvey.surveyId) {
-      setShareModal(false);
-    } else {
-      setShareModal(true);
-    }
-  }, [selectedSurvey.surveyId]);
+  // useEffect(() => {
+  //   if (!selectedSurvey.surveyId) {
+  //     setShareModal(false);
+  //   } else {
+  //     if (!methodModal) {
+  //       setShareModal(true);
+  //     }
+  //   }
+  // }, [selectedSurvey.surveyId, methodModal]);
+
+  // useEffect(() => {
+  //   if (process && !methodModal) {
+  //     setShareModal(true);
+  //   } else {
+  //     setShareModal(false);
+  //   }
+  // }, [process]);
 
   // 선택한 워크스페이스가 변경되면
   useMemo(() => {
@@ -332,6 +346,13 @@ export default function Main() {
       title: null,
       menuNum: null,
     });
+
+    setShareModal(false);
+  };
+
+  // close 공유방식 선택 모달
+  const toggleMethodModal = () => {
+    setMethodModal(!methodModal);
   };
 
   const managedValues = {
@@ -364,6 +385,12 @@ export default function Main() {
         setLoader={setLoader}
       />
 
+      <SharingMethodModal
+        isOpen={methodModal}
+        toggleMethodModal={toggleMethodModal}
+        closeShareModal={closeShareModal}
+        setShareModal={setShareModal}
+      />
       {
         <WorkspaceModal
           isOpen={workspaceModalState}
@@ -415,6 +442,7 @@ export default function Main() {
                   setWorkspaceModalNum={setWorkspaceModalNum}
                   setChageModalSurveyId={setChageModalSurveyId}
                   setSelectedSurveyId={setSelectedSurveyId}
+                  toggleMethodModal={toggleMethodModal}
                   className={style.cardItem}
                 />
               );

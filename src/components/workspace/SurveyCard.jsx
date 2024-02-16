@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import style from "../../style/workspace/SurveyCard.module.css";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
+import SharingMethodModal from "./SharingMethodModal";
 
 export default function SurveyCard({
   survey,
@@ -10,6 +11,7 @@ export default function SurveyCard({
   setWorkspaceModalNum,
   setChageModalSurveyId,
   setSelectedSurveyId,
+  toggleMethodModal,
 }) {
   const { type, surveyId, title, modeDate } = survey;
   const cotainerRef = useRef(null);
@@ -91,6 +93,7 @@ export default function SurveyCard({
                     e.stopPropagation();
                     toggleMenu();
                     onOpenModal(surveyId, title, 0);
+                    toggleMethodModal();
                   }}
                 >
                   공유
@@ -100,6 +103,7 @@ export default function SurveyCard({
                     e.stopPropagation();
                     toggleMenu();
                     onOpenModal(surveyId, title, 1);
+                    toggleMethodModal();
                   }}
                 >
                   공유 히스토리
