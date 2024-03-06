@@ -83,9 +83,58 @@
 * PostMan
 
 <br/><br/>
-##  ER다이어그램
+## 🪼 ER다이어그램
 ![ERD_IMG](https://github.com/BIPA-8-3/BIZSurvey_FRONT/assets/80444077/eab3db88-a1c5-40a4-bb36-387b16e1e1e6)
+<br/>
+
+## 🦋 아키텍처
+<img width="1140" alt="image" src="https://github.com/BIPA-8-3/BIZSurvey_FRONT/assets/80444077/868a50f6-9fa5-43a9-9dd7-599e6ca79cde">
+<br/><br/>
+
+## 🌼 화면
+
+<br/>
+
+### 1.커뮤니티
+#### 1-1.메인 페이지
+<img width="779" alt="image" src="https://github.com/BIPA-8-3/BIZSurvey_FRONT/assets/80444077/f42d4e30-2e1f-442b-98b5-e722494fd4f1">
+
+#### 1-2.커뮤니티 페이지
+<img width="914" alt="image" src="https://github.com/BIPA-8-3/BIZSurvey_FRONT/assets/80444077/907bcb6a-e6f1-4a15-b37a-769350a68aeb">
+
+#### 1-3.상세 페이지
+<img width="709" alt="image" src="https://github.com/BIPA-8-3/BIZSurvey_FRONT/assets/80444077/4d5994d7-2fd7-4cd5-8b7b-42cfdaf0990a">
 
 
-## 아키텍처
+### 2.워크스페이스
+#### 2-1.워크스페이스
+<img width="898" alt="image" src="https://github.com/BIPA-8-3/BIZSurvey_FRONT/assets/80444077/fde3271b-f7ea-4225-a35f-eca22dc758e7">
+
+#### 2-2.외부 공유
+<img width="487" alt="image" src="https://github.com/BIPA-8-3/BIZSurvey_FRONT/assets/80444077/428101c4-001d-4668-8a7a-f68216f8405a">
+
+#### 2-3.공유 히스토리
+<img width="535" alt="image" src="https://github.com/BIPA-8-3/BIZSurvey_FRONT/assets/80444077/41aa3213-35b0-43d7-bd84-b26e0c0c99c2">
+
+
+### 3.설문 서비스
+#### 3-1.설문 생성
+<img width="584" alt="image" src="https://github.com/BIPA-8-3/BIZSurvey_FRONT/assets/80444077/55eac895-6aba-42e1-be5f-affd960337d9">
+
+#### 3-2.전체 통계
+<img width="473" alt="image" src="https://github.com/BIPA-8-3/BIZSurvey_FRONT/assets/80444077/9c5f6cda-243e-46b4-814b-fc75d1811917">
+
+#### 3-3.개별 응답
+<img width="405" alt="image" src="https://github.com/BIPA-8-3/BIZSurvey_FRONT/assets/80444077/aa19da67-a213-45c7-85f6-7ca9d04befd6">
+
+
+### 4.사용자
+#### 4-1.마이페이지
+<img width="858" alt="image" src="https://github.com/BIPA-8-3/BIZSurvey_FRONT/assets/80444077/57de9fb4-73a0-4317-8a4a-e70880a22063">
+
+#### 4-2.관리자 페이지
+<img width="852" alt="image" src="https://github.com/BIPA-8-3/BIZSurvey_FRONT/assets/80444077/9a1f38f0-ce5c-4306-bd25-834529ba1e80">
+
+
+
 
